@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\ActualController;
 use App\Http\Controllers\TargetController;
+use App\Models\Actual;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -11,15 +13,14 @@ Route::get('/dashboard', function () {
     return view('dashboard', ['title' => 'Dashboard', 'desc' => 'Analytics']);
 });
 
-Route::resource('/target/input-target-employee', TargetController::class);
-Route::resource('/target/input-target-kpi', TargetController::class);
-
-Route::get('/actual/input-actual-employee', function () {
-    return view('/actual/input-actual-employee', ['title' => 'Input Data Realisasi', 'desc' => 'Achievement']);
+Route::prefix('target')->group(function () {
+    Route::get('/input-target-kpi/{id}', [TargetController::class, 'show']);
+    // Route::get('/input-target-kpi/{id}', [TargetController::class, 'show']);
 });
 
-Route::get('/actual/input-actual-achievement', function () {
-    return view('/actual/input-actual-achievement', ['title' => 'Input Data Realisasi', 'desc' => 'Achievement']);
+Route::prefix('actual')->group(function () {
+    Route::get('/input-actual-employee/{id}', [ActualController::class, 'show']);
+    Route::get('/input-actual-achievement/edit/{id}', [ActualController::class, 'edit']);
 });
 
 Route::get('/log-input', function () {

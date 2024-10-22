@@ -26,9 +26,9 @@ return new class extends Migration
             $table->text('comment');
             $table->text('record_file');
             $table->string('record_name');
-            $table->dateTime('month');
             $table->string('department_name');
             $table->string('kpi_weighting');
+            $table->dateTime('date');
             $table->foreignId('employee_id')->nullable()->constrained()->onUpdate('cascade')->nullOnDelete();
             $table->timestamps();
         });

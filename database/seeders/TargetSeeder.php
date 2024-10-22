@@ -22,7 +22,7 @@ class TargetSeeder extends Seeder
                 'unit' => 'Freq',
                 'supporting_document' => 'IMG-2024-10-16-070645',
                 'weighting' => '12%',
-                'employee_id' => 3,
+                'employee_id' => 1,
                 'target_unit_id' => 1,
             ],
             [
@@ -33,7 +33,7 @@ class TargetSeeder extends Seeder
                 'unit' => '%',
                 'supporting_document' => 'IMG-2024-10-16-070915',
                 'weighting' => '20%',
-                'employee_id' => 3,
+                'employee_id' => 1,
                 'target_unit_id' => 2,
             ],
             [
@@ -44,7 +44,7 @@ class TargetSeeder extends Seeder
                 'unit' => '%',
                 'supporting_document' => 'IMG-2024-10-16-071145',
                 'weighting' => '13%',
-                'employee_id' => 3,
+                'employee_id' => 1,
                 'target_unit_id' => 3,
             ],
         ];
