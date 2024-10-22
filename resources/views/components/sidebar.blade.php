@@ -19,12 +19,12 @@
             </button>
             <ul x-show="open" x-transition:enter="transition ease-out duration-100" x-transition:enter-start="transform opacity-0 scale-95" x-transition:enter-end="transform opacity-100 scale-100" x-transition:leave="transition ease-in duration-75" x-transition:leave-start="transform opacity-100 scale-100" x-transition:leave-end="transform opacity-0 scale-95" class="mt-2 space-y-2">
                 <li>
-                    <a href="/target/input-target-employee" class="flex items-center py-2 px-6 text-gray-300 hover:bg-gray-900">
+                    <a href="/target/input-target-kpi" class="flex items-center py-2 px-6 text-gray-300 hover:bg-gray-900">
                         <i class="ri-focus-2-line text-3xl"></i>
                         <span class="ml-3">Input Target</span>
                     </a>
                 </li>
-                <li>
+                <li>    
                     <a href="/actual/input-actual-employee" class="flex items-center py-2 px-6 text-gray-300 hover:bg-gray-900">
                         <i class="ri-book-2-line text-3xl"></i>
                         <span class="ml-3">Input Pencapaian Aktual</span>

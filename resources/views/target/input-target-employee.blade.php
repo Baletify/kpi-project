@@ -3,11 +3,11 @@
         <table class="w-full">
             <tr>
                 <th style="width: 3%;" class="border-2 border-gray-700 text-[14px] uppercase tracking-wide font-medium text-gray-600 py-2 px-4 bg-yellow-200">No.</th>
-                <th class="border-2 border-gray-700 text-[14px] uppercase tracking-wide font-medium text-gray-600 py-2 px-4 bg-yellow-200">NIK</th>
-                <th class="border-2 border-gray-700 text-[14px] uppercase tracking-wide font-medium text-gray-600 py-2 px-4 bg-yellow-200">Nama</th>
-                <th class="border-2 border-gray-700 text-[14px] uppercase tracking-wide font-medium text-gray-600 py-2 px-4 bg-yellow-200">Department</th>
-                <th class="border-2 border-gray-700 text-[14px] uppercase tracking-wide font-medium text-gray-600 py-2 px-4 bg-yellow-200">Jabatan</th>
-                <th class="border-2 border-gray-700 text-[14px] uppercase tracking-wide font-medium text-gray-600 py-2 px-4 bg-yellow-200">Aksi</th>
+                <th class="border-2 border-gray-700 text-[10px] uppercase tracking-wide font-medium text-gray-600 py-2 px-4 bg-yellow-200">NIK</th>
+                <th class="border-2 border-gray-700 text-[10px] uppercase tracking-wide font-medium text-gray-600 py-2 px-4 bg-yellow-200">Nama</th>
+                <th class="border-2 border-gray-700 text-[10px] uppercase tracking-wide font-medium text-gray-600 py-2 px-4 bg-yellow-200">Department</th>
+                <th class="border-2 border-gray-700 text-[10px] uppercase tracking-wide font-medium text-gray-600 py-2 px-4 bg-yellow-200">Jabatan</th>
+                <th class="border-2 border-gray-700 text-[10px] uppercase tracking-wide font-medium text-gray-600 py-2 px-4 bg-yellow-200">Aksi</th>
             </tr>
             @php
                 $i = 0;
