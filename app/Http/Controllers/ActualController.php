@@ -96,7 +96,7 @@ class ActualController extends Controller
 
         ]);
 
-        return redirect()->route('actual/input-actual-employee', ['id' => $request->employee_id])
+        return redirect()->route('actual.show', ['id' => $request->employee_id])
             ->with('success', 'Data Realisasi berhasil ditambahkan');
     }
 }

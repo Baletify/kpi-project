@@ -19,7 +19,7 @@ Route::prefix('target')->group(function () {
 });
 
 Route::prefix('actual')->group(function () {
-    Route::get('/input-actual-employee/{id}', [ActualController::class, 'show']);
+    Route::get('/input-actual-employee/{id}', [ActualController::class, 'show'])->name('actual.show');
     Route::get('/input-actual-achievement/edit/{id}', [ActualController::class, 'edit']);
     Route::post('/input-actual-achievement/store', [ActualController::class, 'store']);
 });

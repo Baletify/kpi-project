@@ -5,7 +5,7 @@
     </a>
     <ul class="mt-4">
         <li>
-            <a href="../dashboard" class="flex items-center py-2 px-6 text-gray-300 hover:bg-gray-900">
+            <a href="{{ url('/dashboard') }}" class="flex items-center py-2 px-6 text-gray-300 hover:bg-gray-900">
                 <i class="ri-dashboard-2-line text-3xl"></i>
                 <span class="ml-3">Dashboard</span>
             </a>
@@ -33,7 +33,7 @@
             </ul>
         </div>
         <li>
-            <a href="/log-input" class="flex items-center py-2 px-6 text-gray-300 hover:bg-gray-900">
+            <a href="{{ url('/log-input') }}" class="flex items-center py-2 px-6 text-gray-300 hover:bg-gray-900">
                 <i class="ri-history-line text-3xl"></i>
                 <span class="ml-3">Log Input</span>
             </a>
