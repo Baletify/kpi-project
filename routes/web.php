@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ActualController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\TargetController;
 use App\Models\Actual;
 use Illuminate\Support\Facades\Route;
@@ -22,6 +23,10 @@ Route::prefix('actual')->group(function () {
     Route::get('/input-actual-employee/{id}', [ActualController::class, 'show'])->name('actual.show');
     Route::get('/input-actual-achievement/edit/{id}', [ActualController::class, 'edit']);
     Route::post('/input-actual-achievement/store', [ActualController::class, 'store']);
+});
+
+Route::prefix('report')->group(function () {
+    Route::get('/employee-report/{id}', [ReportController::class, 'show'])->name('report.show');
 });
 
 Route::get('/log-input', function () {

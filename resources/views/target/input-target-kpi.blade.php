@@ -8,22 +8,22 @@
         </div>
         <table class="w-full table-auto">
             <tr>
-                <th class="border-2 border-gray-700 text-[13px] uppercase tracking-wide font-medium text-gray-600 py-2 px-4 bg-yellow-200">No.</th>
-                <th class="border-2 border-gray-700 text-[13px] uppercase tracking-wide font-medium text-gray-600 py-2 px-4 bg-yellow-200">NIK</th>
-                <th class="border-2 border-gray-700 text-[13px] uppercase tracking-wide font-medium text-gray-600 py-2 px-4 bg-yellow-200">Kode KPI</th>
-                <th class="border-2 border-gray-700 text-[13px] uppercase tracking-wide font-medium text-gray-600 py-2 px-4 bg-yellow-200">KPI</th>
-                <th class="border-2 border-gray-700 text-[13px] uppercase tracking-wide font-medium text-gray-600 py-2 px-4 bg-yellow-200">Cara Menghitung</th>
-                <th class="border-2 border-gray-700 text-[13px] uppercase tracking-wide font-medium text-gray-600 py-2 px-4 bg-yellow-200">Data Pendukung</th>
-                <th class="border-2 border-gray-700 text-[13px] uppercase tracking-wide font-medium text-gray-600 py-2 px-4 bg-yellow-200">Periode Review</th>
-                <th class="border-2 border-gray-700 text-[13px] uppercase tracking-wide font-medium text-gray-600 py-2 px-4 bg-yellow-200">Unit</th>
-                <th class="border-2 border-gray-700 text-[13px] uppercase tracking-wide font-medium text-gray-600 py-2 px-4 bg-yellow-200">Bobot "%"</th>
-                <th class="border-2 border-gray-700 text-[13px] uppercase tracking-wide font-medium text-gray-600 py-2 px-4 bg-yellow-200">Jan</th>
-                <th class="border-2 border-gray-700 text-[13px] uppercase tracking-wide font-medium text-gray-600 py-2 px-4 bg-yellow-200">Feb</th>
-                <th class="border-2 border-gray-700 text-[13px] uppercase tracking-wide font-medium text-gray-600 py-2 px-4 bg-yellow-200">Mar</th>
-                <th class="border-2 border-gray-700 text-[13px] uppercase tracking-wide font-medium text-gray-600 py-2 px-4 bg-yellow-200">Apr</th>
-                <th class="border-2 border-gray-700 text-[13px] uppercase tracking-wide font-medium text-gray-600 py-2 px-4 bg-yellow-200">May</th>
-                <th class="border-2 border-gray-700 text-[13px] uppercase tracking-wide font-medium text-gray-600 py-2 px-4 bg-yellow-200">Jun</th>
-                <th class="border-2 border-gray-700 text-[13px] uppercase tracking-wide font-medium text-gray-600 py-2 px-4 bg-yellow-200">Aksi</th>
+                <th class="border-2 border-gray-400 text-[13px] uppercase tracking-wide font-medium text-gray-600 py-1 bg-yellow-200" style="width: 3%">No.</th>
+                <th class="border-2 border-gray-400 text-[13px] uppercase tracking-wide font-medium text-gray-600 py-1 bg-yellow-200">NIK</th>
+                <th class="border-2 border-gray-400 text-[13px] uppercase tracking-wide font-medium text-gray-600 py-1 bg-yellow-200">Kode KPI</th>
+                <th class="border-2 border-gray-400 text-[13px] uppercase tracking-wide font-medium text-gray-600 py-1 bg-yellow-200" style="width: 35%">KPI</th>
+                <th class="border-2 border-gray-400 text-[13px] uppercase tracking-wide font-medium text-gray-600 py-1 bg-yellow-200">Cara Menghitung</th>
+                <th class="border-2 border-gray-400 text-[13px] uppercase tracking-wide font-medium text-gray-600 py-1 bg-yellow-200">Data Pendukung</th>
+                <th class="border-2 border-gray-400 text-[13px] uppercase tracking-wide font-medium text-gray-600 py-1 bg-yellow-200">Periode Review</th>
+                <th class="border-2 border-gray-400 text-[13px] uppercase tracking-wide font-medium text-gray-600 py-1 bg-yellow-200">Unit</th>
+                <th class="border-2 border-gray-400 text-[13px] uppercase tracking-wide font-medium text-gray-600 py-1 bg-yellow-200">Bobot "%"</th>
+                <th class="border-2 border-gray-400 text-[13px] uppercase tracking-wide font-medium text-gray-600 py-1 bg-yellow-200">Jan</th>
+                <th class="border-2 border-gray-400 text-[13px] uppercase tracking-wide font-medium text-gray-600 py-1 bg-yellow-200">Feb</th>
+                <th class="border-2 border-gray-400 text-[13px] uppercase tracking-wide font-medium text-gray-600 py-1 bg-yellow-200">Mar</th>
+                <th class="border-2 border-gray-400 text-[13px] uppercase tracking-wide font-medium text-gray-600 py-1 bg-yellow-200">Apr</th>
+                <th class="border-2 border-gray-400 text-[13px] uppercase tracking-wide font-medium text-gray-600 py-1 bg-yellow-200">May</th>
+                <th class="border-2 border-gray-400 text-[13px] uppercase tracking-wide font-medium text-gray-600 py-1 bg-yellow-200">Jun</th>
+                <th class="border-2 border-gray-400 text-[13px] uppercase tracking-wide font-medium text-gray-600 py-1 bg-yellow-200">Aksi</th>
             </tr>
             @php
                 $i = 0;
@@ -33,26 +33,26 @@
                 @php
                     $i++
                 @endphp
-                <td class="border-2 border-gray-700 text-[12px] tracking-wide px-2 py-2 text-center">{{ $i }}</td>
-                <td class="border-2 border-gray-700 text-[12px] tracking-wide px-2 py-2">{{ $employee->nik }}</td>
-                <td class="border-2 border-gray-700 text-[12px] tracking-wide px-2 py-2">{{ $target->code }}</td>
-                <td class="border-2 border-gray-700 text-[12px] tracking-wide px-2 py-2">{{ $target->indicator }}</td>
-                <td class="border-2 border-gray-700 text-[12px] tracking-wide px-2 py-2 text-center">{{ $target->calculation }}</td>
-                <td class="border-2 border-gray-700 text-[12px] tracking-wide px-2 py-2 text-center">
+                <td class="border-2 border-gray-400 text-[11px] tracking-wide px-2 py-0 text-center">{{ $i }}</td>
+                <td class="border-2 border-gray-400 text-[11px] tracking-wide px-2 py-0">{{ $employee->nik }}</td>
+                <td class="border-2 border-gray-400 text-[11px] tracking-wide px-2 py-0">{{ $target->code }}</td>
+                <td class="border-2 border-gray-400 text-[11px] tracking-wide px-2 py-0">{{ $target->indicator }}</td>
+                <td class="border-2 border-gray-400 text-[11px] tracking-wide px-2 py-0 text-center">{{ $target->calculation }}</td>
+                <td class="border-2 border-gray-400 text-[11px] tracking-wide px-2 py-0 text-center">
                     {{ $target->supporting_document }}
                 </td>
-                <td class="border-2 border-gray-700 text-[12px] tracking-wide px-2 py-2 text-center">{{ $target->period }}</td>
-                <td class="border-2 border-gray-700 text-[12px] tracking-wide px-2 py-2">{{ $target->unit }}</td>
-                <td class="border-2 border-gray-700 text-[12px] tracking-wide px-2 py-2 text-center">{{ $target->weighting }}</td>
-                <td class="border-2 border-gray-700 text-[12px] tracking-wide px-2 py-2 text-center">{{ $target->target_1 }}</td>
-                <td class="border-2 border-gray-700 text-[12px] tracking-wide px-2 py-2 text-center">{{ $target->target_2}}</td>
-                <td class="border-2 border-gray-700 text-[12px] tracking-wide px-2 py-2 text-center">{{ $target->target_3 }}</td>
-                <td class="border-2 border-gray-700 text-[12px] tracking-wide px-2 py-2 text-center">{{ $target->target_4 }}</td>
-                <td class="border-2 border-gray-700 text-[12px] tracking-wide px-2 py-2 text-center">{{ $target->target_5 }}</td>
-                <td class="border-2 border-gray-700 text-[12px] tracking-wide px-2 py-2 text-center">{{ $target->target_6 }}</td>
-                <td class="border-2 border-gray-700 text-[12px] tracking-wide px-2 py-2 text-center">
+                <td class="border-2 border-gray-400 text-[11px] tracking-wide px-2 py-0 text-center">{{ $target->period }}</td>
+                <td class="border-2 border-gray-400 text-[11px] tracking-wide px-2 py-0">{{ $target->unit }}</td>
+                <td class="border-2 border-gray-400 text-[11px] tracking-wide px-2 py-0 text-center">{{ $target->weighting }}</td>
+                <td class="border-2 border-gray-400 text-[11px] tracking-wide px-2 py-0 text-center">{{ $target->target_1 }}</td>
+                <td class="border-2 border-gray-400 text-[11px] tracking-wide px-2 py-0 text-center">{{ $target->target_2}}</td>
+                <td class="border-2 border-gray-400 text-[11px] tracking-wide px-2 py-0 text-center">{{ $target->target_3 }}</td>
+                <td class="border-2 border-gray-400 text-[11px] tracking-wide px-2 py-0 text-center">{{ $target->target_4 }}</td>
+                <td class="border-2 border-gray-400 text-[11px] tracking-wide px-2 py-0 text-center">{{ $target->target_5 }}</td>
+                <td class="border-2 border-gray-400 text-[11px] tracking-wide px-2 py-0 text-center">{{ $target->target_6 }}</td>
+                <td class="border-2 border-gray-400 text-[11px] tracking-wide px-2 py-0 text-center">
                     <a href="">
-                        <i class="ri-edit-2-fill bg-yellow-400 text-2xl border border-gray-200 shadow-black p-1"></i>
+                        <i class="ri-edit-2-fill bg-yellow-400 text-sm border border-gray-200 shadow-black"></i>
                     </a>
                 </td>
             </tr>
