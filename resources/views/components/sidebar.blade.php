@@ -39,7 +39,7 @@
             </a>
         </li>
         <li>
-            <a href="/report/employee-report" class="flex items-center py-2 px-6 text-gray-300 hover:bg-gray-900">
+            <a href="{{ url('report/department-report') }}" class="flex items-center py-2 px-6 text-gray-300 hover:bg-gray-900">
                 <i class="ri-file-chart-line text-3xl"></i>
                 <span class="ml-3">Laporan</span>
             </a>

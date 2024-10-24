@@ -13,4 +13,9 @@ class ReportController extends Controller
         $employee = Employee::find($id);
         return view('report.employee-report', ['title' => 'Report', 'desc' => 'Employee Report', 'employee' => $employee]);
     }
+
+    public function department()
+    {
+        return view('report.department-report', ['title' => 'Report', 'desc' => 'Department']);
+    }
 }

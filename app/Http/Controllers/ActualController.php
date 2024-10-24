@@ -11,15 +11,16 @@ use App\Models\Actual;
 
 class ActualController extends Controller
 {
-    public function show($id)
+    public function show(Request $request)
     {
+        $employeeID = $request->query('employee');
         $now = Carbon::now();
-        $employee = Employee::find($id);
+        $employee = Employee::find($employeeID);
 
         // Ambil data targets
         $targets = DB::table('targets')
             ->select('id', 'code', 'indicator', 'employee_id')
-            ->where('employee_id', $id)
+            ->where('employee_id', $employeeID)
             ->get();
 
         // Ambil data actuals
@@ -28,7 +29,7 @@ class ActualController extends Controller
             ->leftJoin('targets', 'actuals.kpi_code', '=', 'targets.code')
             // ->select('actuals.date as date', 'actuals.employee_id as employee_id', 'targets.code as code', 'targets.indicator as indicator')
             ->where(DB::raw('MONTH(actuals.date)'), '<=', $now->month)
-            ->where('actuals.employee_id', $id)
+            ->where('actuals.employee_id', $employeeID)
             ->get();
 
         return view('actual.input-actual-employee', [

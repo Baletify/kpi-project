@@ -18,10 +18,11 @@ class TargetController extends Controller
         return view('/target/input-target-employee', ['title' => 'Input KPI Target', 'desc' => 'Employees', 'employees' => $employees]);
     }
 
-    public function show($id)
+    public function show(Request $request)
     {
-        $employee = Employee::find($id);
-        $targets = DB::table('targets')->leftJoin('target_units', 'target_units.id', '=', 'targets.target_unit_id')->where('employee_id', $id)->get();
+        $employeeID = $request->query('employee');
+        $employee = Employee::find($employeeID);
+        $targets = DB::table('targets')->leftJoin('target_units', 'target_units.id', '=', 'targets.target_unit_id')->where('employee_id', $employeeID)->get();
 
         return view('target.input-target-kpi', ['title' => 'Input KPI Target', 'desc' => 'Employees', 'employee' => $employee, 'targets' => $targets]);
     }
