@@ -1,5 +1,5 @@
 <x-app-layout :title="$title" :desc="$desc">
-  <form id="submit-form" action="{{ url('actual/input-actual-achievement/store') }}" method="POST" enctype="multipart/form-data">
+  <form id="formsub" name="formsub" action="{{ url('actual/input-actual-achievement/store') }}" method="POST" enctype="multipart/form-data">
     @csrf
   <div class="ml-64 mt-4 overflow-y-auto p-2 bg-gray-100 border border-gray-200 shadow-md shadow-black/10 rounded-md">
  
@@ -152,33 +152,33 @@
         <div class="relative mt-1 rounded-md">
           <div class="w-full rounded-md border-0 py-1.5 pl-4 pr-20 text-gray-900  sm:text-sm sm:leading-6 mt-2 flex gap-x-6">
             <div class="mb-2 mt-2">
-              <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-md" form="submit-form">Submit</button>
+              <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-md" form="formsub">Submit</button>
             </div>
           </form>
-            <form id="preview-form" action="{{ url('actual/preview/store') }}" method="POST" enctype="multipart/form-data">
+            <form id="formprev" name="formprev" action="{{ url('actual/preview/store') }}" method="POST" enctype="multipart/form-data">
               @csrf
             <div class="mb-2 mt-2">
-                <input type="hidden" name="pv_code" id="pv_code" value="{{ $target->code }}">
-                <input type="hidden" name="pv_nik" id="pv_nik" value="{{ $target->nik }}">
-                <input type="hidden" name="pv_employee" id="pv_employee" value="{{ $target->employee }}">
-                <input type="hidden" name="pv_department" id="pv_department" value="{{ $target->department }}">
-                <input type="hidden" name="pv_calculation" id="pv_calculation" value="{{ $target->calculation }}">
-                <input type="hidden" name="pv_indicator" id="pv_indicator" value="{{ $target->indicator }}">
-                <input type="hidden" name="pv_occupation" id="pv_occupation" value="{{ $target->occupation }}">
-                <input type="hidden" name="pv_period" id="pv_period" value="{{ $target->period }}">
-                <input type="hidden" name="pv_unit" id="pv_unit" value="{{ $target->unit }}">
-                <input type="hidden" name="pv_weighting" id="pv_weighting" value="{{ $target->weighting }}">
-                <input type="hidden" name="employee_id" id="employee_id" value="{{ $target->employee_id }}">
-                <input type="hidden" name="pv_target" id="pv_target" value="{{ $target->target_unit_4 }}">
-                <input type="hidden" name="pv_date" id="pv_date" value="">
-                <input type="hidden" name="pv_actual" id="pv_actual" value="">
-                <input type="hidden" name="pv_achievement" id="pv_achievement" value="">
-                <input type="hidden" name="pv_record_name" id="pv_record_name" value="">
-                <input type="hidden" name="pv_record_file" id="pv_record_file" value="">
-                <input type="hidden" name="pv_program_number" id="pv_program_number" value="">
-                <input type="hidden" name="pv_program_file" id="pv_program_file" value="">
-                <input type="hidden" name="pv_comment" id="pv_comment" value="">
-              <button type="submit" class=" bg-green-500 text-white py-2 px-4 rounded-md" form="preview-form" onclick="fillHiddenInputs()">Preview</button>
+              <input type="hidden" name="pv_code" id="pv_code" value="{{ $target->code }}">
+              <input type="hidden" name="pv_nik" id="pv_nik" value="{{ $target->nik }}">
+              <input type="hidden" name="pv_employee" id="pv_employee" value="{{ $target->employee }}">
+              <input type="hidden" name="pv_department" id="pv_department" value="{{ $target->department }}">
+              <input type="hidden" name="pv_calculation" id="pv_calculation" value="{{ $target->calculation }}">
+              <input type="hidden" name="pv_indicator" id="pv_indicator" value="{{ $target->indicator }}">
+              <input type="hidden" name="pv_occupation" id="pv_occupation" value="{{ $target->occupation }}">
+              <input type="hidden" name="pv_period" id="pv_period" value="{{ $target->period }}">
+              <input type="hidden" name="pv_unit" id="pv_unit" value="{{ $target->unit }}">
+              <input type="hidden" name="pv_weighting" id="pv_weighting" value="{{ $target->weighting }}">
+              <input type="hidden" name="employee_id" id="employee_id" value="{{ $target->employee_id }}">
+              <input type="hidden" name="pv_target" id="pv_target" value="{{ $target->target_unit_4 }}">
+              <input type="hidden" name="pv_date" id="pv_date" value="">
+              <input type="hidden" name="pv_actual" id="pv_actual" value="">
+              <input type="hidden" name="pv_achievement" id="pv_achievement" value="">
+              <input type="hidden" name="pv_record_name" id="pv_record_name" value="">
+              <input type="hidden" name="pv_record_file" id="pv_record_file" value="">
+              <input type="hidden" name="pv_program_number" id="pv_program_number" value="">
+              <input type="hidden" name="pv_program_file" id="pv_program_file" value="">
+              <input type="hidden" name="pv_comment" id="pv_comment" value="">
+              <button type="submit" class="bg-green-500 text-white py-2 px-4 rounded-md" form="formprev" onclick="fillHiddenInputs()">Preview</button>
           </div>
         </form>
           
@@ -208,16 +208,6 @@
               achievementField.value = '';
           }
       }
+      </script>
 
-      function fillHiddenInputs() {
-      document.getElementById('pv_date').value = document.getElementById('date').value;
-      document.getElementById('pv_actual').value = document.getElementById('actual').value;
-      document.getElementById('pv_achievement').value = document.getElementById('achievement').value;
-      document.getElementById('pv_record_name').value = document.getElementById('record_name').value;
-      document.getElementById('pv_record_file').value = document.getElementById('record_file').value;
-      document.getElementById('pv_program_number').value = document.getElementById('program_number').value;
-      document.getElementById('pv_program_file').value = document.getElementById('program_file').value;
-      document.getElementById('pv_comment').value = document.getElementById('comment').value;
-    }
-      </script>        
 </x-app-layout>

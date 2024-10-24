@@ -25,7 +25,8 @@
                 <th class="border-2 border-gray-400 text-[14px] uppercase tracking-wide font-medium text-gray-600 py-1 px-4 bg-yellow-200" rowspan="2">NIK</th>
                 <th class="border-2 border-gray-400 text-[14px] uppercase tracking-wide font-medium text-gray-600 py-1 px-4 bg-yellow-200" rowspan="2">Nama</th>
                 <th class="border-2 border-gray-400 text-[14px] uppercase tracking-wide font-medium text-gray-600 py-1 px-4 bg-yellow-200" rowspan="2">Posisi</th>
-                <th class="border-2 border-gray-400 text-[14px] uppercase tracking-wide font-medium text-gray-600 py-1 px-4 bg-yellow-200" colspan="6">Bobot Pencapaian</th>
+                <th class="border-2 border-gray-400 text-[14px] uppercase tracking-wide font-medium text-gray-600 py-1 px-4 bg-yellow-200" colspan="7">Bobot Pencapaian</th>
+
                 
             </tr>
             <tr>
@@ -36,6 +37,7 @@
                 <th class="border-2 border-gray-400 text-[14px] uppercase tracking-wide font-medium text-gray-600 py-1 px-4 bg-yellow-200">Apr</th>
                 <th class="border-2 border-gray-400 text-[14px] uppercase tracking-wide font-medium text-gray-600 py-1 px-4 bg-yellow-200">May</th>
                 <th class="border-2 border-gray-400 text-[14px] uppercase tracking-wide font-medium text-gray-600 py-1 px-4 bg-yellow-200">Jun</th>
+                <th class="border-2 border-gray-400 text-[14px] uppercase tracking-wide font-medium text-gray-600 py-1 px-4 bg-yellow-200">Rata Rata</th>
               </tr>
               <tr>
                 <td class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-gray-600 py-1 px-4 text-center">1</td>
@@ -43,6 +45,7 @@
                 <td style="width: 8%;" class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-gray-600 py-1 px-4">908-998</td>
                 <td style="width: 25%;" class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-gray-600 py-1 px-4">Agustian</td>
                 <td style="width: 15%;" class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-gray-600 py-1 px-4">IT Staff</td>
+                <td class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-gray-600 py-1 px-4"></td>
                 <td class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-gray-600 py-1 px-4"></td>
                 <td class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-gray-600 py-1 px-4"></td>
                 <td class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-gray-600 py-1 px-4"></td>
