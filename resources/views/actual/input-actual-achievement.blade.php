@@ -138,12 +138,12 @@
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-2 ">
         <div class="relative mt-1 rounded-md">
             <span class="pl-3 font-semibold">Nama Rekaman Data Pendukung</span>  
-          <input type="text" name="record_name" id="record_name" class="block w-96 rounded-md border-0 py-1.5 pl-4 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 mt-1" placeholder="Nama Rekaman">
+          <input type="text" name="supporting_document" id="supporting_document" class="block w-96 rounded-md border-0 py-1.5 pl-4 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 mt-1" placeholder="Nama Rekaman" value="{{ $target->supporting_document }}" readonly>
           <div class="absolute inset-y-0 right-0 flex items-center">
           </div>
         </div>
         <div class="relative mt-1 rounded-md">
-            <span class="mx-20">Upload Rekaman</span>  
+            <span class="mx-20 font-semibold">Upload Rekaman</span>  
           <input type="file" name="record_file" id="record_file" class=" w-24 mx-20 rounded-md border-0 py-1.5 pl-1.5 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 mt-1" placeholder="Departemen">
           <div class="absolute inset-y-0 right-0 flex items-center">
           </div>
@@ -158,23 +158,25 @@
             <form id="formprev" name="formprev" action="{{ url('actual/preview/store') }}" method="POST" enctype="multipart/form-data">
               @csrf
             <div class="mb-2 mt-2">
-              <input type="hidden" name="pv_code" id="pv_code" value="{{ $target->code }}">
+              <input type="hidden" name="pv_kpi_code" id="pv_kpi_code" value="{{ $target->code }}">
               <input type="hidden" name="pv_nik" id="pv_nik" value="{{ $target->nik }}">
               <input type="hidden" name="pv_employee" id="pv_employee" value="{{ $target->employee }}">
-              <input type="hidden" name="pv_department" id="pv_department" value="{{ $target->department }}">
-              <input type="hidden" name="pv_calculation" id="pv_calculation" value="{{ $target->calculation }}">
+              <input type="hidden" name="pv_kpi_calculation" id="pv_kpi_calculation" value="{{ $target->calculation }}">
               <input type="hidden" name="pv_indicator" id="pv_indicator" value="{{ $target->indicator }}">
               <input type="hidden" name="pv_occupation" id="pv_occupation" value="{{ $target->occupation }}">
-              <input type="hidden" name="pv_period" id="pv_period" value="{{ $target->period }}">
+              <input type="hidden" name="pv_review_period" id="pv_period" value="{{ $target->period }}">
               <input type="hidden" name="pv_unit" id="pv_unit" value="{{ $target->unit }}">
-              <input type="hidden" name="pv_weighting" id="pv_weighting" value="{{ $target->weighting }}">
+              <input type="hidden" name="pv_kpi_weighting" id="pv_kpi_weighting" value="{{ $target->weighting }}">
               <input type="hidden" name="employee_id" id="employee_id" value="{{ $target->employee_id }}">
               <input type="hidden" name="pv_target" id="pv_target" value="{{ $target->target_unit_4 }}">
+              <input type="hidden" name="pv_kpi_item" id="pv_kpi_item" value="{{ $target->indicator }}">
+              <input type="hidden" name="pv_department_name" id="pv_department_name" value="{{ $target->department }}">
+              <input type="hidden" name="pv_employee_id" id="pv_employee_id" value="{{ $target->department }}">
               <input type="hidden" name="pv_date" id="pv_date" value="">
               <input type="hidden" name="pv_actual" id="pv_actual" value="">
               <input type="hidden" name="pv_achievement" id="pv_achievement" value="">
-              <input type="hidden" name="pv_record_name" id="pv_record_name" value="">
               <input type="hidden" name="pv_record_file" id="pv_record_file" value="">
+              <input type="hidden" name="pv_supporting_document" id="pv_supporting_document" value="">
               <input type="hidden" name="pv_program_number" id="pv_program_number" value="">
               <input type="hidden" name="pv_program_file" id="pv_program_file" value="">
               <input type="hidden" name="pv_comment" id="pv_comment" value="">
@@ -208,6 +210,21 @@
               achievementField.value = '';
           }
       }
+
+      function fillHiddenInputs() {
+      document.getElementById('pv_kpi_code').value = document.getElementById('kpi_code').value;
+      document.getElementById('pv_kpi_item').value = document.getElementById('kpi_item').value;
+      document.getElementById('pv_target').value = document.getElementById('target').value;
+      document.getElementById('pv_date').value = document.getElementById('date').value;
+      document.getElementById('pv_actual').value = document.getElementById('actual').value;
+      document.getElementById('pv_achievement').value = document.getElementById('achievement').value;
+      document.getElementById('pv_record_file').value = document.getElementById('record_file').value;
+      document.getElementById('pv_supporting_document').value = document.getElementById('supporting_document').value;
+      document.getElementById('pv_program_number').value = document.getElementById('program_number').value;
+      document.getElementById('pv_program_file').value = document.getElementById('program_file').value;
+      document.getElementById('pv_comment').value = document.getElementById('comment').value;
+      document.getElementById('pv_employee_id').value = document.getElementById('employee_id').value;
+    }
       </script>
 
 </x-app-layout>

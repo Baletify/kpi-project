@@ -25,7 +25,6 @@ return new class extends Migration
             $table->string('supporting_document')->nullable();
             $table->text('comment')->nullable();
             $table->text('record_file')->nullable();
-            $table->string('record_name')->nullable();
             $table->string('department_name');
             $table->string('kpi_weighting');
             $table->dateTime('date');

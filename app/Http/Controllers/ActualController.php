@@ -64,7 +64,7 @@ class ActualController extends Controller
     public function store(Request $request)
     {
 
-        $date = Carbon::createFromDate($request->year, $request->date, 1)->startOfMonth();
+        $date = Carbon::createFromDate($request->year, $request->pv_date, 1)->startOfMonth();
         if ($request->hasFile('program_file')) {
             $programFile = $request->file('program_file');
             $programFileName = Str::random(40) . '.' . $programFile->getClientOriginalExtension();
@@ -93,11 +93,11 @@ class ActualController extends Controller
             'department_name' => $request->department_name,
             'kpi_weighting' => $request->kpi_weighting,
             'date' => $date,
-            'employee_id' => $request->employee_id,
+            'employee_id' => $request->pv_employee_id,
 
         ]);
 
-        return redirect()->route('actual.show', ['id' => $request->employee_id])
+        return redirect()->route('actual.input-actual-achievement', ['employee' => $request->pv_employee_id])
             ->with('success', 'Data Realisasi berhasil ditambahkan');
     }
 }

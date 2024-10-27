@@ -27,25 +27,25 @@ class PreviewController extends Controller
             $recordFile->move(public_path('record_files'), $recordFileName);;
         }
         Preview::create([
-            'kpi_code' => $request->kpi_code,
-            'kpi_item' => $request->kpi_item,
-            'kpi_unit' => $request->kpi_unit,
-            'review_period' => $request->review_period,
-            'program_number' => $request->program_number,
+            'kpi_code' => $request->pv_kpi_code,
+            'kpi_item' => $request->pv_kpi_item,
+            'kpi_unit' => $request->pv_unit,
+            'review_period' => $request->pv_review_period,
+            'program_number' => $request->pv_program_number,
             'program_file' => isset($programFileName) ? $programFileName : null,
-            'target' => $request->target,
-            'actual' => $request->actual,
-            'kpi_calculation' => $request->kpi_calculation,
-            'supporting_document' => $request->supporting_document,
-            'comment' => $request->comment,
-            'record_name' => $request->record_name,
+            'target' => $request->pv_target,
+            'actual' => $request->pv_actual,
+            'kpi_calculation' => $request->pv_kpi_calculation,
+            'supporting_document' => $request->pv_supporting_document,
+            'comment' => $request->pv_comment,
             'record_file' => isset($recordFileName) ? $recordFileName : null,
-            'department_name' => $request->department_name,
-            'kpi_weighting' => $request->kpi_weighting,
+            'department_name' => $request->pv_department_name,
+            'kpi_weighting' => $request->pv_kpi_weighting,
             'date' => $date,
-            'employee_id' => $request->employee_id,
+            'employee_id' => $request->pv_employee_id,
 
         ]);
+
         return redirect()->route('preview.show')->with('success', 'preview');
     }
 

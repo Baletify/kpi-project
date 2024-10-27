@@ -57,9 +57,9 @@
                 </td>
             </tr>
             @empty
-            <div class="">
-                <span>Data Tidak ditemukan</span>
-            </div>
+            <tr>
+                <td colspan="16" class="border-2 border-gray-400 tracking-wide  py-0 px-2 text-center">Data Tidak ditemukan</td>
+            </tr>
             @endforelse
         </table>
     </div>

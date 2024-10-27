@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ActualController;
+use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\TargetController;
 use App\Models\Actual;
@@ -12,9 +13,7 @@ Route::get('/', function () {
     return view('dashboard', ['title' => 'Dashboard', 'desc' => 'Analytics']);
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard', ['title' => 'Dashboard', 'desc' => 'Analytics']);
-});
+Route::get('dashboard', [EmployeeController::class, 'index'])->name('dashboard');
 
 Route::prefix('target')->group(function () {
     Route::get('/input-target-kpi', [TargetController::class, 'show']);
@@ -26,7 +25,7 @@ Route::prefix('actual')->group(function () {
     Route::get('/input-actual-achievement/edit/{id}', [ActualController::class, 'edit']);
     Route::post('/input-actual-achievement/store', [ActualController::class, 'store']);
     Route::post('/preview/store', [PreviewController::class, 'store']);
-    Route::get('/preview', [PreviewController::class, 'show']);
+    Route::get('/preview', [PreviewController::class, 'show'])->name('preview.show');
 });
 
 Route::prefix('report')->group(function () {
