@@ -27,5 +27,6 @@ class Preview extends Model
         'department_name',
         'kpi_weighting',
         'date',
+        'employee_id',
     ];
 }

@@ -43,7 +43,6 @@
             <div class="p-1 bg-gray-200 mt-2 grid lg:grid-cols-2 border-gray-200 rounded-md gap-4">
                 <div class="relative mt-1 rounded-md">
                     <span class="pl-3 font-semibold">Departemen</span>  
-                    <form action="{{ url('dashboard') }}" method="GET">
                     <div class="pl-3 mb-3">
                         <select name="department" id="department" class=" w-56">
                             <option value="">-- Pilih Departemen --</option>
@@ -52,9 +51,7 @@
                             <option value="HR">HR</option>
                             <option value="IT">IT</option>
                         </select>
-                        <button type="submit" class="bg-blue-500 text-white p-2 rounded-md">Filter</button>
                     </div>
-                </form>
                   <div class="absolute inset-y-0 right-0 flex items-center">
                   </div>
                   <div class="p-1 bg-gray-200 mt-2 grid lg:grid-cols-2 border-gray-200 rounded-md ">
@@ -87,19 +84,21 @@
                     </div>
                   </div>
                   <div class="relative mt-0 pl-3 rounded-md">  
-                    <button class="bg-blue-500 text-white p-2 rounded-md">Filter</button>
                     <div class="absolute inset-y-0 right-0 flex items-center">
                     </div>
                   </div>
                   </div>
                 </div>
                 <div class="relative mt-1 rounded-md">
-                    <span class="pl-3 font-semibold">Search</span>  
-                    <input type="text" name="nik" id="nik" class="block w-full rounded-md border-0 py-1.5 pl-4 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 mt-1" placeholder="" value="">
+                    <span class="pl-3 font-semibold">Search</span>
+                        <input type="text" name="filterName" id="filterName" class="w-64 rounded-md border-0 py-1.5 pl-4 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 mt-1" placeholder="Masukkan Nama" value="" autocomplete="off">
                     <div class="absolute inset-y-0 right-0 flex items-center">
                     </div>
-                  </div>
+                    
+                  </div>  
+                         
             </div>
+            
             <div class="p-1 bg-gray-100 mt-2 grid lg:grid-cols-1 border-gray-200 rounded-md gap-4">
                 <div class="bg-gray-200 rounded-md">
                     <div class="px-2 py-2">
@@ -115,31 +114,18 @@
                 </div>
                 <div class="py-2 px-2 overflow-y-auto max-h-[240px]">
                     <table class="table-auto w-full">
+                        <thead>
                         <tr>
                             <th style="width: 3%;" class="border-2 border-gray-400 text-[14px] uppercase tracking-wide font-medium text-gray-600 py-1 px-4 bg-yellow-200">No.</th>
                             <th style="width: 45%;" class="border-2 border-gray-400 text-[14px] uppercase tracking-wide font-medium text-gray-600 py-1 px-4 bg-yellow-200">Nama</th>
                             <th style="width: 20%;" class="border-2 border-gray-400 text-[14px] uppercase tracking-wide font-medium text-gray-600 py-1 px-4 bg-yellow-200">Posisi</th>
-                            <th style="width: 15%;" class="border-2 border-gray-400 text-[14px] uppercase tracking-wide font-medium text-gray-600 py-1 px-4 bg-yellow-200">Dept</th>
-                            
+                            <th style="width: 15%;" class="border-2 border-gray-400 text-[14px] uppercase tracking-wide font-medium text-gray-600 py-1 px-4 bg-yellow-200">Dept</th> 
                         </tr>
-                        @php
-                        $i = 0;
-                    @endphp
-                    @forelse ($employees as $employee)
-                    @php
-                        $i++;
-                    @endphp
-                        <tr>
-                            <td class="border-2 border-gray-400 tracking-wide px-2 py-0 text-center">{{ $i }}</td>
-                            <td class="border-2 border-gray-400 tracking-wide px-2 py-0">{{ $employee->name }}</td>
-                            <td class="border-2 border-gray-400 tracking-wide px-2 py-0">{{ $employee->occupation }}</td>
-                            <td class="border-2 border-gray-400 tracking-wide px-2 py-0">{{ $employee->department }}</td>
-                        </tr>
-                        @empty
-                        <tr>
-                            <td colspan="16" class="border-2 border-gray-400 tracking-wide  py-0 px-2 text-center">Data Tidak ditemukan</td>
-                        </tr>
-                        @endforelse
+                    </thead>
+                    
+                    <tbody id="employeeTableBody">
+
+                    </tbody>
                     </table>
                 </div>
             </div>
@@ -148,4 +134,37 @@
         </div>
 
     </div>
+
+    <script>
+       document.addEventListener('DOMContentLoaded', function() {
+      function fetchData() {
+        const department = document.getElementById('department').value;
+        const name = document.getElementById('filterName').value;
+
+        fetch(`{{ url('dashboard/filter') }}?department=${department}&name=${name}`)
+          .then(response => response.json())
+          .then(data => {
+            const tbody = document.getElementById('employeeTableBody');
+            tbody.innerHTML = '';
+
+            if (data.length > 0) {
+              data.forEach((item, index) => {
+                const row = `<tr>
+                  <td class="border-2 border-gray-400 tracking-wide px-2 py-0 text-center">${index + 1}</td>
+                  <td class="border-2 border-gray-400 tracking-wide px-2 py-0">${item.name}</td>
+                  <td class="border-2 border-gray-400 tracking-wide px-2 py-0">${item.occupation}</td>
+                  <td class="border-2 border-gray-400 tracking-wide px-2 py-0">${item.department}</td>
+                </tr>`;
+                tbody.innerHTML += row;
+              });
+            } else {
+              tbody.innerHTML = '<tr><td colspan="4" class="border-2 border-gray-400 tracking-wide px-2 py-0 text-center">No data found</td></tr>';
+            }
+          });
+      }
+
+      document.getElementById('department').addEventListener('change', fetchData);
+      document.getElementById('filterName').addEventListener('input', fetchData);
+    });
+    </script>
 </x-app-layout>

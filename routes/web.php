@@ -8,12 +8,13 @@ use App\Models\Actual;
 use App\Models\Preview;
 use App\Http\Controllers\PreviewController;
 use Illuminate\Support\Facades\Route;
+use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 
 Route::get('/', function () {
     return view('dashboard', ['title' => 'Dashboard', 'desc' => 'Analytics']);
 });
-
 Route::get('dashboard', [EmployeeController::class, 'index'])->name('dashboard');
+Route::get('dashboard/filter', [EmployeeController::class, 'filter']);
 
 Route::prefix('target')->group(function () {
     Route::get('/input-target-kpi', [TargetController::class, 'show']);
@@ -23,9 +24,9 @@ Route::prefix('target')->group(function () {
 Route::prefix('actual')->group(function () {
     Route::get('/input-actual-employee', [ActualController::class, 'show'])->name('actual.show');
     Route::get('/input-actual-achievement/edit/{id}', [ActualController::class, 'edit']);
-    Route::post('/input-actual-achievement/store', [ActualController::class, 'store']);
+    Route::post('/input-actual-achievement/store', [ActualController::class, 'store'])->name('actual.store');
     Route::post('/preview/store', [PreviewController::class, 'store']);
-    Route::get('/preview', [PreviewController::class, 'show'])->name('preview.show');
+    Route::get('/preview/{id}', [PreviewController::class, 'show'])->name('preview.show');
 });
 
 Route::prefix('report')->group(function () {

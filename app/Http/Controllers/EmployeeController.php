@@ -14,8 +14,22 @@ class EmployeeController extends Controller
         $department = $request->query('department');
         $month = $request->query('month');
         $year = $request->query('year');
+        $employee = $request->query('employee');
 
-        if ($department) {
+        if ($employee) {
+            $employees = DB::table('employees')
+                ->leftJoin('departments', 'employees.department_id', '=', 'departments.id')
+                ->select('employees.id', 'employees.nik', 'employees.name', 'employees.occupation', 'departments.name as department')
+                ->where('employees.name', 'LIKE', '%' . $employee . '%')
+                ->get();
+
+
+            return view('dashboard', [
+                'title' => 'Dashboard',
+                'desc' => 'Analytics',
+                'employees' => $employees
+            ]);
+        } else if ($department) {
             $employees = DB::table('employees')
                 ->leftJoin('departments', 'employees.department_id', '=', 'departments.id')
                 ->select('employees.id', 'employees.nik', 'employees.name', 'employees.occupation', 'departments.name as department')
@@ -52,6 +66,29 @@ class EmployeeController extends Controller
                 'desc' => 'Analytics',
                 'employees' => $employees
             ]);
+        }
+    }
+    public function filter(Request $request)
+    {
+        $department = $request->query('department');
+        $name = $request->query('name');
+
+        if ($name) {
+            $data = DB::table('employees')
+                ->leftJoin('departments', 'employees.department_id', '=', 'departments.id')
+                ->select('employees.id', 'employees.nik', 'employees.name', 'employees.occupation', 'departments.name as department')
+                ->where('employees.name', 'LIKE', '%' . $name . '%')
+                ->get();
+
+            return response()->json($data);
+        } else if ($department) {
+            $data = DB::table('employees')
+                ->leftJoin('departments', 'employees.department_id', '=', 'departments.id')
+                ->select('employees.id', 'employees.nik', 'employees.name', 'employees.occupation', 'departments.name as department')
+                ->where('departments.name', $department)
+                ->get();
+
+            return response()->json($data);
         }
     }
 }

@@ -1,5 +1,5 @@
 <x-app-layout :title="$title" :desc="$desc">
-  <form id="formsub" name="formsub" action="{{ url('actual/input-actual-achievement/store') }}" method="POST" enctype="multipart/form-data">
+  <form id="achievementForm" action="{{ url('actual/input-actual-achievement/store') }}" method="POST" enctype="multipart/form-data">
     @csrf
   <div class="ml-64 mt-4 overflow-y-auto p-2 bg-gray-100 border border-gray-200 shadow-md shadow-black/10 rounded-md">
  
@@ -130,6 +130,7 @@
                 <span class="pl-3 font-semibold">Komentar</span>  
                 <textarea name="comment" id="comment" class="block w-full rounded-md border-0 py-1.5 pl-4 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 mt-1" placeholder="Komentar" rows="2"></textarea>
                 <input type="hidden" name="employee_id" id="employee_id" value="{{ $target->employee_id }}">
+                <input type="hidden" name="pv_employee_id" id="pv_employee_id" value="{{ $target->employee_id }}">
               <div class="absolute inset-y-0 right-0 flex items-center">
               </div>
             </div>
@@ -148,42 +149,15 @@
           <div class="absolute inset-y-0 right-0 flex items-center">
           </div>
         </div>
-              <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-2 ">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-2 ">
         <div class="relative mt-1 rounded-md">
           <div class="w-full rounded-md border-0 py-1.5 pl-4 pr-20 text-gray-900  sm:text-sm sm:leading-6 mt-2 flex gap-x-6">
             <div class="mb-2 mt-2">
-              <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-md" form="formsub">Submit</button>
+              <button type="submit" id="submitBtn" class="px-4 py-2 bg-blue-600 text-white rounded-md">Submit</button>
             </div>
-          </form>
-            <form id="formprev" name="formprev" action="{{ url('actual/preview/store') }}" method="POST" enctype="multipart/form-data">
-              @csrf
             <div class="mb-2 mt-2">
-              <input type="hidden" name="pv_kpi_code" id="pv_kpi_code" value="{{ $target->code }}">
-              <input type="hidden" name="pv_nik" id="pv_nik" value="{{ $target->nik }}">
-              <input type="hidden" name="pv_employee" id="pv_employee" value="{{ $target->employee }}">
-              <input type="hidden" name="pv_kpi_calculation" id="pv_kpi_calculation" value="{{ $target->calculation }}">
-              <input type="hidden" name="pv_indicator" id="pv_indicator" value="{{ $target->indicator }}">
-              <input type="hidden" name="pv_occupation" id="pv_occupation" value="{{ $target->occupation }}">
-              <input type="hidden" name="pv_review_period" id="pv_period" value="{{ $target->period }}">
-              <input type="hidden" name="pv_unit" id="pv_unit" value="{{ $target->unit }}">
-              <input type="hidden" name="pv_kpi_weighting" id="pv_kpi_weighting" value="{{ $target->weighting }}">
-              <input type="hidden" name="employee_id" id="employee_id" value="{{ $target->employee_id }}">
-              <input type="hidden" name="pv_target" id="pv_target" value="{{ $target->target_unit_4 }}">
-              <input type="hidden" name="pv_kpi_item" id="pv_kpi_item" value="{{ $target->indicator }}">
-              <input type="hidden" name="pv_department_name" id="pv_department_name" value="{{ $target->department }}">
-              <input type="hidden" name="pv_employee_id" id="pv_employee_id" value="{{ $target->department }}">
-              <input type="hidden" name="pv_date" id="pv_date" value="">
-              <input type="hidden" name="pv_actual" id="pv_actual" value="">
-              <input type="hidden" name="pv_achievement" id="pv_achievement" value="">
-              <input type="hidden" name="pv_record_file" id="pv_record_file" value="">
-              <input type="hidden" name="pv_supporting_document" id="pv_supporting_document" value="">
-              <input type="hidden" name="pv_program_number" id="pv_program_number" value="">
-              <input type="hidden" name="pv_program_file" id="pv_program_file" value="">
-              <input type="hidden" name="pv_comment" id="pv_comment" value="">
-              <button type="submit" class="bg-green-500 text-white py-2 px-4 rounded-md" form="formprev" onclick="fillHiddenInputs()">Preview</button>
+              <button type="submit" id="previewBtn" class="bg-green-500 text-white py-2 px-4 rounded-md">Preview</button>
           </div>
-        </form>
-          
           <div class="p-2 mb-2 mt-2">
             <a href="#" class="p-4 bg-blue-500 py-2 items-center">
                 <span class="font-medium text-white">Excel</span>
@@ -193,11 +167,24 @@
           </div>
         </div>
       </div>
+    </form>
       @endforeach
   
 
     
     <script>
+
+      document.getElementById('submitBtn').addEventListener('click', function(event) {
+      event.preventDefault();
+      document.getElementById('achievementForm').action = "{{ url('actual/input-actual-achievement/store') }}";
+      document.getElementById('achievementForm').submit();
+    });
+
+      document.getElementById('previewBtn').addEventListener('click', function(event) {
+      event.preventDefault();
+      document.getElementById('achievementForm').action = "{{ url('actual/preview/store') }}";
+      document.getElementById('achievementForm').submit();
+    });
       function calculateAchievement() {
           const target = parseFloat(document.getElementById('target').value);
           const actual = parseFloat(document.getElementById('actual').value);
@@ -211,20 +198,6 @@
           }
       }
 
-      function fillHiddenInputs() {
-      document.getElementById('pv_kpi_code').value = document.getElementById('kpi_code').value;
-      document.getElementById('pv_kpi_item').value = document.getElementById('kpi_item').value;
-      document.getElementById('pv_target').value = document.getElementById('target').value;
-      document.getElementById('pv_date').value = document.getElementById('date').value;
-      document.getElementById('pv_actual').value = document.getElementById('actual').value;
-      document.getElementById('pv_achievement').value = document.getElementById('achievement').value;
-      document.getElementById('pv_record_file').value = document.getElementById('record_file').value;
-      document.getElementById('pv_supporting_document').value = document.getElementById('supporting_document').value;
-      document.getElementById('pv_program_number').value = document.getElementById('program_number').value;
-      document.getElementById('pv_program_file').value = document.getElementById('program_file').value;
-      document.getElementById('pv_comment').value = document.getElementById('comment').value;
-      document.getElementById('pv_employee_id').value = document.getElementById('employee_id').value;
-    }
       </script>
 
 </x-app-layout>
