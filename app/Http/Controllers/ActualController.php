@@ -76,6 +76,14 @@ class ActualController extends Controller
             $recordFileName = Str::random(40) . '.' . $recordFile->getClientOriginalExtension();
             $recordFile->move(public_path('record_files'), $recordFileName);;
         }
+
+        $semester = '';
+
+        if ($request->date > 6) {
+            $semester = 'Genap';
+        } else {
+            $semester = 'Ganjil';
+        }
         Actual::create([
             'kpi_code' => $request->kpi_code,
             'kpi_item' => $request->kpi_item,
@@ -85,14 +93,15 @@ class ActualController extends Controller
             'program_file' => isset($programFileName) ? $programFileName : null,
             'target' => $request->target,
             'actual' => $request->actual,
+            'kpi_percentage' => $request->achievement,
             'kpi_calculation' => $request->kpi_calculation,
             'supporting_document' => $request->supporting_document,
             'comment' => $request->comment,
-            'record_name' => $request->record_name,
             'record_file' => isset($recordFileName) ? $recordFileName : null,
             'department_name' => $request->department_name,
             'kpi_weighting' => $request->kpi_weighting,
             'date' => $date,
+            'semester' => $semester,
             'employee_id' => $request->employee_id,
 
         ]);
@@ -100,6 +109,4 @@ class ActualController extends Controller
         return redirect()->route('actual.show')
             ->with('success', 'Data Realisasi berhasil ditambahkan');
     }
-
-
 }

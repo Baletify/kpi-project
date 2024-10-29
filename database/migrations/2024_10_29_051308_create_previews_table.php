@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('actuals', function (Blueprint $table) {
+        Schema::create('previews', function (Blueprint $table) {
             $table->id();
             $table->string('kpi_code');
             $table->string('kpi_item');
@@ -21,6 +21,7 @@ return new class extends Migration
             $table->text('program_file')->nullable();
             $table->string('target');
             $table->string('actual');
+            $table->string('kpi_percentage');
             $table->string('kpi_calculation');
             $table->string('supporting_document')->nullable();
             $table->text('comment')->nullable();
@@ -28,6 +29,7 @@ return new class extends Migration
             $table->string('department_name');
             $table->string('kpi_weighting');
             $table->dateTime('date');
+            $table->string('semester');
             $table->foreignId('employee_id')->nullable()->constrained()->onUpdate('cascade')->nullOnDelete();
             $table->timestamps();
         });
@@ -38,6 +40,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('actuals');
+        Schema::dropIfExists('previews');
     }
 };

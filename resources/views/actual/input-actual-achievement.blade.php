@@ -95,7 +95,7 @@
       </div>
       <div class="relative mt-1 rounded-md">
           <span class="pl-3 font-semibold">Aktual</span>  
-        <input type="text" name="actual" id="actual" class="block w-full rounded-md border-0 py-1.5 pl-4 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 mt-1" placeholder="Aktual" oninput="calculateAchievement()">
+        <input type="text" name="actual" id="actual" class="block w-full rounded-md border-0 py-1.5 pl-4 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 mt-1" placeholder="Aktual" oninput="calculateAchievement()" autocomplete="false">
         <div class="absolute inset-y-0 right-0 flex items-center">
         </div>
       </div>
@@ -115,7 +115,7 @@
               <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 items-center gap-x-6 gap-y-2" >
                 <div class="relative mt-1 rounded-md">
                   <span class="pl-3 font-semibold">Nama Program</span>  
-                <input type="text" name="program_number" id="program_number" class="block w-full rounded-md border-0 py-1.5 pl-4 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 mt-1" placeholder="Nama Program">
+                <input type="text" name="program_number" id="program_number" class="block w-full rounded-md border-0 py-1.5 pl-4 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 mt-1" placeholder="Nama Program" autocomplete="false">
                 <div class="absolute inset-y-0 right-0 flex items-center">
                 </div>
               </div>
@@ -145,7 +145,7 @@
         </div>
         <div class="relative mt-1 rounded-md">
             <span class="mx-20 font-semibold">Upload Rekaman</span>  
-          <input type="file" name="record_file" id="record_file" class=" w-24 mx-20 rounded-md border-0 py-1.5 pl-1.5 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 mt-1" placeholder="Departemen">
+          <input type="file" name="record_file" id="record_file" class=" w-56 mx-20 rounded-md border-0 py-1.5 pl-1.5 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 mt-1" placeholder="Departemen">
           <div class="absolute inset-y-0 right-0 flex items-center">
           </div>
         </div>

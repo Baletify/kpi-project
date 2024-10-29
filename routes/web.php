@@ -26,7 +26,8 @@ Route::prefix('actual')->group(function () {
     Route::get('/input-actual-achievement/edit/{id}', [ActualController::class, 'edit']);
     Route::post('/input-actual-achievement/store', [ActualController::class, 'store'])->name('actual.store');
     Route::post('/preview/store', [PreviewController::class, 'store']);
-    Route::get('/preview/{id}', [PreviewController::class, 'show'])->name('preview.show');
+    Route::get('/preview/{id}/{kpi_code}', [PreviewController::class, 'show'])->name('preview.show');
+    Route::get('/preview/{id}/{kpi_code}/filter', [PreviewController::class, 'filter']);
 });
 
 Route::prefix('report')->group(function () {

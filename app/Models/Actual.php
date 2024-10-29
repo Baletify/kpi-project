@@ -18,6 +18,7 @@ class Actual extends Model
         'program_file',
         'target',
         'actual',
+        'kpi_percentage',
         'kpi_calculation',
         'supporting_document',
         'comment',
@@ -26,6 +27,7 @@ class Actual extends Model
         'department_name',
         'kpi_weighting',
         'date',
+        'semester',
         'employee_id',
     ];
 }
