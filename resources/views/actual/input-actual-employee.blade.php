@@ -14,11 +14,20 @@
         </div>
         <table class="w-full bg-white">
             @php
-                $i = 0;
+            $currentMonth = \Carbon\Carbon::now()->month;
+            $months = [];
+        
+            if ($currentMonth >= 2 && $currentMonth < 8) {
                 $months = [
                     '01' => 'Jan', '02' => 'Feb', '03' => 'Mar', '04' => 'Apr', 
                     '05' => 'May', '06' => 'Jun'
                 ];
+            } else {
+                $months = [
+                    '07' => 'Jul', '08' => 'Aug', '09' => 'Sep', '10' => 'Oct', 
+                    '11' => 'Nov', '12' => 'Dec'
+                ];
+            }
             @endphp
             <tr>
                 <th style="width: 3%;" class="border-2 border-gray-400 text-[13px] uppercase tracking-wide font-medium text-gray-600 py-1 bg-yellow-200">No.</th>

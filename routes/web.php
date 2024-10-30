@@ -4,6 +4,7 @@ use App\Http\Controllers\ActualController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\TargetController;
+use App\Http\Controllers\LogController;
 use App\Models\Actual;
 use App\Models\Preview;
 use App\Http\Controllers\PreviewController;
@@ -35,6 +36,4 @@ Route::prefix('report')->group(function () {
     Route::get('/department-report', [ReportController::class, 'department'])->name('report.department');
 });
 
-Route::get('/log-input', function () {
-    return view('log-input', ['title' => 'Log Input', 'desc' => 'History']);
-});
+Route::get('/log-input', [LogController::class, 'index'])->name('log-input.index');

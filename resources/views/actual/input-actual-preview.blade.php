@@ -81,11 +81,11 @@
             const kpiCode = @json($kpi_code)
     
             function determineSemester() {
-                const currentMonth = new Date().getMonth() + 1; // getMonth() returns 0-11
+                const currentMonth = new Date().getMonth() + 1;
                 let semester;
                 let bulanOptions;
     
-                if (currentMonth >= 3 && currentMonth <= 11) {
+                if (currentMonth == 2 && currentMonth < 8) {
                     semester = 'Ganjil';
                     bulanOptions = ['01', '02', '03', '04', '05', '06'];
                 } else {

@@ -88,14 +88,60 @@
           </div>
         </div>
         <div class="relative mt-1 rounded-md">
-          <span class="pl-3 font-semibold">Target</span>  
-        <input type="text" name="target" id="target" class="block w-full rounded-md border-0 py-1.5 pl-4 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 mt-1" placeholder="Target" value="{{ $target->target_unit_4 }}" readonly >
+          <span class="pl-3 font-semibold">Target</span> 
+          
+      @php
+    $currentMonth = \Carbon\Carbon::now()->month;
+    $targetUnit = '';
+
+    switch ($currentMonth) {
+        case 1:
+            $targetUnit = $target->target_unit_12 ?? '';
+            break;
+        case 2:
+            $targetUnit = $target->target_unit_1 ?? '';
+            break;
+        case 3:
+            $targetUnit = $target->target_unit_2 ?? '';
+            break;
+        case 4:
+            $targetUnit = $target->target_unit_3 ?? '';
+            break;
+        case 5:
+            $targetUnit = $target->target_unit_4 ?? '';
+            break;
+        case 6:
+            $targetUnit = $target->target_unit_5 ?? '';
+            break;
+        case 7:
+            $targetUnit = $target->target_unit_6 ?? '';
+            break;
+        case 8:
+            $targetUnit = $target->target_unit_7 ?? '';
+            break;
+        case 9:
+            $targetUnit = $target->target_unit_8 ?? '';
+            break;
+        case 10:
+            $targetUnit = $target->target_unit_9 ?? '';
+            break;
+        case 11:
+            $targetUnit = $target->target_unit_10 ?? '';
+            break;
+        case 12:
+            $targetUnit = $target->target_unit_11 ?? '';
+            break;
+        default:
+            $targetUnit = '';
+    }
+      @endphp
+        <input type="text" name="target" id="target" class="block w-full rounded-md border-0 py-1.5 pl-4 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 mt-1" placeholder="Target" value="{{ $targetUnit }}" readonly >
         <div class="absolute inset-y-0 right-0 flex items-center">
         </div>
       </div>
       <div class="relative mt-1 rounded-md">
           <span class="pl-3 font-semibold">Aktual</span>  
-        <input type="text" name="actual" id="actual" class="block w-full rounded-md border-0 py-1.5 pl-4 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 mt-1" placeholder="Aktual" oninput="calculateAchievement()" autocomplete="false">
+        <input type="text" name="actual" id="actual" class="block w-full rounded-md border-0 py-1.5 pl-4 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 mt-1" placeholder="Aktual" oninput="calculateAchievement()" autocomplete="off">
         <div class="absolute inset-y-0 right-0 flex items-center">
         </div>
       </div>
@@ -115,7 +161,7 @@
               <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 items-center gap-x-6 gap-y-2" >
                 <div class="relative mt-1 rounded-md">
                   <span class="pl-3 font-semibold">Nama Program</span>  
-                <input type="text" name="program_number" id="program_number" class="block w-full rounded-md border-0 py-1.5 pl-4 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 mt-1" placeholder="Nama Program" autocomplete="false">
+                <input type="text" name="program_number" id="program_number" class="block w-full rounded-md border-0 py-1.5 pl-4 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 mt-1" placeholder="Nama Program" autocomplete="off">
                 <div class="absolute inset-y-0 right-0 flex items-center">
                 </div>
               </div>
