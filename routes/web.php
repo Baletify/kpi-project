@@ -5,6 +5,7 @@ use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\TargetController;
 use App\Http\Controllers\LogController;
+use App\Http\Controllers\ActionPlanController;
 use App\Models\Actual;
 use App\Models\Preview;
 use App\Http\Controllers\PreviewController;
@@ -37,3 +38,4 @@ Route::prefix('report')->group(function () {
 });
 
 Route::get('/log-input', [LogController::class, 'index'])->name('log-input.index');
+Route::get('/action-plan', [ActionPlanController::class, 'index'])->name('action-plan.index');

@@ -18,6 +18,7 @@
                 <span class="text-gray-600">Periode: Semester 1 - 2025</span>
             </div>
         </div>
+       
         <table class="w-full bg-white">
             <tr>
                 <th style="width: 3%;" class="border-2 border-gray-400 text-[14px] uppercase tracking-wide font-medium text-gray-600 py-1 px-4 bg-yellow-200" rowspan="2">No.</th>
@@ -30,13 +31,28 @@
                 
             </tr>
             <tr>
+                @php
+                $currentMonth = \Carbon\Carbon::now()->month;
+                $months = [];
+            
+                if ($currentMonth >= 2 && $currentMonth < 8) {
+                    $months = [
+                        '01' => 'Jan', '02' => 'Feb', '03' => 'Mar', '04' => 'Apr', 
+                        '05' => 'May', '06' => 'Jun'
+                    ];
+                } else {
+                    $months = [
+                        '07' => 'Jul', '08' => 'Aug', '09' => 'Sep', '10' => 'Oct', 
+                        '11' => 'Nov', '12' => 'Dec'
+                    ];
+                }
+                @endphp
+
+                @foreach ($months as $month)
+                    
                
-                <th class="border-2 border-gray-400 text-[14px] uppercase tracking-wide font-medium text-gray-600 py-1 px-4 bg-yellow-200">Jan</th>
-                <th class="border-2 border-gray-400 text-[14px] uppercase tracking-wide font-medium text-gray-600 py-1 px-4 bg-yellow-200">Feb</th>
-                <th class="border-2 border-gray-400 text-[14px] uppercase tracking-wide font-medium text-gray-600 py-1 px-4 bg-yellow-200">Mar</th>
-                <th class="border-2 border-gray-400 text-[14px] uppercase tracking-wide font-medium text-gray-600 py-1 px-4 bg-yellow-200">Apr</th>
-                <th class="border-2 border-gray-400 text-[14px] uppercase tracking-wide font-medium text-gray-600 py-1 px-4 bg-yellow-200">May</th>
-                <th class="border-2 border-gray-400 text-[14px] uppercase tracking-wide font-medium text-gray-600 py-1 px-4 bg-yellow-200">Jun</th>
+                <th class="border-2 border-gray-400 text-[14px] uppercase tracking-wide font-medium text-gray-600 py-1 px-4 bg-yellow-200">{{ $month }}</th>
+                @endforeach
                 <th class="border-2 border-gray-400 text-[14px] uppercase tracking-wide font-medium text-gray-600 py-1 px-4 bg-yellow-200">Rata Rata</th>
               </tr>
               <tr>

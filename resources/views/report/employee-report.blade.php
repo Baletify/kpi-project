@@ -1,6 +1,48 @@
 <x-app-layout :title="$title" :desc="$desc">
     <div class="ml-64 mt-4 overflow-x-auto p-2 bg-gray-100 border border-gray-200 shadow-md shadow-black/10 rounded-md">
-    <div class="mx-1">
+        <div class="p-1">
+            <span class="text-gray-600 font-bold text-lg">PT BRIDGESTONE KALIMANTAN PLANTATION</span>
+        </div>
+        <div class="justify-center flex flex-col items-center">
+            <div class="">
+                <span class="text-gray-600 font-bold text-lg text-center">Key Performance Indicator</span>
+            </div>
+            <div class="">
+                <span class="text-gray-600 font-bold text-xs text-center">Periode: Semester 1 2025</span>
+            </div>
+        </div>
+        <div class="grid grid-cols-7 p-1">
+            <div class="mx-1">
+                <table class="table-auto w-full">
+                    <tr>
+                        <td style="width: 6%" class="text-[13px] tracking-wide font-medium text-gray-600 px-1">Dept</td>
+                        <td style="width: 2%" class="text-[13px] tracking-wide font-medium text-gray-600 px-1">:</td>
+                        <td class="text-[13px] tracking-wide font-medium text-gray-600 px-1">{{ $actuals->first()->department }}</td>
+                    </tr>
+                    <tr>
+                        <td style="width: 6%" class="text-[13px] tracking-wide font-medium text-gray-600 px-1">NIK</td>
+                        <td style="width: 2%" class="text-[13px] tracking-wide font-medium text-gray-600 px-1">:</td>
+                        <td class="text-[13px] tracking-wide font-medium text-gray-600 px-1">{{ $actuals->first()->nik }}</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="mx-1">
+                <table class="table-auto w-full">
+                    <tr>
+                        <td style="width: 6%" class="text-[13px] tracking-wide font-medium text-gray-600 px-1">Nama</td>
+                        <td style="width: 2%" class="text-[13px] tracking-wide font-medium text-gray-600 px-1">:</td>
+                        <td class="text-[13px] tracking-wide font-medium text-gray-600 px-1">{{ $actuals->first()->name }}</td>
+                    </tr>
+                    <tr>
+                        <td style="width: 6%" class="text-[13px] tracking-wide font-medium text-gray-600 px-1">Posisi</td>
+                        <td style="width: 2%" class="text-[13px] tracking-wide font-medium text-gray-600 px-1">:</td>
+                        <td class="text-[13px] tracking-wide font-medium text-gray-600 px-1">{{ $actuals->first()->occupation }}</td>
+                    </tr>
+                </table>
+            </div>
+            
+        </div>
+        <div class="mx-1">
         <table class="w-full table-auto">
             <thead>
                 <tr>
@@ -32,53 +74,53 @@
                     $i++;
                 @endphp
                 <tr>
-                    <td class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-gray-600 py-0 px-1 text-center" rowspan="5">{{ $i }}</td>
-                    <td class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-gray-600 py-0 px-1 text-center" rowspan="5">{{ $actual->kpi_item }}</td>
-                    <td class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-gray-600 py-0 px-1 text-center" rowspan="5"></td>
-                    <td class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-gray-600 py-0 px-1 text-center" rowspan="5"></td>
-                    <td class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-gray-600 py-0 px-1 text-center" rowspan="5"></td>
+                    <td class="border-2 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-1 text-center" rowspan="5">{{ $i }}</td>
+                    <td class="border-2 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-1 text-center" rowspan="5">{{ $actual->kpi_item }}</td>
+                    <td class="border-2 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-1 text-center" rowspan="5"></td>
+                    <td class="border-2 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-1 text-center" rowspan="5"></td>
+                    <td class="border-2 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-1 text-center" rowspan="5"></td>
                 </tr>
                 
                 <tr>
-                    <td class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-gray-600 py-0 px-1 text-center">Target</td>
-                    <td class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-gray-600 py-0 px-1 text-center"></td>
-                    <td class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-gray-600 py-0 px-1 text-center"></td>
-                    <td class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-gray-600 py-0 px-1 text-center"></td>
-                    <td class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-gray-600 py-0 px-1 text-center"></td>
-                    <td class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-gray-600 py-0 px-1 text-center"></td>
-                    <td class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-gray-600 py-0 px-1 text-center"></td>
-                    <td class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-gray-600 py-0 px-1 text-center"></td>
-                    <td class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-gray-600 py-0 px-1 text-center" rowspan="4"></td>
+                    <td class="border-2 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-1 text-center">Target</td>
+                    <td class="border-2 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-1 text-center"></td>
+                    <td class="border-2 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-1 text-center"></td>
+                    <td class="border-2 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-1 text-center"></td>
+                    <td class="border-2 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-1 text-center"></td>
+                    <td class="border-2 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-1 text-center"></td>
+                    <td class="border-2 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-1 text-center"></td>
+                    <td class="border-2 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-1 text-center"></td>
+                    <td class="border-2 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-1 text-center" rowspan="4"></td>
                 </tr>
                 <tr>
-                    <td class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-gray-600 py-0 px-1 text-center">Actual</td>
-                    <td class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-gray-600 py-0 px-1 text-center"></td>
-                    <td class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-gray-600 py-0 px-1 text-center"></td>
-                    <td class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-gray-600 py-0 px-1 text-center"></td>
-                    <td class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-gray-600 py-0 px-1 text-center"></td>
-                    <td class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-gray-600 py-0 px-1 text-center"></td>
-                    <td class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-gray-600 py-0 px-1 text-center"></td>
-                    <td class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-gray-600 py-0 px-1 text-center"></td>
+                    <td class="border-2 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-1 text-center">Actual</td>
+                    <td class="border-2 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-1 text-center"></td>
+                    <td class="border-2 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-1 text-center"></td>
+                    <td class="border-2 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-1 text-center"></td>
+                    <td class="border-2 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-1 text-center"></td>
+                    <td class="border-2 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-1 text-center"></td>
+                    <td class="border-2 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-1 text-center"></td>
+                    <td class="border-2 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-1 text-center"></td>
                 </tr>
                 <tr>
-                    <td class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-gray-600 py-0 px-1 text-center">%</td>
-                    <td class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-gray-600 py-0 px-1 text-center"></td>
-                    <td class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-gray-600 py-0 px-1 text-center"></td>
-                    <td class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-gray-600 py-0 px-1 text-center"></td>
-                    <td class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-gray-600 py-0 px-1 text-center"></td>
-                    <td class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-gray-600 py-0 px-1 text-center"></td>
-                    <td class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-gray-600 py-0 px-1 text-center"></td>
-                    <td class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-gray-600 py-0 px-1 text-center"></td>
+                    <td class="border-2 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-1 text-center">%</td>
+                    <td class="border-2 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-1 text-center"></td>
+                    <td class="border-2 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-1 text-center"></td>
+                    <td class="border-2 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-1 text-center"></td>
+                    <td class="border-2 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-1 text-center"></td>
+                    <td class="border-2 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-1 text-center"></td>
+                    <td class="border-2 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-1 text-center"></td>
+                    <td class="border-2 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-1 text-center"></td>
                 </tr>
                 <tr>
-                    <td class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-gray-600 py-0 px-1 text-center">Rekaman</td>
-                    <td class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-gray-600 py-0 px-1 text-center"></td>
-                    <td class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-gray-600 py-0 px-1 text-center"></td>
-                    <td class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-gray-600 py-0 px-1 text-center"></td>
-                    <td class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-gray-600 py-0 px-1 text-center"></td>
-                    <td class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-gray-600 py-0 px-1 text-center"></td>
-                    <td class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-gray-600 py-0 px-1 text-center"></td>
-                    <td class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-gray-600 py-0 px-1 text-center"></td>
+                    <td class="border-2 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-1 text-center">Rekaman</td>
+                    <td class="border-2 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-1 text-center"></td>
+                    <td class="border-2 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-1 text-center"></td>
+                    <td class="border-2 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-1 text-center"></td>
+                    <td class="border-2 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-1 text-center"></td>
+                    <td class="border-2 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-1 text-center"></td>
+                    <td class="border-2 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-1 text-center"></td>
+                    <td class="border-2 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-1 text-center"></td>
                 </tr>
                 @endforeach
             </tbody>

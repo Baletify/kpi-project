@@ -79,7 +79,7 @@ class ActualController extends Controller
 
         $semester = '';
 
-        if ($request->date > 6) {
+        if ($request->date > 6 && $request->date <= 12) {
             $semester = 'Genap';
         } else {
             $semester = 'Ganjil';
