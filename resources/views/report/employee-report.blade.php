@@ -8,7 +8,11 @@
                 <span class="text-gray-600 font-bold text-lg text-center">Key Performance Indicator</span>
             </div>
             <div class="">
-                <span class="text-gray-600 font-bold text-xs text-center">Periode: Semester 1 2025</span>
+                @php
+                
+                $year = \Carbon\Carbon::parse($actuals->first()->date)->year;
+                @endphp
+                <span class="text-gray-600 font-bold text-xs text-center">Periode: Semester {{ $actuals->first()->semester }} {{ $year }}</span>
             </div>
         </div>
         <div class="grid grid-cols-7 p-1">

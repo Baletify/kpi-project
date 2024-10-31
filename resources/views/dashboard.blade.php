@@ -56,14 +56,12 @@
                   </div>
                   <div class="p-1 bg-gray-200 mt-2 grid lg:grid-cols-2 border-gray-200 rounded-md ">
                     <div class="relative mt-1 rounded-md">
-                    <span class="pl-3 font-semibold">Bulan</span>  
+                    <span class="pl-3 font-semibold">Semester</span>  
                     <div class="pl-2 mb-3">
-                        <select name="year" id="year" class=" w-28">
-                            <option value="">-- Bulan --</option>
-                            <option value="01">Jan</option>
-                            <option value="02">Feb</option>
-                            <option value="03">Mar</option>
-                            <option value="04">Apr</option>
+                        <select name="semester" id="semester" class=" w-28">
+                            <option value="">-- Semester --</option>
+                            <option value="Ganjil">Ganjil</option>
+                            <option value="Genap">Genap</option>
                         </select>
                     </div>
                     <div class="absolute inset-y-0 right-0 flex items-center">
@@ -140,8 +138,10 @@
       function fetchData() {
         const department = document.getElementById('department').value;
         const name = document.getElementById('filterName').value;
+        const year = document.getElementById('year').value;
+        const semester = document.getElementById('semester').value;
 
-        fetch(`{{ url('dashboard/filter') }}?department=${department}&name=${name}`)
+        fetch(`{{ url('dashboard/filter') }}?department=${department}&name=${name}&semester=${semester}&year=${year}`)
           .then(response => response.json())
           .then(data => {
             const tbody = document.getElementById('employeeTableBody');
@@ -151,7 +151,9 @@
               data.forEach((item, index) => {
                 const row = `<tr>
                   <td class="border-2 border-gray-400 tracking-wide px-2 py-0 text-center">${index + 1}</td>
-                  <td class="border-2 border-gray-400 tracking-wide px-2 py-0">${item.name}</td>
+                  <td class="border-2 border-gray-400 tracking-wide px-2 py-0">
+                    <a href="/report/employee-report/${item.id}?semester=${semester}&year=${year}" class=" hover:underline">${item.name}</a>
+                    </td>
                   <td class="border-2 border-gray-400 tracking-wide px-2 py-0">${item.occupation}</td>
                   <td class="border-2 border-gray-400 tracking-wide px-2 py-0">${item.department}</td>
                 </tr>`;
@@ -165,6 +167,8 @@
 
       document.getElementById('department').addEventListener('change', fetchData);
       document.getElementById('filterName').addEventListener('input', fetchData);
+      document.getElementById('year').addEventListener('change', fetchData);
+      document.getElementById('semester').addEventListener('change', fetchData);
     });
     </script>
 </x-app-layout>

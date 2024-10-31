@@ -72,8 +72,33 @@ class EmployeeController extends Controller
     {
         $department = $request->query('department');
         $name = $request->query('name');
+        $year = $request->query('year');
+        $semester = $request->query('semester');
 
-        if ($name) {
+        if ($name && $semester && $year) {
+            $data = DB::table('employees')
+                ->leftJoin('departments', 'employees.department_id', '=', 'departments.id')
+                ->leftJoin('actuals', 'employees.id', '=', 'actuals.employee_id')
+                ->select('employees.id', 'employees.nik', 'employees.name', 'employees.occupation', 'departments.name as department', DB::raw('MIN(actuals.date) as actual_date'))
+                ->where('actuals.semester', '=', $semester)
+                ->where(DB::raw('YEAR(actuals.date)'), $year)
+                ->where('employees.name', 'LIKE', '%' . $name . '%')
+                ->groupBy('employees.id', 'employees.nik', 'employees.name', 'employees.occupation', 'departments.name')
+                ->get();
+            return response()->json($data);
+        }
+
+        if ($year && $semester) {
+            $data = DB::table('employees')
+                ->leftJoin('departments', 'employees.department_id', '=', 'departments.id')
+                ->leftJoin('actuals', 'employees.id', '=', 'actuals.employee_id')
+                ->select('employees.id', 'employees.nik', 'employees.name', 'employees.occupation', 'departments.name as department', DB::raw('MIN(actuals.date) as actual_date'))
+                ->where('actuals.semester', '=', $semester)
+                ->where(DB::raw('YEAR(actuals.date)'), $year)
+                ->groupBy('employees.id', 'employees.nik', 'employees.name', 'employees.occupation', 'departments.name')
+                ->get();
+            return response()->json($data);
+        } else if ($name) {
             $data = DB::table('employees')
                 ->leftJoin('departments', 'employees.department_id', '=', 'departments.id')
                 ->select('employees.id', 'employees.nik', 'employees.name', 'employees.occupation', 'departments.name as department')
