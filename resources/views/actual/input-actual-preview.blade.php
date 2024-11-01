@@ -8,12 +8,12 @@
                 <span class="text-center font-bold text-xl">Periode 1 - 2025</span>
             </div>    
         </div>
-        <div class="p-1 grid grid-cols-4 gap-3 mt-3">
+        <div class="p-1 grid grid-cols-4 mt-2">
             <div class="mx-1">
-                <table>
+                <table class="table-auto">
                     <tr>
                         <td class="text-gray-600 text-[11px] font-medium">Dept</td>
-                        <td style="width: 20%;" class="text-gray-600 text-[11px] text-center font-medium">:</td>
+                        <td style="width: 2%;" class="text-gray-600 text-[11px] text-center font-medium">:</td>
                         <td class="text-gray-600 text-[11px] font-medium">{{ $previews->first()->department }}</td>
                     </tr>
                     <tr>
@@ -21,20 +21,6 @@
                         <td style="width: 20%;" class="text-gray-600 text-[11px] text-center font-medium">:</td>
                         <td class="text-gray-600 text-[11px] font-medium">{{ $previews->first()->nik }}</td>
                     </tr>
-                    <tr>
-                        <td class="text-gray-600 text-[11px] font-medium">KPI</td>
-                        <td style="width: 20%;" class="text-gray-600 text-[11px] text-center font-medium">:</td>
-                        <td class="text-gray-600 text-[11px] font-medium">{{ $previews->first()->kpi_item }}</td>
-                    </tr>
-                    <tr>
-                        <td class="text-gray-600 text-[11px] font-medium">NO. KPI</td>
-                        <td style="width: 20%;" class="text-gray-600 text-[11px] text-center font-medium">:</td>
-                        <td class="text-gray-600 text-[11px] font-medium">{{ $previews->first()->kpi_code }}</td>
-                    </tr>
-                </table>
-            </div>
-            <div class="mx-1">
-                <table>
                     <tr>
                         <td class="text-gray-600 text-[11px] font-medium">Nama</td>
                         <td style="width: 20%;" class="text-gray-600 text-[11px] text-center font-medium">:</td>
@@ -45,10 +31,25 @@
                         <td style="width: 20%;" class="text-gray-600 text-[11px] text-center font-medium">:</td>
                         <td class="text-gray-600 text-[11px] font-medium">{{ $previews->first()->occupation }}</td>
                     </tr>
+                    
+                </table>
+            </div>
+            <div class="">
+                <table>
                     <tr>
-                        <td class="text-gray-600 text-[11px] font-medium">Periode Review</td>
-                        <td style="width: 20%;" class="text-gray-600 text-[11px] text-center font-medium">:</td>
-                        <td class="text-gray-600 text-[11px] font-medium">{{ $previews->first()->review_period }}</td>
+                        <td style="width: 20%;" class="text-gray-600 text-[11px] font-medium">KPI</td>
+                        <td style="width: 10%;" class="text-gray-600 text-[11px] text-center font-medium">:</td>
+                        <td style="width: 70%" class="text-gray-600 text-[11px] font-medium">{{ $previews->first()->kpi_item }}</td>
+                    </tr>
+                    <tr>
+                        <td style="width: 20%;" class="text-gray-600 text-[11px] font-medium">NO. KPI</td>
+                        <td style="width: 10%;" class="text-gray-600 text-[11px] text-center font-medium">:</td>
+                        <td style="width: 70%" class="text-gray-600 text-[11px] font-medium">{{ $previews->first()->kpi_code }}</td>
+                    </tr>
+                    <tr>
+                        <td style="width: 20%;" class="text-gray-600 text-[11px] font-medium">Periode Review</td>
+                        <td style="width: 10%;" class="text-gray-600 text-[11px] text-center font-medium">:</td>
+                        <td style="width: 70%" class="text-gray-600 text-[11px] font-medium">{{ $previews->first()->review_period }}</td>
                     </tr>
                 </table>
             </div>

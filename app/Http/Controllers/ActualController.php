@@ -17,6 +17,7 @@ class ActualController extends Controller
         $now = Carbon::now();
         $employee = Employee::find($employeeID);
 
+
         // Ambil data targets
         $targets = DB::table('targets')
             ->select('id', 'code', 'indicator', 'employee_id')
@@ -39,6 +40,31 @@ class ActualController extends Controller
             'targets' => $targets,
             'actuals' => $actuals
         ]);
+    }
+
+    public function department(Request $request)
+    {
+        $department = $request->query('department');
+
+        if ($department) {
+            $departments = DB::table('departments')
+                ->leftJoin('employees', 'employees.department_id', '=', 'departments.id')
+                ->select('employees.id as employee_id', 'employees.nik as nik', 'employees.name as employee', 'employees.occupation as occupation', 'departments.name as department')
+                ->where('departments.id', $department)
+                ->get();
+
+            return view('actual.input-actual-department', [
+                'title' => 'Input Data Realisasi',
+                'desc' => 'Achievement',
+                'departments' => $departments
+            ]);
+        } else {
+
+            return view('actual.input-actual-department', [
+                'title' => 'Input Data Realisasi',
+                'desc' => 'Achievement',
+            ]);
+        }
     }
 
     public function edit($id)

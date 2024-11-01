@@ -12,20 +12,20 @@
             @php
                 $i = 0;
             @endphp
-            @forelse ($employees as $employee)
+            @forelse ($departments as $department)
             <tr>
                 @php
                     $i++
                 @endphp
                 <td class="border-2 border-gray-700 tracking-wide px-2 py-2 text-center">{{ $i }}</td>
-                <td class="border-2 border-gray-700 tracking-wide px-2 py-2">{{ $employee->nik }}</td>
-                <td class="border-2 border-gray-700 tracking-wide px-2 py-2">{{ $employee->name }}</td>
-                <td class="border-2 border-gray-700 tracking-wide px-2 py-2">{{ $employee->department }}</td>
-                <td class="border-2 border-gray-700 tracking-wide px-2 py-2">{{ $employee->occupation }}</td>
+                <td class="border-2 border-gray-700 tracking-wide px-2 py-2">{{ $department->nik }}</td>
+                <td class="border-2 border-gray-700 tracking-wide px-2 py-2">{{ $department->employee }}</td>
+                <td class="border-2 border-gray-700 tracking-wide px-2 py-2">{{ $department->department }}</td>
+                <td class="border-2 border-gray-700 tracking-wide px-2 py-2">{{ $department->occupation }}</td>
                 <td class="border-2 border-gray-700 tracking-wide px-2 py-2">
                     <div class="flex justify-center gap-2">
-                    <a href="/target/input-target-kpi/{{ $employee->id }}">
-                      <span class="text-blue-500">Pengisian Data Target KPI</span>
+                    <a href="/actual/input-actual-employee?employee={{ $department->employee_id }}">
+                      <span class="text-blue-500">Pengisian Data Aktual KPI</span>
                     </a>
                 </div>
                 </td>

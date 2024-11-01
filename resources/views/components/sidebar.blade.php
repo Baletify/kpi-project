@@ -25,7 +25,7 @@
                     </a>
                 </li>
                 <li>    
-                    <a href="/actual/input-actual-employee" class="flex items-center py-2 px-6 text-gray-300 hover:bg-gray-900">
+                    <a href="/actual/input-actual-department" class="flex items-center py-2 px-6 text-gray-300 hover:bg-gray-900">
                         <i class="ri-book-2-line text-3xl"></i>
                         <span class="ml-3">Input Pencapaian Aktual</span>
                     </a>

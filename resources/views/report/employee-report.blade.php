@@ -70,15 +70,11 @@
                 </tr>
             </thead>
             <tbody>
-                @php
-                    $i = 0;
-                @endphp
+                
                 @foreach ($actuals as $actual)
-                @php
-                    $i++;
-                @endphp
+            
                 <tr>
-                    <td class="border-2 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-1 text-center" rowspan="5">{{ $i }}</td>
+                    <td class="border-2 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-1 text-center" rowspan="5">{{ $actual->kpi_code }}</td>
                     <td class="border-2 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-1 text-center" rowspan="5">{{ $actual->kpi_item }}</td>
                     <td class="border-2 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-1 text-center" rowspan="5"></td>
                     <td class="border-2 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-1 text-center" rowspan="5"></td>
