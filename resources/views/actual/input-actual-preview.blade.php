@@ -57,16 +57,16 @@
         <table class="w-full mt-2 table-auto">
             <thead>
                 <tr>
-                    <th style="width: 3%;" class="border-2 border-gray-400 text-[12px] uppercase tracking-wide font-medium text-gray-600 bg-yellow-200">No.</th>
-                    <th style="width: 12%" class="border-2 border-gray-400 text-[12px] uppercase tracking-wide font-medium text-gray-600 bg-yellow-200">Bulan</th>
-                    <th style="width: 7%" class="border-2 border-gray-400 text-[12px] uppercase tracking-wide font-medium text-gray-600 bg-yellow-200">Unit</th>
-                    <th style="width: 7%" class="border-2 border-gray-400 text-[12px] uppercase tracking-wide font-medium text-gray-600 bg-yellow-200">Bobot "%"</th>
-                    <th style="width: 7%" class="border-2 border-gray-400 text-[12px] uppercase tracking-wide font-medium text-gray-600 bg-yellow-200">Target</th>
-                    <th style="width: 7%" class="border-2 border-gray-400 text-[12px] uppercase tracking-wide font-medium text-gray-600 bg-yellow-200">Actual</th>
-                    <th style="width: 4%" class="border-2 border-gray-400 text-[12px] uppercase tracking-wide font-medium text-gray-600 bg-yellow-200">%</th>
-                    <th style="width: 7%" class="border-2 border-gray-400 text-[12px] uppercase tracking-wide font-medium text-gray-600 bg-yellow-200">Bobot Pencapaian "%"</th>
-                    <th style="width: 7%" class="border-2 border-gray-400 text-[12px] uppercase tracking-wide font-medium text-gray-600 bg-yellow-200">Data Pendukung</th>
-                    <th style="width: 30%" class="border-2 border-gray-400 text-[12px] uppercase tracking-wide font-medium text-gray-600 bg-yellow-200">Komentar</th>
+                    <th style="width: 3%;" class="border-2 border-gray-400 text-[11px] uppercase tracking-wide font-medium text-gray-600 bg-yellow-200">No.</th>
+                    <th style="width: 12%" class="border-2 border-gray-400 text-[11px] uppercase tracking-wide font-medium text-gray-600 bg-yellow-200">Bulan</th>
+                    <th style="width: 7%" class="border-2 border-gray-400 text-[11px] uppercase tracking-wide font-medium text-gray-600 bg-yellow-200">Unit</th>
+                    <th style="width: 7%" class="border-2 border-gray-400 text-[11px] uppercase tracking-wide font-medium text-gray-600 bg-yellow-200">Bobot "%"</th>
+                    <th style="width: 7%" class="border-2 border-gray-400 text-[11px] uppercase tracking-wide font-medium text-gray-600 bg-yellow-200">Target</th>
+                    <th style="width: 7%" class="border-2 border-gray-400 text-[11px] uppercase tracking-wide font-medium text-gray-600 bg-yellow-200">Actual</th>
+                    <th style="width: 4%" class="border-2 border-gray-400 text-[11px] uppercase tracking-wide font-medium text-gray-600 bg-yellow-200">%</th>
+                    <th style="width: 7%" class="border-2 border-gray-400 text-[11px] uppercase tracking-wide font-medium text-gray-600 bg-yellow-200">Bobot Pencapaian "%"</th>
+                    <th style="width: 7%" class="border-2 border-gray-400 text-[11px] uppercase tracking-wide font-medium text-gray-600 bg-yellow-200">Data Pendukung</th>
+                    <th style="width: 30%" class="border-2 border-gray-400 text-[11px] uppercase tracking-wide font-medium text-gray-600 bg-yellow-200">Komentar</th>
                 </tr>
             </thead>
             <tbody id="bulanTableBody">
@@ -97,16 +97,16 @@
                 bulanTableBody.innerHTML = '';
                 bulanOptions.forEach((bulan, index) => {
                     const row = `<tr>
-                        <td class="border-2 border-gray-400 text-[10px] tracking-wide py-0 px-2 text-center">${index + 1}</td>
-                        <td class="border-2 border-gray-400 text-[10px] tracking-wide py-0 px-2">${convertMonthToName(bulan)}</td>
-                        <td class="border-2 border-gray-400 text-[10px] tracking-wide py-0 px-2" id="data-${bulan.toLowerCase()}-unit"></td>
-                        <td class="border-2 border-gray-400 text-[10px] tracking-wide py-0 px-2 text-right" id="data-${bulan.toLowerCase()}-weighting"></td>
-                        <td class="border-2 border-gray-400 text-[10px] tracking-wide py-0 px-2 text-right" id="data-${bulan.toLowerCase()}-target"></td>
-                        <td class="border-2 border-gray-400 text-[10px] tracking-wide py-0 px-2 text-right" id="data-${bulan.toLowerCase()}-actual"></td>
-                        <td class="border-2 border-gray-400 text-[10px] tracking-wide py-0 px-2 text-right" id="data-${bulan.toLowerCase()}-percentage"></td>
-                        <td class="border-2 border-gray-400 text-[10px] tracking-wide py-0 px-2 text-center" id="data-${bulan.toLowerCase()}-achievement"></td>
-                        <td class="border-2 border-gray-400 text-[10px] tracking-wide py-0 px-2 text-center" id="data-${bulan.toLowerCase()}-supporting_document"></td>
-                        <td class="border-2 border-gray-400 text-[10px] tracking-wide py-0 px-2" id="data-${bulan.toLowerCase()}-comment"></td>
+                        <td class="border-2 py-1 border-gray-400 text-[10px] tracking-wide py-0 px-2 text-center">${index + 1}</td>
+                        <td class="border-2 py-1 border-gray-400 text-[10px] tracking-wide py-0 px-2">${convertMonthToName(bulan)}</td>
+                        <td class="border-2 py-1 border-gray-400 text-[10px] tracking-wide py-0 px-2" id="data-${bulan.toLowerCase()}-unit"></td>
+                        <td class="border-2 py-1 border-gray-400 text-[10px] tracking-wide py-0 px-2 text-right" id="data-${bulan.toLowerCase()}-weighting"></td>
+                        <td class="border-2 py-1 border-gray-400 text-[10px] tracking-wide py-0 px-2 text-right" id="data-${bulan.toLowerCase()}-target"></td>
+                        <td class="border-2 py-1 border-gray-400 text-[10px] tracking-wide py-0 px-2 text-right" id="data-${bulan.toLowerCase()}-actual"></td>
+                        <td class="border-2 py-1 border-gray-400 text-[10px] tracking-wide py-0 px-2 text-right" id="data-${bulan.toLowerCase()}-percentage"></td>
+                        <td class="border-2 py-1 border-gray-400 text-[10px] tracking-wide py-0 px-2 text-center" id="data-${bulan.toLowerCase()}-achievement"></td>
+                        <td class="border-2 py-1 border-gray-400 text-[10px] tracking-wide py-0 px-2 text-center" id="data-${bulan.toLowerCase()}-supporting_document"></td>
+                        <td class="border-2 py-1 border-gray-400 text-[10px] tracking-wide py-0 px-2" id="data-${bulan.toLowerCase()}-comment"></td>
                     </tr>`;
                     bulanTableBody.innerHTML += row;
                 });

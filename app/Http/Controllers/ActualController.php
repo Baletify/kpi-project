@@ -59,11 +59,7 @@ class ActualController extends Controller
                 'departments' => $departments
             ]);
         } else {
-
-            return view('actual.input-actual-department', [
-                'title' => 'Input Data Realisasi',
-                'desc' => 'Achievement',
-            ]);
+            abort(404, 'No actuals found for the given year and semester');
         }
     }
 

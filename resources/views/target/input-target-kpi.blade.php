@@ -1,10 +1,43 @@
 <x-app-layout :title="$title" :desc="$desc">
     <div class="ml-64 mt-4 overflow-x-auto p-2 bg-white border border-gray-100 shadow-md shadow-black/10 rounded-md border-collapse">
-        <div class="p-2 mb-2 mt-2">
-            <a href="#" class="p-4 bg-blue-500 py-2 items-center">
-                <i class="ri-import-line text-2xl text-white"></i>
-                <span class="font-medium text-white">Import</span>
-            </a>
+        <div class="justify-end">
+            <div class="mb-2 mt-2">
+                <a href="#" class="p-3 bg-blue-500 py-2 items-center">
+                    <i class="ri-import-line text-2xl text-white"></i>
+                    <span class="font-medium text-white">Import</span>
+                </a>
+            </div>
+        </div>
+        <div class="flex p-1">
+            <div class=""></div>
+            <div class="p-1">
+                <table>
+                    <tr>
+                        <td style="width: 6%" class="text-[14px] tracking-wide font-medium text-gray-600 px-1">Dept</td>
+                        <td style="width: 2%" class="text-[14px] tracking-wide font-medium text-gray-600 px-1">:</td>
+                        <td class="text-[14px] tracking-wide font-medium text-gray-600 px-1">{{ $employee->department }}</td>
+                    </tr>
+                    <tr>
+                        <td style="width: 6%" class="text-[14px] tracking-wide font-medium text-gray-600 px-1">NIK</td>
+                        <td style="width: 2%" class="text-[14px] tracking-wide font-medium text-gray-600 px-1">:</td>
+                        <td class="text-[14px] tracking-wide font-medium text-gray-600 px-1">{{ $employee->nik }}</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="p-1">
+                <table>
+                    <tr>
+                        <td style="width: 6%" class="text-[14px] tracking-wide font-medium text-gray-600 px-1">Nama</td>
+                        <td style="width: 2%" class="text-[14px] tracking-wide font-medium text-gray-600 px-1">:</td>
+                        <td class="text-[14px] tracking-wide font-medium text-gray-600 px-1">{{ $employee->name }}</td>
+                    </tr>
+                    <tr>
+                        <td style="width: 6%" class="text-[14px] tracking-wide font-medium text-gray-600 px-1">Posisi</td>
+                        <td style="width: 2%" class="text-[14px] tracking-wide font-medium text-gray-600 px-1">:</td>
+                        <td class="text-[14px] tracking-wide font-medium text-gray-600 px-1">{{ $employee->occupation }}</td>
+                    </tr>
+                </table>
+            </div>
         </div>
         <table class="w-full table-auto">
             <tr>

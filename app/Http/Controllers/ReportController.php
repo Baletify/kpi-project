@@ -59,7 +59,7 @@ class ReportController extends Controller
         if ($department) {
             $actuals = DB::table('actuals')
                 ->leftJoin('employees', 'actuals.employee_id', '=', 'employees.id')
-                ->select('actuals.date as date', 'actuals.employee_id as employee_id', 'actuals.kpi_item', 'actuals.kpi_code as kpi_code', 'actuals.kpi_percentage as achievement', 'employees.name as name', 'departments.name as department', 'employees.occupation as occupation', 'employees.nik as nik', 'actuals.department_name as department')
+                ->select('actuals.date as date', 'actuals.employee_id as employee_id', 'actuals.kpi_item', 'actuals.kpi_code as kpi_code', 'actuals.kpi_percentage as achievement', 'employees.name as name', 'employees.occupation as occupation', 'employees.nik as nik', 'actuals.department_name as department')
                 ->where('actuals.department_name', $department)->get();
 
             return view('report.department-report', ['title' => 'Report', 'desc' => 'Department', 'actuals' => $actuals]);
