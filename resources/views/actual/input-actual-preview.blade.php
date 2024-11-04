@@ -129,9 +129,9 @@
                         .then(data => {
                             if (data.length > 0) {
                                 data.forEach(item => {
-                                    const percentage = parseFloat(item.kpi_percentage);
-                                    const weighting = parseFloat(item.kpi_weighting);
-                                    const achievement = (weighting / percentage) * 100;
+                                    const percentage = parseFloat(item.kpi_percentage) / 100;
+                                    const weighting = parseFloat(item.kpi_weighting) / 100;
+                                    const achievement = weighting * percentage * 100;
     
                                     document.getElementById(`data-${bulan}-unit`).innerHTML = item.kpi_unit;
                                     document.getElementById(`data-${bulan}-weighting`).innerHTML = item.kpi_weighting;

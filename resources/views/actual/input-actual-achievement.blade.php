@@ -20,20 +20,20 @@
         </div>
         <div class="relative mt-1 rounded-md">
           <span class="pl-3 font-semibold">Bulan</span>
-        <select name="date" id="date" class="block w-full">
+          <select name="date" id="date" class="block w-full">
             <option value="">-- Pilih Bulan --</option>
-            <option value="01">January</option>
-            <option value="02">February</option>
-            <option value="03">March</option>
-            <option value="04">April</option>
-            <option value="05">May</option>
-            <option value="06">June</option>
-            <option value="07">July</option>
-            <option value="08">August</option>
-            <option value="09">September</option>
-            <option value="10">October</option>
-            <option value="11">November</option>
-            <option value="12">December</option>
+            <option value="01" data-target="{{ $target->target_unit_12 ?? '' }}">January</option>
+            <option value="02" data-target="{{ $target->target_unit_1 ?? '' }}">February</option>
+            <option value="03" data-target="{{ $target->target_unit_2 ?? '' }}">March</option>
+            <option value="04" data-target="{{ $target->target_unit_3 ?? '' }}">April</option>
+            <option value="05" data-target="{{ $target->target_unit_4 ?? '' }}">May</option>
+            <option value="06" data-target="{{ $target->target_unit_5 ?? '' }}">June</option>
+            <option value="07" data-target="{{ $target->target_unit_6 ?? '' }}">July</option>
+            <option value="08" data-target="{{ $target->target_unit_7 ?? '' }}">August</option>
+            <option value="09" data-target="{{ $target->target_unit_8 ?? '' }}">September</option>
+            <option value="10" data-target="{{ $target->target_unit_9 ?? '' }}">October</option>
+            <option value="11" data-target="{{ $target->target_unit_10 ?? '' }}">November</option>
+            <option value="12" data-target="{{ $target->target_unit_11 ?? '' }}">December</option>
         </select>
         <div class="absolute inset-y-0 right-0 flex items-center">
         </div>
@@ -243,6 +243,12 @@
               achievementField.value = '';
           }
       }
+
+      document.getElementById('date').addEventListener('change', function() {
+        var selectedOption = this.options[this.selectedIndex];
+        var targetValue = selectedOption.getAttribute('data-target');
+        document.getElementById('target').value = targetValue;
+    });
 
       </script>
 

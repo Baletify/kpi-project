@@ -1,6 +1,6 @@
 <x-app-layout :title="$title" :desc="$desc">
     <div class="ml-64 mt-4 overflow-x-auto p-2 bg-gray-100 border border-gray-100 shadow-md shadow-black/10 rounded-md">
-        <div class="p-5 mb-3 flex">
+        <div class="p-1 mb-3 flex">
             <select name="year" id="year">
                 <option value="2021">2021</option>
                 <option value="2022">2022</option>
@@ -54,6 +54,7 @@
                             $actual = $actuals->first(function($item) use ($target, $month) {
                                 return \Carbon\Carbon::parse($item->date)->format('m') == $month && $item->indicator == $target->indicator;
                             });
+                            
                         @endphp
                         @if ($actual)
                             <td class="border-2 border-gray-400 text-[10px] tracking-wide  py-0 px-2 text-center">OK</td>

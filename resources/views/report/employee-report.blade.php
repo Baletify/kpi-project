@@ -90,7 +90,7 @@
                     <td class="border-2  border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-1 text-center"></td>
                     <td class="border-2  border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-1 text-center"></td>
                     <td class="border-2  border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-1 text-center"></td>
-                    <td class="border-2 bg-gray-200\ border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-1 text-center" rowspan="4"></td>
+                    <td class="border-2 bg-gray-200\ border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-1 text-center bg-gray-200" rowspan="4"></td>
                 </tr>
                 <tr>
                     <td class="border-2 bg-gray-200 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-1 text-center">Actual</td>

@@ -8,42 +8,10 @@
                 </a>
             </div>
         </div>
-        <div class="flex p-1">
-            <div class=""></div>
-            <div class="p-1">
-                <table>
-                    <tr>
-                        <td style="width: 6%" class="text-[14px] tracking-wide font-medium text-gray-600 px-1">Dept</td>
-                        <td style="width: 2%" class="text-[14px] tracking-wide font-medium text-gray-600 px-1">:</td>
-                        <td class="text-[14px] tracking-wide font-medium text-gray-600 px-1">{{ $employee->department }}</td>
-                    </tr>
-                    <tr>
-                        <td style="width: 6%" class="text-[14px] tracking-wide font-medium text-gray-600 px-1">NIK</td>
-                        <td style="width: 2%" class="text-[14px] tracking-wide font-medium text-gray-600 px-1">:</td>
-                        <td class="text-[14px] tracking-wide font-medium text-gray-600 px-1">{{ $employee->nik }}</td>
-                    </tr>
-                </table>
-            </div>
-            <div class="p-1">
-                <table>
-                    <tr>
-                        <td style="width: 6%" class="text-[14px] tracking-wide font-medium text-gray-600 px-1">Nama</td>
-                        <td style="width: 2%" class="text-[14px] tracking-wide font-medium text-gray-600 px-1">:</td>
-                        <td class="text-[14px] tracking-wide font-medium text-gray-600 px-1">{{ $employee->name }}</td>
-                    </tr>
-                    <tr>
-                        <td style="width: 6%" class="text-[14px] tracking-wide font-medium text-gray-600 px-1">Posisi</td>
-                        <td style="width: 2%" class="text-[14px] tracking-wide font-medium text-gray-600 px-1">:</td>
-                        <td class="text-[14px] tracking-wide font-medium text-gray-600 px-1">{{ $employee->occupation }}</td>
-                    </tr>
-                </table>
-            </div>
-        </div>
         <table class="w-full table-auto">
             <tr>
                 <th class="border-2 border-gray-400 text-[13px] uppercase tracking-wide font-medium text-gray-600 py-1 bg-yellow-200" style="width: 3%">No.</th>
-                <th class="border-2 border-gray-400 text-[13px] uppercase tracking-wide font-medium text-gray-600 py-1 bg-yellow-200">NIK</th>
-                <th class="border-2 border-gray-400 text-[13px] uppercase tracking-wide font-medium text-gray-600 py-1 bg-yellow-200">Kode KPI</th>
+                <th style="width: 10%" class="border-2 border-gray-400 text-[13px] uppercase tracking-wide font-medium text-gray-600 py-1 bg-yellow-200">Kode KPI</th>
                 <th class="border-2 border-gray-400 text-[13px] uppercase tracking-wide font-medium text-gray-600 py-1 bg-yellow-200" style="width: 35%">KPI</th>
                 <th style="width: 13%" class="border-2 border-gray-400 text-[13px] uppercase tracking-wide font-medium text-gray-600 py-1 bg-yellow-200">Cara Menghitung</th>
                 <th style="width: 13%" class="border-2 border-gray-400 text-[13px] uppercase tracking-wide font-medium text-gray-600 py-1 bg-yellow-200">Data Pendukung</th>
@@ -83,12 +51,11 @@
                     $i++
                 @endphp
                 <td class="border-2 border-gray-400 text-[11px] tracking-wide px-2 py-0 text-center">{{ $i }}</td>
-                <td class="border-2 border-gray-400 text-[11px] tracking-wide px-2 py-0">{{ $employee->nik }}</td>
                 <td class="border-2 border-gray-400 text-[11px] tracking-wide px-2 py-0">{{ $target->code }}</td>
                 <td class="border-2 border-gray-400 text-[11px] tracking-wide px-2 py-0">{{ $target->indicator }}</td>
                 <td class="border-2 border-gray-400 text-[11px] tracking-wide px-2 py-0 text-center">{{ $target->calculation }}</td>
                 <td class="border-2 border-gray-400 text-[11px] tracking-wide px-2 py-0 text-center">
-                    {{ $target->supporting_document }}
+                    {{ $target->supporting_document}}
                 </td>
                 <td class="border-2 border-gray-400 text-[11px] tracking-wide px-2 py-0 text-center">{{ $target->period }}</td>
                 <td class="border-2 border-gray-400 text-[11px] tracking-wide px-2 py-0">{{ $target->unit }}</td>

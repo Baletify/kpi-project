@@ -14,7 +14,6 @@ class ActualController extends Controller
     public function show(Request $request)
     {
         $employeeID = $request->query('employee');
-        $now = Carbon::now();
         $employee = Employee::find($employeeID);
 
 
@@ -29,10 +28,11 @@ class ActualController extends Controller
             ->leftJoin('employees', 'actuals.employee_id', '=', 'employees.id')
             ->leftJoin('targets', 'actuals.kpi_code', '=', 'targets.code')
             // ->select('actuals.date as date', 'actuals.employee_id as employee_id', 'targets.code as code', 'targets.indicator as indicator')
-            ->where(DB::raw('MONTH(actuals.date)'), '<=', $now->month)
+            // ->where(DB::raw('MONTH(actuals.date)'), '<=', $now->month)
             ->where('actuals.employee_id', $employeeID)
             ->get();
 
+        // dd($actuals);
         return view('actual.input-actual-employee', [
             'title' => 'Input Data Realisasi',
             'desc' => 'Achievement',
