@@ -20,54 +20,26 @@
         </div>
        
         <table class="w-full bg-white">
-            <tr>
                 <th style="width: 3%;" class="border-2 border-gray-400 text-[14px] uppercase tracking-wide font-medium text-gray-600 py-1 px-4 bg-yellow-200" rowspan="2">No.</th>
                 <th class="border-2 border-gray-400 text-[14px] uppercase tracking-wide font-medium text-gray-600 py-1 px-4 bg-yellow-200" rowspan="2" >Dept</th>
                 <th class="border-2 border-gray-400 text-[14px] uppercase tracking-wide font-medium text-gray-600 py-1 px-4 bg-yellow-200" rowspan="2">NIK</th>
                 <th class="border-2 border-gray-400 text-[14px] uppercase tracking-wide font-medium text-gray-600 py-1 px-4 bg-yellow-200" rowspan="2">Nama</th>
                 <th class="border-2 border-gray-400 text-[14px] uppercase tracking-wide font-medium text-gray-600 py-1 px-4 bg-yellow-200" rowspan="2">Posisi</th>
-                <th class="border-2 border-gray-400 text-[14px] uppercase tracking-wide font-medium text-gray-600 py-1 px-4 bg-yellow-200" colspan="7">Bobot Pencapaian</th>
-
-                
-            </tr>
-            <tr>
-                @php
-                $currentMonth = \Carbon\Carbon::now()->month;
-                $months = [];
-            
-                if ($currentMonth >= 2 && $currentMonth < 8) {
-                    $months = [
-                        '01' => 'Jan', '02' => 'Feb', '03' => 'Mar', '04' => 'Apr', 
-                        '05' => 'May', '06' => 'Jun'
-                    ];
-                } else {
-                    $months = [
-                        '07' => 'Jul', '08' => 'Aug', '09' => 'Sep', '10' => 'Oct', 
-                        '11' => 'Nov', '12' => 'Dec'
-                    ];
-                }
-                @endphp
-
-                @foreach ($months as $month)
-                    
-               
-                <th class="border-2 border-gray-400 text-[14px] uppercase tracking-wide font-medium text-gray-600 py-1 px-4 bg-yellow-200">{{ $month }}</th>
-                @endforeach
-                <th class="border-2 border-gray-400 text-[14px] uppercase tracking-wide font-medium text-gray-600 py-1 px-4 bg-yellow-200">Rata Rata</th>
+                <th class="border-2 border-gray-400 text-[14px] uppercase tracking-wide font-medium text-gray-600 py-1 px-4 bg-yellow-200" colspan="3">Bobot Pencapaian</th>
+              <tr>
+               <td class="border-2 border-gray-400 text-[14px] uppercase tracking-wide font-medium text-gray-600 py-1 px-4 bg-yellow-200 text-center">Semester 1</td>
+                <td class="border-2 border-gray-400 text-[14px] uppercase tracking-wide font-medium text-gray-600 py-1 px-4 bg-yellow-200 text-center">Semester 2</td>
+                <td class="border-2 border-gray-400 text-[14px] uppercase tracking-wide font-medium text-gray-600 py-1 px-4 bg-yellow-200 text-center">Rata Rata</td>
               </tr>
               <tr>
-                <td class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-gray-600 py-1 px-4 text-center">1</td>
-                <td class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-gray-600 py-1 px-4">IT</td>
-                <td style="width: 8%;" class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-gray-600 py-1 px-4">908-998</td>
-                <td style="width: 25%;" class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-gray-600 py-1 px-4">Agustian</td>
-                <td style="width: 15%;" class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-gray-600 py-1 px-4">IT Staff</td>
-                <td class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-gray-600 py-1 px-4"></td>
-                <td class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-gray-600 py-1 px-4"></td>
-                <td class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-gray-600 py-1 px-4"></td>
-                <td class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-gray-600 py-1 px-4"></td>
-                <td class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-gray-600 py-1 px-4"></td>
-                <td class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-gray-600 py-1 px-4"></td>
-                <td class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-gray-600 py-1 px-4"></td>
+                <td class="border-2 border-gray-400 text-[14px] uppercase tracking-wide font-medium text-gray-600 py-1 px-4 text-center">1</td>
+                <td class="border-2 border-gray-400 text-[14px] uppercase tracking-wide font-medium text-gray-600 py-1 px-4">IT</td>
+                <td class="border-2 border-gray-400 text-[14px] uppercase tracking-wide font-medium text-gray-600 py-1 px-4">XXX-XXX</td>
+                <td class="border-2 border-gray-400 text-[14px] uppercase tracking-wide font-medium text-gray-600 py-1 px-4">Mr-XXX</td>
+                <td class="border-2 border-gray-400 text-[14px] uppercase tracking-wide font-medium text-gray-600 py-1 px-4">IT Staff</td>
+                <td class="border-2 border-gray-400 text-[14px] uppercase tracking-wide font-medium text-gray-600 py-1 px-4"></td>
+                <td class="border-2 border-gray-400 text-[14px] uppercase tracking-wide font-medium text-gray-600 py-1 px-4"></td>
+                <td class="border-2 border-gray-400 text-[14px] uppercase tracking-wide font-medium text-gray-600 py-1 px-4"></td>
               </tr>
         </table>
     </div>
