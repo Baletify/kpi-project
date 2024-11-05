@@ -14,8 +14,6 @@ class Actual extends Model
         'kpi_item',
         'kpi_unit',
         'review_period',
-        'program_number',
-        'program_file',
         'target',
         'actual',
         'kpi_percentage',
@@ -28,6 +26,7 @@ class Actual extends Model
         'kpi_weighting',
         'date',
         'semester',
+        'detail',
         'employee_id',
     ];
 }

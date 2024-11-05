@@ -159,24 +159,17 @@
               <div class="absolute inset-y-0 right-0 flex items-center">
               </div>
               <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 items-center gap-x-6 gap-y-2" >
-                <div class="relative mt-1 rounded-md">
-                  <span class="pl-3 font-semibold">Nama Program</span>  
-                <input type="text" name="program_number" id="program_number" class="block w-full rounded-md border-0 py-1.5 pl-4 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 mt-1" placeholder="Nama Program" autocomplete="off">
-                <div class="absolute inset-y-0 right-0 flex items-center">
-                </div>
               </div>
               <div class="relative mt-1 rounded-md">
-                  <span class="pl-3 font-semibold">Upload File Program</span>  
-                <input type="file" name="program_file" id="program_file" class="block w-full rounded-md border-0 py-1.5 pl-4 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 mt-1" placeholder="Posisi">
-                <div class="absolute inset-y-0 right-0 flex items-center">
-                </div>
+                <span class="pl-3 font-semibold">Keterangan</span>  
+                <textarea name="detail" id="detail" class="block w-full rounded-md border-0 py-1.5 pl-4 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 mt-1" placeholder="Keterangan" rows="2" readonly>{{ $target->detail }}</textarea>
+                <input type="hidden" name="employee_id" id="employee_id" value="{{ $target->employee_id }}">
+              <div class="absolute inset-y-0 right-0 flex items-center">
               </div>
-              </div>
+            </div>
               <div class="relative mt-1 rounded-md">
                 <span class="pl-3 font-semibold">Komentar</span>  
                 <textarea name="comment" id="comment" class="block w-full rounded-md border-0 py-1.5 pl-4 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 mt-1" placeholder="Komentar" rows="2"></textarea>
-                <input type="hidden" name="employee_id" id="employee_id" value="{{ $target->employee_id }}">
-                <input type="hidden" name="pv_employee_id" id="pv_employee_id" value="{{ $target->employee_id }}">
               <div class="absolute inset-y-0 right-0 flex items-center">
               </div>
             </div>

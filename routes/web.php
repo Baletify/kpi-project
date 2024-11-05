@@ -33,6 +33,8 @@ Route::prefix('actual')->group(function () {
     Route::post('/preview/store', [PreviewController::class, 'store']);
     Route::get('/preview/{id}/{kpi_code}', [PreviewController::class, 'show'])->name('preview.show');
     Route::get('/preview/{id}/{kpi_code}/filter', [PreviewController::class, 'filter']);
+    Route::get('/input-actual-department-details', [ActualController::class, 'showDept'])->name('actual.showDept');
+    Route::get('/input-actual-department-achievement/edit/{id}', [ActualController::class, 'editDept']);
 });
 
 Route::prefix('report')->group(function () {

@@ -55,7 +55,35 @@ class TargetUnitSeeder extends Seeder
                 'target_10' => '90%',
                 'target_11' => '90%',
                 'target_12' => '90%'
-            ]
+            ],
+            [
+                'target_1' => '5',
+                'target_2' => '5',
+                'target_3' => '5',
+                'target_4' => '5',
+                'target_5' => '5',
+                'target_6' => '5',
+                'target_7' => '5',
+                'target_8' => '5',
+                'target_9' => '5',
+                'target_10' => '5',
+                'target_11' => '5',
+                'target_12' => '5'
+            ],
+            [
+                'target_1' => '5',
+                'target_2' => '5',
+                'target_3' => '5',
+                'target_4' => '5',
+                'target_5' => '5',
+                'target_6' => '5',
+                'target_7' => '5',
+                'target_8' => '5',
+                'target_9' => '5',
+                'target_10' => '5',
+                'target_11' => '5',
+                'target_12' => '5'
+            ],
         ];
 
         foreach ($targetUnits as $targetUnit) {

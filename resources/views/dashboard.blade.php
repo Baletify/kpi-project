@@ -46,10 +46,10 @@
                     <div class="pl-3 mb-3">
                         <select name="department" id="department" class=" w-56">
                             <option value="">-- Pilih Departemen --</option>
-                            <option value="Enviro">Enviro</option>
-                            <option value="BSKP">BSKP</option>
+                            <option value="2">Enviro</option>
+                            <option value="1">BSKP</option>
                             <option value="HR">HR</option>
-                            <option value="IT">IT</option>
+                            <option value="3">IT</option>
                         </select>
                     </div>
                   <div class="absolute inset-y-0 right-0 flex items-center">
@@ -86,17 +86,17 @@
                     </div>
                   </div>
                   </div>
+                  <span class="text-gray-700 text-[10px] italic">Note: Pilih semester dan tahun untuk melihat detail KPI Individu</span>
                 </div>
+                
                 <div class="relative mt-1 rounded-md">
                     <span class="pl-3 font-semibold">Search</span>
                         <input type="text" name="filterName" id="filterName" class="w-64 rounded-md border-0 py-1.5 pl-4 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 mt-1" placeholder="Masukkan Nama" value="" autocomplete="off">
                     <div class="absolute inset-y-0 right-0 flex items-center">
                     </div>
-                    
                   </div>  
-                         
+                      
             </div>
-            
             <div class="p-1 bg-gray-100 mt-2 grid lg:grid-cols-1 border-gray-200 rounded-md gap-4">
                 <div class="bg-gray-200 rounded-md">
                     <div class="px-2 py-2">
@@ -106,7 +106,7 @@
                 </div>
                 
             </div>
-            <div class="mb-2 ml-2  bg-gray-200 rounded-md min-h-[200px]">
+            <div class="mb-2  bg-gray-200 rounded-md min-h-[200px]">
                 <div class="px-2 py-1">
                     <span class="p-4 font-bold text-xl">Daftar Karyawan</span>
                 </div>
@@ -126,11 +126,14 @@
                     </tbody>
                     </table>
                 </div>
+                
             </div>
+            
             {{-- <div class="bg-green-800 mb-2"></div> --}}
         </div>
+        
         </div>
-
+        <span class="text-gray-700 italic">Note: Klik pada kolom Departemen atau Nama untuk melihat detail</span>
     </div>
 
     <script>
@@ -155,10 +158,12 @@
                     <a href="/report/employee-report/${item.id}?semester=${semester}&year=${year}" class=" hover:underline">${item.name}</a>
                     </td>
                   <td class="border-2 border-gray-400 tracking-wide px-2 py-0">${item.occupation}</td>
-                  <td class="border-2 border-gray-400 tracking-wide px-2 py-0">${item.department}</td>
+                  <td class="border-2 border-gray-400 tracking-wide px-2 py-0"> <a href="/target/input-target-kpi-department?department=${item.department_id}" class=" hover:underline">${item.department}</a>
+                    </td>
                 </tr>`;
                 tbody.innerHTML += row;
               });
+              
             } else {
               tbody.innerHTML = '<tr><td colspan="4" class="border-2 border-gray-400 tracking-wide px-2 py-0 text-center">No data found</td></tr>';
             }

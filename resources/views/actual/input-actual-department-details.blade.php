@@ -52,7 +52,7 @@
                     @endforeach
                     <td class="border-2 border-gray-400 text-[10px] tracking-wide  py-0 px-2 text-center">
                         <div class="flex justify-center gap-2">
-                            <a href="{{ url('/actual/input-actual-achievement/edit/' . $target->id) }}">
+                            <a href="{{ url('/actual/input-actual-department-achievement/edit/' . $target->id) }}">
                                 <i class="ri-edit-2-line bg-yellow-400 text-sm border border-gray-200 shadow-black "></i>
                             </a>
                         </div>

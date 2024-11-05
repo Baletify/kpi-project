@@ -75,33 +75,42 @@ class EmployeeController extends Controller
         $year = $request->query('year');
         $semester = $request->query('semester');
 
-        if ($name && $semester && $year) {
+        if ($department && $semester && $year) {
             $data = DB::table('employees')
                 ->leftJoin('departments', 'employees.department_id', '=', 'departments.id')
                 ->leftJoin('actuals', 'employees.id', '=', 'actuals.employee_id')
-                ->select('employees.id', 'employees.nik', 'employees.name', 'employees.occupation', 'departments.name as department', DB::raw('MIN(actuals.date) as actual_date'))
+                ->select('employees.id', 'employees.nik', 'employees.name', 'employees.occupation', 'departments.name as department', 'departments.id as department_id', 'departments.id as department_id', DB::raw('MIN(actuals.date) as actual_date'))
+                ->where('actuals.semester', '=', $semester)
+                ->where(DB::raw('YEAR(actuals.date)'), $year)
+                ->where('departments.id', '=', $department)
+                ->groupBy('employees.id', 'employees.nik', 'employees.name', 'employees.occupation', 'departments.name', 'departments.id')
+                ->get();
+            return response()->json($data);
+        } else if ($name && $semester && $year) {
+            $data = DB::table('employees')
+                ->leftJoin('departments', 'employees.department_id', '=', 'departments.id')
+                ->leftJoin('actuals', 'employees.id', '=', 'actuals.employee_id')
+                ->select('employees.id', 'employees.nik', 'employees.name', 'employees.occupation', 'departments.name as department', 'departments.id as department_id', DB::raw('MIN(actuals.date) as actual_date'))
                 ->where('actuals.semester', '=', $semester)
                 ->where(DB::raw('YEAR(actuals.date)'), $year)
                 ->where('employees.name', 'LIKE', '%' . $name . '%')
-                ->groupBy('employees.id', 'employees.nik', 'employees.name', 'employees.occupation', 'departments.name')
+                ->groupBy('employees.id', 'employees.nik', 'employees.name', 'employees.occupation', 'departments.name', 'departments.id')
                 ->get();
             return response()->json($data);
-        }
-
-        if ($year && $semester) {
+        } else if ($year && $semester) {
             $data = DB::table('employees')
                 ->leftJoin('departments', 'employees.department_id', '=', 'departments.id')
                 ->leftJoin('actuals', 'employees.id', '=', 'actuals.employee_id')
-                ->select('employees.id', 'employees.nik', 'employees.name', 'employees.occupation', 'departments.name as department', DB::raw('MIN(actuals.date) as actual_date'))
+                ->select('employees.id', 'employees.nik', 'employees.name', 'employees.occupation', 'departments.name as department', 'departments.id as department_id', DB::raw('MIN(actuals.date) as actual_date'))
                 ->where('actuals.semester', '=', $semester)
                 ->where(DB::raw('YEAR(actuals.date)'), $year)
-                ->groupBy('employees.id', 'employees.nik', 'employees.name', 'employees.occupation', 'departments.name')
+                ->groupBy('employees.id', 'employees.nik', 'employees.name', 'employees.occupation', 'departments.name', 'departments.id')
                 ->get();
             return response()->json($data);
         } else if ($name) {
             $data = DB::table('employees')
                 ->leftJoin('departments', 'employees.department_id', '=', 'departments.id')
-                ->select('employees.id', 'employees.nik', 'employees.name', 'employees.occupation', 'departments.name as department')
+                ->select('employees.id', 'employees.nik', 'employees.name', 'employees.occupation', 'departments.name as department', 'departments.id as department_id')
                 ->where('employees.name', 'LIKE', '%' . $name . '%')
                 ->get();
 
@@ -109,8 +118,8 @@ class EmployeeController extends Controller
         } else if ($department) {
             $data = DB::table('employees')
                 ->leftJoin('departments', 'employees.department_id', '=', 'departments.id')
-                ->select('employees.id', 'employees.nik', 'employees.name', 'employees.occupation', 'departments.name as department')
-                ->where('departments.name', $department)
+                ->select('employees.id', 'employees.nik', 'employees.name', 'employees.occupation', 'departments.name as department', 'departments.id as department_id', 'departments.id as department_id')
+                ->where('departments.id', $department)
                 ->get();
 
             return response()->json($data);
