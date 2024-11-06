@@ -86,7 +86,7 @@
                     </div>
                   </div>
                   </div>
-                  <span class="text-gray-700 text-[10px] italic">Note: Pilih semester dan tahun untuk melihat detail KPI Individu</span>
+                  
                 </div>
                 
                 <div class="relative mt-1 rounded-md">
@@ -133,7 +133,14 @@
         </div>
         
         </div>
-        <span class="text-gray-700 italic">Note: Klik pada kolom Departemen atau Nama untuk melihat detail</span>
+        <div class="">
+            <span class="text-gray-700 italic">Note: Klik pada kolom Departemen atau Nama untuk melihat detail</span>
+        </div>
+        <div class=""> 
+            <span class="text-red-600 text-xl">*</span>
+            <span class="text-gray-700 italic">Pilih semester dan tahun untuk melihat detail KPI Individu</span>
+        </div>
+        
     </div>
 
     <script>

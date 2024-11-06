@@ -19,7 +19,7 @@
                     </th>
                 @endforeach
             </tr>
-
+ 
             @php
                 $i = 0;
             @endphp

@@ -33,7 +33,7 @@
             {{-- </ul>
         </div> --}}
         <li>
-            <a href="{{ url('/action-plan') }}" class="flex items-center py-2 px-6 text-gray-300 hover:bg-gray-900">
+            <a href="{{ url('/action-plan/action-plans') }}" class="flex items-center py-2 px-6 text-gray-300 hover:bg-gray-900">
                 <i class="ri-todo-line text-3xl"></i>
                 <span class="ml-3">Action Plan</span>
             </a>

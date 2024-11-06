@@ -243,6 +243,13 @@
         document.getElementById('target').value = targetValue;
     });
 
+    var actualInput = document.getElementById('actual');
+    var unitInput = document.getElementById('kpi_unit');
+
+    if (unitInput.value === '%') {
+        actualInput.value = actualInput.value + '%';
+    }
+
       </script>
 
 </x-app-layout>

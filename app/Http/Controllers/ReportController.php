@@ -23,32 +23,29 @@ class ReportController extends Controller
 
         if ($semester && $year) {
 
+            $targets = DB::table('targets')
+                ->select('id', 'code', 'indicator', 'employee_id', 'period', 'unit', 'weighting')
+                ->where('employee_id', $id)
+                ->get();
+
             $actuals = DB::table('actuals')
                 ->leftJoin('employees', 'actuals.employee_id', '=', 'employees.id')
                 ->leftJoin('departments', 'employees.department_id', '=', 'departments.id')
-                ->select('actuals.date as date', 'actuals.employee_id as employee_id', 'actuals.kpi_item', 'actuals.kpi_code as kpi_code', 'actuals.kpi_percentage as achievement', 'employees.name as name', 'departments.name as department', 'employees.occupation as occupation', 'employees.nik as nik', 'actuals.semester as semester', 'actuals.date as year')
+                ->select('actuals.date as date', 'actuals.employee_id as employee_id', 'actuals.kpi_item', 'actuals.kpi_code as kpi_code', 'actuals.kpi_percentage as achievement', 'employees.name as name', 'departments.name as department', 'employees.occupation as occupation', 'employees.nik as nik', 'actuals.semester as semester', 'actuals.date as year', 'actuals.target', 'actuals.actual', 'actuals.kpi_percentage', 'actuals.record_file')
                 ->where('actuals.employee_id', $id)
                 ->where('actuals.semester', $semester)
                 ->where(DB::raw('YEAR(actuals.date)'), $year)
+                ->orderBy(DB::raw('MONTH(actuals.date)'))
                 ->get();
 
             if ($actuals->isEmpty()) {
                 abort(404, 'No actuals found for the given year and semester');
             }
 
-
-            return view('report.employee-report', ['title' => 'Report', 'desc' => 'Employee Report', 'employee' => $employee, 'actuals' => $actuals]);
+            return view('report.employee-report', ['title' => 'Report', 'desc' => 'Employee Report', 'employee' => $employee, 'actuals' => $actuals, 'targets' => $targets]);
         } else {
-            $actuals = DB::table('actuals')
-                ->leftJoin('employees', 'actuals.employee_id', '=', 'employees.id')
-                ->leftJoin('departments', 'employees.department_id', '=', 'departments.id')
-                ->select('actuals.date as date', 'actuals.employee_id as employee_id', 'actuals.kpi_item', 'actuals.kpi_code as kpi_code', 'actuals.kpi_percentage as achievement', 'employees.name as name', 'departments.name as department', 'employees.occupation as occupation', 'employees.nik as nik')
-                ->where('actuals.employee_id', $id)->get();
 
-            if ($actuals->isEmpty()) {
-                abort(404, 'No actuals found for the given year and semester');
-            }
-            return view('report.employee-report', ['title' => 'Report', 'desc' => 'Employee Report', 'employee' => $employee, 'actuals' => $actuals]);
+            abort(404, 'No actuals found for the given year and semester');
         }
     }
 

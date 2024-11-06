@@ -43,4 +43,6 @@ Route::prefix('report')->group(function () {
 });
 
 Route::get('/log-input', [LogController::class, 'index'])->name('log-input.index');
-Route::get('/action-plan', [ActionPlanController::class, 'index'])->name('action-plan.index');
+Route::prefix('action-plan')->group(function () {
+    Route::get('/action-plans', [ActionPlanController::class, 'show'])->name('action-plan.show');
+});

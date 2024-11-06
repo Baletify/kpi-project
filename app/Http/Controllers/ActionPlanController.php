@@ -6,8 +6,9 @@ use Illuminate\Http\Request;
 
 class ActionPlanController extends Controller
 {
-    public function index()
+    public function show()
     {
-        return view('action-plan', ['title' => 'Action Plan', 'desc' => 'Input Action Plan']);
+
+        return view('action-plan.action-plans', ['title' => 'Action Plan', 'desc' => 'Input Action Plan']);
     }
 }

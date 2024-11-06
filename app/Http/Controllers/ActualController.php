@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Employee;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use App\Models\Actual;
 use App\Models\Department;
@@ -141,6 +142,16 @@ class ActualController extends Controller
     public function store(Request $request)
     {
 
+        $validator = Validator::make($request->all(), [
+            'date' => 'required',
+            'actual' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()
+                ->withErrors($validator)
+                ->withInput();
+        }
         $date = Carbon::createFromDate($request->year, $request->date, 1)->startOfMonth();
 
         if ($request->hasFile('record_file')) {
