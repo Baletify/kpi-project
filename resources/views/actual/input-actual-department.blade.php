@@ -7,12 +7,12 @@
         </button>
         <table class="w-full">
             <tr>
-                <th style="width: 3%;" class="border-2 border-gray-700 text-[14px] uppercase tracking-wide font-medium text-gray-600 py-2 px-4 bg-yellow-200">No.</th>
-                <th class="border-2 border-gray-700 text-[10px] uppercase tracking-wide font-medium text-gray-600 py-2 px-4 bg-yellow-200">NIK</th>
-                <th class="border-2 border-gray-700 text-[10px] uppercase tracking-wide font-medium text-gray-600 py-2 px-4 bg-yellow-200">Nama</th>
-                <th class="border-2 border-gray-700 text-[10px] uppercase tracking-wide font-medium text-gray-600 py-2 px-4 bg-yellow-200">Department</th>
-                <th class="border-2 border-gray-700 text-[10px] uppercase tracking-wide font-medium text-gray-600 py-2 px-4 bg-yellow-200">Jabatan</th>
-                <th class="border-2 border-gray-700 text-[10px] uppercase tracking-wide font-medium text-gray-600 py-2 px-4 bg-yellow-200">Aksi</th>
+                <th style="width: 3%;" class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-white py-2 px-4 bg-blue-700">No.</th>
+                <th class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-white py-2 px-4 bg-blue-700">NIK</th>
+                <th class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-white py-2 px-4 bg-blue-700">Nama</th>
+                <th class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-white py-2 px-4 bg-blue-700">Department</th>
+                <th class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-white py-2 px-4 bg-blue-700">Jabatan</th>
+                <th class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-white py-2 px-4 bg-blue-700">Aksi</th>
             </tr>
             @php
                 $i = 0;
@@ -22,12 +22,12 @@
                 @php
                     $i++
                 @endphp
-                <td class="border-2 border-gray-700 tracking-wide px-2 py-2 text-center">{{ $i }}</td>
-                <td class="border-2 border-gray-700 tracking-wide px-2 py-2">{{ $department->nik }}</td>
-                <td class="border-2 border-gray-700 tracking-wide px-2 py-2">{{ $department->employee }}</td>
-                <td class="border-2 border-gray-700 tracking-wide px-2 py-2">{{ $department->department }}</td>
-                <td class="border-2 border-gray-700 tracking-wide px-2 py-2">{{ $department->occupation }}</td>
-                <td class="border-2 border-gray-700 tracking-wide px-2 py-2">
+                <td class="border-2 border-gray-400 tracking-wide px-2 py-2 text-center">{{ $i }}</td>
+                <td class="border-2 border-gray-400 tracking-wide px-2 py-2">{{ $department->nik }}</td>
+                <td class="border-2 border-gray-400 tracking-wide px-2 py-2">{{ $department->employee }}</td>
+                <td class="border-2 border-gray-400 tracking-wide px-2 py-2">{{ $department->department }}</td>
+                <td class="border-2 border-gray-400 tracking-wide px-2 py-2">{{ $department->occupation }}</td>
+                <td class="border-2 border-gray-400 tracking-wide px-2 py-2">
                     <div class="flex justify-center gap-2">
                     <a href="/actual/input-actual-employee?employee={{ $department->employee_id }}">
                         <span class="text-blue-500">Input Aktual Individu</span>

@@ -9,4 +9,6 @@ class ActionPlan extends Model
 {
     /** @use HasFactory<\Database\Factories\ActionPlanFactory> */
     use HasFactory;
+
+    protected $fillable = ['employee_id', 'file_name', 'file'];
 }

@@ -2,7 +2,7 @@
     <div class="ml-64 mt-4 overflow-x-auto p-2 bg-gray-100 border border-gray-200 shadow-md shadow-black/10 rounded-md">
         <div class="mb-2">
             <div class="mt-1">
-                <span class="text-gray-600 p-1 uppercase text-[16px]">
+                <span class="text-gray-600 p-1 text-[16px]">
                     PT. BRIDGESTONE KALIMANTAN PLANTATION
                 </span>
             </div>
@@ -20,16 +20,16 @@
         </div>
        
         <table class="w-full bg-white">
-                <th style="width: 3%;" class="border-2 border-gray-400 text-[14px] uppercase tracking-wide font-medium text-gray-600 py-1 px-4 bg-yellow-200" rowspan="2">No.</th>
-                <th class="border-2 border-gray-400 text-[14px] uppercase tracking-wide font-medium text-gray-600 py-1 px-4 bg-yellow-200" rowspan="2" >Dept</th>
-                <th class="border-2 border-gray-400 text-[14px] uppercase tracking-wide font-medium text-gray-600 py-1 px-4 bg-yellow-200" rowspan="2">NIK</th>
-                <th class="border-2 border-gray-400 text-[14px] uppercase tracking-wide font-medium text-gray-600 py-1 px-4 bg-yellow-200" rowspan="2">Nama</th>
-                <th class="border-2 border-gray-400 text-[14px] uppercase tracking-wide font-medium text-gray-600 py-1 px-4 bg-yellow-200" rowspan="2">Posisi</th>
-                <th class="border-2 border-gray-400 text-[14px] uppercase tracking-wide font-medium text-gray-600 py-1 px-4 bg-yellow-200" colspan="3">Bobot Pencapaian</th>
+                <th style="width: 3%;" class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-white py-1 px-4 bg-blue-700" rowspan="2">No.</th>
+                <th class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-white py-1 px-4 bg-blue-700" rowspan="2" >Dept</th>
+                <th class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-white py-1 px-4 bg-blue-700" rowspan="2">NIK</th>
+                <th class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-white py-1 px-4 bg-blue-700" rowspan="2">Nama</th>
+                <th class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-white py-1 px-4 bg-blue-700" rowspan="2">Posisi</th>
+                <th class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-white py-1 px-4 bg-blue-700" colspan="3">Bobot Pencapaian</th>
               <tr>
-               <td class="border-2 border-gray-400 text-[14px] uppercase tracking-wide font-medium text-gray-600 py-1 px-4 bg-yellow-200 text-center">Semester 1</td>
-                <td class="border-2 border-gray-400 text-[14px] uppercase tracking-wide font-medium text-gray-600 py-1 px-4 bg-yellow-200 text-center">Semester 2</td>
-                <td class="border-2 border-gray-400 text-[14px] uppercase tracking-wide font-medium text-gray-600 py-1 px-4 bg-yellow-200 text-center">Rata Rata</td>
+               <td class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-white py-1 px-4 bg-blue-700 text-center">Semester 1</td>
+                <td class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-white py-1 px-4 bg-blue-700 text-center">Semester 2</td>
+                <td class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-white py-1 px-4 bg-blue-700 text-center">Rata Rata</td>
               </tr>
               <tr>
                 <td class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-gray-600 py-1 px-4 text-center">1</td>

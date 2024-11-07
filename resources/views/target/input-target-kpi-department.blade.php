@@ -11,23 +11,23 @@
             <div class="p-1">
                 <table>
                     <tr>
-                        <td style="width: 6%" class="text-[14px] tracking-wide font-medium text-gray-600 px-1">Dept</td>
-                        <td style="width: 2%" class="text-[14px] tracking-wide font-medium text-gray-600 px-1">:</td>
-                        <td class="text-[14px] tracking-wide font-medium text-gray-600 px-1">{{ $departments->name }}</td>
+                        <td style="width: 6%" class="text-[14px] tracking-wide font-medium text-white px-1">Dept</td>
+                        <td style="width: 2%" class="text-[14px] tracking-wide font-medium text-white px-1">:</td>
+                        <td class="text-[14px] tracking-wide font-medium text-white px-1">{{ $departments->name }}</td>
                     </tr>
                 </table>
             </div>
         
         <table class="w-full table-auto">
             <tr>
-                <th class="border-2 border-gray-400 text-[13px] uppercase tracking-wide font-medium text-gray-600 py-1 bg-yellow-200" style="width: 3%">No.</th>
-                <th style="width: 10%" class="border-2 border-gray-400 text-[13px] uppercase tracking-wide font-medium text-gray-600 py-1 bg-yellow-200">Kode KPI</th>
-                <th class="border-2 border-gray-400 text-[13px] uppercase tracking-wide font-medium text-gray-600 py-1 bg-yellow-200" style="width: 35%">KPI</th>
-                <th style="width: 13%" class="border-2 border-gray-400 text-[13px] uppercase tracking-wide font-medium text-gray-600 py-1 bg-yellow-200">Cara Menghitung</th>
-                <th style="width: 13%" class="border-2 border-gray-400 text-[13px] uppercase tracking-wide font-medium text-gray-600 py-1 bg-yellow-200">Data Pendukung</th>
-                <th style="width: 6%" class="border-2 border-gray-400 text-[13px] uppercase tracking-wide font-medium text-gray-600 py-1 bg-yellow-200">Periode Review</th>
-                <th class="border-2 border-gray-400 text-[13px] uppercase tracking-wide font-medium text-gray-600 py-1 bg-yellow-200">Unit</th>
-                <th class="border-2 border-gray-400 text-[13px] uppercase tracking-wide font-medium text-gray-600 py-1 bg-yellow-200">Bobot "%"</th>
+                <th class="border-2 border-gray-400 text-[13px] uppercase tracking-wide font-medium text-white py-1 bg-blue-700" style="width: 3%">No.</th>
+                <th style="width: 10%" class="border-2 border-gray-400 text-[13px] uppercase tracking-wide font-medium text-white py-1 bg-blue-700">Kode KPI</th>
+                <th class="border-2 border-gray-400 text-[13px] uppercase tracking-wide font-medium text-white py-1 bg-blue-700" style="width: 35%">KPI</th>
+                <th style="width: 13%" class="border-2 border-gray-400 text-[13px] uppercase tracking-wide font-medium text-white py-1 bg-blue-700">Cara Menghitung</th>
+                <th style="width: 13%" class="border-2 border-gray-400 text-[13px] uppercase tracking-wide font-medium text-white py-1 bg-blue-700">Data Pendukung</th>
+                <th style="width: 6%" class="border-2 border-gray-400 text-[13px] uppercase tracking-wide font-medium text-white py-1 bg-blue-700">Periode Review</th>
+                <th class="border-2 border-gray-400 text-[13px] uppercase tracking-wide font-medium text-white py-1 bg-blue-700">Unit</th>
+                <th class="border-2 border-gray-400 text-[13px] uppercase tracking-wide font-medium text-white py-1 bg-blue-700">Bobot "%"</th>
                 @php
             $currentMonth = \Carbon\Carbon::now()->month;
             $months = [];
@@ -47,10 +47,10 @@
             
             @foreach ($months as $month)
 
-                <th class="border-2 border-gray-400 text-[13px] uppercase tracking-wide font-medium text-gray-600 py-1 bg-yellow-200">{{ $month }}</th>
+                <th class="border-2 border-gray-400 text-[13px] uppercase tracking-wide font-medium text-white py-1 bg-blue-700">{{ $month }}</th>
                 
             @endforeach
-                <th class="border-2 border-gray-400 text-[13px] uppercase tracking-wide font-medium text-gray-600 py-1 bg-yellow-200">Aksi</th>
+                <th class="border-2 border-gray-400 text-[13px] uppercase tracking-wide font-medium text-white py-1 bg-blue-700">Aksi</th>
             </tr>
             @php
                 $i = 0;

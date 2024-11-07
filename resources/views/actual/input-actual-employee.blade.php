@@ -18,13 +18,13 @@
             }
             @endphp
             <tr>
-                <th style="width: 3%;" class="border-2 border-gray-400 text-[13px] uppercase tracking-wide font-medium text-gray-600 py-1 bg-yellow-200">No.</th>
-                <th class="border-2 border-gray-400 text-[13px] uppercase tracking-wide font-medium text-gray-600 py-1 bg-yellow-200">Kode KPI</th>
-                <th class="border-2 border-gray-400 text-[13px] uppercase tracking-wide font-medium text-gray-600 py-1 bg-yellow-200">Indikator</th>
+                <th style="width: 3%;" class="border-2 border-gray-400 text-[13px] uppercase tracking-wide font-medium text-white py-1 bg-blue-700">No.</th>
+                <th class="border-2 border-gray-400 text-[13px] uppercase tracking-wide font-medium text-white py-1 bg-blue-700">Kode KPI</th>
+                <th class="border-2 border-gray-400 text-[13px] uppercase tracking-wide font-medium text-white py-1 bg-blue-700">Indikator</th>
                 @foreach ($months as $monthName)
-                    <th class="border-2 border-gray-400 text-[13px] uppercase tracking-wide font-medium text-gray-600 py-1 bg-yellow-200">{{ $monthName }}</th>
+                    <th class="border-2 border-gray-400 text-[13px] uppercase tracking-wide font-medium text-white py-1 bg-blue-700">{{ $monthName }}</th>
                 @endforeach
-                <th class="border-2 border-gray-400 text-[13px] uppercase tracking-wide font-medium text-gray-600 py-1 bg-yellow-200">Aksi</th>
+                <th class="border-2 border-gray-400 text-[13px] uppercase tracking-wide font-medium text-white py-1 bg-blue-700">Aksi</th>
             </tr>
             @php
                 $i = 0;

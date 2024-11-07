@@ -46,4 +46,6 @@ Route::prefix('report')->group(function () {
 Route::get('/log-input', [LogController::class, 'index'])->name('log-input.index');
 Route::prefix('action-plan')->group(function () {
     Route::get('/action-plans', [ActionPlanController::class, 'show'])->name('action-plan.show');
+    Route::get('/input-action-plan/{id}', [ActionPlanController::class, 'addEmployeeFile'])->name('action-plan.addEmployeeFile');
+    Route::post('/input-action-plan/store', [ActionPlanController::class, 'storeFile']);
 });

@@ -57,16 +57,16 @@
         <table class="w-full mt-2 table-auto">
             <thead>
                 <tr>
-                    <th style="width: 3%;" class="border-2 border-gray-400 text-[11px] uppercase tracking-wide font-medium text-gray-600 bg-yellow-200">No.</th>
-                    <th style="width: 12%" class="border-2 border-gray-400 text-[11px] uppercase tracking-wide font-medium text-gray-600 bg-yellow-200">Bulan</th>
-                    <th style="width: 7%" class="border-2 border-gray-400 text-[11px] uppercase tracking-wide font-medium text-gray-600 bg-yellow-200">Unit</th>
-                    <th style="width: 7%" class="border-2 border-gray-400 text-[11px] uppercase tracking-wide font-medium text-gray-600 bg-yellow-200">Bobot "%"</th>
-                    <th style="width: 7%" class="border-2 border-gray-400 text-[11px] uppercase tracking-wide font-medium text-gray-600 bg-yellow-200">Target</th>
-                    <th style="width: 7%" class="border-2 border-gray-400 text-[11px] uppercase tracking-wide font-medium text-gray-600 bg-yellow-200">Actual</th>
-                    <th style="width: 4%" class="border-2 border-gray-400 text-[11px] uppercase tracking-wide font-medium text-gray-600 bg-yellow-200">%</th>
-                    <th style="width: 7%" class="border-2 border-gray-400 text-[11px] uppercase tracking-wide font-medium text-gray-600 bg-yellow-200">Bobot Pencapaian "%"</th>
-                    <th style="width: 7%" class="border-2 border-gray-400 text-[11px] uppercase tracking-wide font-medium text-gray-600 bg-yellow-200">Data Pendukung</th>
-                    <th style="width: 30%" class="border-2 border-gray-400 text-[11px] uppercase tracking-wide font-medium text-gray-600 bg-yellow-200">Komentar</th>
+                    <th style="width: 3%;" class="border-2 border-gray-400 text-[11px] uppercase tracking-wide font-medium text-white bg-blue-700">No.</th>
+                    <th style="width: 12%" class="border-2 border-gray-400 text-[11px] uppercase tracking-wide font-medium text-white bg-blue-700">Bulan</th>
+                    <th style="width: 7%" class="border-2 border-gray-400 text-[11px] uppercase tracking-wide font-medium text-white bg-blue-700">Unit</th>
+                    <th style="width: 7%" class="border-2 border-gray-400 text-[11px] uppercase tracking-wide font-medium text-white bg-blue-700">Bobot "%"</th>
+                    <th style="width: 7%" class="border-2 border-gray-400 text-[11px] uppercase tracking-wide font-medium text-white bg-blue-700">Target</th>
+                    <th style="width: 7%" class="border-2 border-gray-400 text-[11px] uppercase tracking-wide font-medium text-white bg-blue-700">Actual</th>
+                    <th style="width: 4%" class="border-2 border-gray-400 text-[11px] uppercase tracking-wide font-medium text-white bg-blue-700">%</th>
+                    <th style="width: 7%" class="border-2 border-gray-400 text-[11px] uppercase tracking-wide font-medium text-white bg-blue-700">Bobot Pencapaian "%"</th>
+                    <th style="width: 7%" class="border-2 border-gray-400 text-[11px] uppercase tracking-wide font-medium text-white bg-blue-700">Data Pendukung</th>
+                    <th style="width: 30%" class="border-2 border-gray-400 text-[11px] uppercase tracking-wide font-medium text-white bg-blue-700">Komentar</th>
                 </tr>
             </thead>
             <tbody id="bulanTableBody">
