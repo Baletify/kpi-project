@@ -139,7 +139,17 @@
                             return \Carbon\Carbon::parse($item->date)->format('m') == $month && $item->kpi_item == $target->indicator;
                         });
                     @endphp
-                    <td class="border-2 bg-gray-200 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-1 text-center">{{ $actual ? ($actual->record_file ? 'Yes' : 'No') : '' }}</td>
+                    <td class="border-2 bg-gray-200 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-1 text-center hover:underline">
+                        @if ($actual)
+                            @if ($actual->record_file)
+                                <a href="{{ route('report.showFile', $actual->record_file) }}" target="_blank">Yes</a>
+                            @else
+                                No
+                            @endif
+                        @else
+                            No
+                        @endif
+                    </td>
                     @endforeach
                     <td class="border-2 bg-gray-200 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-1 text-center"></td>
                 </tr>

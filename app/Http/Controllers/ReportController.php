@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Models\Employee;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Response;
 
 class ReportController extends Controller
 {
@@ -63,5 +65,22 @@ class ReportController extends Controller
         } else {
             return view('report.department-report', ['title' => 'Report', 'desc' => 'Department']);
         }
+    }
+
+    public function showFile($filename)
+    {
+        $path = public_path('record_files/' . $filename);
+
+        if (!File::exists($path)) {
+            abort(404);
+        }
+
+        $file = File::get($path);
+        $type = File::mimeType($path);
+
+        $response = Response::make($file, 200);
+        $response->header("Content-Type", $type);
+
+        return $response;
     }
 }

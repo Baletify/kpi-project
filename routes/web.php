@@ -40,6 +40,7 @@ Route::prefix('actual')->group(function () {
 Route::prefix('report')->group(function () {
     Route::get('/employee-report/{id}', [ReportController::class, 'show'])->name('report.show');
     Route::get('/department-report', [ReportController::class, 'department'])->name('report.department');
+    Route::get('/file-preview/{id}', [ReportController::class, 'showFile'])->name('report.showFile');
 });
 
 Route::get('/log-input', [LogController::class, 'index'])->name('log-input.index');
