@@ -1,13 +1,5 @@
 <x-app-layout :title="$title" :desc="$desc">
     <div class="ml-64 mt-4 overflow-x-auto p-2 bg-gray-100 border border-gray-200 shadow-md shadow-black/10 rounded-md">
-        <div class="flex mb-2">
-            <div class="my-2">
-                <a href="#" class="p-1 bg-blue-700 py-2 items-center rounded-md">
-                    <i class="ri-import-line text-2xl text-white"></i>
-                    <span class="font-medium text-white">Upload KPI Dept</span>
-                </a>
-            </div>
-        </div>
         <table class="w-full bg-white table-auto">
             <tr>
                 <th style="width: 10%;" class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-white py-0 px-4 bg-blue-700">NIK</th>
@@ -19,26 +11,29 @@
             </tr>
            @foreach ($employees as $employee)
             <tr> 
-                <td class="border-2 border-gray-400 tracking-wide px-2  text-center">{{ $employee->nik }}</td>
-                <td class="border-2 border-gray-400 tracking-wide px-2 ">{{ $employee->name }}</td>
-                <td class="border-2 border-gray-400 tracking-wide px-2 ">
+                <td class="border-2 text-[12px] border-gray-400 tracking-wide px-2  text-center">{{ $employee->nik }}</td>
+                <td class="border-2 text-[12px] border-gray-400 tracking-wide px-2 ">{{ $employee->name }}</td>
+                <td class="border-2 text-[12px] border-gray-400 tracking-wide px-2 ">
                     {{ $employee->department }}
                 </td>
-                <td class="border-2 border-gray-400 tracking-wide px-2 ">{{ $employee->occupation }}</td>
-                <td class="border-2 border-gray-400 tracking-wide px-2 ">
+                <td class="border-2 text-[12px] border-gray-400 tracking-wide px-2 ">{{ $employee->occupation }}</td>
+                <td class="border-2 text-[12px] border-gray-400 tracking-wide px-2 ">
                     {{ $employee->file ? 'Sudah' : 'Belum' }}
                 </td>
-                <td class="border-2 border-gray-400 tracking-wide px-2 text-center">
+                <td class="border-2 text-[12px] border-gray-400 tracking-wide px-2 text-center">
+                    @if(!$employee->file)
                     <a href="{{ url('action-plan/input-action-plan/' . $employee->id ) }}">
                         <i class="ri-add-line bg-green-600 text-white text-lg p-1 rounded-sm"></i>
                        </a>
-                   <a href="">
+                     @endif
+                    @if ($employee->file)
+                   <a href="{{ route('action-plan.showFile', $employee->file) }}" target="_blank">
                     <i class="ri-eye-fill text-lg bg-blue-600 text-white p-1 rounded-sm"></i>
                    </a>
-                   <a href="">
+                   <a href="{{ url('action-plan/input-action-plan/edit/' . $employee->action_plan_id) }}">
                     <i class="ri-edit-2-fill bg-yellow-400 text-lg shadow-black p-1 rounded-sm"></i>
                    </a>
-                   
+                   @endif
                 </td>
             @endforeach
             </tr>

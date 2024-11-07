@@ -48,4 +48,7 @@ Route::prefix('action-plan')->group(function () {
     Route::get('/action-plans', [ActionPlanController::class, 'show'])->name('action-plan.show');
     Route::get('/input-action-plan/{id}', [ActionPlanController::class, 'addEmployeeFile'])->name('action-plan.addEmployeeFile');
     Route::post('/input-action-plan/store', [ActionPlanController::class, 'storeFile']);
+    Route::get('/file-preview/{id}', [ActionPlanController::class, 'showFile'])->name('action-plan.showFile');
+    Route::get('/input-action-plan/edit/{id}', [ActionPlanController::class, 'editFile']);
+    Route::put('/input-action-plan/update/{id}', [ActionPlanController::class, 'updateFile']);
 });

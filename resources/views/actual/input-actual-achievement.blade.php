@@ -164,6 +164,7 @@
                 <span class="pl-3 font-semibold">Keterangan</span>  
                 <textarea name="detail" id="detail" class="block w-full rounded-md border-0 py-1.5 pl-4 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 mt-1" placeholder="Keterangan" rows="2" readonly>{{ $target->detail }}</textarea>
                 <input type="hidden" name="employee_id" id="employee_id" value="{{ $target->employee_id }}">
+                <input type="hidden" name="pv_employee_id" id="pv_employee_id" value="{{ $target->employee_id }}">
               <div class="absolute inset-y-0 right-0 flex items-center">
               </div>
             </div>
