@@ -1,7 +1,7 @@
 <x-app-layout :title="$title" :desc="$desc">
     <div class="ml-64 mt-4 overflow-x-auto p-2 bg-white border border-gray-100 shadow-md shadow-black/10 rounded-md">
         <button class="p-2 bg-blue-600 my-2 rounded-md">
-            <a href="/actual/input-actual-department-details?department={{ $departments->first()->department_id }}">
+            <a href="/target/input-target-kpi-department?department={{ $departments->first()->department_id }}">
                 <span class="text-white">Input Target Dept</span>
               </a>
         </button>

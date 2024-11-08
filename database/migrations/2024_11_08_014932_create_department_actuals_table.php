@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('departement_actuals', function (Blueprint $table) {
+        Schema::create('department_actuals', function (Blueprint $table) {
             $table->id();
             $table->string('kpi_code');
             $table->string('kpi_item');
@@ -28,6 +28,7 @@ return new class extends Migration
             $table->string('kpi_weighting');
             $table->dateTime('date');
             $table->string('semester');
+            $table->string('detail')->nullable();
             $table->foreignId('department_id')->nullable()->constrained()->onUpdate('cascade')->nullOnDelete();
             $table->timestamps();
         });

@@ -9,7 +9,9 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use App\Models\Actual;
+use App\Models\ActualDepartment;
 use App\Models\Department;
+use App\Models\DepartmentActual;
 
 class ActualController extends Controller
 {
@@ -37,7 +39,7 @@ class ActualController extends Controller
         // dd($actuals);
         return view('actual.input-actual-employee', [
             'title' => 'Input Data Realisasi',
-            'desc' => 'Achievement',
+            'desc' => 'Employee Achievement',
             'employee' => $employee,
             'targets' => $targets,
             'actuals' => $actuals
@@ -52,25 +54,22 @@ class ActualController extends Controller
 
         // Ambil data targets
         $targets = DB::table('department_targets')
-            ->leftJoin('departments', 'departments.id', '=', 'department_targets.department_id')
-            ->select('department_targets.id', 'department_targets.code', 'department_targets.indicator', 'department_targets.department_id', 'departments.name as department')
-            ->where('department_targets.department_id', $departmentID)
+            ->where('department_targets.department_id', '=', $departmentID)
             ->get();
 
         // Ambil data actuals
-        $actuals = DB::table('actuals')
-            ->leftJoin('employees', 'actuals.employee_id', '=', 'employees.id')
-            ->leftJoin('departments', 'departments.id', '=', 'employees.department_id')
-            ->leftJoin('department_targets', 'departments.id', '=', 'department_targets.department_id')
+        $actuals = DB::table('department_actuals')
+            ->leftJoin('departments', 'departments.id', '=', 'department_actuals.department_id')
+            ->leftJoin('department_targets', 'department_actuals.kpi_code', '=', 'department_targets.code')
             // ->select('actuals.date as date', 'actuals.employee_id as employee_id', 'targets.code as code', 'targets.indicator as indicator')
             // ->where(DB::raw('MONTH(actuals.date)'), '<=', $now->month)
-            ->where('employees.department_id', $departmentID)
+            ->where('department_actuals.department_id', '=', $departmentID)
             ->get();
 
         // dd($actuals);
         return view('actual.input-actual-department-details', [
             'title' => 'Input Data Realisasi',
-            'desc' => 'Achievement',
+            'desc' => 'Department Achievement',
             'departments' => $department,
             'targets' => $targets,
             'actuals' => $actuals
@@ -125,19 +124,68 @@ class ActualController extends Controller
         $targets = DB::table('department_targets')
             ->leftJoin('departments', 'departments.id', '=', 'department_targets.department_id')
             ->leftJoin('target_units', 'department_targets.target_unit_id', '=', 'target_units.id')
-            ->select('department_targets.id', 'department_targets.department_id', 'department_targets.target_unit_id', 'departments.name as department', 'department_targets.code', 'department_targets.indicator', 'department_targets.calculation', 'department_targets.supporting_document', 'department_targets.period', 'department_targets.weighting', 'department_targets.unit', 'target_units.target_1 as target_unit_1', 'target_units.target_2 as target_unit_2', 'target_units.target_3 as target_unit_3', 'target_units.target_4 as target_unit_4', 'target_units.target_5 as target_unit_5', 'target_units.target_6 as target_unit_6', 'target_units.target_7 as target_unit_7', 'target_units.target_8 as target_unit_8', 'target_units.target_9 as target_unit_9', 'target_units.target_10 as target_unit_10', 'target_units.target_11 as target_unit_11', 'target_units.target_12 as target_unit_12')
+            ->select('department_targets.id', 'department_targets.department_id', 'department_targets.target_unit_id', 'departments.name as department', 'department_targets.code', 'department_targets.indicator', 'department_targets.calculation', 'department_targets.supporting_document', 'department_targets.period', 'department_targets.weighting', 'department_targets.unit', 'department_targets.detail', 'target_units.target_1 as target_unit_1', 'target_units.target_2 as target_unit_2', 'target_units.target_3 as target_unit_3', 'target_units.target_4 as target_unit_4', 'target_units.target_5 as target_unit_5', 'target_units.target_6 as target_unit_6', 'target_units.target_7 as target_unit_7', 'target_units.target_8 as target_unit_8', 'target_units.target_9 as target_unit_9', 'target_units.target_10 as target_unit_10', 'target_units.target_11 as target_unit_11', 'target_units.target_12 as target_unit_12')
             ->where('department_targets.id', $id)->get();
 
 
         return view('actual.input-actual-department-achievement', [
             'title' => 'Input Data Realisasi',
-            'desc' => 'Achievement',
+            'desc' => 'Department Achievement',
             'department' => $department,
             'targets' => $targets
         ]);
     }
 
-    public function storeDept() {}
+    public function storeDept(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'date' => 'required',
+            'actual' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()
+                ->withErrors($validator)
+                ->withInput();
+        }
+        $date = Carbon::createFromDate($request->year, $request->date, 1)->startOfMonth();
+
+        if ($request->hasFile('record_file')) {
+            $recordFile = $request->file('record_file');
+            $recordFileName = Str::random(40) . '.' . $recordFile->getClientOriginalExtension();
+            $recordFile->move(public_path('record_files'), $recordFileName);;
+        }
+
+        $semester = '';
+
+        if ($request->date > 6 && $request->date <= 12) {
+            $semester = 'Genap';
+        } else {
+            $semester = 'Ganjil';
+        }
+        DepartmentActual::create([
+            'kpi_code' => $request->kpi_code,
+            'kpi_item' => $request->kpi_item,
+            'kpi_unit' => $request->kpi_unit,
+            'review_period' => $request->review_period,
+            'target' => $request->target,
+            'actual' => $request->actual,
+            'kpi_percentage' => $request->achievement,
+            'kpi_calculation' => $request->kpi_calculation,
+            'supporting_document' => $request->supporting_document,
+            'comment' => $request->comment,
+            'record_file' => isset($recordFileName) ? $recordFileName : null,
+            'department_name' => $request->department_name,
+            'kpi_weighting' => $request->kpi_weighting,
+            'date' => $date,
+            'semester' => $semester,
+            'detail' => $request->detail,
+            'department_id' => $request->department_id,
+
+        ]);
+
+        return redirect()->to('actual/input-actual-department-details?department=' . $request->input('department_id'));
+    }
 
     public function store(Request $request)
     {

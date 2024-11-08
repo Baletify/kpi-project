@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('unit');
             $table->string('supporting_document');
             $table->string('weighting');
+            $table->string('detail')->nullable();
             $table->foreignId('department_id')->nullable()->constrained()->onUpdate('cascade')->nullOnDelete();
             $table->foreignId('target_unit_id')->nullable()->constrained()->onUpdate('cascade')->nullOnDelete();
             $table->timestamps();

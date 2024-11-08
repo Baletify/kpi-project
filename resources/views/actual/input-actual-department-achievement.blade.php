@@ -1,5 +1,5 @@
 <x-app-layout :title="$title" :desc="$desc">
-    <form id="achievementForm" action="{{ url('actual/input-actual-achievement/store') }}" method="POST" enctype="multipart/form-data">
+    <form id="achievementForm" action="{{ url('actual/input-actual-department-achievement/store') }}" method="POST" enctype="multipart/form-data">
       @csrf
     <div class="ml-64 mt-4 overflow-y-auto p-2 bg-gray-100 border border-gray-200 shadow-md shadow-black/10 rounded-md">
    
@@ -40,9 +40,9 @@
         </div>
         </div>
         
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-2">
+        {{-- <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-2">
           
-        </div>
+        </div> --}}
         
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 items-center gap-x-6 gap-y-2" >
               <div class="relative mt-1 rounded-md">
@@ -136,6 +136,7 @@
               </div>
               </div>
               <div class="relative mt-1 rounded-md">
+                
                 <span class="pl-3 font-semibold">Cara Menghitung</span>  
                 <input type="text" name="kpi_calculation" id="calculation" class="block w-full rounded-md border-0 py-1.5 pl-4 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 mt-1" placeholder="Cara Menghitung" value="{{ $target->calculation }}"readonly>
                 <div class="absolute inset-y-0 right-0 flex items-center">
@@ -143,7 +144,7 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 items-center gap-x-6 gap-y-2" >
                   <div class="relative mt-1 rounded-md">
                     <span class="pl-3 font-semibold">Keterangan</span>  
-                  <input type="text" name="details" id="details" class="block w-full rounded-md border-0 py-1.5 pl-4 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 mt-1" placeholder="Keterangan" autocomplete="off">
+                  <textarea type="text" name="detail" id="detail" class="block w-full rounded-md border-0 py-1.5 pl-4 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 mt-1" placeholder="Keterangan" autocomplete="off" readonly>{{ $target->detail }}</textarea>
                   <div class="absolute inset-y-0 right-0 flex items-center">
                   </div>
                 </div>
@@ -151,7 +152,7 @@
                 <div class="relative mt-1 rounded-md">
                   <span class="pl-3 font-semibold">Komentar</span>  
                   <textarea name="comment" id="comment" class="block w-full rounded-md border-0 py-1.5 pl-4 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 mt-1" placeholder="Komentar" rows="2"></textarea>
-                  <input type="hidden" name="pv_employee_id" id="pv_employee_id" value="{{ $target->department_id }}">
+                  <input type="hidden" name="department_id" id="department_id" value="{{ $target->department_id }}">
                 <div class="absolute inset-y-0 right-0 flex items-center">
                 </div>
               </div>
@@ -195,7 +196,7 @@
   
         document.getElementById('submitBtn').addEventListener('click', function(event) {
         event.preventDefault();
-        document.getElementById('achievementForm').action = "{{ url('actual/input-actual-achievement/store') }}";
+        document.getElementById('achievementForm').action = "{{ url('actual/input-actual-department-achievement/store') }}";
         document.getElementById('achievementForm').submit();
       });
   

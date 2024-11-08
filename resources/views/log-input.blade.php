@@ -11,10 +11,10 @@
 
         <table class="w-full bg-white table-fixed">
             <tr>
-                <th style="width: 4%;" class="border-2 border-gray-400 text-[14px] uppercase tracking-wide font-medium text-gray-600 py-1 px-4 bg-yellow-200">No.</th>
-                <th style="width: 35%;" class="border-2 border-gray-400 text-[14px] uppercase tracking-wide font-medium text-gray-600 py-1 px-4 bg-yellow-200">KPI</th>
+                <th style="width: 4%;" class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-white py-1 px-4 bg-blue-700">No.</th>
+                <th style="width: 35%;" class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-white py-1 px-4 bg-blue-700">Departemen</th>
                 @foreach ($months as $month)
-                    <th class="border-2 border-gray-400 text-[14px] uppercase tracking-wide font-medium text-gray-600 py-1 px-4 bg-yellow-200">
+                    <th class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-white py-1 px-4 bg-blue-700">
                         {{ \Carbon\Carbon::create()->month($month)->format('M') }}
                     </th>
                 @endforeach

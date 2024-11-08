@@ -8,8 +8,8 @@
                         <div class="text-2xl font-semibold mb-1">Manager</div>
                     </div>
                     <div class="grid lg:grid-cols-1 w-24">
-                    <div class=" text-sm font-medium text-gray-500">Total: </div>
-                    <div class=" text-sm font-medium text-gray-500">Aktual: </div>
+                    <div class=" text-sm font-medium text-gray-500">Total: {{ $managerCount }} </div>
+                    <div class=" text-sm font-medium text-gray-500">Aktual: {{ $managerCountActual }} </div>
                 </div>
                 </div>
             </div>
@@ -20,8 +20,8 @@
                         <div class="text-xl font-semibold mb-1">Asst Manager</div>
                     </div>
                     <div class="grid lg:grid-cols-1 w-24">
-                        <div class=" text-sm font-medium text-gray-500">Total: </div>
-                        <div class=" text-sm font-medium text-gray-500">Aktual: </div>
+                        <div class=" text-sm font-medium text-gray-500">Total: {{ $assistantManagerCount }}</div>
+                        <div class=" text-sm font-medium text-gray-500">Aktual: {{ $assistantManagerCountActual }} </div>
                     </div>
                 </div>
             </div>
@@ -32,8 +32,8 @@
                         <div class="text-xl font-semibold mb-1">Monthly</div>
                     </div>
                     <div class="grid lg:grid-cols-1 w-24">
-                        <div class=" text-sm font-medium text-gray-500">Total: </div>
-                        <div class=" text-sm font-medium text-gray-500">Aktual: </div>
+                        <div class=" text-sm font-medium text-gray-500">Total: {{ $totalEmployees }}</div>
+                        <div class=" text-sm font-medium text-gray-500">Aktual: {{ $totalActualInputs }} </div>
                     </div>
                 </div>
             </div>

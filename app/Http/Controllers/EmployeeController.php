@@ -4,69 +4,54 @@ namespace App\Http\Controllers;
 
 use App\Models\Employee;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class EmployeeController extends Controller
 {
 
-    public function index(Request $request)
+    public function index()
     {
-        $department = $request->query('department');
-        $month = $request->query('month');
-        $year = $request->query('year');
-        $employee = $request->query('employee');
+        $employees = DB::table('employees')
+            ->leftJoin('departments', 'employees.department_id', '=', 'departments.id')
+            ->select('employees.id', 'employees.nik', 'employees.name', 'employees.occupation', 'departments.name as department')
+            ->get();
 
-        if ($employee) {
-            $employees = DB::table('employees')
-                ->leftJoin('departments', 'employees.department_id', '=', 'departments.id')
-                ->select('employees.id', 'employees.nik', 'employees.name', 'employees.occupation', 'departments.name as department')
-                ->where('employees.name', 'LIKE', '%' . $employee . '%')
-                ->get();
+        // Count of employees by occupation
+        $employeeCountsByOccupation = DB::table('employees')
+            ->select('occupation', DB::raw('count(*) as total'))
+            ->groupBy('occupation')
+            ->get();
 
+        // Total actual inputs for the current month by department
+        $currentMonth = Carbon::now()->month;
+        $actualInputsByDepartment = DB::table('actuals')
+            ->leftJoin('employees', 'actuals.employee_id', '=', 'employees.id')
+            ->leftJoin('departments', 'employees.department_id', '=', 'departments.id')
+            ->select('departments.name', DB::raw('count(*) as total'), 'employees.occupation as occupation')
+            ->whereMonth('actuals.date', $currentMonth)
+            ->groupBy('departments.name', 'employees.name', 'employees.occupation')
+            ->get();
 
-            return view('dashboard', [
-                'title' => 'Dashboard',
-                'desc' => 'Analytics',
-                'employees' => $employees
-            ]);
-        } else if ($department) {
-            $employees = DB::table('employees')
-                ->leftJoin('departments', 'employees.department_id', '=', 'departments.id')
-                ->select('employees.id', 'employees.nik', 'employees.name', 'employees.occupation', 'departments.name as department')
-                ->where('departments.name', $department)
-                ->get();
+        $managerCount = $employeeCountsByOccupation->firstWhere('occupation', 'BSKP Staff')->total ?? 0;
+        $assistantManagerCount = $employeeCountsByOccupation->firstWhere('occupation', 'IT Staff')->total ?? 0;
+        $totalEmployees = $employees->count();
 
-            return view('dashboard', [
-                'title' => 'Dashboard',
-                'desc' => 'Analytics',
-                'employees' => $employees
-            ]);
-        } else if ($month && $year) {
-            $employees = DB::table('employees')
-                ->leftJoin('departments', 'employees.department_id', '=', 'departments.id')
-                ->leftJoin('actuals', 'employees.id', '=', 'actuals.employee_id')
-                ->select('employees.id', 'employees.nik', 'employees.name', 'employees.occupation', 'departments.name as department', 'actuals.date as actual_date')
-                ->where(DB::raw('MONTH(actuals.date as actual_date)'), $month)
-                ->where(DB::raw('YEAR(actuals.date as actual_date)'), $year)
-                ->get();
+        $managerCountActual = $actualInputsByDepartment->firstWhere('occupation', 'BSKP Staff')->total ?? 0;
+        $assistantManagerCountActual = $actualInputsByDepartment->firstWhere('occupation', 'IT Staff')->total ?? 0;
 
-            return view('dashboard', [
-                'title' => 'Dashboard',
-                'desc' => 'Analytics',
-                'employees' => $employees
-            ]);
-        } else {
-            $employees = DB::table('employees')
-                ->leftJoin('departments', 'employees.department_id', '=', 'departments.id')
-                ->select('employees.id', 'employees.nik', 'employees.name', 'employees.occupation', 'departments.name as department')
-                ->get();
-
-            return view('dashboard', [
-                'title' => 'Dashboard',
-                'desc' => 'Analytics',
-                'employees' => $employees
-            ]);
-        }
+        $totalActualInputs = $actualInputsByDepartment->sum('total');
+        return view('dashboard', [
+            'title' => 'Dashboard',
+            'desc' => 'Analytics',
+            'employees' => $employees,
+            'managerCount' => $managerCount,
+            'assistantManagerCount' => $assistantManagerCount,
+            'totalEmployees' => $totalEmployees,
+            'totalActualInputs' => $totalActualInputs,
+            'managerCountActual' => $managerCountActual,
+            'assistantManagerCountActual' => $assistantManagerCountActual,
+        ]);
     }
     public function filter(Request $request)
     {
