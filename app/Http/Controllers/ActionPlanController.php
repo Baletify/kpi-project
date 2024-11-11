@@ -77,9 +77,10 @@ class ActionPlanController extends Controller
 
     public function editFile($id)
     {
-        $employee = DB::table('employees')->leftJoin('departments', 'departments.id', '=', 'employees.department_id')
+        $employee = DB::table('employees')
+            ->leftJoin('departments', 'departments.id', '=', 'employees.department_id')
             ->leftJoin('action_plans', 'action_plans.employee_id', 'employees.id')
-            ->where('employees.id', $id)
+            ->where('action_plans.id', $id)
             ->select('employees.id', 'employees.name', 'employees.nik', 'employees.occupation', 'departments.name as department', 'departments.id as department_id', 'action_plans.file as file', 'action_plans.id as action_plan_id')
             ->first();
 

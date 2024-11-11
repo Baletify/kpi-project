@@ -159,7 +159,7 @@
 
             if (data.length > 0) {
               data.forEach((item, index) => {
-                const row = `<tr>
+                const row = `<tr class="${index % 2 === 0 ? 'bg-gray-200' : 'bg-gray-100'}">
                   <td class="border-2 border-gray-400 tracking-wide px-2 py-0 text-center">${index + 1}</td>
                   <td class="border-2 border-gray-400 tracking-wide px-2 py-0">
                     <a href="/report/employee-report/${item.id}?semester=${semester}&year=${year}" class=" hover:underline">${item.name}</a>

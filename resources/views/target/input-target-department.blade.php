@@ -7,30 +7,31 @@
         </button>
         <table class="w-full">
             <tr>
-                <th style="width: 3%;" class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-white py-2 px-4 bg-blue-700">No.</th>
-                <th class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-white py-2 px-4 bg-blue-700">NIK</th>
-                <th class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-white py-2 px-4 bg-blue-700">Nama</th>
-                <th class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-white py-2 px-4 bg-blue-700">Department</th>
-                <th class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-white py-2 px-4 bg-blue-700">Jabatan</th>
-                <th class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-white py-2 px-4 bg-blue-700">Aksi</th>
+                <th style="width: 3%;" class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-white py-1 px-4 bg-blue-700">No.</th>
+                <th class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-white py-1 px-4 bg-blue-700">NIK</th>
+                <th class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-white py-1 px-4 bg-blue-700">Nama</th>
+                <th class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-white py-1 px-4 bg-blue-700">Department</th>
+                <th class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-white py-1 px-4 bg-blue-700">Jabatan</th>
+                <th class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-white py-1 px-4 bg-blue-700">Aksi</th>
             </tr>
             @php
                 $i = 0;
             @endphp
             @forelse ($departments as $department)
-            <tr>
-                @php
-                    $i++
-                @endphp
-                <td class="border-2 border-gray-400 tracking-wide px-2 py-2 text-center">{{ $i }}</td>
-                <td class="border-2 border-gray-400 tracking-wide px-2 py-2">{{ $department->nik }}</td>
-                <td class="border-2 border-gray-400 tracking-wide px-2 py-2">{{ $department->employee }}</td>
-                <td class="border-2 border-gray-400 tracking-wide px-2 py-2">{{ $department->department }}</td>
-                <td class="border-2 border-gray-400 tracking-wide px-2 py-2">{{ $department->occupation }}</td>
-                <td class="border-2 border-gray-400 tracking-wide px-2 py-2">
+            @php
+            $i++
+            @endphp
+            <tr class="{{ $i % 2 === 0 ? 'bg-gray-100' : 'bg-gray-200' }}">
+
+                <td class="border-2 border-gray-400 tracking-wide text-[12px] px-2 py-0 text-center">{{ $i }}</td>
+                <td class="border-2 border-gray-400 tracking-wide text-[12px] px-2 py-0">{{ $department->nik }}</td>
+                <td class="border-2 border-gray-400 tracking-wide text-[12px] px-2 py-0">{{ $department->employee }}</td>
+                <td class="border-2 border-gray-400 tracking-wide text-[12px] px-2 py-0">{{ $department->department }}</td>
+                <td class="border-2 border-gray-400 tracking-wide text-[12px] px-2 py-0">{{ $department->occupation }}</td>
+                <td class="border-2 border-gray-400 tracking-wide text-[12px] px-2 py-0">
                     <div class="flex justify-center gap-2">
                     <a href="/target/input-target-kpi?employee={{ $department->employee_id }}">
-                      <span class="text-blue-500">Input KPI Individu</span>
+                      <span class="text-blue-500 hover:underline">Input KPI Individu</span>
                     </a>
                 </div>
                 </td>

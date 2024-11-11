@@ -28,6 +28,7 @@ return new class extends Migration
             $table->string('kpi_weighting');
             $table->dateTime('date');
             $table->string('semester');
+            $table->string('trend')->nullable();
             $table->string('detail')->nullable();
             $table->foreignId('employee_id')->nullable()->constrained()->onUpdate('cascade')->nullOnDelete();
             $table->timestamps();

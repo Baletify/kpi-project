@@ -18,13 +18,13 @@
             }
             @endphp
             <tr>
-                <th style="width: 3%;" class="border-2 border-gray-400 text-[13px] uppercase tracking-wide font-medium text-white py-1 bg-blue-700">No.</th>
-                <th class="border-2 border-gray-400 text-[13px] uppercase tracking-wide font-medium text-white py-1 bg-blue-700">Kode KPI</th>
-                <th class="border-2 border-gray-400 text-[13px] uppercase tracking-wide font-medium text-white py-1 bg-blue-700">Indikator</th>
+                <th style="width: 3%;" class="border-2 border-gray-400 text-[13px] tracking-wide font-medium text-white py-0 bg-blue-700">No.</th>
+                <th style="width: 4%" class="border-2 border-gray-400 text-[13px] tracking-wide font-medium text-white py-0 bg-blue-700">Kode KPI</th>
+                <th class="border-2 border-gray-400 text-[13px] tracking-wide font-medium text-white py-0 bg-blue-700">KPI</th>
                 @foreach ($months as $monthName)
-                    <th class="border-2 border-gray-400 text-[13px] uppercase tracking-wide font-medium text-white py-1 bg-blue-700">{{ $monthName }}</th>
+                    <th class="border-2 border-gray-400 text-[13px] tracking-wide font-medium text-white py-0 bg-blue-700">{{ $monthName }}</th>
                 @endforeach
-                <th class="border-2 border-gray-400 text-[13px] uppercase tracking-wide font-medium text-white py-1 bg-blue-700">Aksi</th>
+                <th class="border-2 border-gray-400 text-[13px] tracking-wide font-medium text-white py-0 bg-blue-700">Aksi</th>
             </tr>
             @php
                 $i = 0;
@@ -33,7 +33,7 @@
                 @php
                     $i++;
                 @endphp
-                <tr>
+                <tr class="{{ $i % 2 === 0 ? 'bg-gray-100' : 'bg-gray-200' }}">
                     <td class="border-2 border-gray-400 text-[10px] tracking-wide  py-0 px-2 text-center">{{ $i }}</td>
                     <td class="border-2 border-gray-400 text-[10px] tracking-wide  py-0 px-2">{{ $target->code }}</td>
                     <td class="border-2 border-gray-400 text-[10px] tracking-wide  py-0 px-2">{{ $target->indicator }}</td>
@@ -53,7 +53,7 @@
                     <td class="border-2 border-gray-400 text-[10px] tracking-wide  py-0 px-2 text-center">
                         <div class="flex justify-center gap-2">
                             <a href="{{ url('/actual/input-actual-achievement/edit/' . $target->id) }}">
-                                <i class="ri-edit-2-line bg-yellow-400 text-sm border border-gray-200 shadow-black "></i>
+                                <i class="ri-edit-box-line p-0.5 text-xl bg-yellow-400 text-white rounded-sm"></i>
                             </a>
                         </div>
                     </td>

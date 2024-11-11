@@ -68,7 +68,7 @@
               <textarea name="kpi_item" id="kpi_item" class="block w-full rounded-md border-0 py-1.5 pl-4 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 mt-1" placeholder="Item KPI" rows="2" readonly>{{ $target->indicator }}</textarea>
             <div class="absolute inset-y-0 right-0 flex items-center">
             </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 items-center gap-x-6 gap-y-2" >
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 items-center gap-x-6 gap-y-2" >
               <div class="relative mt-1 rounded-md">
                 <span class="pl-3 font-semibold">Periode Review</span>  
               <input type="text" name="review_period" id="review_period" class="block w-full rounded-md border-0 py-1.5 pl-4 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 mt-1" placeholder="Periode Review" value="{{ $target->period }}" readonly>
@@ -87,75 +87,83 @@
           <div class="absolute inset-y-0 right-0 flex items-center">
           </div>
         </div>
-        <div class="relative mt-1 rounded-md">
-          <span class="pl-3 font-semibold">Target</span> 
-          
-      @php
-    $currentMonth = \Carbon\Carbon::now()->month;
-    $targetUnit = '';
+          <div class="relative mt-1 rounded-md">
+            <span class="pl-3 font-semibold">Trend</span>  
+          <input type="text" name="trend" id="trend" class="block w-full rounded-md border-0 py-1.5 pl-4 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 mt-1" placeholder="Bobot" value="{{ $target->trend }}" readonly>
+          <div class="absolute inset-y-0 right-0 flex items-center">
+          </div>
+        </div>
+    </div>
+    <div class="grid grid-cols-3 gap-x-5">
+          <div class="relative mt-1 rounded-md">
+            <span class="pl-3 font-semibold">Target</span> 
+            
+        @php
+      $currentMonth = \Carbon\Carbon::now()->month;
+      $targetUnit = '';
 
-    switch ($currentMonth) {
-        case 1:
-            $targetUnit = $target->target_unit_12 ?? '';
-            break;
-        case 2:
-            $targetUnit = $target->target_unit_1 ?? '';
-            break;
-        case 3:
-            $targetUnit = $target->target_unit_2 ?? '';
-            break;
-        case 4:
-            $targetUnit = $target->target_unit_3 ?? '';
-            break;
-        case 5:
-            $targetUnit = $target->target_unit_4 ?? '';
-            break;
-        case 6:
-            $targetUnit = $target->target_unit_5 ?? '';
-            break;
-        case 7:
-            $targetUnit = $target->target_unit_6 ?? '';
-            break;
-        case 8:
-            $targetUnit = $target->target_unit_7 ?? '';
-            break;
-        case 9:
-            $targetUnit = $target->target_unit_8 ?? '';
-            break;
-        case 10:
-            $targetUnit = $target->target_unit_9 ?? '';
-            break;
-        case 11:
-            $targetUnit = $target->target_unit_10 ?? '';
-            break;
-        case 12:
-            $targetUnit = $target->target_unit_11 ?? '';
-            break;
-        default:
-            $targetUnit = '';
-    }
-      @endphp
-        <input type="text" name="target" id="target" class="block w-full rounded-md border-0 py-1.5 pl-4 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 mt-1" placeholder="Target" value="{{ $targetUnit }}" readonly >
-        <div class="absolute inset-y-0 right-0 flex items-center">
+      switch ($currentMonth) {
+          case 1:
+              $targetUnit = $target->target_unit_12 ?? '';
+              break;
+          case 2:
+              $targetUnit = $target->target_unit_1 ?? '';
+              break;
+          case 3:
+              $targetUnit = $target->target_unit_2 ?? '';
+              break;
+          case 4:
+              $targetUnit = $target->target_unit_3 ?? '';
+              break;
+          case 5:
+              $targetUnit = $target->target_unit_4 ?? '';
+              break;
+          case 6:
+              $targetUnit = $target->target_unit_5 ?? '';
+              break;
+          case 7:
+              $targetUnit = $target->target_unit_6 ?? '';
+              break;
+          case 8:
+              $targetUnit = $target->target_unit_7 ?? '';
+              break;
+          case 9:
+              $targetUnit = $target->target_unit_8 ?? '';
+              break;
+          case 10:
+              $targetUnit = $target->target_unit_9 ?? '';
+              break;
+          case 11:
+              $targetUnit = $target->target_unit_10 ?? '';
+              break;
+          case 12:
+              $targetUnit = $target->target_unit_11 ?? '';
+              break;
+          default:
+              $targetUnit = '';
+      }
+        @endphp
+          <input type="text" name="target" id="target" class="block w-full rounded-md border-0 py-1.5 pl-4 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 mt-1" placeholder="Target" value="{{ $targetUnit }}" readonly >
+          <div class="absolute inset-y-0 right-0 flex items-center">
+          </div>
         </div>
-      </div>
-      <div class="relative mt-1 rounded-md">
-          <span class="pl-3 font-semibold">Aktual</span>  
-        <input type="text" name="actual" id="actual" class="block w-full rounded-md border-0 py-1.5 pl-4 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 mt-1" placeholder="Aktual" oninput="calculateAchievement()" autocomplete="off">
-        <div class="absolute inset-y-0 right-0 flex items-center">
+        <div class="relative mt-1 rounded-md">
+            <span class="pl-3 font-semibold">Aktual</span>  
+          <input type="text" name="actual" id="actual" class="block w-full rounded-md border-0 py-1.5 pl-4 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 mt-1" placeholder="Aktual" oninput="calculateAchievement()" autocomplete="off">
+          <div class="absolute inset-y-0 right-0 flex items-center">
+          </div>
         </div>
-      </div>
-      <div class="relative mt-1 rounded-md">
-          <span class="pl-3 font-semibold">"%" Pencapaian</span>  
-        <input type="text" name="achievement" id="achievement" class="block w-full rounded-md border-0 py-1.5 pl-4 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 mt-1" placeholder="Pencapaian" readonly>
-        <div class="absolute inset-y-0 right-0 flex items-center">
+        <div class="relative mt-1 rounded-md">
+            <span class="pl-3 font-semibold">"%" Pencapaian</span>  
+          <input type="text" name="achievement" id="achievement" class="block w-full rounded-md border-0 py-1.5 pl-4 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 mt-1" placeholder="Pencapaian" readonly>
+          <div class="absolute inset-y-0 right-0 flex items-center">
+          </div>
         </div>
-      </div>
-            </div>
-            </div>
+        </div>
+    </div>
             <div class="relative mt-1 rounded-md">
               <span class="pl-3 font-semibold">Cara Menghitung</span>  
-              <input type="text" name="kpi_calculation" id="calculation" class="block w-full rounded-md border-0 py-1.5 pl-4 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 mt-1" placeholder="Cara Menghitung" value="{{ $target->calculation }}"readonly>
+              <textarea type="text" name="kpi_calculation" id="calculation" class="block w-full rounded-md border-0 py-1.5 pl-4 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 mt-1" placeholder="Cara Menghitung" rows="2" readonly>{{ $target->calculation }}</textarea>
               <div class="absolute inset-y-0 right-0 flex items-center">
               </div>
               <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 items-center gap-x-6 gap-y-2" >
