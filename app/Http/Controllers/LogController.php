@@ -11,9 +11,9 @@ class LogController extends Controller
     public function index()
     {
         $currentMonth = Carbon::now()->month;
-        $semester = ($currentMonth <= 6) ? 'ganjil' : 'genap';
+        $semester = ($currentMonth <= 6) ? '1' : '2';
 
-        if ($semester === 'ganjil') {
+        if ($semester === '1') {
             $months = range(1, 6); // January to June
         } else {
             $months = range(7, 12); // July to December

@@ -15,7 +15,7 @@
                 <span class="text-gray-600">Dept: IT</span>
             </div>
             <div class="pl-1">
-                <span class="text-gray-600">Periode: Semester 1 - 2025</span>
+                <span class="text-gray-600">Periode: 2025</span>
             </div>
         </div>
        
@@ -31,16 +31,25 @@
                 <td class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-white py-1 px-4 bg-blue-700 text-center">Semester 2</td>
                 <td class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-white py-1 px-4 bg-blue-700 text-center">Rata Rata</td>
               </tr>
+
+              @php
+                  $i = 0;
+              @endphp
+              @foreach ($employees as $employee)
               <tr>
-                <td class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-gray-600 py-1 px-4 text-center">1</td>
-                <td class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-gray-600 py-1 px-4">IT</td>
-                <td class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-gray-600 py-1 px-4">XXX-XXX</td>
-                <td class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-gray-600 py-1 px-4">Mr-XXX</td>
-                <td class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-gray-600 py-1 px-4">IT Staff</td>
+                @php
+                    $i++;
+                @endphp
+                <td class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-gray-600 py-1 px-4 text-center">{{ $i }}</td>
+                <td class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-gray-600 py-1 px-4">{{ $employee->dept }}</td>
+                <td class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-gray-600 py-1 px-4">{{ $employee->nik }}</td>
+                <td class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-gray-600 py-1 px-4">{{ $employee->name }}</td>
+                <td class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-gray-600 py-1 px-4">{{ $employee->occupation }}</td>
                 <td class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-gray-600 py-1 px-4"></td>
                 <td class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-gray-600 py-1 px-4"></td>
                 <td class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-gray-600 py-1 px-4"></td>
               </tr>
+              @endforeach
         </table>
     </div>
 </x-app-layout>

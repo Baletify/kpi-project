@@ -104,8 +104,29 @@
                     @endphp
                     <td class="border-2 bg-blue-100 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-1 text-center">{{ $actual ? $actual->target : '' }}</td>
                     @endforeach
-                    <td class="border-2 bg-blue-100 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-1 text-center"></td>
-                    <td class="border-2 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-1 text-center bg-white" rowspan="4"></td>
+                    
+                    @php
+                        $totalTarget = $totals[$target->code]['total_target'] ?? 0;
+                    @endphp
+                @if ($totalTarget > 0)
+                     <td class="border-2 bg-blue-100 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-1 text-center">
+                        @if (strpos($totalTarget, '%') !== false)
+                            {{ number_format($totalTarget) }}
+                        @else
+                            {{ number_format($totalTarget) }}%
+                        @endif
+                     </td>
+                 @else
+                     <td class="border-2 bg-blue-100 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-1 text-center"></td>
+                 @endif
+                    @php
+                        $totalWeightingAchievement = $totals[$target->code] ['total_achievement_weight'] ?? 0 ;
+                    @endphp
+                     @if ($totalWeightingAchievement > 0)
+                     <td class="border-2 bg-blue-100 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-1 text-center" rowspan="4">{{ number_format($totalWeightingAchievement) }}%</td>
+                    @else
+                     <td class="border-2 bg-blue-100 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-1 text-center" rowspan="4"></td>
+                    @endif
                 </tr>
                 <tr>
                     <td class="border-2 bg-white border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-1 text-center">Actual</td>
@@ -117,7 +138,21 @@
                     @endphp
                     <td class="border-2 bg-white border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-1 text-center">{{ $actual ? $actual->actual : '' }}</td>
                     @endforeach
-                    <td class="border-2 bg-white border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-1 text-center"></td>
+
+                    @php
+                         $totalActual = $totals[$target->code]['total_actual'] ?? 0;
+                    @endphp
+                    @if ($totalTarget > 0)
+                     <td class="border-2 bg-white border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-1 text-center">
+                        @if (strpos($totalActual, '%') !== false)
+                        {{ number_format($totalActual) }}
+                        @else
+                        {{ number_format($totalActual) }}%
+                        @endif
+                     </td>
+                 @else
+                     <td class="border-2 bg-white border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-1 text-center"></td>
+                 @endif
                 </tr>
                 <tr>
                     <td class="border-2 bg-blue-100 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-1 text-center">%</td>
@@ -129,7 +164,14 @@
                     @endphp
                     <td class="border-2 bg-blue-100 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-1 text-center">{{ $actual ? $actual->kpi_percentage : '' }}</td>
                     @endforeach
-                    <td class="border-2 bg-blue-100 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-1 text-center"></td>
+                    @php
+                         $totalPercentage = $totals[$target->code]['total_percentage'] ?? 0;
+                    @endphp
+                    @if ($totalTarget > 0)
+                     <td class="border-2 bg-blue-100 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-1 text-center">{{ number_format($totalPercentage) }} %</td>
+                 @else
+                     <td class="border-2 bg-blue-100 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-1 text-center"></td>
+                 @endif
                 </tr>
                 <tr>
                     <td class="border-2 bg-white border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-1 text-center">Rekaman</td>
@@ -151,7 +193,7 @@
                         @endif
                     </td>
                     @endforeach
-                    <td class="border-2 bg-white border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-1 text-center"></td>
+                    <td class="border-2 bg-gray-300 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-1 text-center"></td>
                 </tr>
                 @endforeach
             </tbody>

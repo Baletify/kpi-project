@@ -16,6 +16,9 @@
             </tr>
             @php
                 $i = 0;
+                $currentMonth = \Carbon\Carbon::now()->month;
+                $currentYear = \Carbon\Carbon::now()->year;
+                $yearToShow = ($currentMonth == 1) ? $currentYear - 1 : $currentYear;
             @endphp
             @forelse ($departments as $department)
             @php
@@ -29,7 +32,7 @@
                 <td class="border-2 border-gray-400 text-[12px] tracking-wide px-2 py-0">{{ $department->occupation }}</td>
                 <td class="border-2 border-gray-400 text-[12px] tracking-wide px-2 py-0">
                     <div class="flex justify-center gap-2 text-[12px]">
-                    <a href="/actual/input-actual-employee?employee={{ $department->employee_id }}">
+                    <a href="/actual/input-actual-employee?employee={{ $department->employee_id }}&year={{ $yearToShow }}">
                         <span class="text-blue-500 hover:underline">Input Aktual Individu</span>
                       </a>
                 </div>

@@ -22,6 +22,7 @@ class DepartmentActual extends Model
         'department_name',
         'kpi_weighting',
         'date',
+        'trend',
         'semester',
         'detail',
         'department_id',

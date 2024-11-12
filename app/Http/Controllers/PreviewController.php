@@ -30,9 +30,9 @@ class PreviewController extends Controller
         $semester = '';
 
         if ($request->date > 6) {
-            $semester = 'Genap';
+            $semester = '2';
         } else {
-            $semester = 'Ganjil';
+            $semester = '1';
         }
 
         Preview::create([

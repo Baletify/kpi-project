@@ -50,7 +50,7 @@
                 <textarea name="kpi_item" id="kpi_item" class="block w-full rounded-md border-0 py-1.5 pl-4 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 mt-1" placeholder="Item KPI" rows="2" readonly>{{ $target->indicator }}</textarea>
               <div class="absolute inset-y-0 right-0 flex items-center">
               </div>
-              <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 items-center gap-x-6 gap-y-2" >
+              <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 items-center gap-x-6 gap-y-2" >
                 <div class="relative mt-1 rounded-md">
                   <span class="pl-3 font-semibold">Periode Review</span>  
                 <input type="text" name="review_period" id="review_period" class="block w-full rounded-md border-0 py-1.5 pl-4 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 mt-1" placeholder="Periode Review" value="{{ $target->period }}" readonly>
@@ -69,6 +69,12 @@
             <div class="absolute inset-y-0 right-0 flex items-center">
             </div>
           </div>
+          <div class="relative mt-1 rounded-md">
+            <span class="pl-3 font-semibold">Trend</span>  
+          <input type="text" name="trend" id="trend" class="block w-full rounded-md border-0 py-1.5 pl-4 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 mt-1" placeholder="Trend" value="{{ $target->trend }}" readonly>
+          <div class="absolute inset-y-0 right-0 flex items-center">
+          </div>
+        </div>
           <div class="relative mt-1 rounded-md">
             <span class="pl-3 font-semibold">Target</span> 
             

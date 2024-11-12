@@ -87,10 +87,10 @@
                 let bulanOptions;
     
                 if (currentMonth == 2 && currentMonth < 8) {
-                    semester = 'Ganjil';
+                    semester = '1';
                     bulanOptions = ['01', '02', '03', '04', '05', '06'];
                 } else {
-                    semester = 'Genap';
+                    semester = '2';
                     bulanOptions = ['07', '08', '09', '10', '11', '12'];
                 }
     
@@ -120,7 +120,7 @@
             }
     
             function fetchData(semester) {
-                const bulanOptions = semester === 'Ganjil' ? ['01', '02', '03', '04', '05', '06'] : ['07', '08', '09', '10', '11', '12'];
+                const bulanOptions = semester === '1' ? ['01', '02', '03', '04', '05', '06'] : ['07', '08', '09', '10', '11', '12'];
     
                 bulanOptions.forEach(bulan => {
                     // Ganti URL dengan endpoint yang sesuai untuk mendapatkan data berdasarkan semester dan bulan

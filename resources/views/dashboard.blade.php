@@ -60,8 +60,8 @@
                     <div class="pl-2 mb-3">
                         <select name="semester" id="semester" class=" w-28">
                             <option value="">-- Semester --</option>
-                            <option value="Ganjil">Ganjil</option>
-                            <option value="Genap">Genap</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
                         </select>
                     </div>
                     <div class="absolute inset-y-0 right-0 flex items-center">

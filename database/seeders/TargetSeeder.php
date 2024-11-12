@@ -15,7 +15,7 @@ class TargetSeeder extends Seeder
     {
         $targets = [
             [
-                'code' => 'IT.917-849.01',
+                'code' => 'IT.917-919.01',
                 'indicator' => 'Jumlah fitur aplikasi yang diselesaikan',
                 'calculation' => '5 fitur per bulan',
                 'period' => 'Monthly',
@@ -28,7 +28,7 @@ class TargetSeeder extends Seeder
                 'target_unit_id' => 1,
             ],
             [
-                'code' => 'IT.917-849.02',
+                'code' => 'IT.917-919.02',
                 'indicator' => 'Tingkat Penyelesaian Fitur Tepat Waktu',
                 'calculation' => '90% Tepat Waktu',
                 'period' => 'Monthly',
@@ -41,7 +41,7 @@ class TargetSeeder extends Seeder
                 'target_unit_id' => 2,
             ],
             [
-                'code' => 'IT.917-849.03',
+                'code' => 'IT.917-919.03',
                 'indicator' => 'Tingkat Penyelesaian Error Tepat Waktu',
                 'calculation' => '90% Tepat Waktu',
                 'period' => 'Monthly',
@@ -54,7 +54,7 @@ class TargetSeeder extends Seeder
                 'target_unit_id' => 3,
             ],
             [
-                'code' => 'IT.917-849.04',
+                'code' => 'IT.917-919.04',
                 'indicator' => 'Inovasi',
                 'calculation' => 'Inovasi Produk',
                 'period' => 'Tentative',
@@ -67,7 +67,7 @@ class TargetSeeder extends Seeder
                 'target_unit_id' => 4,
             ],
             [
-                'code' => 'IT.917-849.05',
+                'code' => 'IT.917-919.05',
                 'indicator' => 'Action Plan',
                 'calculation' => 'Action Plan',
                 'period' => 'Monthly',

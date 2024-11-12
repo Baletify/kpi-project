@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Employee;
 use Illuminate\Support\Facades\DB;
+use App\Models\Actual;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Response;
@@ -33,7 +34,7 @@ class ReportController extends Controller
             $actuals = DB::table('actuals')
                 ->leftJoin('employees', 'actuals.employee_id', '=', 'employees.id')
                 ->leftJoin('departments', 'employees.department_id', '=', 'departments.id')
-                ->select('actuals.date as date', 'actuals.employee_id as employee_id', 'actuals.kpi_item', 'actuals.kpi_code as kpi_code', 'actuals.kpi_percentage as achievement', 'employees.name as name', 'departments.name as department', 'employees.occupation as occupation', 'employees.nik as nik', 'actuals.semester as semester', 'actuals.date as year', 'actuals.target', 'actuals.actual', 'actuals.kpi_percentage', 'actuals.record_file')
+                ->select('actuals.date as date', 'actuals.employee_id as employee_id', 'actuals.kpi_item', 'actuals.kpi_code as kpi_code', 'actuals.kpi_weighting', 'actuals.kpi_percentage as achievement', 'employees.name as name', 'departments.name as department', 'employees.occupation as occupation', 'employees.nik as nik', 'actuals.semester as semester', 'actuals.date as year', 'actuals.target', 'actuals.actual', 'actuals.kpi_percentage', 'actuals.record_file')
                 ->where('actuals.employee_id', $id)
                 ->where('actuals.semester', $semester)
                 ->where(DB::raw('YEAR(actuals.date)'), $year)
@@ -44,7 +45,32 @@ class ReportController extends Controller
                 abort(404, 'No actuals found for the given year and semester');
             }
 
-            return view('report.employee-report', ['title' => 'Report', 'desc' => 'Employee Report', 'employee' => $employee, 'actuals' => $actuals, 'targets' => $targets]);
+            $groupedData = $actuals->groupBy('kpi_code');
+
+            // Hitung total target dan actual untuk setiap kelompok
+            $totals = $groupedData->map(function ($group) {
+                $totalTarget = $group->sum(function ($item) {
+                    return (float) $item->target;
+                });
+                $totalActual = $group->sum(function ($item) {
+                    return (float) $item->actual;
+                });
+                $totalPercentage = $totalTarget > 0 ? ($totalActual / $totalTarget) * 100 : 0;
+
+
+                $weight = floatval($group->first()->kpi_weighting); // Ambil bobot dari item pertama dalam grup
+                $totalAchievementWeight = $totalPercentage * $weight / 100;
+
+                return [
+                    'total_target' => $totalTarget,
+                    'total_actual' => $totalActual,
+                    'total_percentage' => $totalPercentage,
+                    'weight' => $weight,
+                    'total_achievement_weight' => $totalAchievementWeight,
+                ];
+            });
+
+            return view('report.employee-report', ['title' => 'Report', 'desc' => 'Employee Report', 'employee' => $employee, 'actuals' => $actuals, 'targets' => $targets, 'totals' => $totals]);
         } else {
 
             abort(404, 'No actuals found for the given year and semester');
@@ -54,16 +80,16 @@ class ReportController extends Controller
     public function department(Request $request)
     {
         $department = $request->query('department');
+        $year = $request->query('year');
+
 
         if ($department) {
-            $actuals = DB::table('actuals')
-                ->leftJoin('employees', 'actuals.employee_id', '=', 'employees.id')
-                ->select('actuals.date as date', 'actuals.employee_id as employee_id', 'actuals.kpi_item', 'actuals.kpi_code as kpi_code', 'actuals.kpi_percentage as achievement', 'employees.name as name', 'employees.occupation as occupation', 'employees.nik as nik', 'actuals.department_name as department')
-                ->where('actuals.department_name', $department)->get();
 
-            return view('report.department-report', ['title' => 'Report', 'desc' => 'Department', 'actuals' => $actuals]);
+            $employees = DB::table('employees')->leftJoin('departments', 'departments.id', '=', 'employees.department_id')->select('departments.name as dept', 'employees.name as name', 'employees.nik', 'employees.occupation')->where('employees.department_id', $department)->get();
+
+            return view('report.department-report', ['title' => 'Report', 'desc' => 'Department Report', 'employees' => $employees]);
         } else {
-            return view('report.department-report', ['title' => 'Report', 'desc' => 'Department']);
+            return abort(404, 'No actuals found for the given year and semester');
         }
     }
 

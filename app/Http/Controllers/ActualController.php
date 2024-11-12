@@ -19,6 +19,7 @@ class ActualController extends Controller
     {
         $employeeID = $request->query('employee');
         $employee = Employee::find($employeeID);
+        $year = $request->query('year');
 
 
         // Ambil data targets
@@ -34,6 +35,7 @@ class ActualController extends Controller
             // ->select('actuals.date as date', 'actuals.employee_id as employee_id', 'targets.code as code', 'targets.indicator as indicator')
             // ->where(DB::raw('MONTH(actuals.date)'), '<=', $now->month)
             ->where('actuals.employee_id', $employeeID)
+            ->where(DB::raw('YEAR(actuals.date)'), '=', $year)
             ->get();
 
         // dd($actuals);
@@ -124,7 +126,7 @@ class ActualController extends Controller
         $targets = DB::table('department_targets')
             ->leftJoin('departments', 'departments.id', '=', 'department_targets.department_id')
             ->leftJoin('target_units', 'department_targets.target_unit_id', '=', 'target_units.id')
-            ->select('department_targets.id', 'department_targets.department_id', 'department_targets.target_unit_id', 'departments.name as department', 'department_targets.code', 'department_targets.indicator', 'department_targets.calculation', 'department_targets.supporting_document', 'department_targets.period', 'department_targets.weighting', 'department_targets.unit', 'department_targets.detail', 'target_units.target_1 as target_unit_1', 'target_units.target_2 as target_unit_2', 'target_units.target_3 as target_unit_3', 'target_units.target_4 as target_unit_4', 'target_units.target_5 as target_unit_5', 'target_units.target_6 as target_unit_6', 'target_units.target_7 as target_unit_7', 'target_units.target_8 as target_unit_8', 'target_units.target_9 as target_unit_9', 'target_units.target_10 as target_unit_10', 'target_units.target_11 as target_unit_11', 'target_units.target_12 as target_unit_12')
+            ->select('department_targets.id', 'department_targets.department_id', 'department_targets.trend', 'department_targets.target_unit_id', 'departments.name as department', 'department_targets.code', 'department_targets.indicator', 'department_targets.calculation', 'department_targets.supporting_document', 'department_targets.period', 'department_targets.weighting', 'department_targets.unit', 'department_targets.detail', 'target_units.target_1 as target_unit_1', 'target_units.target_2 as target_unit_2', 'target_units.target_3 as target_unit_3', 'target_units.target_4 as target_unit_4', 'target_units.target_5 as target_unit_5', 'target_units.target_6 as target_unit_6', 'target_units.target_7 as target_unit_7', 'target_units.target_8 as target_unit_8', 'target_units.target_9 as target_unit_9', 'target_units.target_10 as target_unit_10', 'target_units.target_11 as target_unit_11', 'target_units.target_12 as target_unit_12')
             ->where('department_targets.id', $id)->get();
 
 
@@ -209,12 +211,16 @@ class ActualController extends Controller
             $recordFile->move(public_path('record_files'), $recordFileName);;
         }
 
+        $currentMonth = now()->month;
+        $currentYear = now()->year;
+        $yearToShow = ($currentMonth == 1) ? $currentYear - 1 : $currentYear;
+
         $semester = '';
 
         if ($request->date > 6 && $request->date <= 12) {
-            $semester = 'Genap';
+            $semester = '2';
         } else {
-            $semester = 'Ganjil';
+            $semester = '1';
         }
         Actual::create([
             'kpi_code' => $request->kpi_code,
@@ -231,12 +237,13 @@ class ActualController extends Controller
             'department_name' => $request->department_name,
             'kpi_weighting' => $request->kpi_weighting,
             'date' => $date,
+            'trend' => $request->trend,
             'semester' => $semester,
             'detail' => $request->detail,
             'employee_id' => $request->employee_id,
 
         ]);
 
-        return redirect()->to('actual/input-actual-employee?employee=' . $request->input('employee_id'));
+        return redirect()->to('actual/input-actual-employee?employee=' . $request->input('employee_id') . '&year=' . $yearToShow);
     }
 }
