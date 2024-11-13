@@ -59,10 +59,10 @@
                     <th class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-white py-1 px-1 bg-blue-700" rowspan="2">Bobot Pencapaian</th>
                 </tr>
                 @php
-                $currentMonth = \Carbon\Carbon::now()->month;
                 $months = [];
+                $selectedSemester = $actuals->first()->semester;
             
-                if ($currentMonth >= 2 && $currentMonth < 8) {
+                if ($selectedSemester == 1) {
                     $months = [
                         '01' => 'Jan', '02' => 'Feb', '03' => 'Mar', '04' => 'Apr', 
                         '05' => 'May', '06' => 'Jun'
@@ -97,13 +97,13 @@
                 <tr>
                     <td class="border-2 bg-blue-100  border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-1 text-center">Target</td>
                     @foreach ($months as $month => $monthName)
-                    @php
-                        $actual = $actuals->first(function($item) use ($target, $month) {
-                            return \Carbon\Carbon::parse($item->date)->format('m') == $month && $item->kpi_item == $target->indicator;
-                        });
-                    @endphp
-                    <td class="border-2 bg-blue-100 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-1 text-center">{{ $actual ? $actual->target : '' }}</td>
-                    @endforeach
+                @php
+                    $actual = $actuals->first(function($item) use ($target, $month) {
+                        return \Carbon\Carbon::parse($item->date)->format('m') == $month && $item->kpi_item == $target->indicator;
+                    });
+                @endphp
+                <td class="border-2 bg-blue-100 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-1 text-center">{{ $actual ? $actual->target : '' }}</td>
+            @endforeach
                     
                     @php
                         $totalTarget = $totals[$target->code]['total_target'] ?? 0;

@@ -80,12 +80,61 @@ class ReportController extends Controller
     public function department(Request $request)
     {
         $department = $request->query('department');
-        $year = $request->query('year');
+        $currentMonth = now()->month;
+        $currentYear = now()->year;
+        $yearToShow = ($currentMonth == 1) ? $currentYear - 1 : $currentYear;
 
 
-        if ($department) {
+        if ($department && $yearToShow) {
 
-            $employees = DB::table('employees')->leftJoin('departments', 'departments.id', '=', 'employees.department_id')->select('departments.name as dept', 'employees.name as name', 'employees.nik', 'employees.occupation')->where('employees.department_id', $department)->get();
+            $employees = DB::table('employees')->leftJoin('departments', 'departments.id', '=', 'employees.department_id')->select('departments.name as dept', 'employees.name as name', 'employees.nik', 'employees.occupation', 'employees.id as employee_id')
+                ->where('employees.department_id', $department)
+                ->get();
+
+            $actuals = DB::table('actuals')->leftJoin('employees', 'employees.id', '=', 'actuals.employee_id')->leftJoin('departments', 'departments.id', '=', 'employees.department_id')
+                ->where('departments.id', '=', $department)
+                ->where(DB::raw('YEAR(actuals.date)'), '=', $yearToShow)
+                ->get();
+
+
+            $groupedData = $actuals->groupBy(['employee_id', 'semester']);
+            // Hitung total target dan actual untuk setiap kelompok
+            $totals = $groupedData->map(function ($semesterGroups) {
+                return $semesterGroups->map(function ($group) {
+                    $totalTarget = $group->sum(function ($item) {
+                        return (float) $item->target;
+                    });
+                    $totalActual = $group->sum(function ($item) {
+                        return (float) $item->actual;
+                    });
+                    $totalPercentage = $totalTarget > 0 ? ($totalActual / $totalTarget) * 100 : 0;
+
+                    $weight = floatval(str_replace('%', '', $group->first()->kpi_weighting)); // Ambil bobot dari item pertama dalam grup dan hilangkan simbol %
+                    $totalAchievementWeight = $totalPercentage * $weight / 100;
+
+                    return [
+                        'total_target' => $totalTarget,
+                        'total_actual' => $totalActual,
+                        'total_percentage' => $totalPercentage,
+                        'weight' => $weight,
+                        'total_achievement_weight' => $totalAchievementWeight,
+                    ];
+                });
+            });
+
+            // Hitung total bobot pencapaian per karyawan untuk semester 1 dan semester 2
+            $employeeTotals = [];
+            foreach ($employees as $employee) {
+                $semester1Weight = floatval($totals[$employee->employee_id][1]['total_achievement_weight'] ?? 0);
+                $semester2Weight = floatval($totals[$employee->employee_id][2]['total_achievement_weight'] ?? 0);
+                $employeeTotals[$employee->employee_id] = [
+                    'semester_1' => $semester1Weight,
+                    'semester_2' => $semester2Weight,
+                    'total' => $semester1Weight + $semester2Weight,
+                ];
+            }
+
+            dd($employeeTotals);
 
             return view('report.department-report', ['title' => 'Report', 'desc' => 'Department Report', 'employees' => $employees]);
         } else {

@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('weighting');
             $table->string('trend')->nullable();
             $table->string('detail')->nullable();
+            $table->dateTime('date');
             $table->foreignId('department_id')->nullable()->constrained()->onUpdate('cascade')->nullOnDelete();
             $table->foreignId('target_unit_id')->nullable()->constrained()->onUpdate('cascade')->nullOnDelete();
             $table->timestamps();

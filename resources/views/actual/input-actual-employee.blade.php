@@ -18,13 +18,13 @@
             }
             @endphp
             <tr>
-                <th style="width: 3%;" class="border-2 border-gray-400 text-[13px] tracking-wide font-medium text-white py-0 bg-blue-700">No.</th>
-                <th style="width: 4%" class="border-2 border-gray-400 text-[13px] tracking-wide font-medium text-white py-0 bg-blue-700">Kode KPI</th>
-                <th class="border-2 border-gray-400 text-[13px] tracking-wide font-medium text-white py-0 bg-blue-700">KPI</th>
+                <th style="width: 3%;" class="border-2 border-gray-400 text-[13px] tracking-wide font-medium text-white py-1 bg-blue-700">No.</th>
+                <th style="width: 4%" class="border-2 border-gray-400 text-[13px] tracking-wide font-medium text-white py-1 bg-blue-700">Kode KPI</th>
+                <th class="border-2 border-gray-400 text-[13px] tracking-wide font-medium text-white py-1 bg-blue-700">KPI</th>
                 @foreach ($months as $monthName)
-                    <th class="border-2 border-gray-400 text-[13px] tracking-wide font-medium text-white py-0 bg-blue-700">{{ $monthName }}</th>
+                    <th class="border-2 border-gray-400 text-[13px] tracking-wide font-medium text-white py-1 bg-blue-700">{{ $monthName }}</th>
                 @endforeach
-                <th class="border-2 border-gray-400 text-[13px] tracking-wide font-medium text-white py-0 bg-blue-700">Aksi</th>
+                <th class="border-2 border-gray-400 text-[13px] tracking-wide font-medium text-white py-1 bg-blue-700">Aksi</th>
             </tr>
             @php
                 $i = 0;
@@ -39,15 +39,25 @@
                     <td class="border-2 border-gray-400 text-[10px] tracking-wide  py-0 px-2">{{ $target->indicator }}</td>
                     @foreach ($months as $month => $monthName)
                         @php
-                            $actual = $actuals->first(function($item) use ($target, $month) {
-                                return \Carbon\Carbon::parse($item->date)->format('m') == $month && $item->indicator == $target->indicator;
-                            });
+$actual = $actuals->first(function($item) use ($target, $month) {
+            $itemMonth = \Carbon\Carbon::parse($item->actual_date)->format('m');
+            $itemIndicator = $item->kpi_code;
+            $targetIndicator = $target->code;
+
+            // Debugging output
+            // dump('Item Month:', $itemMonth, 'Month:', $month, 'Item Indicator:', $itemIndicator, 'Target Indicator:', $targetIndicator);
+
+            return $itemMonth == $month && $itemIndicator == $targetIndicator;
+        });
+
+        // Debugging output
+        // dump('Actual:', $actual);
                             
                         @endphp
                         @if ($actual)
-                            <td class="border-2 border-gray-400 text-[10px] tracking-wide  py-0 px-2 text-center">OK</td>
+                            <td style="width: 6%" class="border-2 border-gray-400 text-[10px] tracking-wide  py-0 px-2 text-center"><i class="ri-checkbox-circle-fill text-xl text-green-500"></i></td>
                         @else
-                            <td class="border-2 border-gray-400 text-[10px] tracking-wide  py-0 px-2"></td>
+                            <td style="width: 6%" class="border-2 border-gray-400 text-[10px] tracking-wide  py-0 px-2"></td>
                         @endif
                     @endforeach
                     <td class="border-2 border-gray-400 text-[10px] tracking-wide  py-0 px-2 text-center">

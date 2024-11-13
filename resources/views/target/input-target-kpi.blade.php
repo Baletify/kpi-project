@@ -41,14 +41,14 @@
         </div>
         <table class="w-full table-auto">
             <tr>
-                <th style="width: 4%" class="border-2 border-gray-400 text-[13px] tracking-wide font-medium text-white py-1 bg-blue-700">Kode KPI</th>
-                <th class="border-2 border-gray-400 text-[13px] tracking-wide font-medium text-white py-1 bg-blue-700" style="width: 15%">KPI</th>
-                <th style="width: 24%" class="border-2 border-gray-400 text-[13px] tracking-wide font-medium text-white py-1 bg-blue-700">Cara Menghitung</th>
-                <th style="width: 24%" class="border-2 border-gray-400 text-[13px] tracking-wide font-medium text-white py-1 bg-blue-700">Data Pendukung</th>
-                <th style="width: 4%" class="border-2 border-gray-400 text-[13px] tracking-wide font-medium text-white py-1 bg-blue-700">Trend</th>
-                <th style="width: 6%" class="border-2 border-gray-400 text-[13px] tracking-wide font-medium text-white py-1 bg-blue-700">Periode Review</th>
-                <th style="width: 3%" class="border-2 border-gray-400 text-[13px] tracking-wide font-medium text-white py-1 bg-blue-700">Unit</th>
-                <th style="width: 4%" class="border-2 border-gray-400 text-[13px] tracking-wide font-medium text-white py-1 bg-blue-700">Bobot "%"</th>
+                <th style="width: 4%" class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-white py-1 bg-blue-700">Kode KPI</th>
+                <th style="width: 13%" class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-white py-1 bg-blue-700" style="width: 15%">KPI</th>
+                <th style="width: 22%" class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-white py-1 bg-blue-700">Cara Menghitung</th>
+                <th style="width: 22%" class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-white py-1 bg-blue-700">Data Pendukung</th>
+                <th style="width: 4%" class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-white py-1 bg-blue-700">Trend</th>
+                <th style="width: 4%" class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-white py-1 bg-blue-700">Periode Review</th>
+                <th style="width: 3%" class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-white py-1 bg-blue-700">Unit</th>
+                <th style="width: 3%" class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-white py-1 bg-blue-700">Bobot "%"</th>
                 @php
             $currentMonth = \Carbon\Carbon::now()->month;
             $months = [];
@@ -68,20 +68,19 @@
             
             @foreach ($months as $month)
 
-                <th style="width: 5%" class="border-2 border-gray-400 text-[13px] tracking-wide font-medium text-white py-1 bg-blue-700">{{ $month }}</th>
+                <th style="width: 4%" class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-white py-1 bg-blue-700">{{ $month }}</th>
                 
             @endforeach
-                <th class="border-2 border-gray-400 text-[13px] tracking-wide font-medium text-white py-1 bg-blue-700">Aksi</th>
+                <th class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-white py-1 bg-blue-700">Aksi</th>
             </tr>
             @php
                 $i = 0;
             @endphp
             @forelse ($targets as $target)
-            <tr>
-                @php
-                    $i++
-                @endphp
-
+            @php
+            $i++
+            @endphp
+            <tr class="{{ $i % 2 === 0 ? 'bg-gray-100' : 'bg-gray-200' }}">
                 <td class="border-2 border-gray-400 text-[10px] tracking-wide px-2 py-0">{{ $target->code }}</td>
                 <td class="border-2 border-gray-400 text-[10px] tracking-wide px-2 py-0">{{ $target->indicator }}</td>
                 <td class="border-2 border-gray-400 text-[10px] tracking-wide px-2 py-0 text-justify">{{ $target->calculation }}</td>
@@ -115,7 +114,7 @@
                 
                 <td style="width: 3%" class="border-2 border-gray-400 text-[10px] tracking-wide px-2 py-0 text-center">
                     <a href="">
-                        <i class="ri-edit-box-line p-0.5 text-xl bg-yellow-400 text-white rounded-sm"></i>
+                        <i class="ri-edit-box-line p-0.5 text-lg bg-yellow-400 text-white rounded-sm"></i>
                     </a>
                 </td>
             </tr>

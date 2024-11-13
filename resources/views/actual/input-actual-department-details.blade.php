@@ -41,12 +41,12 @@
                     @foreach ($months as $month => $monthName)
                         @php
                             $actual = $actuals->first(function($item) use ($target, $month) {
-                                return \Carbon\Carbon::parse($item->date)->format('m') == $month && $item->indicator == $target->indicator;
+                                return \Carbon\Carbon::parse($item->actual_date)->format('m') == $month && $item->kpi_code == $target->code;
                             });
                             
                         @endphp
                         @if ($actual)
-                            <td style="width: 6%" class="border-2 border-gray-400 text-[10px] tracking-wide  py-0 px-2 text-center">OK</td>
+                        <td style="width: 6%" class="border-2 border-gray-400 text-[10px] tracking-wide  py-0 px-2 text-center"><i class="ri-checkbox-circle-fill text-xl text-green-500"></i></td>
                         @else
                             <td style="width: 6%" class="border-2 border-gray-400 text-[10px] tracking-wide  py-0 px-2"></td>
                         @endif

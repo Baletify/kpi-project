@@ -144,43 +144,66 @@
     </div>
 
     <script>
-       document.addEventListener('DOMContentLoaded', function() {
-      function fetchData() {
-        const department = document.getElementById('department').value;
-        const name = document.getElementById('filterName').value;
-        const year = document.getElementById('year').value;
-        const semester = document.getElementById('semester').value;
+      document.addEventListener('DOMContentLoaded', function() {
+  const departmentElement = document.getElementById('department');
+  const filterNameElement = document.getElementById('filterName');
+  const yearElement = document.getElementById('year');
+  const semesterElement = document.getElementById('semester');
 
-        fetch(`{{ url('dashboard/filter') }}?department=${department}&name=${name}&semester=${semester}&year=${year}`)
-          .then(response => response.json())
-          .then(data => {
-            const tbody = document.getElementById('employeeTableBody');
-            tbody.innerHTML = '';
+  function fetchData() {
+    const department = departmentElement.value;
+    const name = filterNameElement.value;
+    const year = yearElement.value;
+    const semester = semesterElement.value;
 
-            if (data.length > 0) {
-              data.forEach((item, index) => {
-                const row = `<tr class="${index % 2 === 0 ? 'bg-gray-200' : 'bg-gray-100'}">
-                  <td class="border-2 border-gray-400 tracking-wide px-2 py-0 text-center">${index + 1}</td>
-                  <td class="border-2 border-gray-400 tracking-wide px-2 py-0">
-                    <a href="/report/employee-report/${item.id}?semester=${semester}&year=${year}" class=" hover:underline">${item.name}</a>
-                    </td>
-                  <td class="border-2 border-gray-400 tracking-wide px-2 py-0">${item.occupation}</td>
-                  <td class="border-2 border-gray-400 tracking-wide px-2 py-0"> <a href="/target/input-target-kpi-department?department=${item.department_id}" class=" hover:underline">${item.department}</a>
-                    </td>
-                </tr>`;
-                tbody.innerHTML += row;
-              });
-              
-            } else {
-              tbody.innerHTML = '<tr><td colspan="4" class="border-2 border-gray-400 tracking-wide px-2 py-0 text-center">No data found</td></tr>';
-            }
+    // Update the URL with the current filter state
+    const url = new URL(window.location);
+    url.searchParams.set('department', department);
+    url.searchParams.set('name', name);
+    url.searchParams.set('year', year);
+    url.searchParams.set('semester', semester);
+    history.pushState(null, '', url);
+
+    // Fetch data based on the filters
+    fetch(`{{ url('dashboard/filter') }}?department=${department}&name=${name}&semester=${semester}&year=${year}`)
+      .then(response => response.json())
+      .then(data => {
+        const tbody = document.getElementById('employeeTableBody');
+        tbody.innerHTML = '';
+
+        if (data.length > 0) {
+          data.forEach((item, index) => {
+            const row = `<tr class="${index % 2 === 0 ? 'bg-gray-200' : 'bg-gray-100'}">
+              <td class="border-2 border-gray-400 tracking-wide px-2 py-0 text-center">${index + 1}</td>
+              <td class="border-2 border-gray-400 tracking-wide px-2 py-0">
+                <a href="/report/employee-report/${item.id}?semester=${semester}&year=${year}" class="hover:underline">${item.name}</a>
+              </td>
+              <td class="border-2 border-gray-400 tracking-wide px-2 py-0">${item.occupation}</td>
+              <td class="border-2 border-gray-400 tracking-wide px-2 py-0">
+                <a href="/target/input-target-kpi-department?department=${item.department_id}" class="hover:underline">${item.department}</a>
+              </td>
+            </tr>`;
+            tbody.innerHTML += row;
           });
-      }
+        } else {
+          tbody.innerHTML = '<tr><td colspan="4" class="border-2 border-gray-400 tracking-wide px-2 py-0 text-center">No data found</td></tr>';
+        }
+      });
+  }
 
-      document.getElementById('department').addEventListener('change', fetchData);
-      document.getElementById('filterName').addEventListener('input', fetchData);
-      document.getElementById('year').addEventListener('change', fetchData);
-      document.getElementById('semester').addEventListener('change', fetchData);
-    });
+  // Apply filters from the URL when the page loads
+  const urlParams = new URLSearchParams(window.location.search);
+  departmentElement.value = urlParams.get('department') || '';
+  filterNameElement.value = urlParams.get('name') || '';
+  yearElement.value = urlParams.get('year') || '';
+  semesterElement.value = urlParams.get('semester') || '';
+
+  fetchData();
+
+  departmentElement.addEventListener('change', fetchData);
+  filterNameElement.addEventListener('input', fetchData);
+  yearElement.addEventListener('change', fetchData);
+  semesterElement.addEventListener('change', fetchData);
+});
     </script>
 </x-app-layout>

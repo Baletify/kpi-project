@@ -26,13 +26,14 @@ class ActualController extends Controller
         $targets = DB::table('targets')
             ->select('id', 'code', 'indicator', 'employee_id')
             ->where('employee_id', $employeeID)
+            ->where(DB::raw('YEAR(date)'), '=', $year)
             ->get();
 
         // Ambil data actuals
         $actuals = DB::table('actuals')
             ->leftJoin('employees', 'actuals.employee_id', '=', 'employees.id')
             ->leftJoin('targets', 'actuals.kpi_code', '=', 'targets.code')
-            // ->select('actuals.date as date', 'actuals.employee_id as employee_id', 'targets.code as code', 'targets.indicator as indicator')
+            ->select('actuals.kpi_code as kpi_code', 'targets.code as code', 'actuals.date as actual_date', 'targets.date as target_date', 'targets.indicator as indicator')
             // ->where(DB::raw('MONTH(actuals.date)'), '<=', $now->month)
             ->where('actuals.employee_id', $employeeID)
             ->where(DB::raw('YEAR(actuals.date)'), '=', $year)
@@ -63,7 +64,7 @@ class ActualController extends Controller
         $actuals = DB::table('department_actuals')
             ->leftJoin('departments', 'departments.id', '=', 'department_actuals.department_id')
             ->leftJoin('department_targets', 'department_actuals.kpi_code', '=', 'department_targets.code')
-            // ->select('actuals.date as date', 'actuals.employee_id as employee_id', 'targets.code as code', 'targets.indicator as indicator')
+            ->select('department_actuals.kpi_code as kpi_code', 'department_targets.code as code', 'department_actuals.date as actual_date', 'department_targets.date as target_date', 'department_targets.indicator as indicator')
             // ->where(DB::raw('MONTH(actuals.date)'), '<=', $now->month)
             ->where('department_actuals.department_id', '=', $departmentID)
             ->get();
