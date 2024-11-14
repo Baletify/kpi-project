@@ -62,7 +62,10 @@ $actual = $actuals->first(function($item) use ($target, $month) {
                     @endforeach
                     <td class="border-2 border-gray-400 text-[10px] tracking-wide  py-0 px-2 text-center">
                         <div class="flex justify-center gap-2">
-                            <a href="{{ url('/actual/input-actual-achievement/edit/' . $target->id) }}">
+                            @php
+                                $year = request()->query('year');
+                            @endphp
+                            <a href="{{ url('/actual/input-actual-achievement/edit/' . $target->id . '?year=' . $year) }}">
                                 <i class="ri-edit-box-line p-0.5 text-xl bg-yellow-400 text-white rounded-sm"></i>
                             </a>
                         </div>

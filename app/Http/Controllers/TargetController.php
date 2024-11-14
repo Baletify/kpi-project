@@ -22,6 +22,7 @@ class TargetController extends Controller
     public function show(Request $request)
     {
         $employeeID = $request->query('employee');
+        $year = $request->query('year');
 
 
         if ($employeeID) {
@@ -29,7 +30,11 @@ class TargetController extends Controller
                 ->select('employees.id', 'employees.name', 'employees.nik', 'employees.occupation', 'departments.name as department')
                 ->where('employees.id', '=', $employeeID)->first();
 
-            $targets = DB::table('targets')->leftJoin('target_units', 'target_units.id', '=', 'targets.target_unit_id')->where('employee_id', $employeeID)->get();
+            $targets = DB::table('targets')->leftJoin('target_units', 'target_units.id', '=', 'targets.target_unit_id')
+                ->select('target_units.*', 'targets.*', DB::raw('YEAR(targets.date) as year'))
+                ->where('employee_id', $employeeID)
+                ->where(DB::raw('YEAR(targets.date)'), $year)
+                ->get();
 
             return view('target.input-target-kpi', ['title' => 'Input KPI Target', 'desc' => 'Employees', 'employee' => $employee, 'targets' => $targets]);
         } else {

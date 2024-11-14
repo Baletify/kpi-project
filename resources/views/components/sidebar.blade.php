@@ -45,7 +45,12 @@
             </a>
         </li>
         <li>
-            <a href="{{ url('report/department-report') }}" class="flex items-center py-2 px-6 text-gray-300 hover:bg-gray-900">
+            @php
+            $currentMonth = now()->month;
+            $currentYear = now()->year;
+            $yearToShow = ($currentMonth == 1) ? $currentYear - 1 : $currentYear;
+            @endphp
+            <a href="{{ url('report/department-report?department=1&year=' . $yearToShow) }}" class="flex items-center py-2 px-6 text-gray-300 hover:bg-gray-900">
                 <i class="ri-file-chart-line text-3xl"></i>
                 <span class="ml-3">Laporan</span>
             </a>

@@ -23,7 +23,9 @@ class DepartmentTargetSeeder extends Seeder
                 'supporting_document' => 'Log pengerjaan fitur',
                 'weighting' => '12%',
                 'department_id' => 3,
+                'date' => '2024-01-08 01:49:17',
                 'detail' => '5 fitur per bulan',
+                'trend' => 'Positif',
                 'target_unit_id' => 1,
             ],
             [
@@ -35,7 +37,9 @@ class DepartmentTargetSeeder extends Seeder
                 'supporting_document' => 'Log pengerjaan fitur',
                 'weighting' => '20%',
                 'department_id' => 3,
+                'date' => '2024-01-08 01:49:17',
                 'detail' => '5 fitur per bulan',
+                'trend' => 'Positif',
                 'target_unit_id' => 2,
             ],
             [
@@ -47,6 +51,8 @@ class DepartmentTargetSeeder extends Seeder
                 'supporting_document' => 'Log pengerjaan fitur',
                 'weighting' => '13%',
                 'department_id' => 3,
+                'date' => '2024-01-08 01:49:17',
+                'trend' => 'Positif',
                 'target_unit_id' => 3,
             ],
             [
@@ -58,7 +64,9 @@ class DepartmentTargetSeeder extends Seeder
                 'supporting_document' => 'Form Sururaku',
                 'weighting' => '10%',
                 'department_id' => 3,
+                'date' => '2024-01-08 01:49:17',
                 'detail' => 'Setidaknya ada 1 inovasi yang diajukan per semester',
+                'trend' => 'Positif',
                 'target_unit_id' => 4,
             ],
             [
@@ -70,7 +78,9 @@ class DepartmentTargetSeeder extends Seeder
                 'supporting_document' => 'Form Action Plan',
                 'weighting' => '20%',
                 'department_id' => 3,
+                'date' => '2024-01-08 01:49:17',
                 'detail' => 'Pembuatan rencana & update kegiatan pengembangan software',
+                'trend' => 'Positif',
                 'target_unit_id' => 5,
             ],
         ];

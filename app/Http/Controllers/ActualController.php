@@ -53,11 +53,13 @@ class ActualController extends Controller
     {
         $departmentID = $request->query('department');
         $department = Department::find($departmentID);
+        $year = $request->query('year');
 
 
         // Ambil data targets
         $targets = DB::table('department_targets')
             ->where('department_targets.department_id', '=', $departmentID)
+            ->where(DB::raw('YEAR(department_targets.date)'), '=', $year)
             ->get();
 
         // Ambil data actuals
@@ -100,12 +102,16 @@ class ActualController extends Controller
         }
     }
 
-    public function edit($id)
+    public function edit($id, Request $request)
     {
+
+        $year = $request->query('year');
         $employee = Employee::find($id);
         $targets = DB::table('targets')->leftJoin('target_units', 'target_units.id', '=', 'targets.target_unit_id')
             ->leftJoin('employees', 'employees.id', '=', 'targets.employee_id')
-            ->leftJoin('departments', 'departments.id', '=', 'employees.department_id')->where('targets.id', '=', $id)
+            ->leftJoin('departments', 'departments.id', '=', 'employees.department_id')
+            ->where('targets.id', '=', $id)
+            ->where(DB::raw('YEAR(targets.date)'), $year)
             ->select('targets.id', 'targets.employee_id', 'targets.code', 'targets.indicator', 'targets.calculation', 'targets.period', 'targets.unit', 'targets.supporting_document', 'targets.weighting', 'targets.detail', 'targets.trend', 'target_units.id as target_unit_id', 'employees.nik as nik', 'employees.occupation as occupation', 'employees.name as employee', 'departments.name as department', 'target_1 as target_unit_1', 'target_2 as target_unit_2', 'target_3 as target_unit_3', 'target_4 as target_unit_4', 'target_5 as target_unit_5', 'target_6 as target_unit_6', 'target_7 as target_unit_7', 'target_8 as target_unit_8', 'target_9 as target_unit_9', 'target_10 as target_unit_10', 'target_11 as target_unit_11', 'target_12 as target_unit_12')
             ->get();
 
@@ -120,15 +126,19 @@ class ActualController extends Controller
         ]);
     }
 
-    public function editDept($id)
+    public function editDept($id, Request $request)
     {
         $department = Department::find($id);
+        $year = $request->query('year');
 
         $targets = DB::table('department_targets')
             ->leftJoin('departments', 'departments.id', '=', 'department_targets.department_id')
             ->leftJoin('target_units', 'department_targets.target_unit_id', '=', 'target_units.id')
-            ->select('department_targets.id', 'department_targets.department_id', 'department_targets.trend', 'department_targets.target_unit_id', 'departments.name as department', 'department_targets.code', 'department_targets.indicator', 'department_targets.calculation', 'department_targets.supporting_document', 'department_targets.period', 'department_targets.weighting', 'department_targets.unit', 'department_targets.detail', 'target_units.target_1 as target_unit_1', 'target_units.target_2 as target_unit_2', 'target_units.target_3 as target_unit_3', 'target_units.target_4 as target_unit_4', 'target_units.target_5 as target_unit_5', 'target_units.target_6 as target_unit_6', 'target_units.target_7 as target_unit_7', 'target_units.target_8 as target_unit_8', 'target_units.target_9 as target_unit_9', 'target_units.target_10 as target_unit_10', 'target_units.target_11 as target_unit_11', 'target_units.target_12 as target_unit_12')
-            ->where('department_targets.id', $id)->get();
+            ->select('department_targets.id', 'department_targets.department_id', 'department_targets.trend', 'department_targets.target_unit_id', 'departments.name as department', 'department_targets.code', 'department_targets.indicator', 'department_targets.calculation', 'department_targets.supporting_document', 'department_targets.period', 'department_targets.date', 'department_targets.weighting', 'department_targets.unit', 'department_targets.detail', 'target_units.target_1 as target_unit_1', 'target_units.target_2 as target_unit_2', 'target_units.target_3 as target_unit_3', 'target_units.target_4 as target_unit_4', 'target_units.target_5 as target_unit_5', 'target_units.target_6 as target_unit_6', 'target_units.target_7 as target_unit_7', 'target_units.target_8 as target_unit_8', 'target_units.target_9 as target_unit_9', 'target_units.target_10 as target_unit_10', 'target_units.target_11 as target_unit_11', 'target_units.target_12 as target_unit_12')
+            ->where('department_targets.id', $id)
+            ->where(DB::raw('YEAR(department_targets.date)'), $year)
+            ->get();
+
 
 
         return view('actual.input-actual-department-achievement', [
@@ -166,6 +176,31 @@ class ActualController extends Controller
         } else {
             $semester = 'Ganjil';
         }
+
+        $searchConditions = [
+            'kpi_code' => $request->kpi_code,
+            'date' => $date,
+            'department_id' => $request->department_id,
+        ];
+
+        $dataToUpdateOrCreate = [
+            'kpi_item' => $request->kpi_item,
+            'kpi_unit' => $request->kpi_unit,
+            'review_period' => $request->review_period,
+            'target' => $request->target,
+            'actual' => $request->actual,
+            'kpi_percentage' => $request->achievement,
+            'kpi_calculation' => $request->kpi_calculation,
+            'supporting_document' => $request->supporting_document,
+            'comment' => $request->comment,
+            'record_file' => isset($recordFileName) ? $recordFileName : null,
+            'department_name' => $request->department_name,
+            'kpi_weighting' => $request->kpi_weighting,
+            'trend' => $request->trend,
+            'semester' => $semester,
+            'detail' => $request->detail,
+        ];
+
         DepartmentActual::create([
             'kpi_code' => $request->kpi_code,
             'kpi_item' => $request->kpi_item,
@@ -188,7 +223,7 @@ class ActualController extends Controller
 
         ]);
 
-        return redirect()->to('actual/input-actual-department-details?department=' . $request->input('department_id'));
+        return redirect()->to('actual/input-actual-department-details?department=' . $request->input('department_id') . '&year=' . $request->input('year'));
     }
 
     public function store(Request $request)
@@ -204,6 +239,7 @@ class ActualController extends Controller
                 ->withErrors($validator)
                 ->withInput();
         }
+
         $date = Carbon::createFromDate($request->year, $request->date, 1)->startOfMonth();
 
         if ($request->hasFile('record_file')) {
@@ -223,8 +259,14 @@ class ActualController extends Controller
         } else {
             $semester = '1';
         }
-        Actual::create([
+
+        $searchConditions = [
             'kpi_code' => $request->kpi_code,
+            'date' => $date,
+            'employee_id' => $request->employee_id,
+        ];
+
+        $dataToUpdateOrCreate = [
             'kpi_item' => $request->kpi_item,
             'kpi_unit' => $request->kpi_unit,
             'review_period' => $request->review_period,
@@ -237,13 +279,13 @@ class ActualController extends Controller
             'record_file' => isset($recordFileName) ? $recordFileName : null,
             'department_name' => $request->department_name,
             'kpi_weighting' => $request->kpi_weighting,
-            'date' => $date,
             'trend' => $request->trend,
             'semester' => $semester,
             'detail' => $request->detail,
-            'employee_id' => $request->employee_id,
+        ];
 
-        ]);
+        Actual::updateOrCreate($searchConditions, $dataToUpdateOrCreate);
+
 
         return redirect()->to('actual/input-actual-employee?employee=' . $request->input('employee_id') . '&year=' . $yearToShow);
     }

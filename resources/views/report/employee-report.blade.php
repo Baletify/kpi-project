@@ -184,9 +184,42 @@
                     <td class="border-2 bg-white border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-1 text-center hover:underline">
                         @if ($actual)
                             @if ($actual->record_file)
-                                <a href="{{ route('report.showFile', $actual->record_file) }}" target="_blank">Yes</a>
+                            @php
+                            $modalId = 'modal-' . $loop->index;
+                            $buttonId = 'open-modal-' . $loop->index;
+                            $backgroundId = 'modal-background-' . $loop->index;
+                        @endphp
+                            <button id="{{ $buttonId }}" class="text-blue-500 hover:underline">Yes</button>
+                            <div id="{{ $backgroundId }}" class="fixed inset-0 bg-gray-800 bg-opacity-75 hidden"></div>
+                            <div id="{{ $modalId }}" class="fixed inset-0 items-center justify-center hidden">
+                                <div class="flex justify-center mt-10">
+                                <div class="bg-white rounded-lg shadow-lg p-6 w-1/3">
+                                    <div class="">
+                                        <h2 class="text-xl font-bold mb-4">Review Data Pendukung</h2>
+                                    </div>
+                                    <div class="p-1">
+                                        <button class="bg-blue-500 text-white p-2 text-[14px] rounded">
+                                            <a href="{{ route('report.showFile', $actual->record_file) }}" target="_blank">Lihat Dokumen</a>
+                                        </button>
+                                    </div>
+                                    <div class="p-1 flex justify-start">
+                                        <span class="text-semibold mb-1 text-[14px]">Berikan Komentar</span>
+                                    </div>
+                                    <div class="p-0 mb-2 flex justify-center">
+                                        <textarea name="comment" id="comment" cols="58" rows="3"></textarea>
+                                    </div>
+                                    <button class="bg-yellow-500 text-white px-4 py-2 rounded text-[14px]">
+                                        <i class="ri-send-plane-line"></i>
+                                        <span>Kirim Revisi</span>
+                                    </button>
+                                    <div class="flex justify-end">
+                                        <button id="close-modal-{{ $modalId }}" class="bg-red-500 text-white px-4 py-2 rounded mr-2 text-[14px]">Close</button>
+                                    </div>
+                                </div>
+                            </div>
+                            </div>
                             @else
-                                No
+                                <span class="text-red-500">No</span>
                             @endif
                         @else
                             <span></span>
@@ -200,4 +233,32 @@
         </table>
     </div>
     </div>
+
+    
+    
+    <script>
+        document.querySelectorAll('button[id^="open-modal-"]').forEach(button => {
+            button.addEventListener('click', function() {
+                const index = this.id.split('-').pop();
+                document.getElementById(`modal-${index}`).classList.remove('hidden');
+                document.getElementById(`modal-background-${index}`).classList.remove('hidden');
+            });
+        });
+    
+        document.querySelectorAll('button[id^="close-modal-"]').forEach(button => {
+            button.addEventListener('click', function() {
+                const index = this.id.split('-').pop();
+                document.getElementById(`modal-${index}`).classList.add('hidden');
+                document.getElementById(`modal-background-${index}`).classList.add('hidden');
+            });
+        });
+    
+        document.querySelectorAll('div[id^="modal-background-"]').forEach(background => {
+            background.addEventListener('click', function() {
+                const index = this.id.split('-').pop();
+                document.getElementById(`modal-${index}`).classList.add('hidden');
+                document.getElementById(`modal-background-${index}`).classList.add('hidden');
+            });
+        });
+    </script>
 </x-app-layout>

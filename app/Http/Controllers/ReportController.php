@@ -29,6 +29,7 @@ class ReportController extends Controller
             $targets = DB::table('targets')
                 ->select('id', 'code', 'indicator', 'employee_id', 'period', 'unit', 'weighting')
                 ->where('employee_id', $id)
+                ->where(DB::raw('YEAR(targets.date)'), $year)
                 ->get();
 
             $actuals = DB::table('actuals')
@@ -44,6 +45,8 @@ class ReportController extends Controller
             if ($actuals->isEmpty()) {
                 abort(404, 'No actuals found for the given year and semester');
             }
+
+
 
             $groupedData = $actuals->groupBy('kpi_code');
 
@@ -134,9 +137,8 @@ class ReportController extends Controller
                 ];
             }
 
-            dd($employeeTotals);
 
-            return view('report.department-report', ['title' => 'Report', 'desc' => 'Department Report', 'employees' => $employees]);
+            return view('report.department-report', ['title' => 'Report', 'desc' => 'Department Report', 'employees' => $employees, 'employeeTotals' => $employeeTotals]);
         } else {
             return abort(404, 'No actuals found for the given year and semester');
         }

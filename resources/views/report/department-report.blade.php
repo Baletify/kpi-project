@@ -39,15 +39,30 @@
               <tr>
                 @php
                     $i++;
+                    $semester1TotalWeight = $employeeTotals[$employee->employee_id]['semester_1'];
+                    $semester2TotalWeight = $employeeTotals[$employee->employee_id]['semester_2'];
+                    $averageWeight = ($semester1TotalWeight + $semester2TotalWeight) / 2;
                 @endphp
                 <td class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-gray-600 py-1 px-4 text-center">{{ $i }}</td>
                 <td class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-gray-600 py-1 px-4">{{ $employee->dept }}</td>
                 <td class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-gray-600 py-1 px-4">{{ $employee->nik }}</td>
                 <td class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-gray-600 py-1 px-4">{{ $employee->name }}</td>
                 <td class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-gray-600 py-1 px-4">{{ $employee->occupation }}</td>
-                <td class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-gray-600 py-1 px-4"></td>
-                <td class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-gray-600 py-1 px-4"></td>
-                <td class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-gray-600 py-1 px-4"></td>
+                @if ($semester1TotalWeight > 0)
+                <td class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-gray-600 py-1 px-4 text-center">{{ number_format($semester1TotalWeight, 2) }}%</td>
+                @else
+                <td class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-gray-600 py-1 px-4 text-center"></td>
+                @endif
+                @if ($semester2TotalWeight > 0)
+                <td class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-gray-600 py-1 px-4 text-center">{{ number_format($semester2TotalWeight, 2) }}%</td>
+                @else
+                <td class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-gray-600 py-1 px-4 text-center"></td>
+                @endif
+                @if ($averageWeight > 0)
+                <td class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-gray-600 py-1 px-4 text-center">{{ number_format($averageWeight, 2) }}%</td>
+                @else
+                <td class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-gray-600 py-1 px-4 text-center"></td>
+                @endif
               </tr>
               @endforeach
         </table>
