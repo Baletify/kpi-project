@@ -30,6 +30,7 @@ return new class extends Migration
             $table->string('semester');
             $table->string('trend')->nullable();
             $table->string('detail')->nullable();
+            $table->string('status')->nullable();
             $table->foreignId('employee_id')->nullable()->constrained()->onUpdate('cascade')->nullOnDelete();
             $table->timestamps();
         });

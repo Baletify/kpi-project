@@ -174,6 +174,7 @@
                 <input type="hidden" name="employee_id" id="employee_id" value="{{ $target->employee_id }}">
                 <input type="hidden" name="pv_employee_id" id="pv_employee_id" value="{{ $target->employee_id }}">
                 <input type="hidden" name="year" id="year" value="{{ $year = request()->query('year') }}">
+                <input type="hidden" name="status" id="status" value="Terisi">
               <div class="absolute inset-y-0 right-0 flex items-center">
               </div>
             </div>

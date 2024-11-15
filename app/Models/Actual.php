@@ -28,6 +28,7 @@ class Actual extends Model
         'semester',
         'detail',
         'trend',
+        'status',
         'employee_id',
     ];
 }

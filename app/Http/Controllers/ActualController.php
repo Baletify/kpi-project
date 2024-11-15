@@ -201,27 +201,7 @@ class ActualController extends Controller
             'detail' => $request->detail,
         ];
 
-        DepartmentActual::create([
-            'kpi_code' => $request->kpi_code,
-            'kpi_item' => $request->kpi_item,
-            'kpi_unit' => $request->kpi_unit,
-            'review_period' => $request->review_period,
-            'target' => $request->target,
-            'actual' => $request->actual,
-            'kpi_percentage' => $request->achievement,
-            'kpi_calculation' => $request->kpi_calculation,
-            'supporting_document' => $request->supporting_document,
-            'comment' => $request->comment,
-            'record_file' => isset($recordFileName) ? $recordFileName : null,
-            'department_name' => $request->department_name,
-            'kpi_weighting' => $request->kpi_weighting,
-            'trend' => $request->trend,
-            'date' => $date,
-            'semester' => $semester,
-            'detail' => $request->detail,
-            'department_id' => $request->department_id,
-
-        ]);
+        DepartmentActual::updateOrCreate($searchConditions, $dataToUpdateOrCreate);
 
         return redirect()->to('actual/input-actual-department-details?department=' . $request->input('department_id') . '&year=' . $request->input('year'));
     }
@@ -280,6 +260,7 @@ class ActualController extends Controller
             'department_name' => $request->department_name,
             'kpi_weighting' => $request->kpi_weighting,
             'trend' => $request->trend,
+            'status' => $request->status,
             'semester' => $semester,
             'detail' => $request->detail,
         ];
