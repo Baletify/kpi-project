@@ -197,6 +197,7 @@ class ActualController extends Controller
             'department_name' => $request->department_name,
             'kpi_weighting' => $request->kpi_weighting,
             'trend' => $request->trend,
+            'status' => $request->status,
             'semester' => $semester,
             'detail' => $request->detail,
         ];

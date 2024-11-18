@@ -35,12 +35,14 @@ class ReportController extends Controller
             $actuals = DB::table('actuals')
                 ->leftJoin('employees', 'actuals.employee_id', '=', 'employees.id')
                 ->leftJoin('departments', 'employees.department_id', '=', 'departments.id')
-                ->select('actuals.date as date', 'actuals.employee_id as employee_id', 'actuals.kpi_item', 'actuals.kpi_code as kpi_code', 'actuals.kpi_weighting', 'actuals.kpi_percentage as achievement', 'employees.name as name', 'departments.name as department', 'employees.occupation as occupation', 'employees.nik as nik', 'actuals.semester as semester', 'actuals.date as year', 'actuals.target', 'actuals.actual', 'actuals.kpi_percentage', 'actuals.record_file')
+                ->select('actuals.date as date', 'actuals.employee_id as employee_id', 'actuals.kpi_item', 'actuals.kpi_code as kpi_code', 'actuals.kpi_weighting', 'actuals.kpi_percentage as achievement', 'employees.name as name', 'departments.name as department', 'employees.occupation as occupation', 'employees.nik as nik', 'actuals.semester as semester', 'actuals.date as year', 'actuals.target', 'actuals.actual', 'actuals.kpi_percentage', 'actuals.record_file', 'actuals.id as actual_id', 'actuals.status as status')
                 ->where('actuals.employee_id', $id)
                 ->where('actuals.semester', $semester)
                 ->where(DB::raw('YEAR(actuals.date)'), $year)
                 ->orderBy(DB::raw('MONTH(actuals.date)'))
                 ->get();
+
+
 
             if ($actuals->isEmpty()) {
                 abort(404, 'No actuals found for the given year and semester');
@@ -80,7 +82,12 @@ class ReportController extends Controller
         }
     }
 
-    public function department(Request $request)
+    public function department()
+    {
+        return view('report.department-report', ['title' => 'Report', 'desc' => 'Summary KPI Dept']);
+    }
+
+    public function summaryDept(Request $request)
     {
         $department = $request->query('department');
         $currentMonth = now()->month;
@@ -138,10 +145,27 @@ class ReportController extends Controller
             }
 
 
-            return view('report.department-report', ['title' => 'Report', 'desc' => 'Department Report', 'employees' => $employees, 'employeeTotals' => $employeeTotals]);
+            return view('report.summary-department-report', ['title' => 'Report', 'desc' => 'Department Report', 'employees' => $employees, 'employeeTotals' => $employeeTotals,]);
         } else {
             return abort(404, 'No actuals found for the given year and semester');
         }
+    }
+
+    public function updateActual(Request $request)
+    {
+        $actual = Actual::find($request->actual_id);
+        $actualYear = $actualYear = $request->input('year', now()->year);
+
+        if (!$actual) {
+            return abort(404, 'Actual not found');
+        }
+
+
+        $actual->status = $request->status;
+
+        $actual->save();
+
+        return redirect()->to('report/employee-report/' . $actual->employee_id . '?semester=' . $actual->semester . '&year=' . urlencode($actualYear))->with('success', 'Status updated');
     }
 
     public function showFile($filename)

@@ -1,10 +1,30 @@
 <x-app-layout :title="$title" :desc="$desc">
     <div class="ml-64 mt-4 overflow-x-auto p-2 bg-white border border-gray-100 shadow-md shadow-black/10 rounded-md">
-        <button class="p-2 bg-blue-600 my-2 rounded-md">
-            <a href="/target/input-target-kpi-department?department={{ $departments->first()->department_id }}">
-                <span class="text-white">Input Target Dept</span>
-              </a>
-        </button>
+
+        <div class="flex">
+            <div class="relative mt-1 rounded-md mb-1">
+                <button class="p-2 bg-blue-600 my-2 rounded-md">
+                    <a href="/target/input-target-kpi-department?department={{ $departments->first()->department_id }}">
+                        <span class="text-white">Input Target Dept</span>
+                      </a>
+                </button>
+            </div>
+
+            <div class="relative mt-1 rounded-md">
+                <div class="mt-2 mb-1 mx-2">
+                    <select name="year" id="year" class=" w-28 h-10">
+                        <option value="">-- Tahun --</option>
+                        <option value="2024">2024</option>
+                        <option value="2025">2025</option>
+                        <option value="2026">2026</option>
+                        <option value="2027">2027</option>
+                    </select>
+                </div>
+                <div class="absolute inset-y-0 right-0 flex items-center">
+                </div>
+              </div>
+        </div>
+        
         <table class="w-full">
             <tr>
                 <th style="width: 3%;" class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-white py-1 px-4 bg-blue-700">No.</th>
@@ -30,7 +50,7 @@
                 <td class="border-2 border-gray-400 tracking-wide text-[12px] px-2 py-0">{{ $department->occupation }}</td>
                 <td class="border-2 border-gray-400 tracking-wide text-[12px] px-2 py-0">
                     <div class="flex justify-center gap-2">
-                    <a href="/target/input-target-kpi?employee={{ $department->employee_id }}">
+                    <a id="employee-link-{{ $department->employee_id }}" href="/target/input-target-kpi?employee={{ $department->employee_id }}">
                       <span class="text-blue-500 hover:underline">Input KPI Individu</span>
                     </a>
                 </div>
@@ -44,3 +64,15 @@
         </table>
     </div>
 </x-app-layout>
+
+<script>
+    document.getElementById('year').addEventListener('change', function() {
+        const year = this.value;
+        const links = document.querySelectorAll('a[id^="employee-link-"]');
+        links.forEach(link => {
+            const url = new URL(link.href);
+            url.searchParams.set('year', year);
+            link.href = url.toString();
+        });
+    });
+</script>

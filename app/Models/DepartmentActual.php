@@ -24,6 +24,7 @@ class DepartmentActual extends Model
         'date',
         'trend',
         'semester',
+        'status',
         'detail',
         'department_id',
     ];

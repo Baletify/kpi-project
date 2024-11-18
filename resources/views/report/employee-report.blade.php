@@ -185,11 +185,17 @@
                         @if ($actual)
                             @if ($actual->record_file)
                             @php
-                            $modalId = 'modal-' . $loop->index;
-                            $buttonId = 'open-modal-' . $loop->index;
-                            $backgroundId = 'modal-background-' . $loop->index;
+                            $modalId = 'modal-' . $actual->actual_id;
+                            $buttonId = 'open-modal-' . $actual->actual_id;
+                            $backgroundId = 'modal-background-' . $actual->actual_id;
                         @endphp
-                            <button id="{{ $buttonId }}" class="text-blue-500 hover:underline">Yes</button>
+                            <button id="{{ $buttonId }}" class="{{ $actual->status == 'Approved' ? 'text-green-500' : 'text-blue-500' }} hover:underline">
+                                @if ($actual->status == 'Approved')
+                                <i class="ri-checkbox-circle-fill"></i>
+                                @else
+                                Review
+                                @endif
+                            </button>
                             <div id="{{ $backgroundId }}" class="fixed inset-0 bg-gray-800 bg-opacity-75 hidden"></div>
                             <div id="{{ $modalId }}" class="fixed inset-0 items-center justify-center hidden">
                                 <div class="flex justify-center mt-10">
@@ -202,16 +208,33 @@
                                             <a href="{{ route('report.showFile', $actual->record_file) }}" target="_blank">Lihat Dokumen</a>
                                         </button>
                                     </div>
+                                    
                                     <div class="p-1 flex justify-start">
                                         <span class="text-semibold mb-1 text-[14px]">Berikan Komentar</span>
                                     </div>
                                     <div class="p-0 mb-2 flex justify-center">
                                         <textarea name="comment" id="comment" cols="58" rows="3"></textarea>
                                     </div>
-                                    <button class="bg-yellow-500 text-white px-4 py-2 rounded text-[14px]">
-                                        <i class="ri-send-plane-line"></i>
-                                        <span>Kirim Revisi</span>
-                                    </button>
+                                    <div class="flex justify-center gap-3">
+                                        
+                                        <div class="flex flex-col">
+                                            <button class="bg-yellow-500 text-white px-4 py-2 rounded text-[14px] mb-3">
+                                                <i class="ri-send-plane-line"></i>
+                                                <span>Kirim Revisi</span>
+                                            </button>
+                                            <form action="{{ route('report.updateActual') }}" method="POST">
+                                                @csrf
+                                                @method('PUT')
+                                            <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded text-[14px]">
+                                                <input type="hidden" name="actual_id" id="actual_id" value="{{ $actual->actual_id }}">
+                                                <input type="hidden" name="status" id="status" value="Approved">
+                                                <span>Approve</span>
+                                            </button>
+                                            </form>
+                                        </div>
+                                        
+                                    </div>
+                                    
                                     <div class="flex justify-end">
                                         <button id="close-modal-{{ $modalId }}" class="bg-red-500 text-white px-4 py-2 rounded mr-2 text-[14px]">Close</button>
                                     </div>

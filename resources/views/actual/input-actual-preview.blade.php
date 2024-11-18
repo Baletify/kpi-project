@@ -5,7 +5,7 @@
                 <span class="text-center font-bold text-2xl">Key Performance Indicator</span>
             </div>
             <div class="">
-                <span class="text-center font-bold text-xl">Periode 1 - 2025</span>
+                <span class="text-center font-bold text-xl">Semester 2 - 2024</span>
             </div>    
         </div>
         <div class="p-1 grid grid-cols-4 mt-2">

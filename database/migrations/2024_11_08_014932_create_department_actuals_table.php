@@ -29,6 +29,7 @@ return new class extends Migration
             $table->dateTime('date');
             $table->string('semester');
             $table->string('trend')->nullable();
+            $table->string('status')->nullable();
             $table->string('detail')->nullable();
             $table->foreignId('department_id')->nullable()->constrained()->onUpdate('cascade')->nullOnDelete();
             $table->timestamps();

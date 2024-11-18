@@ -25,7 +25,7 @@ class TargetController extends Controller
         $year = $request->query('year');
 
 
-        if ($employeeID) {
+        if ($employeeID && $year) {
             $employee = DB::table('employees')->leftJoin('departments', 'departments.id', 'employees.department_id')
                 ->select('employees.id', 'employees.name', 'employees.nik', 'employees.occupation', 'departments.name as department')
                 ->where('employees.id', '=', $employeeID)->first();
@@ -35,6 +35,11 @@ class TargetController extends Controller
                 ->where('employee_id', $employeeID)
                 ->where(DB::raw('YEAR(targets.date)'), $year)
                 ->get();
+
+            if ($targets->isEmpty()) {
+                abort(404, 'No actuals found for the given year and semester');
+            }
+
 
             return view('target.input-target-kpi', ['title' => 'Input KPI Target', 'desc' => 'Employees', 'employee' => $employee, 'targets' => $targets]);
         } else {
