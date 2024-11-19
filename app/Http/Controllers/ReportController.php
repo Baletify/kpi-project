@@ -13,6 +13,22 @@ use Illuminate\Support\Facades\Response;
 
 class ReportController extends Controller
 {
+
+    public function index(Request $request)
+    {
+        $department = $request->query('department');
+        if ($department) {
+            $departments = DB::table('departments')
+                ->leftJoin('employees', 'employees.department_id', '=', 'departments.id')
+                ->select('employees.id as employee_id', 'employees.nik as nik', 'employees.name as employee', 'employees.occupation as occupation', 'departments.name as department', 'departments.id as department_id')
+                ->where('departments.id', $department)
+                ->get();
+
+            return view('report.list-employee-report', ['title' => 'Report', 'desc' => 'Employee List', 'departments' => $departments]);
+        } else {
+            abort(404, 'No actuals found for the given year and semester');
+        }
+    }
     public function show($id, Request $request)
     {
         $semester = $request->query('semester');
@@ -167,6 +183,7 @@ class ReportController extends Controller
 
         return redirect()->to('report/employee-report/' . $actual->employee_id . '?semester=' . $actual->semester . '&year=' . urlencode($actualYear))->with('success', 'Status updated');
     }
+
 
     public function showFile($filename)
     {

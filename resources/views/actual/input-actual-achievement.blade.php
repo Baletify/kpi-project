@@ -22,18 +22,18 @@
           <span class="pl-3 font-semibold">Bulan</span>
           <select name="date" id="date" class="block w-full">
             <option value="">-- Pilih Bulan --</option>
-            <option value="01" data-target="{{ $target->target_unit_12 ?? '' }}">January</option>
-            <option value="02" data-target="{{ $target->target_unit_1 ?? '' }}">February</option>
-            <option value="03" data-target="{{ $target->target_unit_2 ?? '' }}">March</option>
-            <option value="04" data-target="{{ $target->target_unit_3 ?? '' }}">April</option>
-            <option value="05" data-target="{{ $target->target_unit_4 ?? '' }}">May</option>
-            <option value="06" data-target="{{ $target->target_unit_5 ?? '' }}">June</option>
-            <option value="07" data-target="{{ $target->target_unit_6 ?? '' }}">July</option>
-            <option value="08" data-target="{{ $target->target_unit_7 ?? '' }}">August</option>
-            <option value="09" data-target="{{ $target->target_unit_8 ?? '' }}">September</option>
-            <option value="10" data-target="{{ $target->target_unit_9 ?? '' }}">October</option>
-            <option value="11" data-target="{{ $target->target_unit_10 ?? '' }}">November</option>
-            <option value="12" data-target="{{ $target->target_unit_11 ?? '' }}">December</option>
+            <option value="01" data-target="{{ $target->target_unit_1 ?? '' }}">January</option>
+            <option value="02" data-target="{{ $target->target_unit_2 ?? '' }}">February</option>
+            <option value="03" data-target="{{ $target->target_unit_3 ?? '' }}">March</option>
+            <option value="04" data-target="{{ $target->target_unit_4 ?? '' }}">April</option>
+            <option value="05" data-target="{{ $target->target_unit_5 ?? '' }}">May</option>
+            <option value="06" data-target="{{ $target->target_unit_6 ?? '' }}">June</option>
+            <option value="07" data-target="{{ $target->target_unit_7 ?? '' }}">July</option>
+            <option value="08" data-target="{{ $target->target_unit_8 ?? '' }}">August</option>
+            <option value="09" data-target="{{ $target->target_unit_9 ?? '' }}">September</option>
+            <option value="10" data-target="{{ $target->target_unit_10 ?? '' }}">October</option>
+            <option value="11" data-target="{{ $target->target_unit_11 ?? '' }}">November</option>
+            <option value="12" data-target="{{ $target->target_unit_12 ?? '' }}">December</option>
         </select>
         <div class="absolute inset-y-0 right-0 flex items-center">
         </div>

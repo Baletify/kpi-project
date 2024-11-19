@@ -5,10 +5,10 @@
         </button> --}}
         <ul class="flex items-center text-sm ml-64">
             <li class="mr-2">
-                <a href="#" class="text-white hover:text-gray-600 text-lg">{{ $title }}</a>
+                <a href="#" class="text-white hover:text-gray-600 text-xl">{{ $title }}</a>
             </li>
             <li class="text-white mr-2 text-lg"> / </li>
-            <li class="text-white mr-2 text-lg"> {{ $desc }} </li>
+            <li class="text-white mr-2 text-xl"> {{ $desc }} </li>
         </ul>
         <ul class="ml-auto flex items-center">
             <li class="mr-1">

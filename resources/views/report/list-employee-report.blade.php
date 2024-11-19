@@ -6,8 +6,16 @@
         $currentYear = \Carbon\Carbon::now()->year;
         $yearToShow = ($currentMonth == 1) ? $currentYear - 1 : $currentYear;
         @endphp
-        <div class="flex justify-end">
-            
+        <div class="flex">
+            <div class="relative mt-1 rounded-md mb-1">
+                <button class="p-2 bg-blue-600 my-2 rounded-md">
+
+                    <a href="/actual/input-actual-department-details?department={{ $departments->first()->department_id }}&year={{ $yearToShow }}">
+                        <span class="text-white">Input Aktual Dept</span>
+                      </a>
+                </button>
+            </div>
+           
             <div class="relative mt-1 rounded-md">
                 <div class="mt-2 mb-1 mx-2">
                     <select name="year" id="year" class=" w-28 h-10">
@@ -20,15 +28,18 @@
                 </div>
                 <div class="absolute inset-y-0 right-0 flex items-center">
                 </div>
-            </div>
-            <div class="relative mt-1 rounded-md mb-1">
-                <button class="p-2 bg-blue-600 my-2 rounded-md">
-    
-                    <a href="/actual/input-actual-department-details?department={{ $departments->first()->department_id }}&year={{ $yearToShow }}">
-                        <span class="text-white">Input Aktual Dept</span>
-                      </a>
-                </button>
-            </div>
+              </div>
+              <div class="relative mt-1 rounded-md">
+                <div class="mt-2 mb-1 mx-2">
+                    <select name="semester" id="semester" class=" w-28 h-10">
+                        <option value="">-- Semester --</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                    </select>
+                </div>
+                <div class="absolute inset-y-0 right-0 flex items-center">
+                </div>
+              </div>
         </div>
 
         <table class="w-full">
@@ -53,8 +64,8 @@
                 <td class="border-2 border-gray-400 text-[12px] tracking-wide px-2 py-0">{{ $department->occupation }}</td>
                 <td class="border-2 border-gray-400 text-[12px] tracking-wide px-2 py-0">
                     <div class="flex justify-center gap-2 text-[12px]">
-                        <a id="employee-link-{{ $department->employee_id }}" href="/actual/input-actual-employee?employee={{ $department->employee_id }}">
-                            <span class="hover:underline text-blue-600">Input Aktual Individu</span>
+                        <a id="employee-link-{{ $department->employee_id }}" href="/report/employee-report/{{ $department->employee_id }}?semester=&year=">
+                            <span class="hover:underline text-blue-600">Summary</span>
                         </a>
                 </div>
                 </td>
@@ -68,13 +79,46 @@
     </div>
 </x-app-layout>
 <script>
-    document.getElementById('year').addEventListener('change', function() {
-        const year = this.value;
-        const links = document.querySelectorAll('a[id^="employee-link-"]');
-        links.forEach(link => {
-            const url = new URL(link.href);
-            url.searchParams.set('year', year);
-            link.href = url.toString();
+    document.addEventListener('DOMContentLoaded', function() {
+        const yearDropdown = document.getElementById('year');
+        const semesterDropdown = document.getElementById('semester');
+        
+        // Set the dropdown values from localStorage if they exist
+        const savedYear = localStorage.getItem('selectedYear');
+        const savedSemester = localStorage.getItem('selectedSemester');
+        if (savedYear) {
+            yearDropdown.value = savedYear;
+        }
+        if (savedSemester) {
+            semesterDropdown.value = savedSemester;
+        }
+
+        // Save the dropdown values to localStorage on change
+        yearDropdown.addEventListener('change', function() {
+            const year = this.value;
+            localStorage.setItem('selectedYear', year);
+            updateLinks();
         });
+
+        semesterDropdown.addEventListener('change', function() {
+            const semester = this.value;
+            localStorage.setItem('selectedSemester', semester);
+            updateLinks();
+        });
+
+        function updateLinks() {
+            const year = yearDropdown.value;
+            const semester = semesterDropdown.value;
+            const links = document.querySelectorAll('a[id^="employee-link-"]');
+            links.forEach(link => {
+                const url = new URL(link.href);
+                url.searchParams.set('year', year);
+                url.searchParams.set('semester', semester);
+                link.href = url.toString();
+            });
+        }
+
+        // Initial update of links
+        updateLinks();
     });
 </script>

@@ -46,10 +46,10 @@
                     <div class="pl-3 mb-3">
                         <select name="department" id="department" class=" w-56">
                             <option value="">-- Pilih Departemen --</option>
-                            <option value="2">Enviro</option>
-                            <option value="1">BSKP</option>
-                            <option value="HR">HR</option>
-                            <option value="3">IT</option>
+                            @foreach ($deptLists as $item)
+                                
+                            <option value="{{ $item->id }}">{{ $item->name }}</option>
+                            @endforeach
                         </select>
                     </div>
                   <div class="absolute inset-y-0 right-0 flex items-center">

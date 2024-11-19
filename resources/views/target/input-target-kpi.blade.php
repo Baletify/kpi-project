@@ -8,8 +8,7 @@
                 </a>
             </div>
         </div>
-        <div class="flex p-1">
-            <div class=""></div>
+        <div class="grid grid-cols-5">
             <div class="p-1">
                 <table>
                     <tr>

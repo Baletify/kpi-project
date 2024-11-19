@@ -36,12 +36,16 @@
             @php
             $i++;
             $targetCount = $targetCounts->Where('code', $department)->first();
-
+            $departmentId = $items->first()->department_id;
             @endphp
             <tr class="{{ $i % 2 === 0 ? 'bg-gray-100' : 'bg-gray-300' }}"> 
 
                 {{-- <td class="border-2 border-gray-400 tracking-wide text-[11px] py-0 text-center">{{ $i }}</td> --}}
-                <td class="border-2 pl-1 border-gray-400 tracking-wide text-[11px] py-0">{{ $department }}</td>
+                <td class="border-2 pl-1 border-gray-400 tracking-wide text-[11px] py-0">
+                    <a href="{{ url('/report/list-employee-report?department=' . $departmentId) }}" class="hover:underline hover:text-blue-500">
+                        {{ $department }}
+                    </a>
+                </td>
                 <td class="border-2 border-gray-400 tracking-wide text-[11px] py-0 text-center">
                 {{ $targetCount ? $targetCount->total : 0 }}
                 </td>
@@ -59,7 +63,7 @@
 
                     @endphp
                     <td class="border-2 border-gray-400 tracking-wide text-[11px] py-0 text-center">
-                        {{ $actualCount ? $actualCount['total'] : 0 }}
+                        {{ $actualCount ? $actualCount['total'] : '' }}
                     </td>
                     <td class="border-2 border-gray-400 tracking-wide text-[11px] py-0 text-center">
                         {{ $targetCount ? $targetCount->total - ($actualCount ? $actualCount['total'] : 0) : 0 }}

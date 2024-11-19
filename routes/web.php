@@ -20,7 +20,7 @@ Route::get('dashboard/filter', [EmployeeController::class, 'filter']);
 
 Route::prefix('target')->group(function () {
     Route::get('/input-target-kpi', [TargetController::class, 'show']);
-    Route::get('/input-target-department', [TargetController::class, 'department']);
+    Route::get('/input-target-department', [TargetController::class, 'department'])->name('target.department');
     Route::get('/input-target-kpi-department', [TargetController::class, 'showDept'])->name('showDept');
     // Route::get('/input-target-kpi/{id}', [TargetController::class, 'show']);
 });
@@ -43,6 +43,7 @@ Route::prefix('actual')->group(function () {
 });
 
 Route::prefix('report')->group(function () {
+    Route::get('/list-employee-report', [ReportController::class, 'index'])->name('report.index');
     Route::get('/employee-report/{id}', [ReportController::class, 'show'])->name('report.show');
     Route::get('/summary-department-report', [ReportController::class, 'summaryDept'])->name('report.summaryDept');
     Route::get('/department-report', [ReportController::class, 'department'])->name('report.department');

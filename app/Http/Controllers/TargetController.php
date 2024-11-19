@@ -41,6 +41,9 @@ class TargetController extends Controller
             }
 
 
+
+
+
             return view('target.input-target-kpi', ['title' => 'Input KPI Target', 'desc' => 'Employees', 'employee' => $employee, 'targets' => $targets]);
         } else {
 
@@ -79,10 +82,11 @@ class TargetController extends Controller
         if ($departmentID) {
             $departments = DB::table('departments')->where('departments.id', $departmentID)
                 ->leftJoin('employees', 'employees.department_id', '=', 'departments.id')
-                ->select('employees.id as employee_id', 'employees.name as employee', 'employees.nik as nik', 'employees.occupation as occupation', 'departments.name as department', 'departments.id as department_id')
+                ->leftJoin('action_plans', 'action_plans.employee_id', '=', 'employees.id')
+                ->select('employees.id as employee_id', 'employees.name as employee', 'employees.nik as nik', 'employees.occupation as occupation', 'departments.name as department', 'departments.id as department_id', 'action_plans.file as file', 'action_plans.id as action_plan_id')
                 ->get();
 
-            return view('target.input-target-department', ['title' => 'Input KPI Target', 'desc' => 'Department', 'departments' => $departments]);
+            return view('target.input-target-department', ['title' => 'Input Target', 'desc' => 'Input KPI Target & Upload Program', 'departments' => $departments]);
         } else {
             abort(404, 'No actuals found for the given year and semester');
         }

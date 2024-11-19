@@ -24,7 +24,7 @@ class ActualController extends Controller
 
         // Ambil data targets
         $targets = DB::table('targets')
-            ->select('id', 'code', 'indicator', 'employee_id')
+            ->select('id', 'code', 'indicator', 'period', 'employee_id')
             ->where('employee_id', $employeeID)
             ->where(DB::raw('YEAR(date)'), '=', $year)
             ->get();

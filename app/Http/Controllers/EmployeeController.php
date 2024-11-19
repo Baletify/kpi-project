@@ -17,6 +17,8 @@ class EmployeeController extends Controller
             ->select('employees.id', 'employees.nik', 'employees.name', 'employees.occupation', 'departments.name as department')
             ->get();
 
+        $deptLists = DB::table('departments')->get();
+
         // Count of employees by occupation
         $employeeCountsByOccupation = DB::table('employees')
             ->select('occupation', DB::raw('count(*) as total'))
@@ -51,6 +53,7 @@ class EmployeeController extends Controller
             'totalActualInputs' => $totalActualInputs,
             'managerCountActual' => $managerCountActual,
             'assistantManagerCountActual' => $assistantManagerCountActual,
+            'deptLists' => $deptLists,
         ]);
     }
     public function filter(Request $request)

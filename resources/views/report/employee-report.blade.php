@@ -208,7 +208,7 @@
                                             <a href="{{ route('report.showFile', $actual->record_file) }}" target="_blank">Lihat Dokumen</a>
                                         </button>
                                     </div>
-                                    
+                                    @if ($actual->status !== 'Approved')
                                     <div class="p-1 flex justify-start">
                                         <span class="text-semibold mb-1 text-[14px]">Berikan Komentar</span>
                                     </div>
@@ -234,6 +234,7 @@
                                         </div>
                                         
                                     </div>
+                                    @endif
                                     
                                     <div class="flex justify-end">
                                         <button id="close-modal-{{ $modalId }}" class="bg-red-500 text-white px-4 py-2 rounded mr-2 text-[14px]">Close</button>

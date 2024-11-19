@@ -55,7 +55,7 @@ class ActionPlanController extends Controller
             ]
         );
 
-        return redirect()->route('action-plan.show', ['department' => $request->department_id]);
+        return redirect()->route('target.department', ['department' => $request->department_id]);
     }
 
     public function showFile($filename)
@@ -109,6 +109,6 @@ class ActionPlanController extends Controller
             ]
         );
 
-        return redirect()->route('action-plan.show', ['department' => $request->department_id]);
+        return redirect()->route('target.department', ['department' => $request->department_id]);
     }
 }

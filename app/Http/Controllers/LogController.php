@@ -23,14 +23,14 @@ class LogController extends Controller
         $departments = DB::table('actuals')
             ->join('employees', 'actuals.employee_id', '=', 'employees.id')
             ->join('departments', 'employees.department_id', '=', 'departments.id')
-            ->select('departments.code as department_code', 'actuals.created_at')
+            ->select('departments.code as department_code', 'actuals.created_at', 'departments.id as department_id')
             ->whereIn('actuals.id', function ($query) use ($months) {
                 $query->select(DB::raw('MAX(actuals.id)'))
                     ->from('actuals')
                     ->join('employees', 'actuals.employee_id', '=', 'employees.id')
                     ->join('departments', 'employees.department_id', '=', 'departments.id')
                     ->whereIn(DB::raw('MONTH(actuals.created_at)'), $months)
-                    ->groupBy('departments.code', DB::raw('MONTH(actuals.created_at)'));
+                    ->groupBy('departments.code', DB::raw('MONTH(actuals.created_at), departments.id'));
             })
             ->whereIn(DB::raw('MONTH(actuals.created_at)'), $months)
             ->orderBy('actuals.created_at', 'desc')

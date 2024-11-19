@@ -15,22 +15,28 @@ class EmployeeSeeder extends Seeder
     {
         $employees = [
             [
-                'nik' => fake()->unique()->randomNumber(6),
-                'name' => fake()->name(),
-                'occupation' => 'BSKP Staff',
+                'nik' => '222-014',
+                'name' => 'Yuda Aldeika',
+                'occupation' => 'Asst Mng',
                 'department_id' => 1
             ],
             [
-                'nik' => fake()->unique()->randomNumber(6),
-                'name' => fake()->name(),
-                'occupation' => 'Enviro Staff',
-                'department_id' => 2
+                'nik' => '211-001',
+                'name' => 'Abdul Gani',
+                'occupation' => 'Adm A',
+                'department_id' => 1
             ],
             [
-                'nik' => fake()->unique()->randomNumber(6),
-                'name' => fake()->name(),
-                'occupation' => 'IT Staff',
-                'department_id' => 3
+                'nik' => '219-032',
+                'name' => 'Ridwan Nugroho',
+                'occupation' => 'Adm A',
+                'department_id' => 1
+            ],
+            [
+                'nik' => '200-137',
+                'name' => 'Edy Sujatmoko',
+                'occupation' => 'Asst Mng',
+                'department_id' => 2
             ],
         ];
 

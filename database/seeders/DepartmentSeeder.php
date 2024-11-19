@@ -15,16 +15,12 @@ class DepartmentSeeder extends Seeder
     {
         $departments = [
             [
-                'name' => 'BSKP',
-                'code' => 'BSKP',
+                'name' => 'Safety',
+                'code' => 'HSE',
             ],
             [
-                'name' => 'Enviro',
-                'code' => 'ENV',
-            ],
-            [
-                'name' => 'IT',
-                'code' => 'IT',
+                'name' => 'Sales & Purchasing',
+                'code' => 'SPID',
             ],
         ];
 
