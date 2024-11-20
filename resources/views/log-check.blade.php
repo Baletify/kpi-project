@@ -38,7 +38,7 @@
             $targetCount = $targetCounts->Where('code', $department)->first();
             $departmentId = $items->first()->department_id;
             @endphp
-            <tr class="{{ $i % 2 === 0 ? 'bg-gray-100' : 'bg-gray-300' }}"> 
+            <tr class="{{ $i % 2 === 0 ? 'bg-white' : 'bg-blue-100'}}"> 
 
                 {{-- <td class="border-2 border-gray-400 tracking-wide text-[11px] py-0 text-center">{{ $i }}</td> --}}
                 <td class="border-2 pl-1 border-gray-400 tracking-wide text-[11px] py-0">

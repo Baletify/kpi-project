@@ -49,14 +49,15 @@
         <table class="w-full table-auto">
             <thead>
                 <tr>
-                    <th style="width: 3%;" class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-white py-1 px-1 bg-blue-700" rowspan="2">No.</th>
-                    <th style="width: 30%" class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-white py-1 px-1 bg-blue-700" rowspan="2" >KPI</th>
-                    <th style="width: 8%" class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-white py-1 px-1 bg-blue-700" rowspan="2" >Periode Review</th>
-                    <th style="width: 5%" class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-white py-1 px-1 bg-blue-700" rowspan="2" >Unit</th>
-                    <th style="width: 6%" class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-white py-1 px-1 bg-blue-700" rowspan="2" >Bobot "%"</th>
-                    <th style="width: 8%" class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-white py-1 px-1 bg-blue-700" rowspan="2"></th>
-                    <th style="width: 40%" class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-white py-1 px-1 bg-blue-700" colspan="7">Target & Actual KPI</th>
-                    <th class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-white py-1 px-1 bg-blue-700" rowspan="2">Bobot Pencapaian</th>
+                    <th style="width: 3%;" class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-white py-1 px-0.5 bg-blue-700" rowspan="2">No. KPI</th>
+                    <th style="width: 25%" class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-white py-1 px-0.5 bg-blue-700" rowspan="2" >KPI</th>
+                    <th style="width: 3%" class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-white py-1 px-0.5 bg-blue-700" rowspan="2" >Trend</th>
+                    <th style="width: 4%" class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-white py-1 px-0.5 bg-blue-700" rowspan="2" >Periode Review</th>
+                    <th style="width: 3%" class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-white py-1 px-0.5 bg-blue-700" rowspan="2" >Unit</th>
+                    <th style="width: 4%" class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-white py-1 px-0.5 bg-blue-700" rowspan="2" >Bobot "%"</th>
+                    <th style="width: 6%" class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-white py-1 px-0.5 bg-blue-700" rowspan="2"></th>
+                    <th style="width: 40%" class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-white py-1 px-0.5 bg-blue-700" colspan="7">Target & Actual KPI</th>
+                    <th class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-white py-1 px-0.5 bg-blue-700" rowspan="2">Bobot Pencapaian</th>
                 </tr>
                 @php
                 $months = [];
@@ -75,41 +76,46 @@
                 }
                 @endphp
                 <tr> @foreach ($months as $month)
-                    <th class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-white py-1 px-1 bg-blue-700" >{{ $month }}</th>
+                    <th style="width: 7%" class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-white py-1 px-0.5 bg-blue-700" >{{ $month }}</th>
                     @endforeach
-                    <th class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-white py-1 px-1 bg-blue-700" >Total</th>
+                    <th style="width: 7%" class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-white py-1 px-0.5 bg-blue-700" >Total</th>
                 </tr>
             </thead>
             <tbody>
-                
+                @php
+                    $i = 0;
+                @endphp
                 @foreach ($targets as $target)
-            
-                <tr>
+                @php
+                    $i++;
+                @endphp
+                <tr class="{{ $i % 2 === 0 ? 'bg-white' : 'bg-gray-200' }}">
                     <td class="border-2 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-2" rowspan="5">{{ $target->code }}</td>
                     <td class="border-2 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-3" rowspan="5">{{ $target->indicator }}</td>
-                    <td class="border-2 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-1 text-center" rowspan="5">{{ $target->period }}</td>
-                    <td class="border-2 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-1 text-center" rowspan="5">{{ $target->unit }}</td>
-                    <td class="border-2 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-1 text-center" rowspan="5">
+                    <td class="border-2 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-3" rowspan="5">{{ $target->trend }}</td>
+                    <td class="border-2 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center" rowspan="5">{{ $target->period }}</td>
+                    <td class="border-2 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center" rowspan="5">{{ $target->unit }}</td>
+                    <td class="border-2 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center" rowspan="5">
                         {{ $target->weighting }}
                     </td>
                 </tr>
                 
                 <tr>
-                    <td class="border-2 bg-blue-100  border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-1 text-center">Target</td>
+                    <td class="border-2 bg-blue-100  border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center">Target</td>
                     @foreach ($months as $month => $monthName)
                 @php
                     $actual = $actuals->first(function($item) use ($target, $month) {
                         return \Carbon\Carbon::parse($item->date)->format('m') == $month && $item->kpi_item == $target->indicator;
                     });
                 @endphp
-                <td class="border-2 bg-blue-100 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-1 text-center">{{ $actual ? $actual->target : '' }}</td>
+                <td class="border-2 bg-blue-100 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center">{{ $actual ? $actual->target : '' }}</td>
             @endforeach
                     
                     @php
                         $totalTarget = $totals[$target->code]['total_target'] ?? 0;
                     @endphp
                 @if ($totalTarget > 0)
-                     <td class="border-2 bg-blue-100 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-1 text-center">
+                     <td class="border-2 bg-blue-100 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center">
                         @if (strpos($totalTarget, '%') !== false)
                             {{ number_format($totalTarget) }}
                         @else
@@ -117,33 +123,33 @@
                         @endif
                      </td>
                  @else
-                     <td class="border-2 bg-blue-100 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-1 text-center"></td>
+                     <td class="border-2 bg-blue-100 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center"></td>
                  @endif
                     @php
                         $totalWeightingAchievement = $totals[$target->code] ['total_achievement_weight'] ?? 0 ;
                     @endphp
                      @if ($totalWeightingAchievement > 0)
-                     <td class="border-2 bg-blue-100 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-1 text-center" rowspan="4">{{ number_format($totalWeightingAchievement) }}%</td>
+                     <td class="border-2 bg-blue-100 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center" rowspan="4">{{ number_format($totalWeightingAchievement) }}%</td>
                     @else
-                     <td class="border-2 bg-blue-100 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-1 text-center" rowspan="4"></td>
+                     <td class="border-2 bg-blue-100 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center" rowspan="4"></td>
                     @endif
                 </tr>
                 <tr>
-                    <td class="border-2 bg-white border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-1 text-center">Actual</td>
+                    <td class="border-2 bg-white border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center">Actual</td>
                     @foreach ($months as $month => $monthName)
                     @php
                         $actual = $actuals->first(function($item) use ($target, $month) {
                             return \Carbon\Carbon::parse($item->date)->format('m') == $month && $item->kpi_item == $target->indicator;
                         });
                     @endphp
-                    <td class="border-2 bg-white border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-1 text-center">{{ $actual ? $actual->actual : '' }}</td>
+                    <td class="border-2 bg-white border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center">{{ $actual ? $actual->actual : '' }}</td>
                     @endforeach
 
                     @php
                          $totalActual = $totals[$target->code]['total_actual'] ?? 0;
                     @endphp
                     @if ($totalTarget > 0)
-                     <td class="border-2 bg-white border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-1 text-center">
+                     <td class="border-2 bg-white border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center">
                         @if (strpos($totalActual, '%') !== false)
                         {{ number_format($totalActual) }}
                         @else
@@ -151,37 +157,37 @@
                         @endif
                      </td>
                  @else
-                     <td class="border-2 bg-white border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-1 text-center"></td>
+                     <td class="border-2 bg-white border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center"></td>
                  @endif
                 </tr>
                 <tr>
-                    <td class="border-2 bg-blue-100 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-1 text-center">%</td>
+                    <td class="border-2 bg-blue-100 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center">%</td>
                     @foreach ($months as $month => $monthName)
                     @php
                         $actual = $actuals->first(function($item) use ($target, $month) {
                             return \Carbon\Carbon::parse($item->date)->format('m') == $month && $item->kpi_item == $target->indicator;
                         });
                     @endphp
-                    <td class="border-2 bg-blue-100 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-1 text-center">{{ $actual ? $actual->kpi_percentage : '' }}</td>
+                    <td class="border-2 bg-blue-100 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center">{{ $actual ? $actual->kpi_percentage : '' }}</td>
                     @endforeach
                     @php
                          $totalPercentage = $totals[$target->code]['total_percentage'] ?? 0;
                     @endphp
                     @if ($totalTarget > 0)
-                     <td class="border-2 bg-blue-100 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-1 text-center">{{ number_format($totalPercentage) }} %</td>
+                     <td class="border-2 bg-blue-100 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center">{{ number_format($totalPercentage) }} %</td>
                  @else
-                     <td class="border-2 bg-blue-100 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-1 text-center"></td>
+                     <td class="border-2 bg-blue-100 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center"></td>
                  @endif
                 </tr>
                 <tr>
-                    <td class="border-2 bg-white border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-1 text-center">Rekaman</td>
+                    <td class="border-2 bg-white border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center">Rekaman</td>
                     @foreach ($months as $month => $monthName)
                     @php
                         $actual = $actuals->first(function($item) use ($target, $month) {
                             return \Carbon\Carbon::parse($item->date)->format('m') == $month && $item->kpi_item == $target->indicator;
                         });
                     @endphp
-                    <td class="border-2 bg-white border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-1 text-center hover:underline">
+                    <td class="border-2 bg-white border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center hover:underline">
                         @if ($actual)
                             @if ($actual->record_file)
                             @php
@@ -204,13 +210,13 @@
                                         <h2 class="text-xl font-bold mb-4">Review Data Pendukung</h2>
                                     </div>
                                     <div class="p-1">
-                                        <button class="bg-blue-500 text-white p-2 text-[14px] rounded">
+                                        <button class="bg-blue-500 text-white p-2 text-[12px] rounded">
                                             <a href="{{ route('report.showFile', $actual->record_file) }}" target="_blank">Lihat Dokumen</a>
                                         </button>
                                     </div>
                                     @if ($actual->status !== 'Approved')
                                     <div class="p-1 flex justify-start">
-                                        <span class="text-semibold mb-1 text-[14px]">Berikan Komentar</span>
+                                        <span class="text-semibold mb-1 text-[12px]">Berikan Komentar</span>
                                     </div>
                                     <div class="p-0 mb-2 flex justify-center">
                                         <textarea name="comment" id="comment" cols="58" rows="3"></textarea>
@@ -218,14 +224,14 @@
                                     <div class="flex justify-center gap-3">
                                         
                                         <div class="flex flex-col">
-                                            <button class="bg-yellow-500 text-white px-4 py-2 rounded text-[14px] mb-3">
+                                            <button class="bg-yellow-500 text-white px-4 py-2 rounded text-[12px] mb-3">
                                                 <i class="ri-send-plane-line"></i>
                                                 <span>Kirim Revisi</span>
                                             </button>
                                             <form action="{{ route('report.updateActual') }}" method="POST">
                                                 @csrf
                                                 @method('PUT')
-                                            <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded text-[14px]">
+                                            <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded text-[12px]">
                                                 <input type="hidden" name="actual_id" id="actual_id" value="{{ $actual->actual_id }}">
                                                 <input type="hidden" name="status" id="status" value="Approved">
                                                 <span>Approve</span>
@@ -237,7 +243,7 @@
                                     @endif
                                     
                                     <div class="flex justify-end">
-                                        <button id="close-modal-{{ $modalId }}" class="bg-red-500 text-white px-4 py-2 rounded mr-2 text-[14px]">Close</button>
+                                        <button id="close-modal-{{ $modalId }}" class="bg-red-500 text-white px-4 py-2 rounded mr-2 text-[12px]">Close</button>
                                     </div>
                                 </div>
                             </div>
@@ -250,7 +256,7 @@
                         @endif
                     </td>
                     @endforeach
-                    <td class="border-2 bg-gray-300 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-1 text-center"></td>
+                    <td class="border-2 bg-gray-300 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center"></td>
                 </tr>
                 @endforeach
             </tbody>

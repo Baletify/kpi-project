@@ -43,7 +43,7 @@ class ReportController extends Controller
         if ($semester && $year) {
 
             $targets = DB::table('targets')
-                ->select('id', 'code', 'indicator', 'employee_id', 'period', 'unit', 'weighting')
+                ->select('id', 'code', 'indicator', 'employee_id', 'period', 'unit', 'weighting', 'trend')
                 ->where('employee_id', $id)
                 ->where(DB::raw('YEAR(targets.date)'), $year)
                 ->get();

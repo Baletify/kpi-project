@@ -59,7 +59,7 @@
             @php
             $i++
             @endphp
-            <tr class="{{ $i % 2 === 0 ? 'bg-gray-100' : 'bg-gray-200' }}">
+            <tr class="{{ $i % 2 === 0 ? 'bg-white' : 'bg-blue-100'}}">
 
                 <td class="border-2 border-gray-400 text-[11px] tracking-wide px-2 py-0">{{ $target->code }}</td>
                 <td class="border-2 border-gray-400 text-[11px] tracking-wide px-2 py-0">{{ $target->indicator }}</td>

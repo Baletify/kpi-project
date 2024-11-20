@@ -34,7 +34,7 @@
                 @php
                     $i++;
                 @endphp
-                <tr class="{{ $i % 2 === 0 ? 'bg-gray-100' : 'bg-gray-200' }}">
+                <tr class="{{ $i % 2 === 0 ? 'bg-white' : 'bg-blue-100'}}">
                     <td class="border-2 border-gray-400 text-[10px] tracking-wide  py-0 px-2 text-center">{{ $i }}</td>
                     <td class="border-2 border-gray-400 text-[10px] tracking-wide  py-0 px-2">{{ $target->code }}</td>
                     <td class="border-2 border-gray-400 text-[10px] tracking-wide  py-0 px-2">{{ $target->indicator }}</td>

@@ -56,7 +56,7 @@
             @php
             $i++
             @endphp
-            <tr class="{{ $i % 2 === 0 ? 'bg-gray-200' : 'bg-gray-300' }}">
+            <tr class="{{ $i % 2 === 0 ? 'bg-white' : 'bg-blue-100'}}">
                 <td class="border-2 border-gray-400 text-[12px] tracking-wide px-2 py-0 text-center">{{ $i }}</td>
                 <td class="border-2 border-gray-400 text-[12px] tracking-wide px-2 py-0">{{ $department->nik }}</td>
                 <td class="border-2 border-gray-400 text-[12px] tracking-wide px-2 py-0">{{ $department->employee }}</td>

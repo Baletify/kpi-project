@@ -22,10 +22,10 @@
             $i = 0;
         @endphp
         @foreach ($departments as $department => $items)
-        <tr> 
             @php
             $i++;
             @endphp
+        <tr class="{{ $i % 2 === 0 ? 'bg-white' : 'bg-blue-100'}}"> 
             <td class="border-2 border-gray-400 tracking-wide px-2 py-0 text-[13px] text-center">{{ $i }}</td>
             <td class="border-2 border-gray-400 tracking-wide px-2 py-0 text-[13px]">{{ $department }}</td>
             @foreach ($months as $month)
