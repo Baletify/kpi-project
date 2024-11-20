@@ -2,15 +2,12 @@
     <div class="ml-64 mt-4 overflow-x-auto p-2 bg-white border border-gray-100 shadow-md shadow-black/10 rounded-md">
         @php
         $i = 0;
-        $currentMonth = \Carbon\Carbon::now()->month;
-        $currentYear = \Carbon\Carbon::now()->year;
-        $yearToShow = ($currentMonth == 1) ? $currentYear - 1 : $currentYear;
         @endphp
-        <div class="flex justify-end">
+        <div class="flex justify-end mb-2">
             
             <div class="relative mt-1 rounded-md">
-                <div class="mt-2 mb-1 mx-2">
-                    <select name="year" id="year" class=" w-28 h-10">
+                <div class="mt-2 mx-2">
+                    <select name="year" id="year" class="w-24 h-10 text-[12px]">
                         <option value="">-- Tahun --</option>
                         <option value="2024">2024</option>
                         <option value="2025">2025</option>
@@ -21,12 +18,22 @@
                 <div class="absolute inset-y-0 right-0 flex items-center">
                 </div>
             </div>
+            <div class="relative mt-1 rounded-md">
+                <div class="mt-2 mb-1 mx-2">
+                    <select name="semester" id="semester" class="w-28 h-10 text-[12px]">
+                        <option value="">-- Semester --</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                    </select>
+                </div>
+                <div class="absolute inset-y-0 right-0 flex items-center">
+                </div>
+              </div>
             <div class="relative mt-1 rounded-md mb-1">
                 <button class="p-2 bg-blue-600 my-2 rounded-md">
-    
-                    <a href="/actual/input-actual-department-details?department={{ $departments->first()->department_id }}&year={{ $yearToShow }}">
+                    <a id="input-actual-link" href="/actual/input-actual-department-details?department={{ $departments->first()->department_id }}&semester=&year=">
                         <span class="text-white">Input Aktual Dept</span>
-                      </a>
+                    </a>
                 </button>
             </div>
         </div>
@@ -53,28 +60,69 @@
                 <td class="border-2 border-gray-400 text-[12px] tracking-wide px-2 py-0">{{ $department->occupation }}</td>
                 <td class="border-2 border-gray-400 text-[12px] tracking-wide px-2 py-0">
                     <div class="flex justify-center gap-2 text-[12px]">
-                        <a id="employee-link-{{ $department->employee_id }}" href="/actual/input-actual-employee?employee={{ $department->employee_id }}">
+                        <a id="employee-link-{{ $department->employee_id }}" href="/actual/input-actual-employee?employee={{ $department->employee_id }}&semester=&year=">
                             <span class="hover:underline text-blue-600">Input Aktual Individu</span>
                         </a>
-                </div>
+                    </div>
                 </td>
             </tr>
             @empty
             <tr>
-                <td colspan="16" class="border-2 border-gray-400 tracking-wide  py-0 px-2 text-center">Data Tidak ditemukan</td>
+                <td colspan="16" class="border-2 border-gray-400 tracking-wide py-0 px-2 text-center">Data Tidak ditemukan</td>
             </tr>
             @endforelse
         </table>
     </div>
 </x-app-layout>
 <script>
-    document.getElementById('year').addEventListener('change', function() {
-        const year = this.value;
-        const links = document.querySelectorAll('a[id^="employee-link-"]');
-        links.forEach(link => {
-            const url = new URL(link.href);
+    document.addEventListener('DOMContentLoaded', function() {
+        const yearDropdown = document.getElementById('year');
+        const semesterDropdown = document.getElementById('semester');
+        const inputActualLink = document.getElementById('input-actual-link');
+
+        // Set the dropdown values from localStorage if they exist
+        const savedYear = localStorage.getItem('selectedYear');
+        const savedSemester = localStorage.getItem('selectedSemester');
+        if (savedYear) {
+            yearDropdown.value = savedYear;
+        }
+        if (savedSemester) {
+            semesterDropdown.value = savedSemester;
+        }
+
+        // Function to update links
+        function updateLinks() {
+            const year = yearDropdown.value;
+            const semester = semesterDropdown.value;
+
+            // Update employee links
+            const employeeLinks = document.querySelectorAll('a[id^="employee-link-"]');
+            employeeLinks.forEach(link => {
+                const url = new URL(link.href);
+                url.searchParams.set('year', year);
+                url.searchParams.set('semester', semester);
+                link.href = url.toString();
+            });
+
+            // Update input actual link
+            const url = new URL(inputActualLink.href);
             url.searchParams.set('year', year);
-            link.href = url.toString();
+            url.searchParams.set('semester', semester);
+            inputActualLink.href = url.toString();
+        }
+
+        // Save the dropdown values to localStorage on change
+        yearDropdown.addEventListener('change', function() {
+            localStorage.setItem('selectedYear', this.value);
+            updateLinks();
         });
+
+        semesterDropdown.addEventListener('change', function() {
+            localStorage.setItem('selectedSemester', this.value);
+            updateLinks();
+        });
+
+        // Initial update of links
+        updateLinks();
     });
 </script>

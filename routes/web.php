@@ -46,7 +46,7 @@ Route::prefix('report')->group(function () {
     Route::get('/list-employee-report', [ReportController::class, 'index'])->name('report.index');
     Route::get('/employee-report/{id}', [ReportController::class, 'show'])->name('report.show');
     Route::get('/summary-department-report', [ReportController::class, 'summaryDept'])->name('report.summaryDept');
-    Route::get('/department-report', [ReportController::class, 'department'])->name('report.department');
+    Route::get('/department-report/{id}', [ReportController::class, 'department'])->name('report.department');
     Route::get('/file-preview/{id}', [ReportController::class, 'showFile'])->name('report.showFile');
 });
 

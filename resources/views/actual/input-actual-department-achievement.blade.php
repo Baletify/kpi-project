@@ -20,20 +20,21 @@
         </div>
           <div class="relative mt-1 rounded-md">
             <span class="pl-3 font-semibold">Bulan</span>
-            <select name="date" id="date" class="block w-full">
+            <select name="date" id="date" class="block w-full text-[12px]">
               <option value="">-- Pilih Bulan --</option>
-              <option value="01" data-target="{{ $target->target_unit_12 ?? '' }}">January</option>
-              <option value="02" data-target="{{ $target->target_unit_1 ?? '' }}">February</option>
-              <option value="03" data-target="{{ $target->target_unit_2 ?? '' }}">March</option>
-              <option value="04" data-target="{{ $target->target_unit_3 ?? '' }}">April</option>
-              <option value="05" data-target="{{ $target->target_unit_4 ?? '' }}">May</option>
-              <option value="06" data-target="{{ $target->target_unit_5 ?? '' }}">June</option>
-              <option value="07" data-target="{{ $target->target_unit_6 ?? '' }}">July</option>
-              <option value="08" data-target="{{ $target->target_unit_7 ?? '' }}">August</option>
-              <option value="09" data-target="{{ $target->target_unit_8 ?? '' }}">September</option>
-              <option value="10" data-target="{{ $target->target_unit_9 ?? '' }}">October</option>
-              <option value="11" data-target="{{ $target->target_unit_10 ?? '' }}">November</option>
-              <option value="12" data-target="{{ $target->target_unit_11 ?? '' }}">December</option>
+             
+              <option value="01" data-target="{{ $target->target_unit_1 ?? 'null' }}">January</option>
+              <option value="02" data-target="{{ $target->target_unit_2 ?? 'null' }}">February</option>
+              <option value="03" data-target="{{ $target->target_unit_3 ?? 'null' }}">March</option>
+              <option value="04" data-target="{{ $target->target_unit_4 ?? 'null' }}">April</option>
+              <option value="05" data-target="{{ $target->target_unit_5 ?? 'null' }}">May</option>
+              <option value="06" data-target="{{ $target->target_unit_6 ?? 'null' }}">June</option>
+              <option value="07" data-target="{{ $target->target_unit_7 ?? 'null' }}">July</option>
+              <option value="08" data-target="{{ $target->target_unit_8 ?? 'null' }}">August</option>
+              <option value="09" data-target="{{ $target->target_unit_9 ?? 'null' }}">September</option>
+              <option value="10" data-target="{{ $target->target_unit_10 ?? 'null' }}">October</option>
+              <option value="11" data-target="{{ $target->target_unit_11 ?? 'null' }}">November</option>
+              <option value="12" data-target="{{ $target->target_unit_12 ?? 'null' }}">December</option>
           </select>
           <div class="absolute inset-y-0 right-0 flex items-center">
           </div>
@@ -77,53 +78,8 @@
         </div>
           <div class="relative mt-1 rounded-md">
             <span class="pl-3 font-semibold">Target</span> 
-            
-        @php
-      $currentMonth = \Carbon\Carbon::now()->month;
-      $targetUnit = '';
-  
-      switch ($currentMonth) {
-          case 1:
-              $targetUnit = $target->target_unit_12 ?? '';
-              break;
-          case 2:
-              $targetUnit = $target->target_unit_1 ?? '';
-              break;
-          case 3:
-              $targetUnit = $target->target_unit_2 ?? '';
-              break;
-          case 4:
-              $targetUnit = $target->target_unit_3 ?? '';
-              break;
-          case 5:
-              $targetUnit = $target->target_unit_4 ?? '';
-              break;
-          case 6:
-              $targetUnit = $target->target_unit_5 ?? '';
-              break;
-          case 7:
-              $targetUnit = $target->target_unit_6 ?? '';
-              break;
-          case 8:
-              $targetUnit = $target->target_unit_7 ?? '';
-              break;
-          case 9:
-              $targetUnit = $target->target_unit_8 ?? '';
-              break;
-          case 10:
-              $targetUnit = $target->target_unit_9 ?? '';
-              break;
-          case 11:
-              $targetUnit = $target->target_unit_10 ?? '';
-              break;
-          case 12:
-              $targetUnit = $target->target_unit_11 ?? '';
-              break;
-          default:
-              $targetUnit = '';
-      }
-        @endphp
-          <input type="text" name="target" id="target" class="block w-full rounded-md border-0 py-1.5 pl-4 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 mt-1" placeholder="Target" value="{{ $targetUnit }}" readonly >
+          
+          <input type="text" name="target" id="target" class="block w-full rounded-md border-0 py-1.5 pl-4 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 mt-1" placeholder="Target" value="" readonly >
           <div class="absolute inset-y-0 right-0 flex items-center">
           </div>
         </div>
@@ -207,12 +163,6 @@
         document.getElementById('achievementForm').action = "{{ url('actual/input-actual-department-achievement/store') }}";
         document.getElementById('achievementForm').submit();
       });
-  
-        document.getElementById('previewBtn').addEventListener('click', function(event) {
-        event.preventDefault();
-        document.getElementById('achievementForm').action = "{{ url('actual/preview/store') }}";
-        document.getElementById('achievementForm').submit();
-      });
         function calculateAchievement() {
             const target = parseFloat(document.getElementById('target').value);
             const actual = parseFloat(document.getElementById('actual').value);
@@ -230,7 +180,14 @@
           var selectedOption = this.options[this.selectedIndex];
           var targetValue = selectedOption.getAttribute('data-target');
           document.getElementById('target').value = targetValue;
+          
       });
+      var actualInput = document.getElementById('actual');
+      var unitInput = document.getElementById('kpi_unit');
+
+      if (unitInput.value === '%') {
+          actualInput.value = actualInput.value + '%';
+      }
   
         </script>
   

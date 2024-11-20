@@ -6,19 +6,10 @@
         $currentYear = \Carbon\Carbon::now()->year;
         $yearToShow = ($currentMonth == 1) ? $currentYear - 1 : $currentYear;
         @endphp
-        <div class="flex">
-            <div class="relative mt-1 rounded-md mb-1">
-                <button class="p-2 bg-blue-600 my-2 rounded-md">
-
-                    <a href="/actual/input-actual-department-details?department={{ $departments->first()->department_id }}&year={{ $yearToShow }}">
-                        <span class="text-white">Input Aktual Dept</span>
-                      </a>
-                </button>
-            </div>
-           
+        <div class="flex justify-end items-center mb-2">
             <div class="relative mt-1 rounded-md">
                 <div class="mt-2 mb-1 mx-2">
-                    <select name="year" id="year" class=" w-28 h-10">
+                    <select name="year" id="year" class=" w-28 h-10 text-[12px]">
                         <option value="">-- Tahun --</option>
                         <option value="2024">2024</option>
                         <option value="2025">2025</option>
@@ -31,7 +22,7 @@
               </div>
               <div class="relative mt-1 rounded-md">
                 <div class="mt-2 mb-1 mx-2">
-                    <select name="semester" id="semester" class=" w-28 h-10">
+                    <select name="semester" id="semester" class=" w-28 h-10 text-[12px]">
                         <option value="">-- Semester --</option>
                         <option value="1">1</option>
                         <option value="2">2</option>

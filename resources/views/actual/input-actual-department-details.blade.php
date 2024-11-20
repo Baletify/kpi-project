@@ -2,10 +2,10 @@
     <div class="ml-64 mt-4 overflow-x-auto p-2 bg-gray-100 border border-gray-100 shadow-md shadow-black/10 rounded-md">
         <table class="w-full bg-white">
             @php
-            $currentMonth = \Carbon\Carbon::now()->month;
+           $currentSemester = request()->query('semester');
             $months = [];
         
-            if ($currentMonth >= 2 && $currentMonth < 8) {
+            if ($currentSemester == 1) {
                 $months = [
                     '01' => 'Jan', '02' => 'Feb', '03' => 'Mar', '04' => 'Apr', 
                     '05' => 'May', '06' => 'Jun'

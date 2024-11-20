@@ -5,7 +5,7 @@
 
             <div class="relative mt-1 rounded-md">
                 <div class="mt-2 mb-1 mx-2">
-                    <select name="year" id="year" class=" w-28 h-10">
+                    <select name="year" id="year" class=" w-28 h-10 text-[12px]">
                         <option value="">-- Tahun --</option>
                         <option value="2024">2024</option>
                         <option value="2025">2025</option>
@@ -18,7 +18,7 @@
               </div>
               <div class="relative mt-1 rounded-md mb-1">
                 <button class="p-2 bg-blue-600 my-2 rounded-md">
-                    <a href="/target/input-target-kpi-department?department={{ $departments->first()->department_id }}">
+                    <a id="input-target-link" href="/target/input-target-kpi-department?department={{ $departments->first()->department_id }}&year=">
                         <span class="text-white">Input Target Dept</span>
                       </a>
                 </button>
@@ -90,5 +90,10 @@
             url.searchParams.set('year', year);
             link.href = url.toString();
         });
+
+        const inputTargetLink = document.getElementById('input-target-link');
+        const url = new URL(inputTargetLink.href);
+        url.searchParams.set('year', year);
+        inputTargetLink.href = url.toString();
     });
 </script>

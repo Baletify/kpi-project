@@ -86,7 +86,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="{{ url('/report/department-report') }}" class="flex items-center py-2 px-6 text-gray-300 hover:bg-gray-900">
+                        <a href="{{ url('/report/department-report/1?semester=2&year=2024') }}" class="flex items-center py-2 px-6 text-gray-300 hover:bg-gray-900">
                             <i class="ri-file-list-3-fill text-3xl"></i>
                             <span class="ml-3">Summary KPI Dept</span>
                         </a>

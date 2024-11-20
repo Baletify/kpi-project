@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Employee;
 use Illuminate\Support\Facades\DB;
 use App\Models\Actual;
+use App\Models\Department;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Response;
@@ -98,9 +99,33 @@ class ReportController extends Controller
         }
     }
 
-    public function department()
+    public function department($id, Request $request)
     {
-        return view('report.department-report', ['title' => 'Report', 'desc' => 'Summary KPI Dept']);
+        $semester = $request->query('semester');
+        $year = $request->query('year');
+
+        if ($semester && $year) {
+
+            $targets = DB::table('department_targets')
+                ->select('id', 'code', 'indicator', 'department_id', 'period', 'unit', 'weighting', 'trend')
+                ->where('department_id', $id)
+                ->where(DB::raw('YEAR(department_targets.date)'), $year)
+                ->get();
+
+            $actuals = DB::table('department_actuals')
+                ->leftJoin('departments', 'department_actuals.department_id', '=', 'departments.id')
+                ->select('department_actuals.date as date', 'department_actuals.department_id as department_id', 'department_actuals.kpi_item', 'department_actuals.kpi_code as kpi_code', 'department_actuals.kpi_weighting', 'department_actuals.kpi_percentage as achievement', 'department_actuals.semester as semester', DB::raw('YEAR(department_actuals.date) as year'), 'department_actuals.target', 'department_actuals.actual', 'department_actuals.kpi_percentage', 'department_actuals.record_file', 'department_actuals.id as department_actual_id', 'department_actuals.status as status', 'departments.name as department')
+                ->where('department_actuals.department_id', $id)
+                ->where('department_actuals.semester', $semester)
+                ->where(DB::raw('YEAR(department_actuals.date)'), $year)
+                ->orderBy(DB::raw('MONTH(department_actuals.date)'))->get();
+
+            // if ($actuals->isEmpty()) {
+            //     abort(404, 'No actuals found for the given year and semester');
+            // }
+
+            return view('report.department-report', ['title' => 'Report', 'desc' => 'Summary KPI Dept', 'actuals' => $actuals, 'targets' => $targets]);
+        }
     }
 
     public function summaryDept(Request $request)

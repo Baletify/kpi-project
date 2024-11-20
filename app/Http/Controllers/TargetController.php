@@ -54,8 +54,9 @@ class TargetController extends Controller
     public function showDept(Request $request)
     {
         $departmentID = $request->query('department');
+        $year = $request->query('year');
 
-        if ($departmentID) {
+        if ($departmentID && $year) {
             $dept = DB::table('departments')->where('departments.id', '=', $departmentID)
                 ->first();
 
@@ -66,7 +67,9 @@ class TargetController extends Controller
             $targetDept = DB::table('department_targets')->leftJoin('departments', 'departments.id', '=', 'department_targets.department_id')
                 ->leftJoin('target_units', 'department_targets.target_unit_id', '=', 'target_units.id')
                 ->select('department_targets.id', 'department_targets.department_id', 'department_targets.target_unit_id', 'department_targets.trend', 'departments.name as department', 'department_targets.code', 'department_targets.indicator', 'department_targets.calculation', 'department_targets.supporting_document', 'department_targets.period', 'department_targets.weighting', 'department_targets.unit', 'target_units.target_1', 'target_units.target_2', 'target_units.target_3', 'target_units.target_4', 'target_units.target_5', 'target_units.target_6', 'target_units.target_7', 'target_units.target_8', 'target_units.target_9', 'target_units.target_10', 'target_units.target_11', 'target_units.target_12')
-                ->where('departments.id', '=', $departmentID)->get();
+                ->where('departments.id', '=', $departmentID)
+                ->where(DB::raw('YEAR(department_targets.date)'), $year)
+                ->get();
 
             return view('target.input-target-kpi-department', ['title' => 'Input KPI Target', 'desc' => 'Department', 'departments' => $dept, 'targets' => $targetDept]);
         } else {

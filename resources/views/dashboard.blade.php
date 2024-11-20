@@ -44,7 +44,7 @@
                 <div class="relative mt-1 rounded-md">
                     <span class="pl-3 font-semibold">Departemen</span>  
                     <div class="pl-3 mb-3">
-                        <select name="department" id="department" class=" w-56">
+                        <select name="department" id="department" class=" w-56 text-[12px]">
                             <option value="">-- Pilih Departemen --</option>
                             @foreach ($deptLists as $item)
                                 
@@ -58,7 +58,7 @@
                     <div class="relative mt-1 rounded-md">
                     <span class="pl-3 font-semibold">Semester</span>  
                     <div class="pl-2 mb-3">
-                        <select name="semester" id="semester" class=" w-28">
+                        <select name="semester" id="semester" class=" w-28 text-[12px]">
                             <option value="">-- Semester --</option>
                             <option value="1">1</option>
                             <option value="2">2</option>
@@ -70,7 +70,7 @@
                   <div class="relative mt-1 rounded-md">
                     <span class="pl-3 font-semibold">Tahun</span>  
                     <div class="pl-2 mb-3">
-                        <select name="year" id="year" class=" w-28">
+                        <select name="year" id="year" class=" w-28 text-[12px]">
                             <option value="">-- Tahun --</option>
                             <option value="2024">2024</option>
                             <option value="2025">2025</option>
