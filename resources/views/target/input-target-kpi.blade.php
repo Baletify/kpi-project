@@ -2,7 +2,11 @@
     <div class="ml-64 mt-4 overflow-x-auto p-2 bg-white border border-gray-100 shadow-md shadow-black/10 rounded-md border-collapse">
         <div class="justify-end">
             <div class="mb-2 mt-2">
-                <a href="#" class="p-1 mx-2 bg-blue-500 py-2 items-center rounded-md">
+                @php
+                    $employeeQuery = request()->query('employee');
+                    $yearQuery = request()->query('year');
+                @endphp
+                <a href="{{ url('target/import-target-kpi-employee?employee=' . $employeeQuery . '&year=' . $yearQuery) }}" class="p-1 mx-2 bg-blue-500 py-2 items-center rounded-md">
                     <i class="ri-import-line text-2xl text-white"></i>
                     <span class="font-medium text-white">Import</span>
                 </a>
@@ -42,7 +46,7 @@
                     <tr>
                         <td style="width: 6%" class="text-[14px] tracking-wide font-medium text-gray-600 px-1">Tahun</td>
                         <td style="width: 2%" class="text-[14px] tracking-wide font-medium text-gray-600 px-1">:</td>
-                        <td class="text-[14px] tracking-wide font-medium text-gray-600 px-1">{{ $targets->first()->year }}</td>
+                        <td class="text-[14px] tracking-wide font-medium text-gray-600 px-1">{{ $yearQuery }}</td>
                     </tr>
 
                 </table>

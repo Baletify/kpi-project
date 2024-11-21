@@ -7,7 +7,12 @@ use Illuminate\Http\Request;
 use App\Models\Employee;
 use App\Models\TargetUnit;
 use Illuminate\View\View;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Imports\TargetImport;
+use App\Imports\TargetUnitImport;
+use App\Models\Target;
 
 class TargetController extends Controller
 {
@@ -35,14 +40,6 @@ class TargetController extends Controller
                 ->where('employee_id', $employeeID)
                 ->where(DB::raw('YEAR(targets.date)'), $year)
                 ->get();
-
-            if ($targets->isEmpty()) {
-                abort(404, 'No actuals found for the given year and semester');
-            }
-
-
-
-
 
             return view('target.input-target-kpi', ['title' => 'Input KPI Target', 'desc' => 'Employees', 'employee' => $employee, 'targets' => $targets]);
         } else {
@@ -93,5 +90,46 @@ class TargetController extends Controller
         } else {
             abort(404, 'No actuals found for the given year and semester');
         }
+    }
+
+    public function showImport()
+    {
+        return view('target.import-target-kpi-employee', ['title' => 'Import Target', 'desc' => 'Import Target Employee ']);
+    }
+
+    public function import(Request $request)
+    {
+        // Validate the request
+        $request->validate([
+            'file' => 'required|mimes:xlsx,xls,csv',
+        ]);
+
+        // Import the data without saving the file
+        Excel::import(new TargetImport($this), $request->file('file'));
+
+
+
+        return back()->with('success', 'Data imported successfully.');
+    }
+
+    public function storeTarget(array $row, $targetUnitId)
+    {
+        $now = now();
+        $data = [
+            'nik' => $row['NIK'],
+            'code' => $row['Kode KPI'],
+            'indicator' => $row['KPI'],
+            'calculation' => $row['Cara Menghitung'],
+            'supporting_document' => $row['Data Pendukung'],
+            'trend' => $row['Trend'],
+            'period' => $row['Periode Review'],
+            'unit' => $row['Unit'],
+            'weighting' => $row['Bobot'],
+            'detail' => $row['Detail'],
+            'date' => $now,
+            'target_unit_id' => $targetUnitId,
+        ];
+
+        Target::create($data);
     }
 }

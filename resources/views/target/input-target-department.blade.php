@@ -82,18 +82,48 @@
 </x-app-layout>
 
 <script>
-    document.getElementById('year').addEventListener('change', function() {
-        const year = this.value;
-        const links = document.querySelectorAll('a[id^="employee-link-"]');
-        links.forEach(link => {
-            const url = new URL(link.href);
+    document.addEventListener('DOMContentLoaded', function() {
+        const yearDropdown = document.getElementById('year');
+        const inputTargetLink = document.getElementById('input-target-link');
+
+        // Set the dropdown value from localStorage if it exists
+        const savedYear = localStorage.getItem('selectedYear');
+        if (savedYear) {
+            yearDropdown.value = savedYear;
+        }
+
+        // Save the dropdown value to localStorage on change
+        yearDropdown.addEventListener('change', function() {
+            const year = this.value;
+            localStorage.setItem('selectedYear', year);
+
+            // Update the employee links with the selected year
+            const links = document.querySelectorAll('a[id^="employee-link-"]');
+            links.forEach(link => {
+                const url = new URL(link.href);
+                url.searchParams.set('year', year);
+                link.href = url.toString();
+            });
+
+            // Update the input target link with the selected year
+            const url = new URL(inputTargetLink.href);
             url.searchParams.set('year', year);
-            link.href = url.toString();
+            inputTargetLink.href = url.toString();
         });
 
-        const inputTargetLink = document.getElementById('input-target-link');
-        const url = new URL(inputTargetLink.href);
-        url.searchParams.set('year', year);
-        inputTargetLink.href = url.toString();
+        // Initial update of the links
+        const initialYear = yearDropdown.value;
+        if (initialYear) {
+            const links = document.querySelectorAll('a[id^="employee-link-"]');
+            links.forEach(link => {
+                const url = new URL(link.href);
+                url.searchParams.set('year', initialYear);
+                link.href = url.toString();
+            });
+
+            const url = new URL(inputTargetLink.href);
+            url.searchParams.set('year', initialYear);
+            inputTargetLink.href = url.toString();
+        }
     });
 </script>
