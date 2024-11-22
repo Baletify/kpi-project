@@ -13,18 +13,18 @@ return new class extends Migration
     {
         Schema::create('target_units', function (Blueprint $table) {
             $table->id();
-            $table->string('target_1');
-            $table->string('target_2');
-            $table->string('target_3');
-            $table->string('target_4');
-            $table->string('target_5');
-            $table->string('target_6');
-            $table->string('target_7');
-            $table->string('target_8');
-            $table->string('target_9');
-            $table->string('target_10');
-            $table->string('target_11');
-            $table->string('target_12');
+            $table->string('target_1')->nullable();
+            $table->string('target_2')->nullable();
+            $table->string('target_3')->nullable();
+            $table->string('target_4')->nullable();
+            $table->string('target_5')->nullable();
+            $table->string('target_6')->nullable();
+            $table->string('target_7')->nullable();
+            $table->string('target_8')->nullable();
+            $table->string('target_9')->nullable();
+            $table->string('target_10')->nullable();
+            $table->string('target_11')->nullable();
+            $table->string('target_12')->nullable();
             $table->timestamps();
         });
     }

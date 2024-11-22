@@ -6,10 +6,6 @@
                     $employeeQuery = request()->query('employee');
                     $yearQuery = request()->query('year');
                 @endphp
-                <a href="{{ url('target/import-target-kpi-employee?employee=' . $employeeQuery . '&year=' . $yearQuery) }}" class="p-1 mx-2 bg-blue-500 py-2 items-center rounded-md">
-                    <i class="ri-import-line text-2xl text-white"></i>
-                    <span class="font-medium text-white">Import</span>
-                </a>
             </div>
         </div>
         <div class="grid grid-cols-5">
@@ -50,6 +46,17 @@
                     </tr>
 
                 </table>
+            </div>
+            <div class="">
+
+            </div>
+            <div class="flex justify-end items-center">
+                <div class="">
+                    <a href="{{ url('target/import-target-kpi-employee?employee=' . $employeeQuery . '&year=' . $yearQuery) }}" class="p-1 mx-2 bg-blue-500 py-2 items-center rounded-md">
+                    <i class="ri-import-line text-2xl text-white"></i>
+                    <span class="font-medium text-white">Import</span>
+                    </a>
+                </div>
             </div>
 
         </div>

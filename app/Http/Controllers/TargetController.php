@@ -13,6 +13,7 @@ use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\TargetImport;
 use App\Imports\TargetUnitImport;
 use App\Models\Target;
+use Dflydev\DotAccessData\Data;
 
 class TargetController extends Controller
 {
@@ -99,6 +100,8 @@ class TargetController extends Controller
 
     public function import(Request $request)
     {
+
+        // dd($request->file);
         // Validate the request
         $request->validate([
             'file' => 'required|mimes:xlsx,xls,csv',
@@ -107,27 +110,26 @@ class TargetController extends Controller
         // Import the data without saving the file
         Excel::import(new TargetImport($this), $request->file('file'));
 
-
-
         return back()->with('success', 'Data imported successfully.');
     }
 
     public function storeTarget(array $row, $targetUnitId)
     {
+        $employee = DB::table('employees')->where('nik', $row['nik'])->first();
         $now = now();
         $data = [
-            'nik' => $row['NIK'],
-            'code' => $row['Kode KPI'],
-            'indicator' => $row['KPI'],
-            'calculation' => $row['Cara Menghitung'],
-            'supporting_document' => $row['Data Pendukung'],
-            'trend' => $row['Trend'],
-            'period' => $row['Periode Review'],
-            'unit' => $row['Unit'],
-            'weighting' => $row['Bobot'],
-            'detail' => $row['Detail'],
+            'code' => $row['kode_kpi'],
+            'indicator' => $row['kpi'],
+            'calculation' => $row['cara_menghitung'],
+            'supporting_document' => $row['data_pendukung'] ?? 'data pendukung',
+            'trend' => $row['trend'] ?? 'Positif',
+            'period' => $row['periode_review'],
+            'unit' => $row['unit'],
+            'weighting' => $row['bobot'] ?? 0,
+            'detail' => $row['keterangan'],
             'date' => $now,
             'target_unit_id' => $targetUnitId,
+            'employee_id' => $employee->id,
         ];
 
         Target::create($data);
