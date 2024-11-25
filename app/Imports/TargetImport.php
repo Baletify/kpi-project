@@ -38,12 +38,12 @@ class TargetImport implements ToCollection, WithHeadingRow, WithSkipDuplicates
                 'target_4' => $row['apr'],
                 'target_5' => $row['may'],
                 'target_6' => $row['jun'],
-                'target_7' => $row['jul'] ?? null,
-                'target_8' => $row['aug'] ?? null,
-                'target_9' => $row['sep'] ?? null,
-                'target_10' => $row['oct'] ?? null,
-                'target_11' => $row['nov'] ?? null,
-                'target_12' => $row['dec'] ?? null,
+                'target_7' => $row['jul'],
+                'target_8' => $row['aug'],
+                'target_9' => $row['sep'],
+                'target_10' => $row['oct'],
+                'target_11' => $row['nov'],
+                'target_12' => $row['dec'],
                 // Add other fields as necessary
             ]);
 

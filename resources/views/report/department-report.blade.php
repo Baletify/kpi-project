@@ -161,9 +161,9 @@
                         @if ($actual)
                             @if ($actual->record_file)
                             @php
-                            $modalId = 'modal-' . $actual->actual_id;
-                            $buttonId = 'open-modal-' . $actual->actual_id;
-                            $backgroundId = 'modal-background-' . $actual->actual_id;
+                            $modalId = 'modal-' . $actual->department_actual_id;
+                            $buttonId = 'open-modal-' . $actual->department_actual_id;
+                            $backgroundId = 'modal-background-' . $actual->department_actual_id;
                         @endphp
                             <button id="{{ $buttonId }}" class="{{ $actual->status == 'Approved' ? 'text-green-500' : 'text-blue-500' }} hover:underline">
                                 @if ($actual->status == 'Approved')
@@ -198,11 +198,11 @@
                                                 <i class="ri-send-plane-line"></i>
                                                 <span>Kirim Revisi</span>
                                             </button>
-                                            <form action="{{ route('report.updateActual') }}" method="POST">
+                                            <form action="{{ route('actual.updateActualDept') }}" method="POST">
                                                 @csrf
                                                 @method('PUT')
                                             <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded text-[12px]">
-                                                <input type="hidden" name="actual_id" id="actual_id" value="{{ $actual->actual_id }}">
+                                                <input type="hidden" name="department_actual_id" id="department_actual_id" value="{{ $actual->department_actual_id }}">
                                                 <input type="hidden" name="status" id="status" value="Approved">
                                                 <span>Approve</span>
                                             </button>
@@ -238,3 +238,30 @@
         </div>
     </div>
 </x-app-layout>
+
+
+<script>
+    document.querySelectorAll('button[id^="open-modal-"]').forEach(button => {
+        button.addEventListener('click', function() {
+            const index = this.id.split('-').pop();
+            document.getElementById(`modal-${index}`).classList.remove('hidden');
+            document.getElementById(`modal-background-${index}`).classList.remove('hidden');
+        });
+    });
+
+    document.querySelectorAll('button[id^="close-modal-"]').forEach(button => {
+        button.addEventListener('click', function() {
+            const index = this.id.split('-').pop();
+            document.getElementById(`modal-${index}`).classList.add('hidden');
+            document.getElementById(`modal-background-${index}`).classList.add('hidden');
+        });
+    });
+
+    document.querySelectorAll('div[id^="modal-background-"]').forEach(background => {
+        background.addEventListener('click', function() {
+            const index = this.id.split('-').pop();
+            document.getElementById(`modal-${index}`).classList.add('hidden');
+            document.getElementById(`modal-background-${index}`).classList.add('hidden');
+        });
+    });
+</script>

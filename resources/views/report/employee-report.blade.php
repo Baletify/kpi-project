@@ -236,7 +236,7 @@
                                                 <i class="ri-send-plane-line"></i>
                                                 <span>Kirim Revisi</span>
                                             </button>
-                                            <form action="{{ route('report.updateActual') }}" method="POST">
+                                            <form action="{{ route('actual.updateActual') }}" method="POST">
                                                 @csrf
                                                 @method('PUT')
                                             <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded text-[12px]">

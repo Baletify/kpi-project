@@ -271,4 +271,37 @@ class ActualController extends Controller
 
         return redirect()->to('actual/input-actual-employee?employee=' . $request->input('employee_id') . '&year=' . $yearToShow);
     }
+
+    public function updateActual(Request $request)
+    {
+        $actual = Actual::find($request->actual_id);
+        $actualYear = $actualYear = $request->input('year', now()->year);
+
+        if (!$actual) {
+            return abort(404, 'Actual not found');
+        }
+
+
+        $actual->status = $request->status;
+
+        $actual->save();
+
+        return redirect()->to('report/employee-report/' . $actual->employee_id . '?semester=' . $actual->semester . '&year=' . urlencode($actualYear))->with('success', 'Status updated');
+    }
+
+    public function updateActualDept(Request $request)
+    {
+        $actualDept = DepartmentActual::find($request->department_actual_id);
+        $actualYear = $actualYear = $request->input('year', now()->year);
+
+        if (!$actualDept) {
+            return abort(404, 'Dept Actual Not Found');
+        }
+
+
+        $actualDept->status = $request->status;
+        $actualDept->save();
+
+        return redirect()->to('/report/department-report/' . $actualDept->department_id . '?semester=' . $actualDept->semester . '&year=' . urlencode($actualYear))->with('success', 'Status updated');
+    }
 }

@@ -20,10 +20,15 @@ Route::get('dashboard/filter', [EmployeeController::class, 'filter']);
 
 Route::prefix('target')->group(function () {
     Route::get('/input-target-kpi', [TargetController::class, 'show']);
+    Route::get('/input-target-employee/edit/{id}', [TargetController::class, 'edit'])->name('target.edit');
     Route::get('/input-target-department', [TargetController::class, 'department'])->name('target.department');
+    Route::get('/input-target-kpi-department/edit/{id}', [TargetController::class, 'editDept'])->name('target.editDept');
     Route::get('/input-target-kpi-department', [TargetController::class, 'showDept'])->name('showDept');
     Route::get('/import-target-kpi-employee', [TargetController::class, 'showImport'])->name('target.showImport');
+    Route::get('/import-target-kpi-department', [TargetController::class, 'showImportDept'])->name('target.showImportDept');
     Route::post('/import-target-kpi-employee/store', [TargetController::class, 'import'])->name('target.import');
+    Route::put('/input-target-kpi/update', [TargetController::class, 'update'])->name('target.update');
+    Route::put('/input-target-kpi-department/update', [TargetController::class, 'updateDept'])->name('target.updateDept');
     // Route::get('/input-target-kpi/{id}', [TargetController::class, 'show']);
 });
 
@@ -32,7 +37,8 @@ Route::prefix('actual')->group(function () {
     Route::get('/input-actual-department', [ActualController::class, 'department'])->name('actual.department');
     Route::get('/input-actual-achievement/edit/{id}', [ActualController::class, 'edit']);
     Route::post('/input-actual-achievement/store', [ActualController::class, 'store'])->name('actual.store');
-    Route::put('/input-actual-achievement/update', [ReportController::class, 'updateActual'])->name('report.updateActual');
+    Route::put('/input-actual-achievement/update', [ActualController::class, 'updateActual'])->name('actual.updateActual');
+    Route::put('/input-actual-achievement/updateDept', [ActualController::class, 'updateActualDept'])->name('actual.updateActualDept');
     // Preview
     Route::post('/preview/store', [PreviewController::class, 'store']);
     Route::get('/preview/{id}/{kpi_code}', [PreviewController::class, 'show'])->name('preview.show');

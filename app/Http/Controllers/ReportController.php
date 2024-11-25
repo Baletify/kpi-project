@@ -8,6 +8,7 @@ use App\Models\Employee;
 use Illuminate\Support\Facades\DB;
 use App\Models\Actual;
 use App\Models\Department;
+use App\Models\DepartmentActual;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Response;
@@ -124,7 +125,32 @@ class ReportController extends Controller
             //     abort(404, 'No actuals found for the given year and semester');
             // }
 
-            return view('report.department-report', ['title' => 'Report', 'desc' => 'Summary KPI Dept', 'actuals' => $actuals, 'targets' => $targets]);
+            $groupedData = $actuals->groupBy('kpi_code');
+
+            // Hitung total target dan actual untuk setiap kelompok
+            $totals = $groupedData->map(function ($group) {
+                $totalTarget = $group->sum(function ($item) {
+                    return (float) $item->target;
+                });
+                $totalActual = $group->sum(function ($item) {
+                    return (float) $item->actual;
+                });
+                $totalPercentage = $totalTarget > 0 ? ($totalActual / $totalTarget) * 100 : 0;
+
+
+                $weight = floatval($group->first()->kpi_weighting); // Ambil bobot dari item pertama dalam grup
+                $totalAchievementWeight = $totalPercentage * $weight / 100;
+
+                return [
+                    'total_target' => $totalTarget,
+                    'total_actual' => $totalActual,
+                    'total_percentage' => $totalPercentage,
+                    'weight' => $weight,
+                    'total_achievement_weight' => $totalAchievementWeight,
+                ];
+            });
+
+            return view('report.department-report', ['title' => 'Report', 'desc' => 'Summary KPI Dept', 'actuals' => $actuals, 'targets' => $targets, 'totals' => $totals]);
         }
     }
 
@@ -190,23 +216,6 @@ class ReportController extends Controller
         } else {
             return abort(404, 'No actuals found for the given year and semester');
         }
-    }
-
-    public function updateActual(Request $request)
-    {
-        $actual = Actual::find($request->actual_id);
-        $actualYear = $actualYear = $request->input('year', now()->year);
-
-        if (!$actual) {
-            return abort(404, 'Actual not found');
-        }
-
-
-        $actual->status = $request->status;
-
-        $actual->save();
-
-        return redirect()->to('report/employee-report/' . $actual->employee_id . '?semester=' . $actual->semester . '&year=' . urlencode($actualYear))->with('success', 'Status updated');
     }
 
 

@@ -134,7 +134,7 @@
                
                 
                 <td style="width: 3%" class="border-2 border-gray-400 text-[10px] tracking-wide px-2 py-0 text-center">
-                    <a href="">
+                    <a href="/target/input-target-employee/edit/{{ $target->id }}">
                         <i class="ri-edit-box-line p-0.5 text-lg bg-yellow-400 text-white rounded-sm"></i>
                     </a>
                 </td>

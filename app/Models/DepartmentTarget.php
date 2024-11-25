@@ -9,4 +9,20 @@ class DepartmentTarget extends Model
 {
     /** @use HasFactory<\Database\Factories\DepartmentTargetFactory> */
     use HasFactory;
+
+    protected $fillable = [
+        'id',
+        'code',
+        'indicator',
+        'calculation',
+        'period',
+        'unit',
+        'supporting_document',
+        'weighting',
+        'trend',
+        'date',
+        'department_id',
+        'target_unit_id',
+        'detail',
+    ];
 }

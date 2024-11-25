@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\TargetImport;
 use App\Imports\TargetUnitImport;
+use App\Models\DepartmentTarget;
 use App\Models\Target;
 use Dflydev\DotAccessData\Data;
 
@@ -64,7 +65,7 @@ class TargetController extends Controller
 
             $targetDept = DB::table('department_targets')->leftJoin('departments', 'departments.id', '=', 'department_targets.department_id')
                 ->leftJoin('target_units', 'department_targets.target_unit_id', '=', 'target_units.id')
-                ->select('department_targets.id', 'department_targets.department_id', 'department_targets.target_unit_id', 'department_targets.trend', 'departments.name as department', 'department_targets.code', 'department_targets.indicator', 'department_targets.calculation', 'department_targets.supporting_document', 'department_targets.period', 'department_targets.weighting', 'department_targets.unit', 'target_units.target_1', 'target_units.target_2', 'target_units.target_3', 'target_units.target_4', 'target_units.target_5', 'target_units.target_6', 'target_units.target_7', 'target_units.target_8', 'target_units.target_9', 'target_units.target_10', 'target_units.target_11', 'target_units.target_12')
+                ->select('department_targets.id', 'department_targets.department_id', 'department_targets.target_unit_id', 'department_targets.trend', 'departments.name as department', 'department_targets.code', 'department_targets.indicator', 'department_targets.calculation', 'department_targets.supporting_document', 'department_targets.period', 'department_targets.weighting', 'department_targets.unit', 'target_units.target_1', 'target_units.target_2', 'target_units.target_3', 'target_units.target_4', 'target_units.target_5', 'target_units.target_6', 'target_units.target_7', 'target_units.target_8', 'target_units.target_9', 'target_units.target_10', 'target_units.target_11', 'target_units.target_12', 'department_targets.id as department_target_id')
                 ->where('departments.id', '=', $departmentID)
                 ->where(DB::raw('YEAR(department_targets.date)'), $year)
                 ->get();
@@ -133,5 +134,53 @@ class TargetController extends Controller
         ];
 
         Target::create($data);
+    }
+
+    public function showImportDept()
+    {
+        return view('target.import-target-kpi-department', ['title' => 'Import Target', 'desc' => 'Import Target Department']);
+    }
+
+    public function edit($id)
+    {
+        $target = DB::table('targets')->leftJoin('target_units', 'target_units.id', '=', 'targets.target_unit_id')
+            ->select('target_units.*', 'targets.*', DB::raw('YEAR(targets.date) as year'), 'targets.id as target_id')
+            ->where('targets.id', $id)
+            ->first();
+
+        return view('target.edit-target-kpi', ['title' => 'Edit Data Target', 'desc' => 'Edit Target Employee', 'target' => $target]);
+    }
+    public function editDept($id)
+    {
+        $target = DB::table('department_targets')->leftJoin('target_units', 'target_units.id', '=', 'department_targets.target_unit_id')
+            ->select('target_units.*', 'department_targets.*', DB::raw('YEAR(department_targets.date) as year'), 'department_targets.id as department_target_id')
+            ->where('department_targets.id', $id)
+            ->first();
+
+        return view('target.edit-target-kpi-department', ['title' => 'Edit Data Target', 'desc' => 'Edit Target Department', 'target' => $target]);
+    }
+
+    public function update(Request $request)
+    {
+        $id = $request->target_id;
+        $year = $request->year;
+        $employee_id = $request->employee_id;
+
+        $target = Target::find($id);
+        $target->update(request()->all());
+
+        return redirect()->to('/target/input-target-kpi?employee=' . $employee_id . '&year=' . $year)->with('success', 'Data updated successfully.');
+    }
+
+    public function updateDept(Request $request)
+    {
+        $id = $request->department_target_id;
+        $year = $request->year;
+        $departmentID = $request->department_id;
+
+        $target = DepartmentTarget::find($id);
+        $target->update(request()->all());
+
+        return redirect()->to('/target/input-target-kpi-department?department=' . $departmentID . '&year=' . $year)->with('success', 'Data updated successfully.');
     }
 }
