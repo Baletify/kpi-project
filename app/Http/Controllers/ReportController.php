@@ -82,6 +82,7 @@ class ReportController extends Controller
 
 
                 $weight = floatval($group->first()->kpi_weighting); // Ambil bobot dari item pertama dalam grup
+
                 $totalAchievementWeight = $totalPercentage * $weight / 100;
 
                 return [

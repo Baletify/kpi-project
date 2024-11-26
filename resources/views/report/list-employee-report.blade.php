@@ -6,6 +6,9 @@
         $currentYear = \Carbon\Carbon::now()->year;
         $yearToShow = ($currentMonth == 1) ? $currentYear - 1 : $currentYear;
         @endphp
+        <div class="p-0">
+            <span class="font-bold text-2xl">Summary KPI Individu</span>
+        </div>
         <div class="flex justify-end items-center mb-2">
             <div class="relative mt-1 rounded-md">
                 <div class="mt-2 mb-1 mx-2">

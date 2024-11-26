@@ -1,8 +1,10 @@
 <x-app-layout :title="$title" :desc="$desc">
     <div class="ml-64 mt-4 overflow-x-auto p-2 bg-white border border-gray-100 shadow-md shadow-black/10 rounded-md">
 
+        <div class="p-0">
+            <span class="font-bold text-2xl">Input Target & Upload Program</span>
+        </div>
         <div class="flex justify-end">
-
             <div class="relative mt-1 rounded-md">
                 <div class="mt-2 mb-1 mx-2">
                     <select name="year" id="year" class=" w-28 h-10 text-[12px]">

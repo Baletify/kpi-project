@@ -8,6 +8,9 @@
                 @endphp
             </div>
         </div>
+        <div class="pl-1">
+            <span class="font-bold text-xl">Target KPI Tahun {{ $yearQuery }}</span>
+        </div>
         <div class="grid grid-cols-5">
             <div class="p-1">
                 <table>
@@ -38,14 +41,6 @@
                 </table>
             </div>
             <div class="p-1">
-                <table>
-                    <tr>
-                        <td style="width: 6%" class="text-[14px] tracking-wide font-medium text-gray-600 px-1">Tahun</td>
-                        <td style="width: 2%" class="text-[14px] tracking-wide font-medium text-gray-600 px-1">:</td>
-                        <td class="text-[14px] tracking-wide font-medium text-gray-600 px-1">{{ $yearQuery }}</td>
-                    </tr>
-
-                </table>
             </div>
             <div class="">
 

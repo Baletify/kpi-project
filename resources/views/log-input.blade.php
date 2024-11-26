@@ -10,36 +10,21 @@
         </div>
         <table class="w-full bg-white">
             <tr>
-                <th style="width: 3%;" class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-white py-0 px-4 bg-blue-700">No.</th>
-                <th style="width: 10%;" class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-white py-0 px-4 bg-blue-700">Dept</th>
-                @foreach ($months as $month)
-                    <th style="width: 10%" class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-white py-0 px-4 bg-blue-700">
-                        {{ \Carbon\Carbon::create()->month($month)->format('M') }}
-                    </th>
-                @endforeach
+                <th style="width: 3%;" class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-white py-0 px-4 bg-blue-700">Dept</th>
+                <th style="width: 10%;" class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-white py-0 px-4 bg-blue-700">Total Employee</th>
+                <th style="width: 10%;" class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-white py-0 px-4 bg-blue-700">Input</th>
+                <th style="width: 10%;" class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-white py-0 px-4 bg-blue-700">Checked</th>
+                <th style="width: 10%;" class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-white py-0 px-4 bg-blue-700">Approved</th>
             </tr>
             @php
             $i = 0;
         @endphp
-        @foreach ($departments as $department => $items)
-            @php
-            $i++;
-            @endphp
         <tr class="{{ $i % 2 === 0 ? 'bg-white' : 'bg-blue-100'}}"> 
-            <td class="border-2 border-gray-400 tracking-wide px-2 py-0 text-[13px] text-center">{{ $i }}</td>
-            <td class="border-2 border-gray-400 tracking-wide px-2 py-0 text-[13px]">{{ $department }}</td>
-            @foreach ($months as $month)
-                @php
-                    $item = $items->first(function($item) use ($month) {
-                        return \Carbon\Carbon::parse($item->created_at)->month == $month;
-                    });
-                @endphp
+            <td class="border-2 border-gray-400 tracking-wide px-2 py-0 text-[13px]"></td>
                 <td class="border-2 border-gray-400 tracking-wide px-2 py-0 text-[13px]">
-                    {{ $item ? \Carbon\Carbon::parse($item->created_at)->format('d-m-Y') : '' }}
                 </td>
-            @endforeach
+
         </tr>
-        @endforeach
     </table>
 </div>
 </x-app-layout>

@@ -118,6 +118,9 @@ class TargetController extends Controller
     {
         $employee = DB::table('employees')->where('nik', $row['nik'])->first();
         $now = now();
+
+        $weighting = isset($row['bobot']) ? ($row['bobot'] * 100) . '%' : '0%';
+
         $data = [
             'code' => $row['kode_kpi'],
             'indicator' => $row['kpi'],
@@ -126,7 +129,7 @@ class TargetController extends Controller
             'trend' => $row['trend'] ?? 'Positif',
             'period' => $row['periode_review'],
             'unit' => $row['unit'],
-            'weighting' => $row['bobot'] ?? 0,
+            'weighting' => $weighting,
             'detail' => $row['keterangan'],
             'date' => $now,
             'target_unit_id' => $targetUnitId,
@@ -144,7 +147,7 @@ class TargetController extends Controller
     public function edit($id)
     {
         $target = DB::table('targets')->leftJoin('target_units', 'target_units.id', '=', 'targets.target_unit_id')
-            ->select('target_units.*', 'targets.*', DB::raw('YEAR(targets.date) as year'), 'targets.id as target_id')
+            ->select('target_units.*', 'targets.*', DB::raw('YEAR(targets.date) as year'), 'targets.id as target_id', 'target_units.id as target_unit_id')
             ->where('targets.id', $id)
             ->first();
 
@@ -153,7 +156,7 @@ class TargetController extends Controller
     public function editDept($id)
     {
         $target = DB::table('department_targets')->leftJoin('target_units', 'target_units.id', '=', 'department_targets.target_unit_id')
-            ->select('target_units.*', 'department_targets.*', DB::raw('YEAR(department_targets.date) as year'), 'department_targets.id as department_target_id')
+            ->select('target_units.*', 'department_targets.*', DB::raw('YEAR(department_targets.date) as year'), 'department_targets.id as department_target_id', 'target_units.id as target_unit_id')
             ->where('department_targets.id', $id)
             ->first();
 
@@ -165,9 +168,12 @@ class TargetController extends Controller
         $id = $request->target_id;
         $year = $request->year;
         $employee_id = $request->employee_id;
+        $targetUnitId = $request->target_unit_id;
 
         $target = Target::find($id);
         $target->update(request()->all());
+        $targetUnit = TargetUnit::find($targetUnitId);
+        $targetUnit->update(request()->all());
 
         return redirect()->to('/target/input-target-kpi?employee=' . $employee_id . '&year=' . $year)->with('success', 'Data updated successfully.');
     }

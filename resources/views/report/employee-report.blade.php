@@ -126,10 +126,11 @@
                      <td class="border-2 bg-blue-100 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center"></td>
                  @endif
                     @php
-                        $totalWeightingAchievement = $totals[$target->code] ['total_achievement_weight'] ?? 0 ;
+                        $totalWeightingAchievement = $totals[$target->code] 
+                        ['total_achievement_weight'] ?? 0 ;
                     @endphp
                      @if ($totalWeightingAchievement > 0)
-                     <td class="border-2 bg-blue-100 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center" rowspan="4">{{ number_format($totalWeightingAchievement) }}%</td>
+                     <td class="border-2 bg-blue-100 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center" rowspan="4">{{ number_format($totalWeightingAchievement, 1) }}%</td>
                     @else
                      <td class="border-2 bg-blue-100 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center" rowspan="4"></td>
                     @endif
@@ -161,7 +162,7 @@
                         @if (strpos($totalActual, '%') !== false)
                         {{ number_format($totalActual) }}
                         @else
-                        {{ number_format($totalActual) }}%
+                        {{ number_format($totalActual) }}
                         @endif
                      </td>
                  @else
@@ -180,6 +181,7 @@
                     @endforeach
                     @php
                          $totalPercentage = $totals[$target->code]['total_percentage'] ?? 0;
+
                     @endphp
                     @if ($totalTarget > 0)
                      <td class="border-2 bg-blue-100 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center">{{ number_format($totalPercentage) }} %</td>
@@ -203,9 +205,9 @@
                             $buttonId = 'open-modal-' . $actual->actual_id;
                             $backgroundId = 'modal-background-' . $actual->actual_id;
                         @endphp
-                            <button id="{{ $buttonId }}" class="{{ $actual->status == 'Approved' ? 'text-green-500' : 'text-blue-500' }} hover:underline">
+                            <button id="{{ $buttonId }}" class="{{ $actual->status == 'Approved' ? 'text-green-600' : 'text-blue-500' }} hover:underline">
                                 @if ($actual->status == 'Approved')
-                                <i class="ri-checkbox-circle-fill"></i>
+                                <span>Yes</span>
                                 @else
                                 Review
                                 @endif
@@ -257,7 +259,7 @@
                             </div>
                             </div>
                             @else
-                            <span class="text-red-500"><i class="ri-close-circle-fill text-xs"></i></span>
+                            <span class="text-red-500">No</span>
                             @endif
                         @else
                             <span></span>

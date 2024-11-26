@@ -1,23 +1,19 @@
 <x-app-layout :title="$title" :desc="$desc">
     <div class="ml-64 mt-4 overflow-x-auto p-2 bg-white border border-gray-100 shadow-md shadow-black/10 rounded-md border-collapse">
-        <div class="justify-end">
-            <div class="mb-4 mt-2">
-                <a href="/target/import-target-kpi-department?department={{ request()->query('department') }}&year={{ request()->query('year') }}" class="p-2 bg-blue-500 py-2 items-center">
+        @php
+            $yearQuery = request()->query('year');
+        @endphp
+        <div class="p-0">
+            <span class="font-bold text-2xl">Target KPI Departemen {{ $departments->name }} Tahun {{ $yearQuery }}</span>
+        </div>
+        <div class="flex justify-end">
+            <div class="mb-3 mt-2">
+                <a href="/target/import-target-kpi-department?department={{ request()->query('department') }}&year={{ request()->query('year') }}" class="p-1 mx-2 bg-blue-500 py-2 items-center rounded-md">
                     <i class="ri-import-line text-2xl text-white"></i>
                     <span class="font-medium text-white">Import</span>
                 </a>
             </div>
         </div>
-            <div class="p-0 mb-1">
-                <table>
-                    <tr>
-                        <td style="width: 6%" class="text-[14px] tracking-wide font-medium text-gray-700 px-1">Dept</td>
-                        <td style="width: 2%" class="text-[14px] tracking-wide font-medium text-gray-700 px-1">:</td>
-                        <td class="text-[14px] tracking-wide font-medium text-gray-700 px-1">{{ $departments->name }}</td>
-                    </tr>
-                </table>
-            </div>
-        
         <table class="w-full table-auto">
             <tr>
                 <th style="width: 4%" class="border-2 border-gray-400 text-[13px] tracking-wide font-medium text-white py-1 bg-blue-700">Kode KPI</th>

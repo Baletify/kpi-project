@@ -180,7 +180,7 @@
               </td>
               <td class="border-2 border-gray-400 tracking-wide px-2 py-0">${item.occupation}</td>
               <td class="border-2 border-gray-400 tracking-wide px-2 py-0">
-                <a href="/target/input-target-kpi-department?department=${item.department_id}" class="hover:underline">${item.department}</a>
+                <a href="/target/input-target-kpi-department?department=${item.department_id}&year=${year}" class="hover:underline">${item.department}</a>
               </td>
             </tr>`;
             tbody.innerHTML += row;

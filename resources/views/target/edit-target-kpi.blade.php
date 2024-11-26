@@ -133,6 +133,7 @@
               <input type="hidden" name="employee_id" id="employee_id" value="{{ $target->employee_id }}">
               <input type="hidden" name="target_id" id="target_id" value="{{ $target->target_id }}">
               <input type="hidden" name="year" id="year" value="{{ $target->year }}">
+              <input type="hidden" name="target_unit_id" id="target_unit_id" value="{{ $target->target_unit_id }}">
             </div>
         </div>
         <div class="flex justify-center mt-4 gap-3">

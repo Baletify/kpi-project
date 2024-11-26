@@ -3,6 +3,10 @@
         @php
         $i = 0;
         @endphp
+
+        <div class="p-0">
+            <span class="font-bold text-2xl">Input Data Realisasi</span>
+        </div>
         <div class="flex justify-end mb-2">
             
             <div class="relative mt-1 rounded-md">
