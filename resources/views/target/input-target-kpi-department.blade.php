@@ -28,7 +28,7 @@
             $currentMonth = \Carbon\Carbon::now()->month;
             $months = [];
         
-            if ($currentMonth >= 2 && $currentMonth < 8) {
+            if ($currentMonth >= 2 && $currentMonth < 7) {
                 $months = [
                     '01' => 'Jan', '02' => 'Feb', '03' => 'Mar', '04' => 'Apr', 
                     '05' => 'May', '06' => 'Jun'
@@ -70,22 +70,25 @@
                 <td class="border-2 border-gray-400 text-[11px] tracking-wide px-2 py-0">{{ $target->unit }}</td>
                 <td class="border-2 border-gray-400 text-[11px] tracking-wide px-2 py-0 text-center">{{ $target->weighting }}</td>
 
-                @if ($currentMonth >= 2 && $currentMonth < 8)
-                <td class="border-2 border-gray-400 text-[11px] tracking-wide px-2 py-0 text-center">{{ $target->target_1 }}</td>
-                <td class="border-2 border-gray-400 text-[11px] tracking-wide px-2 py-0 text-center">{{ $target->target_2}}</td>
-                <td class="border-2 border-gray-400 text-[11px] tracking-wide px-2 py-0 text-center">{{ $target->target_3 }}</td>
-                <td class="border-2 border-gray-400 text-[11px] tracking-wide px-2 py-0 text-center">{{ $target->target_4 }}</td>
-                <td class="border-2 border-gray-400 text-[11px] tracking-wide px-2 py-0 text-center">{{ $target->target_5 }}</td>
-                <td class="border-2 border-gray-400 text-[11px] tracking-wide px-2 py-0 text-center">{{ $target->target_6 }}</td>
-
-                @else
-                <td class="border-2 border-gray-400 text-[11px] tracking-wide px-2 py-0 text-center">{{ $target->target_7 }}</td>
-                <td class="border-2 border-gray-400 text-[11px] tracking-wide px-2 py-0 text-center">{{ $target->target_8}}</td>
-                <td class="border-2 border-gray-400 text-[11px] tracking-wide px-2 py-0 text-center">{{ $target->target_9 }}</td>
-                <td class="border-2 border-gray-400 text-[11px] tracking-wide px-2 py-0 text-center">{{ $target->target_10 }}</td>
-                <td class="border-2 border-gray-400 text-[11px] tracking-wide px-2 py-0 text-center">{{ $target->target_11 }}</td>
-                <td class="border-2 border-gray-400 text-[11px] tracking-wide px-2 py-0 text-center">{{ $target->target_12 }}</td>
-                @endif
+            @php
+                $isPercentage = $target->unit == '%';
+            @endphp
+            
+            @if ($currentMonth >= 2 && $currentMonth < 7)
+                <td class="border-2 border-gray-400 text-[11px] tracking-wide px-2 py-0 text-center">{{ $isPercentage ? $target->target_1 * 100 : $target->target_1 }}</td>
+                <td class="border-2 border-gray-400 text-[11px] tracking-wide px-2 py-0 text-center">{{ $isPercentage ? $target->target_2 * 100 : $target->target_2 }}</td>
+                <td class="border-2 border-gray-400 text-[11px] tracking-wide px-2 py-0 text-center">{{ $isPercentage ? $target->target_3 * 100 : $target->target_3 }}</td>
+                <td class="border-2 border-gray-400 text-[11px] tracking-wide px-2 py-0 text-center">{{ $isPercentage ? $target->target_4 * 100 : $target->target_4 }}</td>
+                <td class="border-2 border-gray-400 text-[11px] tracking-wide px-2 py-0 text-center">{{ $isPercentage ? $target->target_5 * 100 : $target->target_5 }}</td>
+                <td class="border-2 border-gray-400 text-[11px] tracking-wide px-2 py-0 text-center">{{ $isPercentage ? $target->target_6 * 100 : $target->target_6 }}</td>
+            @else
+                <td class="border-2 border-gray-400 text-[11px] tracking-wide px-2 py-0 text-center">{{ $isPercentage ? $target->target_7 * 100 : $target->target_7 }}</td>
+                <td class="border-2 border-gray-400 text-[11px] tracking-wide px-2 py-0 text-center">{{ $isPercentage ? $target->target_8 * 100 : $target->target_8 }}</td>
+                <td class="border-2 border-gray-400 text-[11px] tracking-wide px-2 py-0 text-center">{{ $isPercentage ? $target->target_9 * 100 : $target->target_9 }}</td>
+                <td class="border-2 border-gray-400 text-[11px] tracking-wide px-2 py-0 text-center">{{ $isPercentage ? $target->target_10 * 100 : $target->target_10 }}</td>
+                <td class="border-2 border-gray-400 text-[11px] tracking-wide px-2 py-0 text-center">{{ $isPercentage ? $target->target_11 * 100 : $target->target_11 }}</td>
+                <td class="border-2 border-gray-400 text-[11px] tracking-wide px-2 py-0 text-center">{{ $isPercentage ? $target->target_12 * 100 : $target->target_12 }}</td>
+            @endif
                
                 
                 <td class="border-2 border-gray-400 text-[11px] tracking-wide px-2 py-0 text-center">

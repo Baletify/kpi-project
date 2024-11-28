@@ -11,7 +11,7 @@ class LogController extends Controller
     public function index(Request $request)
     {
         $currentMonth = Carbon::now()->month;
-        $semester = ($currentMonth <= 6) ? '1' : '2';
+        $semester = ($currentMonth < 7) ? '1' : '2';
         $year = $request->query('year');
 
         if ($semester === '1') {
@@ -48,19 +48,41 @@ class LogController extends Controller
             ->groupBy('departments.code')
             ->get();
 
-        $targetUnitCounts = DB::table('target_units')
+        $targetUnitCounts1 = DB::table('target_units')
             ->leftJoin('targets', 'target_units.id', '=', 'targets.target_unit_id')
             ->leftJoin('employees', 'targets.employee_id', '=', 'employees.id')
             ->leftJoin('departments', 'employees.department_id', '=', 'departments.id')
             ->whereYear('targets.date', $year)
-            ->whereNotNull('target_units.id')
+            // ->whereNotNull('target_units.id')
             ->select(
-                'departments.code as code',
-                DB::raw('count(target_units.id) as total')
+                'departments.code as department_code',
+                DB::raw('count(target_units.target_1) as total_1'),
+                DB::raw('count(target_units.target_2) as total_2'),
+                DB::raw('count(target_units.target_3) as total_3'),
+                DB::raw('count(target_units.target_4) as total_4'),
+                DB::raw('count(target_units.target_5) as total_5'),
+                DB::raw('count(target_units.target_6) as total_6'),
             )
-            ->groupBy('departments.code',);
+            ->groupBy('departments.code')
+            ->get();
 
-        // dd($targetUnitCounts->toSql());
+        $targetUnitCounts2 = DB::table('target_units')
+            ->leftJoin('targets', 'target_units.id', '=', 'targets.target_unit_id')
+            ->leftJoin('employees', 'targets.employee_id', '=', 'employees.id')
+            ->leftJoin('departments', 'employees.department_id', '=', 'departments.id')
+            ->whereYear('targets.date', $year)
+            // ->whereNotNull('target_units.id')
+            ->select(
+                'departments.code as department_code',
+                DB::raw('count(target_units.target_7) as total_7'),
+                DB::raw('count(target_units.target_8) as total_8'),
+                DB::raw('count(target_units.target_9) as total_9'),
+                DB::raw('count(target_units.target_10) as total_10'),
+                DB::raw('count(target_units.target_11) as total_11'),
+                DB::raw('count(target_units.target_12) as total_12')
+            )
+            ->groupBy('departments.code')
+            ->get();
 
 
         $actualCounts = DB::table('actuals')
@@ -74,6 +96,8 @@ class LogController extends Controller
                 return (array) $item;
             });
 
+        // dd($actualCounts);
+
 
         return view('log-check', [
             'title' => 'Log Input',
@@ -83,6 +107,9 @@ class LogController extends Controller
             'semester' => $semester,
             'targetCounts' => $targetCounts,
             'actualCounts' => $actualCounts,
+            'targetUnitCounts1' => $targetUnitCounts1,
+            'targetUnitCounts2' => $targetUnitCounts2
+
         ]);
     }
 

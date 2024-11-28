@@ -11,7 +11,6 @@
 
         <table class="w-full bg-white table-fixed">
             <tr>
-                {{-- <th style="width: 2%;" class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-white py-0 bg-blue-700" rowspan="2">No.</th> --}}
                 <th style="width: 3%;" class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-white py-0 bg-blue-700" rowspan="2">Dept</th>
                 <th style="width: 3%;" class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-white py-0 bg-blue-700" rowspan="2">Jumlah KPI</th>
                 @foreach ($months as $month)
@@ -19,57 +18,63 @@
                         {{ \Carbon\Carbon::create()->month($month)->format('M') }}
                     </th>
                 @endforeach
-
             </tr>
             <tr>
                 @foreach ($months as $month)
-                <th style="width: 13%" class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-white py-0 bg-blue-700">OK</th>
-                <th style="width: 13%" class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-white py-0 bg-blue-700">Not OK</th>
-
-            @endforeach
+                    <th style="width: 13%" class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-white py-0 bg-blue-700">OK</th>
+                    <th style="width: 13%" class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-white py-0 bg-blue-700">Not OK</th>
+                @endforeach
             </tr>
- 
+
             @php
                 $i = 0;
             @endphp
             @foreach ($departments as $department => $items)
-            @php
-            $i++;
-            $targetCount = $targetCounts->Where('code', $department)->first();
-            $departmentId = $items->first()->department_id;
-            @endphp
-            <tr class="{{ $i % 2 === 0 ? 'bg-white' : 'bg-blue-100'}}"> 
-
-                {{-- <td class="border-2 border-gray-400 tracking-wide text-[11px] py-0 text-center">{{ $i }}</td> --}}
-                <td class="border-2 pl-1 border-gray-400 tracking-wide text-[11px] py-0">
-                    <a href="{{ url('/report/list-employee-report?department=' . $departmentId) }}" class="hover:underline hover:text-blue-500">
-                        {{ $department }}
-                    </a>
-                </td>
-                <td class="border-2 border-gray-400 tracking-wide text-[11px] py-0 text-center">
-                {{ $targetCount ? $targetCount->total : 0 }}
-                </td>
-                @foreach ($months as $month)
-                    @php
-                        $item = $items->first(function($item) use ($month) {
-                            return \Carbon\Carbon::parse($item->created_at)->month == $month;
-                        });
-
-                        $actualCount = collect($actualCounts)
-                    ->where('department_code', $department)
-                    ->where('month', $month)
-                    ->first();
-                        // dd($actualCount);
-
-                    @endphp
-                    <td class="border-2 border-gray-400 tracking-wide text-[11px] py-0 text-center">
-                        {{ $actualCount ? $actualCount['total'] : '' }}
+                @php
+                    $i++;
+                    $targetCount = $targetCounts->where('code', $department)->first();
+                    $departmentId = $items->first()->department_id;
+                @endphp
+                <tr class="{{ $i % 2 === 0 ? 'bg-white' : 'bg-blue-100'}}">
+                    <td class="border-2 pl-1 border-gray-400 tracking-wide text-[11px] py-0">
+                        <a href="{{ url('/report/list-employee-report?department=' . $departmentId) }}" class="hover:underline hover:text-blue-500">
+                            {{ $department }}
+                        </a>
                     </td>
                     <td class="border-2 border-gray-400 tracking-wide text-[11px] py-0 text-center">
-                        {{ $targetCount ? $targetCount->total - ($actualCount ? $actualCount['total'] : 0) : 0 }}
+                        {{ $targetCount ? $targetCount->total : 0 }}
                     </td>
-                @endforeach
-            </tr>
+                    @foreach ($months as $month)
+                        @php
+                            $item = $items->first(function($item) use ($month) {
+                                return \Carbon\Carbon::parse($item->created_at)->month == $month;
+                            });
+
+                            $actualCount = collect($actualCounts)
+                                ->where('department_code', $department)
+                                ->where('month', $month)
+                                ->first();
+
+                            
+                            $currentMonth = \Carbon\Carbon::now()->month;
+                            if ($currentMonth >= 2 && $currentMonth < 7) {
+
+                                $targetUnitCounts = $targetUnitCounts1;
+                            } else {
+                                $targetUnitCounts = $targetUnitCounts2;
+                            }
+
+                            $targetColumn = 'total_' . $month;
+                            $targetUnitCount = $targetUnitCounts->where('department_code', $department)->first();
+                        @endphp
+                        <td class="border-2 border-gray-400 tracking-wide text-[11px] py-0 text-center">
+                            {{ $actualCount ? $actualCount['total'] : '' }}
+                        </td>
+                        <td class="border-2 border-gray-400 tracking-wide text-[11px] py-0 text-center">
+                            {{ $targetUnitCount ? $targetUnitCount->$targetColumn : '' }}
+                        </td>
+                    @endforeach
+                </tr>
             @endforeach
         </table>
     </div>

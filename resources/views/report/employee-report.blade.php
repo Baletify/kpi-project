@@ -116,10 +116,10 @@
                     @endphp
                 @if ($totalTarget > 0)
                      <td class="border-2 bg-blue-100 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center">
-                        @if (strpos($totalTarget, '%') !== false)
-                            {{ number_format($totalTarget) }}
+                        @if ($target->unit === '%')
+                            {{ $totalTarget }}%
                         @else
-                            {{ number_format($totalTarget) }}%
+                            {{ $totalTarget }}
                         @endif
                      </td>
                  @else
@@ -145,10 +145,10 @@
                     @endphp
                     <td class="border-2 bg-gray-50 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center">
                     @if ($actual)
-                    @if (strpos($actual->actual, '%') !== false)
-                        {{ $actual->actual }}
+                    @if ($target->unit === '%')
+                        {{ $actual->actual }}%
                     @else
-                        {{ number_format($actual->actual) }}
+                        {{ $actual->actual }}
                     @endif
                 @endif
                     </td>
@@ -159,10 +159,10 @@
                     @endphp
                     @if ($totalTarget > 0)
                      <td class="border-2 bg-gray-50 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center">
-                        @if (strpos($totalActual, '%') !== false)
-                        {{ number_format($totalActual) }}
+                        @if ($target->unit === '%')
+                        {{ $totalActual }}%
                         @else
-                        {{ number_format($totalActual) }}
+                        {{ $totalActual }}
                         @endif
                      </td>
                  @else

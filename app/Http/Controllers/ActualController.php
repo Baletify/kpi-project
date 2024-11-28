@@ -241,6 +241,16 @@ class ActualController extends Controller
             $semester = '1';
         }
 
+        $actual = '';
+        $kpi_percentage = '';
+        if ($request->record_file == null) {
+            $actual = '0';
+            $kpi_percentage = '0';
+        } else {
+            $actual = $request->actual;
+            $kpi_percentage = $request->achievement;
+        }
+ 
         $searchConditions = [
             'kpi_code' => $request->kpi_code,
             'date' => $date,
@@ -252,8 +262,8 @@ class ActualController extends Controller
             'kpi_unit' => $request->kpi_unit,
             'review_period' => $request->review_period,
             'target' => $request->target,
-            'actual' => $request->actual,
-            'kpi_percentage' => $request->achievement,
+            'actual' => $actual,
+            'kpi_percentage' => $kpi_percentage,
             'kpi_calculation' => $request->kpi_calculation,
             'supporting_document' => $request->supporting_document,
             'comment' => $request->comment,

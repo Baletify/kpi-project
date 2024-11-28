@@ -116,7 +116,8 @@ class TargetController extends Controller
 
     public function storeTarget(array $row, $targetUnitId)
     {
-        $employee = DB::table('employees')->where('nik', $row['nik'])->first();
+        $employee = DB::table('employees')->where('nik', $row['nik'])->value('id');
+        // dd($employee);
         $now = now();
 
         $weighting = isset($row['bobot']) ? ($row['bobot'] * 100) . '%' : '0%';
@@ -133,8 +134,10 @@ class TargetController extends Controller
             'detail' => $row['keterangan'],
             'date' => $now,
             'target_unit_id' => $targetUnitId,
-            'employee_id' => $employee->id,
+            'employee_id' => $employee,
         ];
+
+        // dd($data);
 
         Target::create($data);
     }

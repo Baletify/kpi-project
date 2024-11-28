@@ -31,6 +31,10 @@ return new class extends Migration
             $table->string('trend')->nullable();
             $table->string('detail')->nullable();
             $table->string('status')->nullable();
+            $table->string('input_by')->nullable();
+            $table->dateTime('input_at')->nullable();
+            $table->dateTime('checked_at')->nullable();
+            $table->dateTime('approved_at')->nullable();
             $table->foreignId('employee_id')->nullable()->constrained()->onUpdate('cascade')->nullOnDelete();
             $table->timestamps();
         });

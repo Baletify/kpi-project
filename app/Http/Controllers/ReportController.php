@@ -75,9 +75,11 @@ class ReportController extends Controller
                 $totalTarget = $group->sum(function ($item) {
                     return (float) $item->target;
                 });
+
                 $totalActual = $group->sum(function ($item) {
                     return (float) $item->actual;
                 });
+
                 $totalPercentage = $totalTarget > 0 ? ($totalActual / $totalTarget) * 100 : 0;
 
 
