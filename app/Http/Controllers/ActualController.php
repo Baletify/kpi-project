@@ -177,6 +177,17 @@ class ActualController extends Controller
             $semester = '1';
         }
 
+        $actual = '';
+        $kpi_percentage = '';
+        if ($request->record_file == null) {
+            $actual = '0';
+            $kpi_percentage = '0';
+        } else {
+            $actual = $request->actual;
+            $kpi_percentage = $request->achievement;
+        }
+
+
         $searchConditions = [
             'kpi_code' => $request->kpi_code,
             'date' => $date,
@@ -188,8 +199,8 @@ class ActualController extends Controller
             'kpi_unit' => $request->kpi_unit,
             'review_period' => $request->review_period,
             'target' => $request->target,
-            'actual' => $request->actual,
-            'kpi_percentage' => $request->achievement,
+            'actual' => $actual,
+            'kpi_percentage' => $kpi_percentage,
             'kpi_calculation' => $request->kpi_calculation,
             'supporting_document' => $request->supporting_document,
             'comment' => $request->comment,
@@ -200,6 +211,8 @@ class ActualController extends Controller
             'status' => $request->status,
             'semester' => $semester,
             'detail' => $request->detail,
+            'input_by' => $request->input_by,
+            'input_at' => now(),
         ];
 
         DepartmentActual::updateOrCreate($searchConditions, $dataToUpdateOrCreate);
@@ -250,7 +263,7 @@ class ActualController extends Controller
             $actual = $request->actual;
             $kpi_percentage = $request->achievement;
         }
- 
+
         $searchConditions = [
             'kpi_code' => $request->kpi_code,
             'date' => $date,
@@ -274,6 +287,8 @@ class ActualController extends Controller
             'status' => $request->status,
             'semester' => $semester,
             'detail' => $request->detail,
+            'input_by' => $request->input_by,
+            'input_at' => now(),
         ];
 
         Actual::updateOrCreate($searchConditions, $dataToUpdateOrCreate);
@@ -292,7 +307,21 @@ class ActualController extends Controller
         }
 
 
-        $actual->status = $request->status;
+        if ($request->filled('status')) {
+            $actual->status = $request->status;
+        }
+        if ($request->filled('checked_by')) {
+            $actual->checked_by = $request->checked_by;
+        }
+        if ($request->filled('checked_at')) {
+            $actual->checked_at = $request->checked_at;
+        }
+        if ($request->filled('approved_by')) {
+            $actual->approved_by = $request->approved_by;
+        }
+        if ($request->filled('approved_at')) {
+            $actual->approved_at = $request->approved_at;
+        }
 
         $actual->save();
 

@@ -57,12 +57,11 @@
                     </a>
                 </li>
                 <li>
-                    <a href="{{ url('/log-input?year=' . $yearToShow) }}" class="flex items-center py-2 px-6 text-gray-300 hover:bg-gray-900">
+                    <a href="{{ url('/log-input?department=1&month=12&year=2024') }}" class="flex items-center py-2 px-6 text-gray-300 hover:bg-gray-900">
                         <i class="ri-edit-2-line text-3xl"></i>
                         <span class="ml-3">Log Input</span>
                     </a>
-                </li>
-                
+                </li>             
             </ul>
         </div>
         <li>

@@ -116,6 +116,7 @@
                   <textarea name="comment" id="comment" class="block w-full rounded-md border-0 py-1.5 pl-4 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 mt-1" placeholder="Komentar" rows="2"></textarea>
                   <input type="hidden" name="department_id" id="department_id" value="{{ $target->department_id }}">
                   <input type="hidden" name="year" id="year" value="{{ $year = request()->query('year') }}">
+                  <input type="hidden" name="input_by" id="input_by" value="Admin Office">
                   <input type="hidden" name="status" id="status" value="Filled">
                 <div class="absolute inset-y-0 right-0 flex items-center">
                 </div>

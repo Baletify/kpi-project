@@ -205,11 +205,13 @@
                             $buttonId = 'open-modal-' . $actual->actual_id;
                             $backgroundId = 'modal-background-' . $actual->actual_id;
                         @endphp
-                            <button id="{{ $buttonId }}" class="{{ $actual->status == 'Approved' ? 'text-green-600' : 'text-blue-500' }} hover:underline">
+                            <button id="{{ $buttonId }}" class="hover:underline">
                                 @if ($actual->status == 'Approved')
-                                <span>Yes</span>
-                                @else
-                                Review
+                                <span class="text-green-500">Yes</span>
+                                @elseif ($actual->status == 'Checked')
+                                <span class="text-blue-500">Review</span>
+                                @elseif ($actual->status == 'Filled')
+                                <span class="text-yellow-500">Check</span>
                                 @endif
                             </button>
                             <div id="{{ $backgroundId }}" class="fixed inset-0 bg-gray-800 bg-opacity-75 hidden"></div>
@@ -241,11 +243,25 @@
                                             <form action="{{ route('actual.updateActual') }}" method="POST">
                                                 @csrf
                                                 @method('PUT')
-                                            <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded text-[12px]">
-                                                <input type="hidden" name="actual_id" id="actual_id" value="{{ $actual->actual_id }}">
-                                                <input type="hidden" name="status" id="status" value="Approved">
-                                                <span>Approve</span>
-                                            </button>
+                                                @php
+                                                    $now = Carbon\Carbon::now();
+                                                @endphp
+                                                @if ($actual->status == 'Checked')
+                                                <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded text-[12px]">
+                                                    <input type="hidden" name="status" id="status" value="Approved">
+                                                    <input type="hidden" name="approved_by" id="approved_by" value="HR">
+                                                    <input type="hidden" name="approved_at" value="{{ $now }}">
+                                                    <span>Approve</span>
+                                                </button>
+                                                @elseif ($actual->status == 'Filled')
+                                                <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded text-[12px]">
+                                                    <input type="hidden" name="status" id="status" value="Checked">
+                                                    <span>Check</span>
+                                                    <input type="hidden" name="checked_by" id="checked_by" value="Admin Office">
+                                                    <input type="hidden" name="checked_at" value="{{ $now }}">
+                                                </button>
+                                                @endif
+                                            <input type="hidden" name="actual_id" id="actual_id" value="{{ $actual->actual_id }}">
                                             </form>
                                         </div>
                                         

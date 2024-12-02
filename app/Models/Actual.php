@@ -29,6 +29,12 @@ class Actual extends Model
         'detail',
         'trend',
         'status',
+        'input_by',
+        'input_at',
+        'checked_by',
+        'checked_at',
+        'approved_by',
+        'approved_at',
         'employee_id',
     ];
 }
