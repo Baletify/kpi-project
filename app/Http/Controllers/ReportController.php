@@ -222,20 +222,21 @@ class ReportController extends Controller
     }
 
 
-    public function showFile($filename)
+    public function showFile(Request $request)
     {
-        $path = public_path('record_files/' . $filename);
+        $month = $request->query('month');
 
-        if (!File::exists($path)) {
-            abort(404);
-        }
+        $pdfUrls = Actual::whereMonth('date', $month)->pluck('record_file')->toArray();
 
-        $file = File::get($path);
-        $type = File::mimeType($path);
+        return response()->json($pdfUrls);
+    }
 
-        $response = Response::make($file, 200);
-        $response->header("Content-Type", $type);
+    public function showFileDept(Request $request)
+    {
+        $month = $request->query('month');
 
-        return $response;
+        $pdfUrls = DepartmentActual::whereMonth('date', $month)->pluck('record_file')->toArray();
+
+        return response()->json($pdfUrls);
     }
 }

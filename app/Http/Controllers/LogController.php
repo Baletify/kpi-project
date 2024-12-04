@@ -165,7 +165,7 @@ class LogController extends Controller
                 ->join('employees', 'actuals.employee_id', '=', 'employees.id')
                 ->join('departments', 'employees.department_id', '=', 'departments.id')
                 ->where('departments.id', $department)
-                ->where('actuals.status', '=', 'Filled')
+                ->whereIn('actuals.status', ['Filled', 'Checked', 'Approved'])
                 ->whereMonth('actuals.date', $month)
                 ->whereYear('actuals.date', $year)
                 ->select('actuals.id', 'actuals.kpi_code', 'actuals.kpi_item', 'actuals.kpi_unit', 'actuals.review_period', 'actuals.target', 'actuals.actual', 'actuals.kpi_percentage', 'actuals.kpi_calculation', 'actuals.supporting_document', 'actuals.comment', 'actuals.record_file', 'actuals.department_name', 'actuals.kpi_weighting', 'actuals.date', 'actuals.semester', 'actuals.trend', 'actuals.status', 'actuals.detail', 'actuals.input_by', 'actuals.input_at', 'actuals.checked_by', 'actuals.checked_at', 'actuals.approved_by', 'actuals.approved_at', 'actuals.employee_id', 'actuals.created_at', 'actuals.updated_at', 'departments.id as department_id')
@@ -197,19 +197,83 @@ class LogController extends Controller
 
     public function filter(Request $request)
     {
+
         $department = $request->query('department');
         $month = $request->query('month');
         $year = $request->query('year');
 
 
-        $actuals = DB::table('actuals')
-            ->join('employees', 'actuals.employee_id', '=', 'employees.id')
-            ->join('departments', 'employees.department_id', '=', 'departments.id')
-            ->where('departments.id', $department)
-            ->where('actuals.status', '=', 'Checked')
-            ->whereMonth('actuals.date', $month)
-            ->whereYear('actuals.date', $year)
-            ->select('actuals.id', 'actuals.kpi_code', 'actuals.kpi_item', 'actuals.kpi_unit', 'actuals.review_period', 'actuals.target', 'actuals.actual', 'actuals.kpi_percentage', 'actuals.kpi_calculation', 'actuals.supporting_document', 'actuals.comment', 'actuals.record_file', 'actuals.department_name', 'actuals.kpi_weighting', 'actuals.date', 'actuals.semester', 'actuals.trend', 'actuals.status', 'actuals.detail', 'actuals.input_by', 'actuals.input_at', 'actuals.checked_by', 'actuals.checked_at', 'actuals.approved_by', 'actuals.approved_at', 'actuals.employee_id', 'actuals.created_at', 'actuals.updated_at', 'departments.id as department_id')
-            ->get();
+        if ($department && $month && $year) {
+            $actualFilledCheck = DB::table('actuals')
+                ->join('employees', 'actuals.employee_id', '=', 'employees.id')
+                ->join('departments', 'employees.department_id', '=', 'departments.id')
+                ->where('departments.id', $department)
+                ->where('actuals.status', '=', 'Filled')
+                ->whereMonth('actuals.date', $month)
+                ->whereYear('actuals.date', $year)
+                ->select('actuals.id', 'actuals.kpi_code', 'actuals.kpi_item', 'actuals.kpi_unit', 'actuals.review_period', 'actuals.target', 'actuals.actual', 'actuals.kpi_percentage', 'actuals.kpi_calculation', 'actuals.supporting_document', 'actuals.comment', 'actuals.record_file', 'actuals.department_name', 'actuals.kpi_weighting', 'actuals.date', 'actuals.semester', 'actuals.trend', 'actuals.status', 'actuals.detail', 'actuals.input_by', 'actuals.input_at', 'actuals.checked_by', 'actuals.checked_at', 'actuals.approved_by', 'actuals.approved_at', 'actuals.employee_id', 'actuals.created_at', 'actuals.updated_at', 'departments.id as department_id')
+                ->get();
+            $actualCheckedCheck = DB::table('actuals')
+                ->join('employees', 'actuals.employee_id', '=', 'employees.id')
+                ->join('departments', 'employees.department_id', '=', 'departments.id')
+                ->where('departments.id', $department)
+                ->where('actuals.status', '=', 'Checked')
+                ->whereMonth('actuals.date', $month)
+                ->whereYear('actuals.date', $year)
+                ->select('actuals.id', 'actuals.kpi_code', 'actuals.kpi_item', 'actuals.kpi_unit', 'actuals.review_period', 'actuals.target', 'actuals.actual', 'actuals.kpi_percentage', 'actuals.kpi_calculation', 'actuals.supporting_document', 'actuals.comment', 'actuals.record_file', 'actuals.department_name', 'actuals.kpi_weighting', 'actuals.date', 'actuals.semester', 'actuals.trend', 'actuals.status', 'actuals.detail', 'actuals.input_by', 'actuals.input_at', 'actuals.checked_by', 'actuals.checked_at', 'actuals.approved_by', 'actuals.approved_at', 'actuals.employee_id', 'actuals.created_at', 'actuals.updated_at', 'departments.id as department_id')
+                ->get();
+
+            $actualApproved = DB::table('actuals')
+                ->join('employees', 'actuals.employee_id', '=', 'employees.id')
+                ->join('departments', 'employees.department_id', '=', 'departments.id')
+                ->where('departments.id', $department)
+                ->where('actuals.status', '=', 'Approved')
+                ->whereMonth('actuals.date', $month)
+                ->whereYear('actuals.date', $year)
+                ->select('actuals.id', 'actuals.kpi_code', 'actuals.kpi_item', 'actuals.kpi_unit', 'actuals.review_period', 'actuals.target', 'actuals.actual', 'actuals.kpi_percentage', 'actuals.kpi_calculation', 'actuals.supporting_document', 'actuals.comment', 'actuals.record_file', 'actuals.department_name', 'actuals.kpi_weighting', 'actuals.date', 'actuals.semester', 'actuals.trend', 'actuals.status', 'actuals.detail', 'actuals.input_by', 'actuals.input_at', 'actuals.checked_by', 'actuals.checked_at', 'actuals.approved_by', 'actuals.approved_at', 'actuals.employee_id', 'actuals.created_at', 'actuals.updated_at', 'departments.id as department_id')
+                ->orderBy('actuals.approved_at', 'desc')->get();
+
+            $actualChecked = DB::table('actuals')
+                ->join('employees', 'actuals.employee_id', '=', 'employees.id')
+                ->join('departments', 'employees.department_id', '=', 'departments.id')
+                ->where('departments.id', $department)
+                ->where('actuals.status', '=', 'Checked')
+                ->whereMonth('actuals.date', $month)
+                ->whereYear('actuals.date', $year)
+                ->select('actuals.id', 'actuals.kpi_code', 'actuals.kpi_item', 'actuals.kpi_unit', 'actuals.review_period', 'actuals.target', 'actuals.actual', 'actuals.kpi_percentage', 'actuals.kpi_calculation', 'actuals.supporting_document', 'actuals.comment', 'actuals.record_file', 'actuals.department_name', 'actuals.kpi_weighting', 'actuals.date', 'actuals.semester', 'actuals.trend', 'actuals.status', 'actuals.detail', 'actuals.input_by', 'actuals.input_at', 'actuals.checked_by', 'actuals.checked_at', 'actuals.approved_by', 'actuals.approved_at', 'actuals.employee_id', 'actuals.created_at', 'actuals.updated_at', 'departments.id as department_id')
+                ->orderBy('actuals.checked_at', 'desc')->get();
+
+            $actualFilled = DB::table('actuals')
+                ->join('employees', 'actuals.employee_id', '=', 'employees.id')
+                ->join('departments', 'employees.department_id', '=', 'departments.id')
+                ->where('departments.id', $department)
+                ->whereIn('actuals.status', ['Filled', 'Checked', 'Approved'])
+                ->whereMonth('actuals.date', $month)
+                ->whereYear('actuals.date', $year)
+                ->select('actuals.id', 'actuals.kpi_code', 'actuals.kpi_item', 'actuals.kpi_unit', 'actuals.review_period', 'actuals.target', 'actuals.actual', 'actuals.kpi_percentage', 'actuals.kpi_calculation', 'actuals.supporting_document', 'actuals.comment', 'actuals.record_file', 'actuals.department_name', 'actuals.kpi_weighting', 'actuals.date', 'actuals.semester', 'actuals.trend', 'actuals.status', 'actuals.detail', 'actuals.input_by', 'actuals.input_at', 'actuals.checked_by', 'actuals.checked_at', 'actuals.approved_by', 'actuals.approved_at', 'actuals.employee_id', 'actuals.created_at', 'actuals.updated_at', 'departments.id as department_id')
+                ->orderBy('actuals.checked_at', 'desc')->get();
+
+            $departments = DB::table('departments')->where('departments.id', '=', $department)->get();
+            $countEmployees = DB::table('employees')
+                ->leftJoin('departments', 'departments.id', '=', 'employees.department_id')->select(DB::raw('count(employees.id) as total_employee'), 'departments.id as department_id',)->where('departments.id', $department)->groupBy('departments.id')->get();
+
+            // dd($actualFilledCheck, $actualCheckedCheck, $actualApproved, $actualChecked, $countEmployees);
+            return view('log-input', [
+                'title' => 'Log Input',
+                'desc' => 'History',
+                'actualFilledCheck' => $actualFilledCheck,
+                'actualCheckedCheck' => $actualCheckedCheck,
+                'actualApproved' => $actualApproved,
+                'actualFilled' => $actualFilled,
+                'actualChecked' => $actualChecked,
+                'departments' => $departments,
+                'countEmployees' => $countEmployees,
+            ]);
+        } else if ($department) {
+            return view('log-input', [
+                'title' => 'Log Input',
+                'desc' => 'History',
+            ]);
+        }
     }
 }

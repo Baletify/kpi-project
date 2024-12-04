@@ -204,8 +204,12 @@
                             $modalId = 'modal-' . $actual->actual_id;
                             $buttonId = 'open-modal-' . $actual->actual_id;
                             $backgroundId = 'modal-background-' . $actual->actual_id;
+                            $date = \Carbon\Carbon::parse($actual->date); // Parse the date
+                            $prevButtonId = 'prevButton-' . $actual->actual_id;
+                            $nextButtonId = 'nextButton-' . $actual->actual_id;
+                            $pdfObjectId = 'pdfObject-' . $actual->actual_id;
                         @endphp
-                            <button id="{{ $buttonId }}" class="hover:underline">
+                            <button id="{{ $buttonId }}" class="hover:underline" data-month="{{ $date->format('m') }}">
                                 @if ($actual->status == 'Approved')
                                 <span class="text-green-500">Yes</span>
                                 @elseif ($actual->status == 'Checked')
@@ -215,23 +219,25 @@
                                 @endif
                             </button>
                             <div id="{{ $backgroundId }}" class="fixed inset-0 bg-gray-800 bg-opacity-75 hidden"></div>
-                            <div id="{{ $modalId }}" class="fixed inset-0 items-center justify-center hidden">
-                                <div class="flex justify-center mt-10">
-                                <div class="bg-gray-50 rounded-lg shadow-lg p-6 w-1/3">
+                            <div id="{{ $modalId }}" class="fixed inset-0 justify-center hidden">
+                                <div class="flex justify-center mt-3">
+                                    <div class="bg-gray-50 rounded-lg shadow-lg p-3 w-1/2 max-h-screen overflow-y-hidden">
                                     <div class="">
-                                        <h2 class="text-xl font-bold mb-4">Review Data Pendukung</h2>
+                                        <h2 class="text-xl font-bold mb-0.5">Review Data Pendukung</h2>
                                     </div>
-                                    <div class="p-1">
-                                        <button class="bg-blue-500 text-white p-2 text-[12px] rounded">
-                                            <a href="{{ route('report.showFile', $actual->record_file) }}" target="_blank">Lihat Dokumen</a>
-                                        </button>
+                                    <div class="p-1 flex justify-between">
+                                        <button id="{{ $prevButtonId }}" class="bg-blue-500 text-white p-2 text-[12px] rounded">Previous</button>
+                                        <button id="{{ $nextButtonId }}" class="bg-blue-500 text-white p-2 text-[12px] rounded">Next</button>
+                                    </div>
+                                    <div id="pdfViewer" class="mt-1">
+                                        <object id="{{ $pdfObjectId }}" type="application/pdf" width="100%" height="400px"></object>
                                     </div>
                                     @if ($actual->status !== 'Approved')
                                     <div class="p-1 flex justify-start">
                                         <span class="text-semibold mb-1 text-[12px]">Berikan Komentar</span>
                                     </div>
                                     <div class="p-0 mb-2 flex justify-center">
-                                        <textarea name="comment" id="comment" cols="58" rows="3"></textarea>
+                                        <textarea name="comment" id="comment" cols="58" rows="2"></textarea>
                                     </div>
                                     <div class="flex justify-center gap-3">
                                         
@@ -269,7 +275,7 @@
                                     @endif
                                     
                                     <div class="flex justify-end">
-                                        <button id="close-modal-{{ $modalId }}" class="bg-red-500 text-white px-4 py-2 rounded mr-2 text-[12px]">Close</button>
+                                        <button id="close-modal-{{ $modalId }}" class="bg-red-500 text-white px-4 py-2 rounded mr-2 text-[12px] mt-0.5">Close</button>
                                     </div>
                                 </div>
                             </div>
@@ -290,14 +296,19 @@
     </div>
     </div>
 
-    
+    <script src="https://unpkg.com/pdfobject"></script>
+
+
     
     <script>
+        let currentIndex = 0;
+        let pdfUrls = [];
+    
         document.querySelectorAll('button[id^="open-modal-"]').forEach(button => {
             button.addEventListener('click', function() {
-                const index = this.id.split('-').pop();
-                document.getElementById(`modal-${index}`).classList.remove('hidden');
-                document.getElementById(`modal-background-${index}`).classList.remove('hidden');
+                const month = this.dataset.month;
+                
+                fetchPdfUrls(month, this.id);
             });
         });
     
@@ -316,5 +327,51 @@
                 document.getElementById(`modal-background-${index}`).classList.add('hidden');
             });
         });
+    
+        function fetchPdfUrls(month, buttonId) {
+            
+            fetch(`/report/file-preview?month=${month}`)
+                .then(response => response.json())
+                .then(data => {
+                    
+                    pdfUrls = data;
+                    currentIndex = 0;
+                    updatePdfViewer(buttonId);
+                    const modalId = buttonId.replace('open-modal-', 'modal-');
+                    const backgroundId = buttonId.replace('open-modal-', 'modal-background-');
+                    document.getElementById(modalId).classList.remove('hidden');
+                    document.getElementById(backgroundId).classList.remove('hidden');
+                    
+                })
+                .catch(error => console.error('Error fetching PDF URLs:', error));
+        }
+    
+        function updatePdfViewer(buttonId) {
+            const index = buttonId.split('-').pop();
+            const pdfObject = document.getElementById(`pdfObject-${index}`);
+            const prevButton = document.getElementById(`prevButton-${index}`);
+            const nextButton = document.getElementById(`nextButton-${index}`);
+    
+            if (pdfUrls.length > 0) {
+                
+                pdfObject.data = `/record_files/${pdfUrls[currentIndex]}`;
+            } else {
+                pdfObject.data = '';
+            }
+    
+            prevButton.addEventListener('click', function() {
+                if (currentIndex > 0) {
+                    currentIndex--;
+                    updatePdfViewer(buttonId);
+                }
+            });
+    
+            nextButton.addEventListener('click', function() {
+                if (currentIndex < pdfUrls.length - 1) {
+                    currentIndex++;
+                    updatePdfViewer(buttonId);
+                }
+            });
+        }
     </script>
 </x-app-layout>

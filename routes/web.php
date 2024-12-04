@@ -55,11 +55,12 @@ Route::prefix('report')->group(function () {
     Route::get('/employee-report/{id}', [ReportController::class, 'show'])->name('report.show');
     Route::get('/summary-department-report', [ReportController::class, 'summaryDept'])->name('report.summaryDept');
     Route::get('/department-report/{id}', [ReportController::class, 'department'])->name('report.department');
-    Route::get('/file-preview/{id}', [ReportController::class, 'showFile'])->name('report.showFile');
+    Route::get('/file-preview', [ReportController::class, 'showFile'])->name('report.showFile');
+    Route::get('/file-preview-dept', [ReportController::class, 'showFileDept'])->name('report.showFileDept');
 });
 
 Route::get('/log-check', [LogController::class, 'index'])->name('log-check.index');
-Route::get('/log-input', [LogController::class, 'indexInput'])->name('log-check.indexInput');
+Route::get('/log-input', [LogController::class, 'indexInput'])->name('log-input.indexInput');
 Route::prefix('action-plan')->group(function () {
     Route::get('/action-plans', [ActionPlanController::class, 'show'])->name('action-plan.show');
     Route::get('/input-action-plan/{id}', [ActionPlanController::class, 'addEmployeeFile'])->name('action-plan.addEmployeeFile');
