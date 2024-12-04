@@ -209,7 +209,7 @@
                             $nextButtonId = 'nextButton-' . $actual->actual_id;
                             $pdfObjectId = 'pdfObject-' . $actual->actual_id;
                         @endphp
-                            <button id="{{ $buttonId }}" class="hover:underline" data-month="{{ $date->format('m') }}">
+                            <button id="{{ $buttonId }}" class="hover:underline" data-month="{{ $date->format('m') }}" data-actual-id="{{ $actual->actual_id }}">
                                 @if ($actual->status == 'Approved')
                                 <span class="text-green-500">Yes</span>
                                 @elseif ($actual->status == 'Checked')
@@ -222,8 +222,9 @@
                             <div id="{{ $modalId }}" class="fixed inset-0 justify-center hidden">
                                 <div class="flex justify-center mt-3">
                                     <div class="bg-gray-50 rounded-lg shadow-lg p-3 w-1/2 max-h-screen overflow-y-hidden">
-                                    <div class="">
+                                    <div class="flex flex-col">
                                         <h2 class="text-xl font-bold mb-0.5">Review Data Pendukung</h2>
+                                        <span id="fileNumber-modal-{{ $actual->actual_id }}" class="text-[12px] tracking-wide font-medium text-gray-600 mb-1"></span>
                                     </div>
                                     <div class="p-1 flex justify-between">
                                         <button id="{{ $prevButtonId }}" class="bg-blue-500 text-white p-2 text-[12px] rounded">Previous</button>
@@ -231,6 +232,16 @@
                                     </div>
                                     <div id="pdfViewer" class="mt-1">
                                         <object id="{{ $pdfObjectId }}" type="application/pdf" width="100%" height="400px"></object>
+                                    </div>
+                                    <div id="checkbox-container-{{ $modalId }}" class="p-1 flex justify-center gap-3">
+                                        <label class="text-[14px]">
+                                            <input type="checkbox" class="status-checkbox" data-actual-id="{{ $actual->actual_id }}" data-status="Checked" {{ $actual->status == 'Checked' ? 'checked' : '' }}>
+                                            Check
+                                        </label>
+                                        <label class="text-[14px]">
+                                            <input type="checkbox" class="status-checkbox" data-actual-id="{{ $actual->actual_id }}" data-status="Approved" {{ $actual->status == 'Approved' ? 'checked' : '' }}>
+                                            Approve
+                                        </label>
                                     </div>
                                     @if ($actual->status !== 'Approved')
                                     <div class="p-1 flex justify-start">
@@ -253,20 +264,20 @@
                                                     $now = Carbon\Carbon::now();
                                                 @endphp
                                                 @if ($actual->status == 'Checked')
-                                                <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded text-[12px]">
-                                                    <input type="hidden" name="status" id="status" value="Approved">
-                                                    <input type="hidden" name="approved_by" id="approved_by" value="HR">
+                                                <button type="submit" id="approve-button-{{ $modalId }}" class="bg-green-500 text-white px-4 py-2 rounded text-[12px]">
+                                                    <input type="hidden" name="status" value="Approved">
+                                                    <input type="hidden" name="approved_by" value="HR">
                                                     <input type="hidden" name="approved_at" value="{{ $now }}">
                                                     <span>Approve</span>
                                                 </button>
-                                                @elseif ($actual->status == 'Filled')
-                                                <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded text-[12px]">
-                                                    <input type="hidden" name="status" id="status" value="Checked">
+                                            @elseif ($actual->status == 'Filled')
+                                                <button type="submit" id="check-button-{{ $modalId }}" class="bg-blue-500 text-white px-4 py-2 rounded text-[12px]">
+                                                    <input type="hidden" name="status" value="Checked">
                                                     <span>Check</span>
-                                                    <input type="hidden" name="checked_by" id="checked_by" value="Admin Office">
+                                                    <input type="hidden" name="checked_by" value="Admin Office">
                                                     <input type="hidden" name="checked_at" value="{{ $now }}">
                                                 </button>
-                                                @endif
+                                            @endif
                                             <input type="hidden" name="actual_id" id="actual_id" value="{{ $actual->actual_id }}">
                                             </form>
                                         </div>
@@ -301,14 +312,14 @@
 
     
     <script>
-        let currentIndex = 0;
-        let pdfUrls = [];
+        let pdfData = {}; // Dictionary to store pdfUrls for each modal
+        let currentIndexes = {}; // Dictionary to store currentIndex for each modal
     
         document.querySelectorAll('button[id^="open-modal-"]').forEach(button => {
             button.addEventListener('click', function() {
                 const month = this.dataset.month;
-                
-                fetchPdfUrls(month, this.id);
+                const buttonId = this.id;
+                fetchPdfUrls(month, buttonId);
             });
         });
     
@@ -329,19 +340,19 @@
         });
     
         function fetchPdfUrls(month, buttonId) {
-            
             fetch(`/report/file-preview?month=${month}`)
                 .then(response => response.json())
                 .then(data => {
+                    console.log(data);
                     
-                    pdfUrls = data;
-                    currentIndex = 0;
+                    const index = buttonId.split('-').pop();
+                    pdfData[index] = data; // Store pdfUrls for this modal
+                    currentIndexes[index] = 0; // Initialize currentIndex for this modal
                     updatePdfViewer(buttonId);
                     const modalId = buttonId.replace('open-modal-', 'modal-');
                     const backgroundId = buttonId.replace('open-modal-', 'modal-background-');
                     document.getElementById(modalId).classList.remove('hidden');
                     document.getElementById(backgroundId).classList.remove('hidden');
-                    
                 })
                 .catch(error => console.error('Error fetching PDF URLs:', error));
         }
@@ -351,27 +362,60 @@
             const pdfObject = document.getElementById(`pdfObject-${index}`);
             const prevButton = document.getElementById(`prevButton-${index}`);
             const nextButton = document.getElementById(`nextButton-${index}`);
+            const fileNumberElement = document.getElementById(`fileNumber-modal-${index}`);
+            const currentIndex = currentIndexes[index]; // Get currentIndex for this modal
+            const pdfUrls = pdfData[index]; // Get pdfUrls for this modal
     
             if (pdfUrls.length > 0) {
                 
-                pdfObject.data = `/record_files/${pdfUrls[currentIndex]}`;
+                const currentPdf = pdfUrls[currentIndex];
+                pdfObject.data = `/record_files/${currentPdf.record_file}`;
+                fileNumberElement.textContent = `File Number: ${currentIndex + 1} | KPI Code: ${currentPdf.kpi_code} | KPI Item: ${currentPdf.kpi_item}`;
             } else {
                 pdfObject.data = '';
+                fileNumberElement.textContent = '';
             }
     
-            prevButton.addEventListener('click', function() {
-                if (currentIndex > 0) {
-                    currentIndex--;
+            // Remove existing event listeners
+            prevButton.replaceWith(prevButton.cloneNode(true));
+            nextButton.replaceWith(nextButton.cloneNode(true));
+    
+            // Reassign the buttons after cloning
+            const newPrevButton = document.getElementById(`prevButton-${index}`);
+            const newNextButton = document.getElementById(`nextButton-${index}`);
+    
+            newPrevButton.addEventListener('click', function() {
+                if (currentIndexes[index] > 0) {
+                    currentIndexes[index]--;
                     updatePdfViewer(buttonId);
                 }
             });
     
-            nextButton.addEventListener('click', function() {
-                if (currentIndex < pdfUrls.length - 1) {
-                    currentIndex++;
+            newNextButton.addEventListener('click', function() {
+                if (currentIndexes[index] < pdfUrls.length - 1) {
+                    currentIndexes[index]++;
                     updatePdfViewer(buttonId);
                 }
             });
+        }
+
+        function updateButtonStatus(index) {
+            const pdfUrls = pdfData[index];
+            const currentIndex = currentIndexes[index];
+            const currentPdf = pdfUrls[currentIndex];
+            const checkButton = document.getElementById(`statusCheck`);
+            const approveButton = document.getElementById(`statusApprove`);
+
+            if (currentPdf.status === 'Filled') {
+                checkButton.style.display = 'block';
+                approveButton.style.display = 'none';
+            } else if (currentPdf.status === 'Checked') {
+                checkButton.style.display = 'none';
+                approveButton.style.display = 'block';
+            } else {
+                checkButton.style.display = 'none';
+                approveButton.style.display = 'none';
+            }
         }
     </script>
 </x-app-layout>

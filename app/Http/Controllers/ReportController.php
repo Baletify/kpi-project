@@ -225,8 +225,11 @@ class ReportController extends Controller
     public function showFile(Request $request)
     {
         $month = $request->query('month');
+        $actualId = $request->query('actual_id');
 
-        $pdfUrls = Actual::whereMonth('date', $month)->pluck('record_file')->toArray();
+        $pdfUrls = Actual::whereMonth('date', $month)
+            ->get(['id', 'record_file', 'kpi_code', 'kpi_item', 'status'])
+            ->toArray();
 
         return response()->json($pdfUrls);
     }
