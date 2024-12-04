@@ -228,6 +228,7 @@ class ReportController extends Controller
         $actualId = $request->query('actual_id');
 
         $pdfUrls = Actual::whereMonth('date', $month)
+            ->where('id', $actualId)
             ->get(['id', 'record_file', 'kpi_code', 'kpi_item', 'status'])
             ->toArray();
 

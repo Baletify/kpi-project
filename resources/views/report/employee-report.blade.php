@@ -219,11 +219,12 @@
                                 @endif
                             </button>
                             <div id="{{ $backgroundId }}" class="fixed inset-0 bg-gray-800 bg-opacity-75 hidden"></div>
-                            <div id="{{ $modalId }}" class="fixed inset-0 justify-center hidden">
+                            <div id="{{ $modalId }}" class="modal fixed inset-0 justify-center hidden" data-month="{{ $date->format('m') }}">
                                 <div class="flex justify-center mt-3">
                                     <div class="bg-gray-50 rounded-lg shadow-lg p-3 w-1/2 max-h-screen overflow-y-hidden">
                                     <div class="flex flex-col">
                                         <h2 class="text-xl font-bold mb-0.5">Review Data Pendukung</h2>
+                                        <span class="text-[12px] tracking-wide font-medium text-gray-600 mb-1">Bulan: {{ $monthName }}</span>
                                         <span id="fileNumber-modal-{{ $actual->actual_id }}" class="text-[12px] tracking-wide font-medium text-gray-600 mb-1"></span>
                                     </div>
                                     <div class="p-1 flex justify-between">
@@ -310,112 +311,129 @@
     <script src="https://unpkg.com/pdfobject"></script>
 
 
+<script>
+let pdfData = {}; // Dictionary to store pdfUrls for each modal
+let currentIndexes = {}; // Dictionary to store currentIndex for each modal
+let modalOrder = {}; // Dictionary to store the order of modals for each month
+
+// Collect modal data based on month
+document.querySelectorAll('.modal').forEach(modal => {
+    const month = modal.dataset.month;
+    const actualId = modal.id.split('-').pop();
+    console.log(`month:`, month, `actualid`, actualId);
     
-    <script>
-        let pdfData = {}; // Dictionary to store pdfUrls for each modal
-        let currentIndexes = {}; // Dictionary to store currentIndex for each modal
-    
-        document.querySelectorAll('button[id^="open-modal-"]').forEach(button => {
-            button.addEventListener('click', function() {
-                const month = this.dataset.month;
-                const buttonId = this.id;
-                fetchPdfUrls(month, buttonId);
-            });
-        });
-    
-        document.querySelectorAll('button[id^="close-modal-"]').forEach(button => {
-            button.addEventListener('click', function() {
-                const index = this.id.split('-').pop();
-                document.getElementById(`modal-${index}`).classList.add('hidden');
-                document.getElementById(`modal-background-${index}`).classList.add('hidden');
-            });
-        });
-    
-        document.querySelectorAll('div[id^="modal-background-"]').forEach(background => {
-            background.addEventListener('click', function() {
-                const index = this.id.split('-').pop();
-                document.getElementById(`modal-${index}`).classList.add('hidden');
-                document.getElementById(`modal-background-${index}`).classList.add('hidden');
-            });
-        });
-    
-        function fetchPdfUrls(month, buttonId) {
-            fetch(`/report/file-preview?month=${month}`)
-                .then(response => response.json())
-                .then(data => {
-                    console.log(data);
-                    
-                    const index = buttonId.split('-').pop();
-                    pdfData[index] = data; // Store pdfUrls for this modal
-                    currentIndexes[index] = 0; // Initialize currentIndex for this modal
-                    updatePdfViewer(buttonId);
-                    const modalId = buttonId.replace('open-modal-', 'modal-');
-                    const backgroundId = buttonId.replace('open-modal-', 'modal-background-');
-                    document.getElementById(modalId).classList.remove('hidden');
-                    document.getElementById(backgroundId).classList.remove('hidden');
-                })
-                .catch(error => console.error('Error fetching PDF URLs:', error));
-        }
-    
-        function updatePdfViewer(buttonId) {
+    if (!modalOrder[month]) {
+        modalOrder[month] = [];
+    }
+    modalOrder[month].push(actualId);
+    console.log(`modalOrder[${month}]:`, modalOrder[month]);
+});
+
+document.querySelectorAll('button[id^="open-modal-"]').forEach(button => {
+    button.addEventListener('click', function() {
+        const month = this.dataset.month;
+        const actualId = this.dataset.actualId;
+        fetchPdfUrls(month, actualId, this.id);
+    });
+});
+
+document.querySelectorAll('button[id^="close-modal-"]').forEach(button => {
+    button.addEventListener('click', function() {
+        const actualId = this.id.split('-').pop();
+        document.getElementById(`modal-${actualId}`).classList.add('hidden');
+        document.getElementById(`modal-background-${actualId}`).classList.add('hidden');
+    });
+});
+
+document.querySelectorAll('div[id^="modal-background-"]').forEach(background => {
+    background.addEventListener('click', function() {
+        const actualId = this.id.split('-').pop();
+        document.getElementById(`modal-${actualId}`).classList.add('hidden');
+        document.getElementById(`modal-background-${actualId}`).classList.add('hidden');
+    });
+});
+
+function fetchPdfUrls(month, actualId, buttonId) {
+    fetch(`/report/file-preview?month=${month}&actual_id=${actualId}`)
+        .then(response => response.json())
+        .then(data => {
+            console.log(data);
+            
             const index = buttonId.split('-').pop();
-            const pdfObject = document.getElementById(`pdfObject-${index}`);
-            const prevButton = document.getElementById(`prevButton-${index}`);
-            const nextButton = document.getElementById(`nextButton-${index}`);
-            const fileNumberElement = document.getElementById(`fileNumber-modal-${index}`);
-            const currentIndex = currentIndexes[index]; // Get currentIndex for this modal
-            const pdfUrls = pdfData[index]; // Get pdfUrls for this modal
-    
-            if (pdfUrls.length > 0) {
-                
-                const currentPdf = pdfUrls[currentIndex];
-                pdfObject.data = `/record_files/${currentPdf.record_file}`;
-                fileNumberElement.textContent = `File Number: ${currentIndex + 1} | KPI Code: ${currentPdf.kpi_code} | KPI Item: ${currentPdf.kpi_item}`;
-            } else {
-                pdfObject.data = '';
-                fileNumberElement.textContent = '';
-            }
-    
-            // Remove existing event listeners
-            prevButton.replaceWith(prevButton.cloneNode(true));
-            nextButton.replaceWith(nextButton.cloneNode(true));
-    
-            // Reassign the buttons after cloning
-            const newPrevButton = document.getElementById(`prevButton-${index}`);
-            const newNextButton = document.getElementById(`nextButton-${index}`);
-    
-            newPrevButton.addEventListener('click', function() {
-                if (currentIndexes[index] > 0) {
-                    currentIndexes[index]--;
-                    updatePdfViewer(buttonId);
-                }
-            });
-    
-            newNextButton.addEventListener('click', function() {
-                if (currentIndexes[index] < pdfUrls.length - 1) {
-                    currentIndexes[index]++;
-                    updatePdfViewer(buttonId);
-                }
-            });
-        }
+            pdfData[index] = data; // Store pdfUrls for this modal
+            currentIndexes[index] = 0; // Initialize currentIndex for this modal
+            updatePdfViewer(buttonId, actualId);
+            const modalId = `modal-${actualId}`;
+            const backgroundId = `modal-background-${actualId}`;
+            document.getElementById(modalId).classList.remove('hidden');
+            document.getElementById(backgroundId).classList.remove('hidden');
+        })
+        .catch(error => console.error('Error fetching PDF URLs:', error));
+}
 
-        function updateButtonStatus(index) {
-            const pdfUrls = pdfData[index];
-            const currentIndex = currentIndexes[index];
-            const currentPdf = pdfUrls[currentIndex];
-            const checkButton = document.getElementById(`statusCheck`);
-            const approveButton = document.getElementById(`statusApprove`);
+function updatePdfViewer(buttonId, actualId) {
+    const index = buttonId.split('-').pop();
+    const pdfObject = document.getElementById(`pdfObject-${index}`);
+    const prevButton = document.getElementById(`prevButton-${index}`);
+    const nextButton = document.getElementById(`nextButton-${index}`);
+    const fileNumberElement = document.getElementById(`fileNumber-modal-${index}`);
+    const currentIndex = currentIndexes[index]; // Get currentIndex for this modal
+    const pdfUrls = pdfData[index]; // Get pdfUrls for this modal
 
-            if (currentPdf.status === 'Filled') {
-                checkButton.style.display = 'block';
-                approveButton.style.display = 'none';
-            } else if (currentPdf.status === 'Checked') {
-                checkButton.style.display = 'none';
-                approveButton.style.display = 'block';
-            } else {
-                checkButton.style.display = 'none';
-                approveButton.style.display = 'none';
+    if (pdfUrls.length > 0) {
+        const currentPdf = pdfUrls[currentIndex];
+        pdfObject.data = `/record_files/${currentPdf.record_file}`;
+        fileNumberElement.textContent = `KPI Code: ${currentPdf.kpi_code} | KPI: ${currentPdf.kpi_item}`;
+    } else {
+        pdfObject.data = '';
+        fileNumberElement.textContent = '';
+    }
+
+    // Remove existing event listeners
+    prevButton.replaceWith(prevButton.cloneNode(true));
+    nextButton.replaceWith(nextButton.cloneNode(true));
+
+    // Reassign the buttons after cloning
+    const newPrevButton = document.getElementById(`prevButton-${index}`);
+    const newNextButton = document.getElementById(`nextButton-${index}`);
+
+    newPrevButton.addEventListener('click', function() {
+        const modalElement = document.getElementById(`modal-${actualId}`);
+        const month = modalElement.dataset.month;
+        const modalIds = modalOrder[month];
+        console.log(`Navigating to previous modal. Current modal ID: ${actualId}, Month: ${month}, Modal IDs: ${modalIds}`);
+        if (modalIds) {
+            const currentModalIndex = modalIds.indexOf(actualId);
+            console.log(`Current modal index: ${currentModalIndex}`);
+            if (currentModalIndex > 0) {
+                const prevModalId = modalIds[currentModalIndex - 1];
+                const prevActualId = prevModalId.split('-').pop();
+                console.log(`Previous modal ID: ${prevModalId}, Previous actual ID: ${prevActualId}`);
+                document.getElementById(`modal-${actualId}`).classList.add('hidden');
+                document.getElementById(`modal-background-${actualId}`).classList.add('hidden');
+                fetchPdfUrls(month, prevActualId, `prevButton-${prevActualId}`);
             }
         }
-    </script>
+    });
+
+    newNextButton.addEventListener('click', function() {
+        const modalElement = document.getElementById(`modal-${actualId}`);
+        const month = modalElement.dataset.month;
+        const modalIds = modalOrder[month];
+        console.log(`Navigating to next modal. Current modal ID: ${actualId}, Month: ${month}, Modal IDs: ${modalIds}`);
+        if (modalIds) {
+            const currentModalIndex = modalIds.indexOf(actualId);
+            console.log(`Current modal index: ${currentModalIndex}`);
+            if (currentModalIndex < modalIds.length - 1) {
+                const nextModalId = modalIds[currentModalIndex + 1];
+                const nextActualId = nextModalId.split('-').pop();
+                console.log(`Next modal ID: ${nextModalId}, Next actual ID: ${nextActualId}`);
+                document.getElementById(`modal-${actualId}`).classList.add('hidden');
+                document.getElementById(`modal-background-${actualId}`).classList.add('hidden');
+                fetchPdfUrls(month, nextActualId, `nextButton-${nextActualId}`);
+            }
+        }
+    });
+}
+</script>
 </x-app-layout>
