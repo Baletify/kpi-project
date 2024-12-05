@@ -13,39 +13,50 @@
                 <span class=" font-bold text-gray-600 text-2xl">LOG INPUT KPI</span>
             </div>
         </div>
-        <form action="{{ url('/log-input') }}" method="GET">
-           <input type="hidden" name="department" id="department" value="{{ $department_id = request()->query('department') }}">
-        <div class="flex gap-x-2">
-            <div class="my-2">
-                <select name="month" id="month" class=" w-24 h-10 text-[12px]">
-                    <option value="">-- Bulan --</option>
-                    <option value="01">January</option>
-                    <option value="02">February</option>
-                    <option value="03">March</option>
-                    <option value="04">April</option>
-                    <option value="05">May</option>
-                    <option value="06">June</option>
-                    <option value="07">July</option>
-                    <option value="08">August</option>
-                    <option value="09">September</option>
-                    <option value="10">October</option>
-                    <option value="11">November</option>
-                    <option value="12">December</option>
-                </select>
+        <div class="flex justify-between">
+            <div class="p-0 5">
+                <form action="{{ url('/log-input') }}" method="GET">
+                    <input type="hidden" name="department" id="department" value="{{ $department_id = request()->query('department') }}">
+                 <div class="flex gap-x-2">
+                     <div class="my-2">
+                         <select name="month" id="month" class=" w-24 h-10 text-[12px]">
+                             <option value="">-- Bulan --</option>
+                             <option value="01">January</option>
+                             <option value="02">February</option>
+                             <option value="03">March</option>
+                             <option value="04">April</option>
+                             <option value="05">May</option>
+                             <option value="06">June</option>
+                             <option value="07">July</option>
+                             <option value="08">August</option>
+                             <option value="09">September</option>
+                             <option value="10">October</option>
+                             <option value="11">November</option>
+                             <option value="12">December</option>
+                         </select>
+                     </div>
+                     <div class="my-2">
+                         <select name="year" id="year" class=" w-24 h-10 text-[12px]">
+                             <option value="">-- Tahun --</option>
+                             @for ($year = $startYear; $year <= $endYear; $year++)
+                             <option value="{{ $year }}">{{ $year }}</option>
+                             @endfor
+                         </select>
+                     </div>
+                     <div class="my-2">
+                         <button type="submit" class="rounded-md bg-blue-500 text-white p-2">Filter</button>
+                     </div>
+                 </div>
+                 </form>
             </div>
-            <div class="my-2">
-                <select name="year" id="year" class=" w-24 h-10 text-[12px]">
-                    <option value="">-- Tahun --</option>
-                    @for ($year = $startYear; $year <= $endYear; $year++)
-                    <option value="{{ $year }}">{{ $year }}</option>
-                    @endfor
-                </select>
-            </div>
-            <div class="my-2">
-                <button type="submit" class="rounded-md bg-blue-500 text-white p-2">Filter</button>
+            <div class="p-0.5">
+                @php
+                    $month = request()->query('month');
+                    $year = request()->query('year');
+                @endphp
+                <button type="submit" class="rounded-md bg-green-700 text-white p-2">Generate TTE</button>
             </div>
         </div>
-        </form>
         <table class="w-full bg-white">
             <tr>
                 <th style="width: 7%;" class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-white py-0 px-4 bg-blue-700">Dept</th>

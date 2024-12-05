@@ -20,6 +20,7 @@
         </div>
           <div class="relative mt-1 rounded-md">
             <span class="pl-3 font-semibold">Bulan</span>
+            <span class="text-red-500">*</span> 
             <select name="date" id="date" class="block w-full text-[12px]">
               <option value="">-- Pilih Bulan --</option>
              
@@ -84,7 +85,8 @@
           </div>
         </div>
         <div class="relative mt-1 rounded-md">
-            <span class="pl-3 font-semibold">Aktual</span>  
+            <span class="pl-3 font-semibold">Aktual</span> 
+            <span class="text-red-500">*</span>  
           <input type="text" name="actual" id="actual" class="block w-full rounded-md border-0 py-1.5 pl-4 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 mt-1" placeholder="Aktual" oninput="calculateAchievement()" autocomplete="off">
           <div class="absolute inset-y-0 right-0 flex items-center">
           </div>
@@ -182,6 +184,12 @@
           var targetValue = selectedOption.getAttribute('data-target');
           document.getElementById('target').value = targetValue;
           
+          if (unitValue === '%') {
+                targetValue = targetValue * 100;
+                targetField.value = targetValue + '%';
+            } else {
+                targetField.value = targetValue;
+            }
       });
       var actualInput = document.getElementById('actual');
       var unitInput = document.getElementById('kpi_unit');

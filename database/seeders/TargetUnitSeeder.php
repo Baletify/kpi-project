@@ -290,413 +290,413 @@ class TargetUnitSeeder extends Seeder
 
             // HSE GANI START
             // KPI
-            [
-                'target_1' => '',
-                'target_2' => '',
-                'target_3' => '',
-                'target_4' => '',
-                'target_5' => '',
-                'target_6' => '1',
-                'target_7' => '',
-                'target_8' => '',
-                'target_9' => '',
-                'target_10' => '',
-                'target_11' => '',
-                'target_12' => '1'
-            ],
-            // KPI
-            [
-                'target_1' => '',
-                'target_2' => '',
-                'target_3' => '1',
-                'target_4' => '',
-                'target_5' => '',
-                'target_6' => '1',
-                'target_7' => '',
-                'target_8' => '',
-                'target_9' => '1',
-                'target_10' => '',
-                'target_11' => '',
-                'target_12' => '1'
-            ],
-            // KPI
-            [
-                'target_1' => '100%',
-                'target_2' => '100%',
-                'target_3' => '100%',
-                'target_4' => '100%',
-                'target_5' => '100%',
-                'target_6' => '100%',
-                'target_7' => '100%',
-                'target_8' => '100%',
-                'target_9' => '100%',
-                'target_10' => '100%',
-                'target_11' => '100%',
-                'target_12' => '100%'
-            ],
-            // KPI
-            [
-                'target_1' => '',
-                'target_2' => '',
-                'target_3' => '1',
-                'target_4' => '',
-                'target_5' => '',
-                'target_6' => '1',
-                'target_7' => '',
-                'target_8' => '',
-                'target_9' => '1',
-                'target_10' => '',
-                'target_11' => '',
-                'target_12' => '1'
-            ],
-            // KPI
-            [
-                'target_1' => '',
-                'target_2' => '',
-                'target_3' => '',
-                'target_4' => '',
-                'target_5' => '',
-                'target_6' => '1',
-                'target_7' => '',
-                'target_8' => '',
-                'target_9' => '',
-                'target_10' => '',
-                'target_11' => '',
-                'target_12' => '1'
-            ],
-            // KPI
-            [
-                'target_1' => '1',
-                'target_2' => '1',
-                'target_3' => '1',
-                'target_4' => '1',
-                'target_5' => '1',
-                'target_6' => '1',
-                'target_7' => '1',
-                'target_8' => '1',
-                'target_9' => '1',
-                'target_10' => '1',
-                'target_11' => '1',
-                'target_12' => '1'
-            ],
-            // KPI
-            [
-                'target_1' => '',
-                'target_2' => '',
-                'target_3' => '1',
-                'target_4' => '',
-                'target_5' => '',
-                'target_6' => '',
-                'target_7' => '',
-                'target_8' => '',
-                'target_9' => '',
-                'target_10' => '',
-                'target_11' => '',
-                'target_12' => ''
-            ],
-            // KPI
-            [
-                'target_1' => '',
-                'target_2' => '',
-                'target_3' => '',
-                'target_4' => '',
-                'target_5' => '',
-                'target_6' => '',
-                'target_7' => '',
-                'target_8' => '',
-                'target_9' => '',
-                'target_10' => '',
-                'target_11' => '',
-                'target_12' => '1'
-            ],
-            // KPI
-            [
-                'target_1' => '',
-                'target_2' => '',
-                'target_3' => '1',
-                'target_4' => '',
-                'target_5' => '',
-                'target_6' => '1',
-                'target_7' => '',
-                'target_8' => '',
-                'target_9' => '1',
-                'target_10' => '',
-                'target_11' => '',
-                'target_12' => '1'
-            ],
-            // KPI
-            [
-                'target_1' => '',
-                'target_2' => '',
-                'target_3' => '1',
-                'target_4' => '',
-                'target_5' => '',
-                'target_6' => '1',
-                'target_7' => '',
-                'target_8' => '',
-                'target_9' => '1',
-                'target_10' => '',
-                'target_11' => '',
-                'target_12' => '1'
-            ],
-            // KPI
-            [
-                'target_1' => '',
-                'target_2' => '',
-                'target_3' => '1',
-                'target_4' => '',
-                'target_5' => '',
-                'target_6' => '1',
-                'target_7' => '',
-                'target_8' => '',
-                'target_9' => '1',
-                'target_10' => '',
-                'target_11' => '',
-                'target_12' => '1'
-            ],
-            // KPI
-            [
-                'target_1' => '',
-                'target_2' => '',
-                'target_3' => '1',
-                'target_4' => '',
-                'target_5' => '',
-                'target_6' => '1',
-                'target_7' => '',
-                'target_8' => '',
-                'target_9' => '1',
-                'target_10' => '',
-                'target_11' => '',
-                'target_12' => '1'
-            ],
-            // KPI
-            [
-                'target_1' => '',
-                'target_2' => '',
-                'target_3' => '1',
-                'target_4' => '',
-                'target_5' => '',
-                'target_6' => '1',
-                'target_7' => '',
-                'target_8' => '',
-                'target_9' => '1',
-                'target_10' => '',
-                'target_11' => '',
-                'target_12' => '1'
-            ],
-            // KPI
-            [
-                'target_1' => '',
-                'target_2' => '',
-                'target_3' => '1',
-                'target_4' => '',
-                'target_5' => '',
-                'target_6' => '1',
-                'target_7' => '',
-                'target_8' => '',
-                'target_9' => '1',
-                'target_10' => '',
-                'target_11' => '',
-                'target_12' => '1'
-            ],
-            // KPI
-            [
-                'target_1' => '1',
-                'target_2' => '1',
-                'target_3' => '1',
-                'target_4' => '1',
-                'target_5' => '1',
-                'target_6' => '1',
-                'target_7' => '1',
-                'target_8' => '1',
-                'target_9' => '1',
-                'target_10' => '1',
-                'target_11' => '1',
-                'target_12' => '1'
-            ],
-            // HSE GANI END
+            // [
+            //     'target_1' => '',
+            //     'target_2' => '',
+            //     'target_3' => '',
+            //     'target_4' => '',
+            //     'target_5' => '',
+            //     'target_6' => '1',
+            //     'target_7' => '',
+            //     'target_8' => '',
+            //     'target_9' => '',
+            //     'target_10' => '',
+            //     'target_11' => '',
+            //     'target_12' => '1'
+            // ],
+            // // KPI
+            // [
+            //     'target_1' => '',
+            //     'target_2' => '',
+            //     'target_3' => '1',
+            //     'target_4' => '',
+            //     'target_5' => '',
+            //     'target_6' => '1',
+            //     'target_7' => '',
+            //     'target_8' => '',
+            //     'target_9' => '1',
+            //     'target_10' => '',
+            //     'target_11' => '',
+            //     'target_12' => '1'
+            // ],
+            // // KPI
+            // [
+            //     'target_1' => '100%',
+            //     'target_2' => '100%',
+            //     'target_3' => '100%',
+            //     'target_4' => '100%',
+            //     'target_5' => '100%',
+            //     'target_6' => '100%',
+            //     'target_7' => '100%',
+            //     'target_8' => '100%',
+            //     'target_9' => '100%',
+            //     'target_10' => '100%',
+            //     'target_11' => '100%',
+            //     'target_12' => '100%'
+            // ],
+            // // KPI
+            // [
+            //     'target_1' => '',
+            //     'target_2' => '',
+            //     'target_3' => '1',
+            //     'target_4' => '',
+            //     'target_5' => '',
+            //     'target_6' => '1',
+            //     'target_7' => '',
+            //     'target_8' => '',
+            //     'target_9' => '1',
+            //     'target_10' => '',
+            //     'target_11' => '',
+            //     'target_12' => '1'
+            // ],
+            // // KPI
+            // [
+            //     'target_1' => '',
+            //     'target_2' => '',
+            //     'target_3' => '',
+            //     'target_4' => '',
+            //     'target_5' => '',
+            //     'target_6' => '1',
+            //     'target_7' => '',
+            //     'target_8' => '',
+            //     'target_9' => '',
+            //     'target_10' => '',
+            //     'target_11' => '',
+            //     'target_12' => '1'
+            // ],
+            // // KPI
+            // [
+            //     'target_1' => '1',
+            //     'target_2' => '1',
+            //     'target_3' => '1',
+            //     'target_4' => '1',
+            //     'target_5' => '1',
+            //     'target_6' => '1',
+            //     'target_7' => '1',
+            //     'target_8' => '1',
+            //     'target_9' => '1',
+            //     'target_10' => '1',
+            //     'target_11' => '1',
+            //     'target_12' => '1'
+            // ],
+            // // KPI
+            // [
+            //     'target_1' => '',
+            //     'target_2' => '',
+            //     'target_3' => '1',
+            //     'target_4' => '',
+            //     'target_5' => '',
+            //     'target_6' => '',
+            //     'target_7' => '',
+            //     'target_8' => '',
+            //     'target_9' => '',
+            //     'target_10' => '',
+            //     'target_11' => '',
+            //     'target_12' => ''
+            // ],
+            // // KPI
+            // [
+            //     'target_1' => '',
+            //     'target_2' => '',
+            //     'target_3' => '',
+            //     'target_4' => '',
+            //     'target_5' => '',
+            //     'target_6' => '',
+            //     'target_7' => '',
+            //     'target_8' => '',
+            //     'target_9' => '',
+            //     'target_10' => '',
+            //     'target_11' => '',
+            //     'target_12' => '1'
+            // ],
+            // // KPI
+            // [
+            //     'target_1' => '',
+            //     'target_2' => '',
+            //     'target_3' => '1',
+            //     'target_4' => '',
+            //     'target_5' => '',
+            //     'target_6' => '1',
+            //     'target_7' => '',
+            //     'target_8' => '',
+            //     'target_9' => '1',
+            //     'target_10' => '',
+            //     'target_11' => '',
+            //     'target_12' => '1'
+            // ],
+            // // KPI
+            // [
+            //     'target_1' => '',
+            //     'target_2' => '',
+            //     'target_3' => '1',
+            //     'target_4' => '',
+            //     'target_5' => '',
+            //     'target_6' => '1',
+            //     'target_7' => '',
+            //     'target_8' => '',
+            //     'target_9' => '1',
+            //     'target_10' => '',
+            //     'target_11' => '',
+            //     'target_12' => '1'
+            // ],
+            // // KPI
+            // [
+            //     'target_1' => '',
+            //     'target_2' => '',
+            //     'target_3' => '1',
+            //     'target_4' => '',
+            //     'target_5' => '',
+            //     'target_6' => '1',
+            //     'target_7' => '',
+            //     'target_8' => '',
+            //     'target_9' => '1',
+            //     'target_10' => '',
+            //     'target_11' => '',
+            //     'target_12' => '1'
+            // ],
+            // // KPI
+            // [
+            //     'target_1' => '',
+            //     'target_2' => '',
+            //     'target_3' => '1',
+            //     'target_4' => '',
+            //     'target_5' => '',
+            //     'target_6' => '1',
+            //     'target_7' => '',
+            //     'target_8' => '',
+            //     'target_9' => '1',
+            //     'target_10' => '',
+            //     'target_11' => '',
+            //     'target_12' => '1'
+            // ],
+            // // KPI
+            // [
+            //     'target_1' => '',
+            //     'target_2' => '',
+            //     'target_3' => '1',
+            //     'target_4' => '',
+            //     'target_5' => '',
+            //     'target_6' => '1',
+            //     'target_7' => '',
+            //     'target_8' => '',
+            //     'target_9' => '1',
+            //     'target_10' => '',
+            //     'target_11' => '',
+            //     'target_12' => '1'
+            // ],
+            // // KPI
+            // [
+            //     'target_1' => '',
+            //     'target_2' => '',
+            //     'target_3' => '1',
+            //     'target_4' => '',
+            //     'target_5' => '',
+            //     'target_6' => '1',
+            //     'target_7' => '',
+            //     'target_8' => '',
+            //     'target_9' => '1',
+            //     'target_10' => '',
+            //     'target_11' => '',
+            //     'target_12' => '1'
+            // ],
+            // // KPI
+            // [
+            //     'target_1' => '1',
+            //     'target_2' => '1',
+            //     'target_3' => '1',
+            //     'target_4' => '1',
+            //     'target_5' => '1',
+            //     'target_6' => '1',
+            //     'target_7' => '1',
+            //     'target_8' => '1',
+            //     'target_9' => '1',
+            //     'target_10' => '1',
+            //     'target_11' => '1',
+            //     'target_12' => '1'
+            // ],
+            // // HSE GANI END
 
-            // HSE RIDWAN START
-            // KPI
-            [
-                'target_1' => '',
-                'target_2' => '',
-                'target_3' => '',
-                'target_4' => '',
-                'target_5' => '',
-                'target_6' => '1',
-                'target_7' => '',
-                'target_8' => '',
-                'target_9' => '',
-                'target_10' => '',
-                'target_11' => '',
-                'target_12' => '1'
-            ],
-            // KPI
-            [
-                'target_1' => '',
-                'target_2' => '',
-                'target_3' => '1',
-                'target_4' => '',
-                'target_5' => '',
-                'target_6' => '1',
-                'target_7' => '',
-                'target_8' => '',
-                'target_9' => '1',
-                'target_10' => '',
-                'target_11' => '',
-                'target_12' => '1'
-            ],
-            // KPI
-            [
-                'target_1' => '',
-                'target_2' => '37',
-                'target_3' => '40',
-                'target_4' => '70',
-                'target_5' => '60',
-                'target_6' => '100',
-                'target_7' => '',
-                'target_8' => '',
-                'target_9' => '',
-                'target_10' => '',
-                'target_11' => '',
-                'target_12' => ''
-            ],
-            // KPI
-            [
-                'target_1' => '',
-                'target_2' => '1',
-                'target_3' => '',
-                'target_4' => '',
-                'target_5' => '',
-                'target_6' => '',
-                'target_7' => '',
-                'target_8' => '1',
-                'target_9' => '',
-                'target_10' => '',
-                'target_11' => '',
-                'target_12' => ''
-            ],
-            // KPI
-            [
-                'target_1' => '',
-                'target_2' => '',
-                'target_3' => '',
-                'target_4' => '',
-                'target_5' => '',
-                'target_6' => '1',
-                'target_7' => '',
-                'target_8' => '',
-                'target_9' => '',
-                'target_10' => '',
-                'target_11' => '',
-                'target_12' => '1'
-            ],
-            // KPI
-            [
-                'target_1' => '',
-                'target_2' => '',
-                'target_3' => '1',
-                'target_4' => '',
-                'target_5' => '',
-                'target_6' => '1',
-                'target_7' => '',
-                'target_8' => '',
-                'target_9' => '1',
-                'target_10' => '',
-                'target_11' => '',
-                'target_12' => '1'
-            ],
-            // KPI
-            [
-                'target_1' => '1',
-                'target_2' => '1',
-                'target_3' => '1',
-                'target_4' => '1',
-                'target_5' => '1',
-                'target_6' => '1',
-                'target_7' => '1',
-                'target_8' => '1',
-                'target_9' => '1',
-                'target_10' => '1',
-                'target_11' => '1',
-                'target_12' => '1'
-            ],
-            // KPI
-            [
-                'target_1' => '1',
-                'target_2' => '1',
-                'target_3' => '1',
-                'target_4' => '1',
-                'target_5' => '1',
-                'target_6' => '1',
-                'target_7' => '1',
-                'target_8' => '1',
-                'target_9' => '1',
-                'target_10' => '1',
-                'target_11' => '1',
-                'target_12' => '1'
-            ],
-            // KPI
-            [
-                'target_1' => '1',
-                'target_2' => '1',
-                'target_3' => '1',
-                'target_4' => '1',
-                'target_5' => '1',
-                'target_6' => '1',
-                'target_7' => '1',
-                'target_8' => '1',
-                'target_9' => '1',
-                'target_10' => '1',
-                'target_11' => '1',
-                'target_12' => '1'
-            ],
-            // KPI
-            [
-                'target_1' => '1',
-                'target_2' => '1',
-                'target_3' => '1',
-                'target_4' => '1',
-                'target_5' => '1',
-                'target_6' => '1',
-                'target_7' => '1',
-                'target_8' => '1',
-                'target_9' => '1',
-                'target_10' => '1',
-                'target_11' => '1',
-                'target_12' => '1'
-            ],
-            // KPI
-            [
-                'target_1' => '1',
-                'target_2' => '1',
-                'target_3' => '1',
-                'target_4' => '1',
-                'target_5' => '1',
-                'target_6' => '1',
-                'target_7' => '1',
-                'target_8' => '1',
-                'target_9' => '1',
-                'target_10' => '1',
-                'target_11' => '1',
-                'target_12' => '1'
-            ],
-            // KPI
-            [
-                'target_1' => '',
-                'target_2' => '',
-                'target_3' => '',
-                'target_4' => '',
-                'target_5' => '',
-                'target_6' => '1',
-                'target_7' => '',
-                'target_8' => '',
-                'target_9' => '',
-                'target_10' => '',
-                'target_11' => '',
-                'target_12' => ''
-            ],
+            // // HSE RIDWAN START
+            // // KPI
+            // [
+            //     'target_1' => '',
+            //     'target_2' => '',
+            //     'target_3' => '',
+            //     'target_4' => '',
+            //     'target_5' => '',
+            //     'target_6' => '1',
+            //     'target_7' => '',
+            //     'target_8' => '',
+            //     'target_9' => '',
+            //     'target_10' => '',
+            //     'target_11' => '',
+            //     'target_12' => '1'
+            // ],
+            // // KPI
+            // [
+            //     'target_1' => '',
+            //     'target_2' => '',
+            //     'target_3' => '1',
+            //     'target_4' => '',
+            //     'target_5' => '',
+            //     'target_6' => '1',
+            //     'target_7' => '',
+            //     'target_8' => '',
+            //     'target_9' => '1',
+            //     'target_10' => '',
+            //     'target_11' => '',
+            //     'target_12' => '1'
+            // ],
+            // // KPI
+            // [
+            //     'target_1' => '',
+            //     'target_2' => '37',
+            //     'target_3' => '40',
+            //     'target_4' => '70',
+            //     'target_5' => '60',
+            //     'target_6' => '100',
+            //     'target_7' => '',
+            //     'target_8' => '',
+            //     'target_9' => '',
+            //     'target_10' => '',
+            //     'target_11' => '',
+            //     'target_12' => ''
+            // ],
+            // // KPI
+            // [
+            //     'target_1' => '',
+            //     'target_2' => '1',
+            //     'target_3' => '',
+            //     'target_4' => '',
+            //     'target_5' => '',
+            //     'target_6' => '',
+            //     'target_7' => '',
+            //     'target_8' => '1',
+            //     'target_9' => '',
+            //     'target_10' => '',
+            //     'target_11' => '',
+            //     'target_12' => ''
+            // ],
+            // // KPI
+            // [
+            //     'target_1' => '',
+            //     'target_2' => '',
+            //     'target_3' => '',
+            //     'target_4' => '',
+            //     'target_5' => '',
+            //     'target_6' => '1',
+            //     'target_7' => '',
+            //     'target_8' => '',
+            //     'target_9' => '',
+            //     'target_10' => '',
+            //     'target_11' => '',
+            //     'target_12' => '1'
+            // ],
+            // // KPI
+            // [
+            //     'target_1' => '',
+            //     'target_2' => '',
+            //     'target_3' => '1',
+            //     'target_4' => '',
+            //     'target_5' => '',
+            //     'target_6' => '1',
+            //     'target_7' => '',
+            //     'target_8' => '',
+            //     'target_9' => '1',
+            //     'target_10' => '',
+            //     'target_11' => '',
+            //     'target_12' => '1'
+            // ],
+            // // KPI
+            // [
+            //     'target_1' => '1',
+            //     'target_2' => '1',
+            //     'target_3' => '1',
+            //     'target_4' => '1',
+            //     'target_5' => '1',
+            //     'target_6' => '1',
+            //     'target_7' => '1',
+            //     'target_8' => '1',
+            //     'target_9' => '1',
+            //     'target_10' => '1',
+            //     'target_11' => '1',
+            //     'target_12' => '1'
+            // ],
+            // // KPI
+            // [
+            //     'target_1' => '1',
+            //     'target_2' => '1',
+            //     'target_3' => '1',
+            //     'target_4' => '1',
+            //     'target_5' => '1',
+            //     'target_6' => '1',
+            //     'target_7' => '1',
+            //     'target_8' => '1',
+            //     'target_9' => '1',
+            //     'target_10' => '1',
+            //     'target_11' => '1',
+            //     'target_12' => '1'
+            // ],
+            // // KPI
+            // [
+            //     'target_1' => '1',
+            //     'target_2' => '1',
+            //     'target_3' => '1',
+            //     'target_4' => '1',
+            //     'target_5' => '1',
+            //     'target_6' => '1',
+            //     'target_7' => '1',
+            //     'target_8' => '1',
+            //     'target_9' => '1',
+            //     'target_10' => '1',
+            //     'target_11' => '1',
+            //     'target_12' => '1'
+            // ],
+            // // KPI
+            // [
+            //     'target_1' => '1',
+            //     'target_2' => '1',
+            //     'target_3' => '1',
+            //     'target_4' => '1',
+            //     'target_5' => '1',
+            //     'target_6' => '1',
+            //     'target_7' => '1',
+            //     'target_8' => '1',
+            //     'target_9' => '1',
+            //     'target_10' => '1',
+            //     'target_11' => '1',
+            //     'target_12' => '1'
+            // ],
+            // // KPI
+            // [
+            //     'target_1' => '1',
+            //     'target_2' => '1',
+            //     'target_3' => '1',
+            //     'target_4' => '1',
+            //     'target_5' => '1',
+            //     'target_6' => '1',
+            //     'target_7' => '1',
+            //     'target_8' => '1',
+            //     'target_9' => '1',
+            //     'target_10' => '1',
+            //     'target_11' => '1',
+            //     'target_12' => '1'
+            // ],
+            // // KPI
+            // [
+            //     'target_1' => '',
+            //     'target_2' => '',
+            //     'target_3' => '',
+            //     'target_4' => '',
+            //     'target_5' => '',
+            //     'target_6' => '1',
+            //     'target_7' => '',
+            //     'target_8' => '',
+            //     'target_9' => '',
+            //     'target_10' => '',
+            //     'target_11' => '',
+            //     'target_12' => ''
+            // ],
             // HSE RIDWAN END
 
         ];

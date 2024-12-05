@@ -48,10 +48,21 @@ class LogController extends Controller
             ->groupBy('departments.code')
             ->get();
 
+        $targetCountsDept = DB::table('department_targets')
+            ->leftJoin('departments', 'department_targets.department_id', '=', 'departments.id')
+            ->where(DB::raw('YEAR(department_targets.date)'), $year)
+            ->select('departments.code as code', DB::raw('count(department_targets.id) as total'))
+            ->groupBy('departments.code')
+            ->get();
+
+
+
+
         $targetUnitCounts1 = DB::table('target_units')
             ->leftJoin('targets', 'target_units.id', '=', 'targets.target_unit_id')
             ->leftJoin('employees', 'targets.employee_id', '=', 'employees.id')
             ->leftJoin('departments', 'employees.department_id', '=', 'departments.id')
+
             ->whereYear('targets.date', $year)
             // ->whereNotNull('target_units.id')
             ->select(
@@ -66,12 +77,46 @@ class LogController extends Controller
             ->groupBy('departments.code')
             ->get();
 
+
         $targetUnitCounts2 = DB::table('target_units')
             ->leftJoin('targets', 'target_units.id', '=', 'targets.target_unit_id')
             ->leftJoin('employees', 'targets.employee_id', '=', 'employees.id')
             ->leftJoin('departments', 'employees.department_id', '=', 'departments.id')
             ->whereYear('targets.date', $year)
+            ->select(
+                'departments.code as department_code',
+                DB::raw('count(target_units.target_7) as total_7'),
+                DB::raw('count(target_units.target_8) as total_8'),
+                DB::raw('count(target_units.target_9) as total_9'),
+                DB::raw('count(target_units.target_10) as total_10'),
+                DB::raw('count(target_units.target_11) as total_11'),
+                DB::raw('count(target_units.target_12) as total_12')
+            )
+            ->groupBy('departments.code')
+            ->get();
+
+        $targetUnitCountsDept1 = DB::table('target_units')
+            ->leftJoin('department_targets', 'target_units.id', '=', 'department_targets.target_unit_id')
+            ->leftJoin('departments', 'department_targets.department_id', '=', 'departments.id')
+
+            ->whereYear('department_targets.date', $year)
             // ->whereNotNull('target_units.id')
+            ->select(
+                'departments.code as department_code',
+                DB::raw('count(target_units.target_1) as total_1'),
+                DB::raw('count(target_units.target_2) as total_2'),
+                DB::raw('count(target_units.target_3) as total_3'),
+                DB::raw('count(target_units.target_4) as total_4'),
+                DB::raw('count(target_units.target_5) as total_5'),
+                DB::raw('count(target_units.target_6) as total_6'),
+            )
+            ->groupBy('departments.code')
+            ->get();
+
+        $targetUnitCountsDept2 = DB::table('target_units')
+            ->leftJoin('department_targets', 'target_units.id', '=', 'department_targets.target_unit_id')
+            ->leftJoin('departments', 'department_targets.department_id', '=', 'departments.id')
+            ->whereYear('department_targets.date', $year)
             ->select(
                 'departments.code as department_code',
                 DB::raw('count(target_units.target_7) as total_7'),
@@ -88,9 +133,23 @@ class LogController extends Controller
         $actualCounts = DB::table('actuals')
             ->leftJoin('employees', 'employees.id', '=', 'actuals.employee_id')
             ->leftJoin('departments', 'departments.id', '=', 'employees.department_id')
-            ->select('departments.code as department_code', DB::raw('MONTH(actuals.date) as month'), DB::raw('count(actuals.status) as total'),)->where('actuals.status', 'Approved')
+            ->select('departments.code as department_code', DB::raw('MONTH(actuals.date) as month'), DB::raw('count(actuals.status) as total'))
+            ->where('actuals.status', 'Approved')
             ->where(DB::raw('YEAR(actuals.date)'), $year)
-            ->whereIn(DB::raw('MONTH(actuals.date)'), $months)->groupBy('departments.code', DB::raw('MONTH(actuals.date)'))
+            ->whereIn(DB::raw('MONTH(actuals.date)'), $months)
+            ->groupBy('departments.code', DB::raw('MONTH(actuals.date)'))
+            ->get()
+            ->map(function ($item) {
+                return (array) $item;
+            });
+
+        $actualCountsDept = DB::table('department_actuals')
+            ->leftJoin('departments', 'departments.id', '=', 'department_actuals.department_id')
+            ->select('departments.code as department_code', DB::raw('MONTH(department_actuals.date) as month'), DB::raw('count(department_actuals.status) as total'))
+            ->where('department_actuals.status', 'Approved')
+            ->where(DB::raw('YEAR(department_actuals.date)'), $year)
+            ->whereIn(DB::raw('MONTH(department_actuals.date)'), $months)
+            ->groupBy('departments.code', DB::raw('MONTH(department_actuals.date)'))
             ->get()
             ->map(function ($item) {
                 return (array) $item;
@@ -106,9 +165,14 @@ class LogController extends Controller
             'months' => $months,
             'semester' => $semester,
             'targetCounts' => $targetCounts,
+            'targetCountsDept' => $targetCountsDept,
             'actualCounts' => $actualCounts,
+            'actualCountsDept' => $actualCountsDept,
             'targetUnitCounts1' => $targetUnitCounts1,
-            'targetUnitCounts2' => $targetUnitCounts2
+            'targetUnitCounts2' => $targetUnitCounts2,
+            'targetUnitCountsDept1' => $targetUnitCountsDept1,
+            'targetUnitCountsDept2' => $targetUnitCountsDept2,
+
 
         ]);
     }
@@ -171,87 +235,50 @@ class LogController extends Controller
                 ->select('actuals.id', 'actuals.kpi_code', 'actuals.kpi_item', 'actuals.kpi_unit', 'actuals.review_period', 'actuals.target', 'actuals.actual', 'actuals.kpi_percentage', 'actuals.kpi_calculation', 'actuals.supporting_document', 'actuals.comment', 'actuals.record_file', 'actuals.department_name', 'actuals.kpi_weighting', 'actuals.date', 'actuals.semester', 'actuals.trend', 'actuals.status', 'actuals.detail', 'actuals.input_by', 'actuals.input_at', 'actuals.checked_by', 'actuals.checked_at', 'actuals.approved_by', 'actuals.approved_at', 'actuals.employee_id', 'actuals.created_at', 'actuals.updated_at', 'departments.id as department_id')
                 ->orderBy('actuals.checked_at', 'desc')->get();
 
-            $departments = DB::table('departments')->where('departments.id', '=', $department)->get();
-            $countEmployees = DB::table('employees')
-                ->leftJoin('departments', 'departments.id', '=', 'employees.department_id')->select(DB::raw('count(employees.id) as total_employee'), 'departments.id as department_id',)->where('departments.id', $department)->groupBy('departments.id')->get();
-
-            // dd($actualFilledCheck, $actualCheckedCheck, $actualApproved, $actualChecked, $countEmployees);
-            return view('log-input', [
-                'title' => 'Log Input',
-                'desc' => 'History',
-                'actualFilledCheck' => $actualFilledCheck,
-                'actualCheckedCheck' => $actualCheckedCheck,
-                'actualApproved' => $actualApproved,
-                'actualFilled' => $actualFilled,
-                'actualChecked' => $actualChecked,
-                'departments' => $departments,
-                'countEmployees' => $countEmployees,
-            ]);
-        } else if ($department) {
-            return view('log-input', [
-                'title' => 'Log Input',
-                'desc' => 'History',
-            ]);
-        }
-    }
-
-    public function filter(Request $request)
-    {
-
-        $department = $request->query('department');
-        $month = $request->query('month');
-        $year = $request->query('year');
-
-
-        if ($department && $month && $year) {
-            $actualFilledCheck = DB::table('actuals')
+            $actualFilledCount = DB::table('actuals')
                 ->join('employees', 'actuals.employee_id', '=', 'employees.id')
                 ->join('departments', 'employees.department_id', '=', 'departments.id')
                 ->where('departments.id', $department)
-                ->where('actuals.status', '=', 'Filled')
+                ->where('actuals.input_at', '!=', '')
                 ->whereMonth('actuals.date', $month)
                 ->whereYear('actuals.date', $year)
-                ->select('actuals.id', 'actuals.kpi_code', 'actuals.kpi_item', 'actuals.kpi_unit', 'actuals.review_period', 'actuals.target', 'actuals.actual', 'actuals.kpi_percentage', 'actuals.kpi_calculation', 'actuals.supporting_document', 'actuals.comment', 'actuals.record_file', 'actuals.department_name', 'actuals.kpi_weighting', 'actuals.date', 'actuals.semester', 'actuals.trend', 'actuals.status', 'actuals.detail', 'actuals.input_by', 'actuals.input_at', 'actuals.checked_by', 'actuals.checked_at', 'actuals.approved_by', 'actuals.approved_at', 'actuals.employee_id', 'actuals.created_at', 'actuals.updated_at', 'departments.id as department_id')
-                ->get();
-            $actualCheckedCheck = DB::table('actuals')
-                ->join('employees', 'actuals.employee_id', '=', 'employees.id')
-                ->join('departments', 'employees.department_id', '=', 'departments.id')
-                ->where('departments.id', $department)
-                ->where('actuals.status', '=', 'Checked')
-                ->whereMonth('actuals.date', $month)
-                ->whereYear('actuals.date', $year)
-                ->select('actuals.id', 'actuals.kpi_code', 'actuals.kpi_item', 'actuals.kpi_unit', 'actuals.review_period', 'actuals.target', 'actuals.actual', 'actuals.kpi_percentage', 'actuals.kpi_calculation', 'actuals.supporting_document', 'actuals.comment', 'actuals.record_file', 'actuals.department_name', 'actuals.kpi_weighting', 'actuals.date', 'actuals.semester', 'actuals.trend', 'actuals.status', 'actuals.detail', 'actuals.input_by', 'actuals.input_at', 'actuals.checked_by', 'actuals.checked_at', 'actuals.approved_by', 'actuals.approved_at', 'actuals.employee_id', 'actuals.created_at', 'actuals.updated_at', 'departments.id as department_id')
+                ->select(DB::raw('count(actuals.id) as total_filled'), 'departments.id as department_id')
+                ->orderBy('actuals.checked_at', 'desc')
+                ->groupBy('departments.id')
                 ->get();
 
-            $actualApproved = DB::table('actuals')
-                ->join('employees', 'actuals.employee_id', '=', 'employees.id')
-                ->join('departments', 'employees.department_id', '=', 'departments.id')
-                ->where('departments.id', $department)
-                ->where('actuals.status', '=', 'Approved')
-                ->whereMonth('actuals.date', $month)
-                ->whereYear('actuals.date', $year)
-                ->select('actuals.id', 'actuals.kpi_code', 'actuals.kpi_item', 'actuals.kpi_unit', 'actuals.review_period', 'actuals.target', 'actuals.actual', 'actuals.kpi_percentage', 'actuals.kpi_calculation', 'actuals.supporting_document', 'actuals.comment', 'actuals.record_file', 'actuals.department_name', 'actuals.kpi_weighting', 'actuals.date', 'actuals.semester', 'actuals.trend', 'actuals.status', 'actuals.detail', 'actuals.input_by', 'actuals.input_at', 'actuals.checked_by', 'actuals.checked_at', 'actuals.approved_by', 'actuals.approved_at', 'actuals.employee_id', 'actuals.created_at', 'actuals.updated_at', 'departments.id as department_id')
-                ->orderBy('actuals.approved_at', 'desc')->get();
+            $targetUnitCountAll = DB::table('target_units')
+                ->leftJoin('targets', 'target_units.id', '=', 'targets.target_unit_id')
+                ->leftJoin('employees', 'targets.employee_id', '=', 'employees.id')
+                ->leftJoin('departments', 'employees.department_id', '=', 'departments.id')
+                ->where('departments.id', '=', $department)
+                ->whereYear('targets.date', $year)
+                ->whereMonth('targets.date', $month)
+                // ->whereNotNull('target_units.id')
+                ->select(
+                    'departments.id as department_id',
+                    DB::raw('count(target_units.target_1) as total_1'),
+                    DB::raw('count(target_units.target_2) as total_2'),
+                    DB::raw('count(target_units.target_3) as total_3'),
+                    DB::raw('count(target_units.target_4) as total_4'),
+                    DB::raw('count(target_units.target_5) as total_5'),
+                    DB::raw('count(target_units.target_6) as total_6'),
+                    DB::raw('count(target_units.target_7) as total_7'),
+                    DB::raw('count(target_units.target_8) as total_8'),
+                    DB::raw('count(target_units.target_9) as total_9'),
+                    DB::raw('count(target_units.target_10) as total_10'),
+                    DB::raw('count(target_units.target_11) as total_11'),
+                    DB::raw('count(target_units.target_12) as total_12'),
+                )
+                ->groupBy('departments.id')
+                ->get();
 
-            $actualChecked = DB::table('actuals')
-                ->join('employees', 'actuals.employee_id', '=', 'employees.id')
-                ->join('departments', 'employees.department_id', '=', 'departments.id')
-                ->where('departments.id', $department)
-                ->where('actuals.status', '=', 'Checked')
-                ->whereMonth('actuals.date', $month)
-                ->whereYear('actuals.date', $year)
-                ->select('actuals.id', 'actuals.kpi_code', 'actuals.kpi_item', 'actuals.kpi_unit', 'actuals.review_period', 'actuals.target', 'actuals.actual', 'actuals.kpi_percentage', 'actuals.kpi_calculation', 'actuals.supporting_document', 'actuals.comment', 'actuals.record_file', 'actuals.department_name', 'actuals.kpi_weighting', 'actuals.date', 'actuals.semester', 'actuals.trend', 'actuals.status', 'actuals.detail', 'actuals.input_by', 'actuals.input_at', 'actuals.checked_by', 'actuals.checked_at', 'actuals.approved_by', 'actuals.approved_at', 'actuals.employee_id', 'actuals.created_at', 'actuals.updated_at', 'departments.id as department_id')
-                ->orderBy('actuals.checked_at', 'desc')->get();
+            // dd($actualFilledCount, $targetUnitCountAll);
 
-            $actualFilled = DB::table('actuals')
-                ->join('employees', 'actuals.employee_id', '=', 'employees.id')
-                ->join('departments', 'employees.department_id', '=', 'departments.id')
-                ->where('departments.id', $department)
-                ->whereIn('actuals.status', ['Filled', 'Checked', 'Approved'])
-                ->whereMonth('actuals.date', $month)
-                ->whereYear('actuals.date', $year)
-                ->select('actuals.id', 'actuals.kpi_code', 'actuals.kpi_item', 'actuals.kpi_unit', 'actuals.review_period', 'actuals.target', 'actuals.actual', 'actuals.kpi_percentage', 'actuals.kpi_calculation', 'actuals.supporting_document', 'actuals.comment', 'actuals.record_file', 'actuals.department_name', 'actuals.kpi_weighting', 'actuals.date', 'actuals.semester', 'actuals.trend', 'actuals.status', 'actuals.detail', 'actuals.input_by', 'actuals.input_at', 'actuals.checked_by', 'actuals.checked_at', 'actuals.approved_by', 'actuals.approved_at', 'actuals.employee_id', 'actuals.created_at', 'actuals.updated_at', 'departments.id as department_id')
-                ->orderBy('actuals.checked_at', 'desc')->get();
+
+
+            // dd($actualFilledCount);
+
 
             $departments = DB::table('departments')->where('departments.id', '=', $department)->get();
             $countEmployees = DB::table('employees')
@@ -268,6 +295,8 @@ class LogController extends Controller
                 'actualChecked' => $actualChecked,
                 'departments' => $departments,
                 'countEmployees' => $countEmployees,
+                'actualFilledCount' => $actualFilledCount,
+                'targetUnitCountAll' => $targetUnitCountAll,
             ]);
         } else if ($department) {
             return view('log-input', [

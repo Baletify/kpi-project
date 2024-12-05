@@ -111,7 +111,7 @@ class TargetController extends Controller
         // Import the data without saving the file
         Excel::import(new TargetImport($this), $request->file('file'));
 
-        return back()->with('success', 'Data imported successfully.');
+        return back();
     }
 
     public function storeTarget(array $row, $targetUnitId)
@@ -126,8 +126,8 @@ class TargetController extends Controller
             'code' => $row['kode_kpi'],
             'indicator' => $row['kpi'],
             'calculation' => $row['cara_menghitung'],
-            'supporting_document' => $row['data_pendukung'] ?? 'data pendukung',
-            'trend' => $row['trend'] ?? 'Positif',
+            'supporting_document' => $row['data_pendukung'],
+            'trend' => $row['trend'],
             'period' => $row['periode_review'],
             'unit' => $row['unit'],
             'weighting' => $weighting,

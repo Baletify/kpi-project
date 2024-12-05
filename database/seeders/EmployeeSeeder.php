@@ -33,6 +33,12 @@ class EmployeeSeeder extends Seeder
                 'department_id' => 1
             ],
             [
+                'nik' => '218-038',
+                'name' => 'Muhammad Hamdi',
+                'occupation' => 'Spv',
+                'department_id' => 3
+            ],
+            [
                 'nik' => '200-137',
                 'name' => 'Edy Sujatmoko',
                 'occupation' => 'Asst Mng',

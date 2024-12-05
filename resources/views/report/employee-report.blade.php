@@ -224,8 +224,10 @@
                                     <div class="bg-gray-50 rounded-lg shadow-lg p-3 w-1/2 max-h-screen overflow-y-hidden">
                                     <div class="flex flex-col">
                                         <h2 class="text-xl font-bold mb-0.5">Review Data Pendukung</h2>
-                                        <span class="text-[12px] tracking-wide font-medium text-gray-600 mb-1">Bulan: {{ $monthName }}</span>
-                                        <span id="fileNumber-modal-{{ $actual->actual_id }}" class="text-[12px] tracking-wide font-medium text-gray-600 mb-1"></span>
+                                        <span class="text-[12px] tracking-wide font-medium text-gray-600 mb-0.5">Bulan: {{ $monthName }}</span>
+                                        <div class="">
+                                            <span id="fileNumber-modal-{{ $actual->actual_id }}" class="text-[12px] tracking-wide font-medium text-gray-600 mb-1"></span>
+                                        </div>
                                     </div>
                                     <div class="p-1 flex justify-between">
                                         <button id="{{ $prevButtonId }}" class="bg-blue-500 text-white p-2 text-[12px] rounded">Previous</button>
@@ -258,29 +260,7 @@
                                                 <i class="ri-send-plane-line"></i>
                                                 <span>Kirim Revisi</span>
                                             </button>
-                                            <form action="{{ route('actual.updateActual') }}" method="POST">
-                                                @csrf
-                                                @method('PUT')
-                                                @php
-                                                    $now = Carbon\Carbon::now();
-                                                @endphp
-                                                @if ($actual->status == 'Checked')
-                                                <button type="submit" id="approve-button-{{ $modalId }}" class="bg-green-500 text-white px-4 py-2 rounded text-[12px]">
-                                                    <input type="hidden" name="status" value="Approved">
-                                                    <input type="hidden" name="approved_by" value="HR">
-                                                    <input type="hidden" name="approved_at" value="{{ $now }}">
-                                                    <span>Approve</span>
-                                                </button>
-                                            @elseif ($actual->status == 'Filled')
-                                                <button type="submit" id="check-button-{{ $modalId }}" class="bg-blue-500 text-white px-4 py-2 rounded text-[12px]">
-                                                    <input type="hidden" name="status" value="Checked">
-                                                    <span>Check</span>
-                                                    <input type="hidden" name="checked_by" value="Admin Office">
-                                                    <input type="hidden" name="checked_at" value="{{ $now }}">
-                                                </button>
-                                            @endif
-                                            <input type="hidden" name="actual_id" id="actual_id" value="{{ $actual->actual_id }}">
-                                            </form>
+                                            
                                         </div>
                                         
                                     </div>
@@ -320,13 +300,11 @@ let modalOrder = {}; // Dictionary to store the order of modals for each month
 document.querySelectorAll('.modal').forEach(modal => {
     const month = modal.dataset.month;
     const actualId = modal.id.split('-').pop();
-    console.log(`month:`, month, `actualid`, actualId);
     
     if (!modalOrder[month]) {
         modalOrder[month] = [];
     }
     modalOrder[month].push(actualId);
-    console.log(`modalOrder[${month}]:`, modalOrder[month]);
 });
 
 document.querySelectorAll('button[id^="open-modal-"]').forEach(button => {
@@ -357,7 +335,7 @@ function fetchPdfUrls(month, actualId, buttonId) {
     fetch(`/report/file-preview?month=${month}&actual_id=${actualId}`)
         .then(response => response.json())
         .then(data => {
-            console.log(data);
+           
             
             const index = buttonId.split('-').pop();
             pdfData[index] = data; // Store pdfUrls for this modal
@@ -383,7 +361,7 @@ function updatePdfViewer(buttonId, actualId) {
     if (pdfUrls.length > 0) {
         const currentPdf = pdfUrls[currentIndex];
         pdfObject.data = `/record_files/${currentPdf.record_file}`;
-        fileNumberElement.textContent = `KPI Code: ${currentPdf.kpi_code} | KPI: ${currentPdf.kpi_item}`;
+        fileNumberElement.textContent = `${currentPdf.kpi_code} | ${currentPdf.kpi_item}`;
     } else {
         pdfObject.data = '';
         fileNumberElement.textContent = '';
@@ -401,14 +379,11 @@ function updatePdfViewer(buttonId, actualId) {
         const modalElement = document.getElementById(`modal-${actualId}`);
         const month = modalElement.dataset.month;
         const modalIds = modalOrder[month];
-        console.log(`Navigating to previous modal. Current modal ID: ${actualId}, Month: ${month}, Modal IDs: ${modalIds}`);
         if (modalIds) {
             const currentModalIndex = modalIds.indexOf(actualId);
-            console.log(`Current modal index: ${currentModalIndex}`);
             if (currentModalIndex > 0) {
                 const prevModalId = modalIds[currentModalIndex - 1];
                 const prevActualId = prevModalId.split('-').pop();
-                console.log(`Previous modal ID: ${prevModalId}, Previous actual ID: ${prevActualId}`);
                 document.getElementById(`modal-${actualId}`).classList.add('hidden');
                 document.getElementById(`modal-background-${actualId}`).classList.add('hidden');
                 fetchPdfUrls(month, prevActualId, `prevButton-${prevActualId}`);
@@ -420,14 +395,11 @@ function updatePdfViewer(buttonId, actualId) {
         const modalElement = document.getElementById(`modal-${actualId}`);
         const month = modalElement.dataset.month;
         const modalIds = modalOrder[month];
-        console.log(`Navigating to next modal. Current modal ID: ${actualId}, Month: ${month}, Modal IDs: ${modalIds}`);
         if (modalIds) {
             const currentModalIndex = modalIds.indexOf(actualId);
-            console.log(`Current modal index: ${currentModalIndex}`);
             if (currentModalIndex < modalIds.length - 1) {
                 const nextModalId = modalIds[currentModalIndex + 1];
                 const nextActualId = nextModalId.split('-').pop();
-                console.log(`Next modal ID: ${nextModalId}, Next actual ID: ${nextActualId}`);
                 document.getElementById(`modal-${actualId}`).classList.add('hidden');
                 document.getElementById(`modal-background-${actualId}`).classList.add('hidden');
                 fetchPdfUrls(month, nextActualId, `nextButton-${nextActualId}`);
@@ -435,5 +407,36 @@ function updatePdfViewer(buttonId, actualId) {
         }
     });
 }
+
+document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.status-checkbox').forEach(function(checkbox) {
+        checkbox.addEventListener('change', function() {
+            const actualId = this.getAttribute('data-actual-id');
+            const status = this.getAttribute('data-status');
+            const isChecked = this.checked;
+
+            fetch('/actual/input-actual-achievement/update', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                body: JSON.stringify({
+                    actual_id: actualId,
+                    status: status,
+                    checked: isChecked
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success:', data);
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+        });
+    });
+});
+
 </script>
 </x-app-layout>

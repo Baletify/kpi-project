@@ -223,16 +223,19 @@ class ActualController extends Controller
     public function store(Request $request)
     {
 
+
         $validator = Validator::make($request->all(), [
             'date' => 'required',
             'actual' => 'required',
         ]);
-
         if ($validator->fails()) {
+            flash()->error('Please fill all the required field');
             return redirect()->back()
                 ->withErrors($validator)
                 ->withInput();
         }
+
+
 
         $date = Carbon::createFromDate($request->year, $request->date, 1)->startOfMonth();
 
@@ -293,14 +296,13 @@ class ActualController extends Controller
 
         Actual::updateOrCreate($searchConditions, $dataToUpdateOrCreate);
 
-
+        flash()->success('Data created successfully.');
         return redirect()->to('actual/input-actual-employee?employee=' . $request->input('employee_id') . '&year=' . $yearToShow);
     }
 
     public function updateActual(Request $request)
     {
         $actual = Actual::find($request->actual_id);
-        $actualYear = $actualYear = $request->input('year', now()->year);
 
         if (!$actual) {
             return abort(404, 'Actual not found');
@@ -309,23 +311,16 @@ class ActualController extends Controller
 
         if ($request->filled('status')) {
             $actual->status = $request->status;
-        }
-        if ($request->filled('checked_by')) {
-            $actual->checked_by = $request->checked_by;
-        }
-        if ($request->filled('checked_at')) {
-            $actual->checked_at = $request->checked_at;
-        }
-        if ($request->filled('approved_by')) {
-            $actual->approved_by = $request->approved_by;
-        }
-        if ($request->filled('approved_at')) {
-            $actual->approved_at = $request->approved_at;
+
+            if ($request->status == 'Checked') {
+                $actual->checked_at = now();
+            } elseif ($request->status == 'Approved') {
+                $actual->approved_at == now();
+            };
         }
 
         $actual->save();
-
-        return redirect()->to('report/employee-report/' . $actual->employee_id . '?semester=' . $actual->semester . '&year=' . urlencode($actualYear))->with('success', 'Status updated');
+        return response()->json(['message' => 'Status updated successfully']);
     }
 
     public function updateActualDept(Request $request)

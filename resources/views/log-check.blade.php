@@ -33,6 +33,9 @@
                 @php
                     $i++;
                     $targetCount = $targetCounts->where('code', $department)->first();
+                    $targetCountDept = $targetCountsDept->where('code', $department)->first();
+                   
+
                     $departmentId = $items->first()->department_id;
                 @endphp
                 <tr class="{{ $i % 2 === 0 ? 'bg-white' : 'bg-blue-100'}}">
@@ -42,7 +45,7 @@
                         </a>
                     </td>
                     <td class="border-2 border-gray-400 tracking-wide text-[11px] py-0 text-center">
-                        {{ $targetCount ? $targetCount->total : 0 }}
+                        {{ ($targetCount ? $targetCount->total : 0) + ($targetCountDept ? $targetCountDept->total : 0) }}
                     </td>
                     @foreach ($months as $month)
                         @php
@@ -54,24 +57,30 @@
                                 ->where('department_code', $department)
                                 ->where('month', $month)
                                 ->first();
+                            $actualCountDept = collect($actualCountsDept)
+                                ->where('department_code', $department)
+                                ->where('month', $month)
+                                ->first();
 
                             
                             $currentMonth = \Carbon\Carbon::now()->month;
                             if ($currentMonth >= 2 && $currentMonth < 7) {
-
                                 $targetUnitCounts = $targetUnitCounts1;
+                                $targetUnitCountsDept = $targetUnitCountsDept1; 
                             } else {
                                 $targetUnitCounts = $targetUnitCounts2;
+                                $targetUnitCountsDept = $targetUnitCountsDept2; 
                             }
 
                             $targetColumn = 'total_' . $month;
                             $targetUnitCount = $targetUnitCounts->where('department_code', $department)->first();
+                            $targetUnitCountDept = $targetUnitCountsDept->where('department_code', $department)->first();
                         @endphp
                         <td class="border-2 border-gray-400 tracking-wide text-[11px] py-0 text-center">
-                            {{ $actualCount ? $actualCount['total'] : '' }}
+                            {{ ($actualCount || $actualCountDept) ? (($actualCount ? $actualCount['total'] : 0) + ($actualCountDept ? $actualCountDept['total'] : 0)) : '' }}
                         </td>
                         <td class="border-2 border-gray-400 tracking-wide text-[11px] py-0 text-center">
-                            {{ $targetUnitCount ? $targetUnitCount->$targetColumn : '' }}
+                            {{ ($targetUnitCount || $targetUnitCountDept) ? (($targetUnitCount ? $targetUnitCount->$targetColumn : 0) + ($targetUnitCountDept ? $targetUnitCountDept->$targetColumn : 0)) : '' }}
                         </td>
                     @endforeach
                 </tr>

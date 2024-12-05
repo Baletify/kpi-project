@@ -238,8 +238,12 @@ class ReportController extends Controller
     public function showFileDept(Request $request)
     {
         $month = $request->query('month');
+        $actualId = $request->query('actual_id');
 
-        $pdfUrls = DepartmentActual::whereMonth('date', $month)->pluck('record_file')->toArray();
+        $pdfUrls = DepartmentActual::whereMonth('date', $month)
+            ->where('id', $actualId)
+            ->get(['id', 'record_file', 'kpi_code', 'kpi_item', 'status'])
+            ->toArray();
 
         return response()->json($pdfUrls);
     }
