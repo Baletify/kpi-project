@@ -16,37 +16,37 @@ class TargetUnitSeeder extends Seeder
         $targetUnits = [
 
             // HSE YUDA START
-            // KPI
+            // KPI 1
             [
-                'target_1' => '',
-                'target_2' => '',
-                'target_3' => '',
-                'target_4' => '',
-                'target_5' => '',
-                'target_6' => '',
-                'target_7' => '',
-                'target_8' => '',
-                'target_9' => '',
-                'target_10' => '',
-                'target_11' => '',
+                'target_1' => null,
+                'target_2' => null,
+                'target_3' => null,
+                'target_4' => null,
+                'target_5' => null,
+                'target_6' => null,
+                'target_7' => null,
+                'target_8' => null,
+                'target_9' => null,
+                'target_10' => null,
+                'target_11' => null,
                 'target_12' => '100%'
             ],
-            // KPI
+            // KPI 2
             [
-                'target_1' => '',
-                'target_2' => '',
+                'target_1' => null,
+                'target_2' => null,
                 'target_3' => '1',
-                'target_4' => '',
-                'target_5' => '',
+                'target_4' => null,
+                'target_5' => null,
                 'target_6' => '1',
-                'target_7' => '',
-                'target_8' => '',
+                'target_7' => null,
+                'target_8' => null,
                 'target_9' => '1',
-                'target_10' => '',
-                'target_11' => '',
+                'target_10' => null,
+                'target_11' => null,
                 'target_12' => '1'
             ],
-            // KPI
+            // KPI 3
             [
                 'target_1' => '100%',
                 'target_2' => '100%',
@@ -61,37 +61,37 @@ class TargetUnitSeeder extends Seeder
                 'target_11' => '100%',
                 'target_12' => '100%'
             ],
-            // KPI
+            // KPI 4
             [
-                'target_1' => '',
-                'target_2' => '',
-                'target_3' => '',
-                'target_4' => '',
-                'target_5' => '',
+                'target_1' => null,
+                'target_2' => null,
+                'target_3' => null,
+                'target_4' => null,
+                'target_5' => null,
                 'target_6' => '100%',
-                'target_7' => '',
-                'target_8' => '',
-                'target_9' => '',
-                'target_10' => '',
-                'target_11' => '',
+                'target_7' => null,
+                'target_8' => null,
+                'target_9' => null,
+                'target_10' => null,
+                'target_11' => null,
                 'target_12' => '100%'
             ],
-            // KPI
+            // KPI 5
             [
-                'target_1' => '',
-                'target_2' => '',
+                'target_1' => null,
+                'target_2' => null,
                 'target_3' => '1',
-                'target_4' => '',
-                'target_5' => '',
+                'target_4' => null,
+                'target_5' => null,
                 'target_6' => '1',
-                'target_7' => '',
-                'target_8' => '',
+                'target_7' => null,
+                'target_8' => null,
                 'target_9' => '1',
-                'target_10' => '',
-                'target_11' => '',
+                'target_10' => null,
+                'target_11' => null,
                 'target_12' => '1'
             ],
-            // KPI
+            // KPI 6
             [
                 'target_1' => '',
                 'target_2' => '',
@@ -106,7 +106,7 @@ class TargetUnitSeeder extends Seeder
                 'target_11' => '',
                 'target_12' => '100%'
             ],
-            // KPI
+            // KPI 7
             [
                 'target_1' => '',
                 'target_2' => '',

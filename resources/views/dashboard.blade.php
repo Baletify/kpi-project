@@ -126,10 +126,35 @@
                     </tbody>
                     </table>
                 </div>
-                
             </div>
             
-            {{-- <div class="bg-green-800 mb-2"></div> --}}
+            <div class="mb-2 bg-gray-200 rounded-md min-h-[200px]">
+                <div class="flex justify-between">
+                    <div class="p-2">
+                        <span class="p-4 font-bold text-xl">Persyaratan KPI</span>
+                    </div>
+                    <div class="p-2">
+                        <button class="bg-blue-500 rounded-md text-white p-1 font-medium">Upload</button>
+                    </div>
+                </div>
+                <div class="flex justify-center">
+                    <button id="viewDocumentBtn" class="text-blue-500 hover:underline">View Document</button>
+                </div>
+            </div>
+            <!-- Modal -->
+        <div id="documentModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 items-center justify-center hidden">
+            <div class="bg-white rounded-lg p-4 w-1/2">
+                <div class="flex justify-between items-center">
+                    <h2 class="text-xl font-bold">Document</h2>
+                    <button id="closeModalBtn" class="text-gray-500 hover:text-gray-700">&times;</button>
+                </div>
+                <div class="mt-4">
+                    <p>Here is the document content...</p>
+                    <!-- You can add more content here -->
+                </div>
+            </div>
+        </div>
+
         </div>
         
         </div>
@@ -143,6 +168,9 @@
         
     </div>
 
+    
+
+    <script src="https://unpkg.com/pdfobject"></script>
     <script>
       document.addEventListener('DOMContentLoaded', function() {
   const departmentElement = document.getElementById('department');
@@ -205,5 +233,21 @@
   yearElement.addEventListener('change', fetchData);
   semesterElement.addEventListener('change', fetchData);
 });
+
+document.getElementById('viewDocumentBtn').addEventListener('click', function() {
+        document.getElementById('documentModal').classList.remove('hidden');
+    });
+
+    document.getElementById('closeModalBtn').addEventListener('click', function() {
+        document.getElementById('documentModal').classList.add('hidden');
+    });
+
+    // Close the modal when clicking outside of it
+    window.addEventListener('click', function(event) {
+        const modal = document.getElementById('documentModal');
+        if (event.target === modal) {
+            modal.classList.add('hidden');
+        }
+    });
     </script>
 </x-app-layout>

@@ -112,46 +112,48 @@
 
                 @php
                 $isPercentage = $target->unit === '%';
+                $isRp = $target->unit === 'Rp';
+                
                 @endphp
 
-                @if ($currentMonth >= 2 && $currentMonth < 7)
-                    <td class="border-2 border-gray-400 text-[11px] tracking-wide px-2 py-0 text-center">
-                        {{ $isPercentage && $target->target_1 !== null ? $target->target_1 * 100 . '%' : $target->target_1 }}
-                    </td>
-                    <td class="border-2 border-gray-400 text-[11px] tracking-wide px-2 py-0 text-center">
-                        {{ $isPercentage && $target->target_2 !== null ? $target->target_2 * 100 . '%' : $target->target_2 }}
-                    </td>
-                    <td class="border-2 border-gray-400 text-[11px] tracking-wide px-2 py-0 text-center">
-                        {{ $isPercentage && $target->target_3 !== null ? $target->target_3 * 100 . '%' : $target->target_3 }}
-                    </td>
-                    <td class="border-2 border-gray-400 text-[11px] tracking-wide px-2 py-0 text-center">
-                        {{ $isPercentage && $target->target_4 !== null ? $target->target_4 * 100 . '%' : $target->target_4 }}
-                    </td>
-                    <td class="border-2 border-gray-400 text-[11px] tracking-wide px-2 py-0 text-center">
-                        {{ $isPercentage && $target->target_5 !== null ? $target->target_5 * 100 . '%' : $target->target_5 }}
-                    </td>
-                    <td class="border-2 border-gray-400 text-[11px] tracking-wide px-2 py-0 text-center">
-                        {{ $isPercentage && $target->target_6 !== null ? $target->target_6 * 100 . '%' : $target->target_6 }}
-                    </td>
+                @if ($currentMonth >= 2 && $currentMonth <= 7)
+                <td class="border-2 border-gray-400 text-[11px] tracking-wide px-2 py-0 text-center">
+                    {{ $isPercentage && $target->target_1 !== null ? $target->target_1 * 100 . '%' : ($isRp ? ($target->target_1 !== null ? number_format($target->target_1) : '') : ($target->target_1 !== null ? $target->target_1 : '')) }}
+                </td>
+                <td class="border-2 border-gray-400 text-[11px] tracking-wide px-2 py-0 text-center">
+                    {{ $isPercentage && $target->target_2 !== null ? $target->target_2 * 100 . '%' : ($isRp ? ($target->target_2 !== null ? number_format($target->target_2) : '') : ($target->target_2 !== null ? $target->target_2 : '')) }}
+                </td>
+                <td class="border-2 border-gray-400 text-[11px] tracking-wide px-2 py-0 text-center">
+                    {{ $isPercentage && $target->target_3 !== null ? $target->target_3 * 100 . '%' : ($isRp ? ($target->target_3 !== null ? number_format($target->target_3) : '') : ($target->target_3 !== null ? $target->target_3 : '')) }}
+                </td>
+                <td class="border-2 border-gray-400 text-[11px] tracking-wide px-2 py-0 text-center">
+                    {{ $isPercentage && $target->target_4 !== null ? $target->target_4 * 100 . '%' : ($isRp ? ($target->target_4 !== null ? number_format($target->target_4) : '') : ($target->target_4 !== null ? $target->target_4 : '')) }}
+                </td>
+                <td class="border-2 border-gray-400 text-[11px] tracking-wide px-2 py-0 text-center">
+                    {{ $isPercentage && $target->target_5 !== null ? $target->target_5 * 100 . '%' : ($isRp ? ($target->target_5 !== null ? number_format($target->target_5) : '') : ($target->target_5 !== null ? $target->target_5 : '')) }}
+                </td>
+                <td class="border-2 border-gray-400 text-[11px] tracking-wide px-2 py-0 text-center">
+                    {{ $isPercentage && $target->target_6 !== null ? $target->target_6 * 100 . '%' : ($isRp ? ($target->target_6 !== null ? number_format($target->target_6) : '') : ($target->target_6 !== null ? $target->target_6 : '')) }}
+                </td>
                 @else
-                    <td class="border-2 border-gray-400 text-[11px] tracking-wide px-2 py-0 text-center">
-                        {{ $isPercentage && $target->target_7 !== null ? $target->target_7 * 100 . '%' : $target->target_7 }}
-                    </td>
-                    <td class="border-2 border-gray-400 text-[11px] tracking-wide px-2 py-0 text-center">
-                        {{ $isPercentage && $target->target_8 !== null ? $target->target_8 * 100 . '%' : $target->target_8 }}
-                    </td>
-                    <td class="border-2 border-gray-400 text-[11px] tracking-wide px-2 py-0 text-center">
-                        {{ $isPercentage && $target->target_9 !== null ? $target->target_9 * 100 . '%' : $target->target_9 }}
-                    </td>
-                    <td class="border-2 border-gray-400 text-[11px] tracking-wide px-2 py-0 text-center">
-                        {{ $isPercentage && $target->target_10 !== null ? $target->target_10 * 100 . '%' : $target->target_10 }}
-                    </td>
-                    <td class="border-2 border-gray-400 text-[11px] tracking-wide px-2 py-0 text-center">
-                        {{ $isPercentage && $target->target_11 !== null ? $target->target_11 * 100 . '%' : $target->target_11 }}
-                    </td>
-                    <td class="border-2 border-gray-400 text-[11px] tracking-wide px-2 py-0 text-center">
-                        {{ $isPercentage && $target->target_12 !== null ? $target->target_12 * 100 . '%' : $target->target_12 }}
-                    </td>
+                <td class="border-2 border-gray-400 text-[11px] tracking-wide px-2 py-0 text-center">
+                    {{ $isPercentage && $target->target_7 !== null ? $target->target_7 * 100 . '%' : ($isRp ? ($target->target_7 !== null ? number_format($target->target_7) : '') : ($target->target_7 !== null ? $target->target_7 : '')) }}
+                </td>
+                <td class="border-2 border-gray-400 text-[11px] tracking-wide px-2 py-0 text-center">
+                    {{ $isPercentage && $target->target_8 !== null ? $target->target_8 * 100 . '%' : ($isRp ? ($target->target_8 !== null ? number_format($target->target_8) : '') : ($target->target_8 !== null ? $target->target_8 : '')) }}
+                </td>
+                <td class="border-2 border-gray-400 text-[11px] tracking-wide px-2 py-0 text-center">
+                    {{ $isPercentage && $target->target_9 !== null ? $target->target_9 * 100 . '%' : ($isRp ? ($target->target_9 !== null ? number_format($target->target_9) : '') : ($target->target_9 !== null ? $target->target_9 : '')) }}
+                </td>
+                <td class="border-2 border-gray-400 text-[11px] tracking-wide px-2 py-0 text-center">
+                    {{ $isPercentage && $target->target_10 !== null ? $target->target_10 * 100 . '%' : ($isRp ? ($target->target_10 !== null ? number_format($target->target_10) : '') : ($target->target_10 !== null ? $target->target_10 : '')) }}
+                </td>
+                <td class="border-2 border-gray-400 text-[11px] tracking-wide px-2 py-0 text-center">
+                    {{ $isPercentage && $target->target_11 !== null ? $target->target_11 * 100 . '%' : ($isRp ? ($target->target_11 !== null ? number_format($target->target_11) : '') : ($target->target_11 !== null ? $target->target_11 : '')) }}
+                </td>
+                <td class="border-2 border-gray-400 text-[11px] tracking-wide px-2 py-0 text-center">
+                    {{ $isPercentage && $target->target_12 !== null ? $target->target_12 * 100 . '%' : ($isRp ? ($target->target_12 !== null ? number_format($target->target_12) : '') : ($target->target_12 !== null ? $target->target_12 : '')) }}
+                </td>
                 @endif
                
                 

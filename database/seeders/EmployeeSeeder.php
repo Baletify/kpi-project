@@ -44,6 +44,12 @@ class EmployeeSeeder extends Seeder
                 'occupation' => 'Asst Mng',
                 'department_id' => 2
             ],
+            [
+                'nik' => '218-047',
+                'name' => 'Rudi Yurianto, STP.',
+                'occupation' => 'Asst Mng',
+                'department_id' => 4
+            ]
         ];
 
         foreach ($employees as $employee) {

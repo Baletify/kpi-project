@@ -143,14 +143,9 @@
                             return \Carbon\Carbon::parse($item->date)->format('m') == $month && $item->kpi_item == $target->indicator;
                         });
                     @endphp
+                    
                     <td class="border-2 bg-gray-50 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center">
-                    @if ($actual)
-                    @if ($target->unit === '%')
-                        {{ $actual->actual }}%
-                    @else
-                        {{ $actual->actual }}
-                    @endif
-                @endif
+                    {{ $actual ? $actual->actual : ''}}
                     </td>
                     @endforeach
 

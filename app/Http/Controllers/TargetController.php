@@ -120,7 +120,7 @@ class TargetController extends Controller
         // dd($employee);
         $now = now();
 
-        $weighting = isset($row['bobot']) ? ($row['bobot'] * 100) . '%' : '0%';
+        $weighting = isset($row['bobot']) ? ((float)$row['bobot'] * 100) . '%' : '0%';
 
         $data = [
             'code' => $row['kode_kpi'],

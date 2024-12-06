@@ -26,6 +26,10 @@ class DepartmentSeeder extends Seeder
                 'name' => 'HRD/Legal',
                 'code' => 'HRD',
             ],
+            [
+                'name' => 'QA/QM',
+                'code' => 'QA',
+            ]
         ];
 
         foreach ($departments as $department) {
