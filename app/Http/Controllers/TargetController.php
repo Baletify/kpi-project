@@ -15,6 +15,7 @@ use App\Imports\TargetUnitImport;
 use App\Models\DepartmentTarget;
 use App\Models\Target;
 use Dflydev\DotAccessData\Data;
+use Carbon\Carbon;
 
 class TargetController extends Controller
 {
@@ -70,6 +71,8 @@ class TargetController extends Controller
                 ->where(DB::raw('YEAR(department_targets.date)'), $year)
                 ->get();
 
+            // dd($targetDept);
+
             return view('target.input-target-kpi-department', ['title' => 'Input KPI Target', 'desc' => 'Department', 'departments' => $dept, 'targets' => $targetDept]);
         } else {
 
@@ -118,28 +121,32 @@ class TargetController extends Controller
     {
         $employee = DB::table('employees')->where('nik', $row['nik'])->value('id');
         // dd($employee);
-        $now = now();
+        $year = Carbon::createFromDate(now()->year, 1, 1)->startOfMonth();
+
+
+        $searchConditions = [
+            'code' => $row['kode_kpi'],
+            'date' => $year,
+            'employee_id' => $employee,
+        ];
 
         $weighting = isset($row['bobot']) ? ((float)$row['bobot'] * 100) . '%' : '0%';
 
         $data = [
-            'code' => $row['kode_kpi'],
             'indicator' => $row['kpi'],
             'calculation' => $row['cara_menghitung'],
-            'supporting_document' => $row['data_pendukung'],
+            'supporting_document' => $row['data_pendukung_harus_di_isi'],
             'trend' => $row['trend'],
             'period' => $row['periode_review'],
             'unit' => $row['unit'],
             'weighting' => $weighting,
             'detail' => $row['keterangan'],
-            'date' => $now,
             'target_unit_id' => $targetUnitId,
-            'employee_id' => $employee,
         ];
 
         // dd($data);
 
-        Target::create($data);
+        Target::updateOrCreate($searchConditions, $data);
     }
 
     public function showImportDept()

@@ -29,7 +29,7 @@ class TargetUnitSeeder extends Seeder
                 'target_9' => null,
                 'target_10' => null,
                 'target_11' => null,
-                'target_12' => '100%'
+                'target_12' => '1'
             ],
             // KPI 2
             [
@@ -48,18 +48,18 @@ class TargetUnitSeeder extends Seeder
             ],
             // KPI 3
             [
-                'target_1' => '100%',
-                'target_2' => '100%',
-                'target_3' => '100%',
-                'target_4' => '100%',
-                'target_5' => '100%',
-                'target_6' => '100%',
-                'target_7' => '100%',
-                'target_8' => '100%',
-                'target_9' => '100%',
-                'target_10' => '100%',
-                'target_11' => '100%',
-                'target_12' => '100%'
+                'target_1' => '1',
+                'target_2' => '1',
+                'target_3' => '1',
+                'target_4' => '1',
+                'target_5' => '1',
+                'target_6' => '1',
+                'target_7' => '1',
+                'target_8' => '1',
+                'target_9' => '1',
+                'target_10' => '1',
+                'target_11' => '1',
+                'target_12' => '1'
             ],
             // KPI 4
             [
@@ -68,13 +68,13 @@ class TargetUnitSeeder extends Seeder
                 'target_3' => null,
                 'target_4' => null,
                 'target_5' => null,
-                'target_6' => '100%',
+                'target_6' => '1',
                 'target_7' => null,
                 'target_8' => null,
                 'target_9' => null,
                 'target_10' => null,
                 'target_11' => null,
-                'target_12' => '100%'
+                'target_12' => '1'
             ],
             // KPI 5
             [
@@ -91,201 +91,7 @@ class TargetUnitSeeder extends Seeder
                 'target_11' => null,
                 'target_12' => '1'
             ],
-            // KPI 6
-            [
-                'target_1' => '',
-                'target_2' => '',
-                'target_3' => '100%',
-                'target_4' => '',
-                'target_5' => '',
-                'target_6' => '100%',
-                'target_7' => '',
-                'target_8' => '',
-                'target_9' => '100%',
-                'target_10' => '',
-                'target_11' => '',
-                'target_12' => '100%'
-            ],
-            // KPI 7
-            [
-                'target_1' => '',
-                'target_2' => '',
-                'target_3' => '',
-                'target_4' => '',
-                'target_5' => '',
-                'target_6' => '',
-                'target_7' => '',
-                'target_8' => '',
-                'target_9' => '',
-                'target_10' => '',
-                'target_11' => '',
-                'target_12' => ''
-            ],
-            // KPI
-            [
-                'target_1' => '',
-                'target_2' => '',
-                'target_3' => '',
-                'target_4' => '',
-                'target_5' => '',
-                'target_6' => '',
-                'target_7' => '',
-                'target_8' => '',
-                'target_9' => '',
-                'target_10' => '',
-                'target_11' => '',
-                'target_12' => ''
-            ],
-            // KPI
-            [
-                'target_1' => '',
-                'target_2' => '',
-                'target_3' => '',
-                'target_4' => '',
-                'target_5' => '',
-                'target_6' => '',
-                'target_7' => '',
-                'target_8' => '',
-                'target_9' => '',
-                'target_10' => '',
-                'target_11' => '',
-                'target_12' => ''
-            ],
-            // KPI
-            [
-                'target_1' => '',
-                'target_2' => '',
-                'target_3' => '1',
-                'target_4' => '',
-                'target_5' => '',
-                'target_6' => '1',
-                'target_7' => '',
-                'target_8' => '',
-                'target_9' => '1',
-                'target_10' => '',
-                'target_11' => '',
-                'target_12' => '1'
-            ],
-            // KPI
-            [
-                'target_1' => '',
-                'target_2' => '',
-                'target_3' => '1',
-                'target_4' => '',
-                'target_5' => '',
-                'target_6' => '1',
-                'target_7' => '',
-                'target_8' => '',
-                'target_9' => '1',
-                'target_10' => '',
-                'target_11' => '',
-                'target_12' => '1'
-            ],
-            // KPI
-            [
-                'target_1' => '',
-                'target_2' => '',
-                'target_3' => '',
-                'target_4' => '',
-                'target_5' => '',
-                'target_6' => '',
-                'target_7' => '',
-                'target_8' => '',
-                'target_9' => '',
-                'target_10' => '',
-                'target_11' => '',
-                'target_12' => ''
-            ],
-            // KPI
-            [
-                'target_1' => '',
-                'target_2' => '',
-                'target_3' => '',
-                'target_4' => '',
-                'target_5' => '',
-                'target_6' => '',
-                'target_7' => '',
-                'target_8' => '',
-                'target_9' => '',
-                'target_10' => '',
-                'target_11' => '',
-                'target_12' => ''
-            ],
-            // KPI
-            [
-                'target_1' => '',
-                'target_2' => '',
-                'target_3' => '',
-                'target_4' => '',
-                'target_5' => '',
-                'target_6' => '',
-                'target_7' => '',
-                'target_8' => '',
-                'target_9' => '',
-                'target_10' => '',
-                'target_11' => '',
-                'target_12' => ''
-            ],
-            // KPI
-            [
-                'target_1' => '',
-                'target_2' => '',
-                'target_3' => '',
-                'target_4' => '',
-                'target_5' => '',
-                'target_6' => '',
-                'target_7' => '',
-                'target_8' => '',
-                'target_9' => '',
-                'target_10' => '',
-                'target_11' => '',
-                'target_12' => ''
-            ],
-            // KPI
-            [
-                'target_1' => '',
-                'target_2' => '',
-                'target_3' => '',
-                'target_4' => '',
-                'target_5' => '',
-                'target_6' => '',
-                'target_7' => '',
-                'target_8' => '',
-                'target_9' => '',
-                'target_10' => '',
-                'target_11' => '',
-                'target_12' => ''
-            ],
-            // KPI
-            [
-                'target_1' => '',
-                'target_2' => '',
-                'target_3' => '',
-                'target_4' => '',
-                'target_5' => '',
-                'target_6' => '',
-                'target_7' => '',
-                'target_8' => '',
-                'target_9' => '',
-                'target_10' => '',
-                'target_11' => '',
-                'target_12' => ''
-            ],
-            // KPI
-            [
-                'target_1' => '',
-                'target_2' => '',
-                'target_3' => '',
-                'target_4' => '',
-                'target_5' => '',
-                'target_6' => '',
-                'target_7' => '',
-                'target_8' => '',
-                'target_9' => '',
-                'target_10' => '',
-                'target_11' => '',
-                'target_12' => ''
-            ],
+
             // HSE YUDA END
 
             // HSE GANI START
@@ -321,7 +127,7 @@ class TargetUnitSeeder extends Seeder
             // ],
             // // KPI
             // [
-            //     'target_1' => '100%',
+            //     'target_1' => '1',
             //     'target_2' => '100%',
             //     'target_3' => '100%',
             //     'target_4' => '100%',

@@ -9,6 +9,7 @@ use App\Http\Controllers\ActionPlanController;
 use App\Models\Actual;
 use App\Models\Preview;
 use App\Http\Controllers\PreviewController;
+use App\Http\Controllers\RequirementController;
 use Illuminate\Support\Facades\Route;
 use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 
@@ -69,3 +70,7 @@ Route::prefix('action-plan')->group(function () {
     Route::get('/input-action-plan/edit/{id}', [ActionPlanController::class, 'editFile']);
     Route::put('/input-action-plan/update/{id}', [ActionPlanController::class, 'updateFile']);
 });
+
+Route::get('/view-kpi-requirment', [RequirementController::class, 'index'])->name('index');
+Route::post('/create-requirement', [RequirementController::class, 'create'])->name('create');
+Route::put('/update-requirement', [RequirementController::class, 'update'])->name('update');

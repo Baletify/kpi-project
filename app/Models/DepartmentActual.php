@@ -27,5 +27,12 @@ class DepartmentActual extends Model
         'status',
         'detail',
         'department_id',
+        'input_by',
+        'input_at',
+        'checked_by',
+        'checked_at',
+        'approved_by',
+        'approved_at',
+
     ];
 }

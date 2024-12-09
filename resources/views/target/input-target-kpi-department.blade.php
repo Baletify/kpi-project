@@ -46,7 +46,7 @@
                 <th style="width: 5%" class="border-2 border-gray-400 text-[13px] tracking-wide font-medium text-white py-1 bg-blue-700">{{ $month }}</th>
                 
             @endforeach
-                <th style="width: 4%" class="border-2 border-gray-400 text-[13px] tracking-wide font-medium text-white py-1 bg-blue-700">Aksi</th>
+                {{-- <th style="width: 4%" class="border-2 border-gray-400 text-[13px] tracking-wide font-medium text-white py-1 bg-blue-700">Aksi</th> --}}
             </tr>
             @php
                 $i = 0;
@@ -73,7 +73,6 @@
                 @php
                 $isPercentage = $target->unit === '%';
                 $isRp = $target->unit === 'Rp';
-                
                 @endphp
 
                 @if ($currentMonth >= 2 && $currentMonth <= 7)
@@ -117,11 +116,11 @@
                 @endif
                
                 
-                <td class="border-2 border-gray-400 text-[11px] tracking-wide px-2 py-0 text-center">
+                {{-- <td class="border-2 border-gray-400 text-[11px] tracking-wide px-2 py-0 text-center">
                     <a href="/target/input-target-kpi-department/edit/{{ $target->department_target_id }}">
                         <i class="ri-edit-box-line p-0.5 text-xl bg-yellow-400 text-white rounded-sm"></i>
                     </a>
-                </td>
+                </td> --}}
             </tr>
             @empty
             <tr>

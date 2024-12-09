@@ -20,7 +20,8 @@
             <tr>
                 <th style="width: 3%;" class="border-2 border-gray-400 text-[13px] tracking-wide font-medium text-white py-1 bg-blue-700">No.</th>
                 <th style="width: 4%" class="border-2 border-gray-400 text-[13px] tracking-wide font-medium text-white py-1 bg-blue-700">Kode KPI</th>
-                <th class="border-2 border-gray-400 text-[13px] tracking-wide font-medium text-white py-1 bg-blue-700">Indikator</th>
+                <th class="border-2 border-gray-400 text-[13px] tracking-wide font-medium text-white py-1 bg-blue-700">KPI</th>
+                <th class="border-2 border-gray-400 text-[13px] tracking-wide font-medium text-white py-1 bg-blue-700">Periode</th>
                 @foreach ($months as $monthName)
                     <th class="border-2 border-gray-400 text-[13px] tracking-wide font-medium text-white py-1 bg-blue-700">{{ $monthName }}</th>
                 @endforeach
@@ -38,6 +39,7 @@
                     <td class="border-2 border-gray-400 text-[10px] tracking-wide  py-0 px-2 text-center">{{ $i }}</td>
                     <td class="border-2 border-gray-400 text-[10px] tracking-wide  py-0 px-2">{{ $target->code }}</td>
                     <td class="border-2 border-gray-400 text-[10px] tracking-wide  py-0 px-2">{{ $target->indicator }}</td>
+                    <td class="border-2 border-gray-400 text-[10px] tracking-wide  py-0 px-2">{{ $target->period }}</td>
                     @foreach ($months as $month => $monthName)
                         @php
                             $actual = $actuals->first(function($item) use ($target, $month) {

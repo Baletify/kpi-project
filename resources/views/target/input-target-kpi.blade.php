@@ -87,7 +87,7 @@
                 <th style="width: 4%" class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-white py-1 bg-blue-700">{{ $month }}</th>
                 
             @endforeach
-                <th class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-white py-1 bg-blue-700">Aksi</th>
+                {{-- <th class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-white py-1 bg-blue-700">Aksi</th> --}}
             </tr>
             @php
                 $i = 0;
@@ -157,11 +157,11 @@
                 @endif
                
                 
-                <td style="width: 3%" class="border-2 border-gray-400 text-[10px] tracking-wide px-2 py-0 text-center">
+                {{-- <td style="width: 3%" class="border-2 border-gray-400 text-[10px] tracking-wide px-2 py-0 text-center">
                     <a href="/target/input-target-employee/edit/{{ $target->id }}">
                         <i class="ri-edit-box-line p-0.5 text-lg bg-yellow-400 text-white rounded-sm"></i>
                     </a>
-                </td>
+                </td> --}}
             </tr>
             @empty
             <tr>

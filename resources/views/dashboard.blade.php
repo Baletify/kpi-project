@@ -142,15 +142,14 @@
                 </div>
             </div>
             <!-- Modal -->
-        <div id="documentModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 items-center justify-center hidden">
+            <div id="documentModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center hidden">
             <div class="bg-white rounded-lg p-4 w-1/2">
                 <div class="flex justify-between items-center">
                     <h2 class="text-xl font-bold">Document</h2>
                     <button id="closeModalBtn" class="text-gray-500 hover:text-gray-700">&times;</button>
                 </div>
                 <div class="mt-4">
-                    <p>Here is the document content...</p>
-                    <!-- You can add more content here -->
+                    <object data="object" type="application/pdf" width="100%" height="400px"></object>
                 </div>
             </div>
         </div>
@@ -248,6 +247,12 @@ document.getElementById('viewDocumentBtn').addEventListener('click', function() 
         if (event.target === modal) {
             modal.classList.add('hidden');
         }
+    });
+
+    document.getElementById('viewDocumentBtn').addEventListener('click', function() {
+        const pdfUrl = '/view-kpi-requirement'; // Replace with the actual URL of your PDF file
+        document.getElementById('pdfObject').setAttribute('data', pdfUrl);
+        document.getElementById('documentModal').classList.remove('hidden');
     });
     </script>
 </x-app-layout>

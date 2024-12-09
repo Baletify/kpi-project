@@ -23,19 +23,18 @@
             <span class="text-red-500">*</span> 
             <select name="date" id="date" class="block w-full text-[12px]">
               <option value="">-- Pilih Bulan --</option>
-             
-              <option value="01" data-target="{{ $target->target_unit_1 ?? 'null' }}">January</option>
-              <option value="02" data-target="{{ $target->target_unit_2 ?? 'null' }}">February</option>
-              <option value="03" data-target="{{ $target->target_unit_3 ?? 'null' }}">March</option>
-              <option value="04" data-target="{{ $target->target_unit_4 ?? 'null' }}">April</option>
-              <option value="05" data-target="{{ $target->target_unit_5 ?? 'null' }}">May</option>
-              <option value="06" data-target="{{ $target->target_unit_6 ?? 'null' }}">June</option>
-              <option value="07" data-target="{{ $target->target_unit_7 ?? 'null' }}">July</option>
-              <option value="08" data-target="{{ $target->target_unit_8 ?? 'null' }}">August</option>
-              <option value="09" data-target="{{ $target->target_unit_9 ?? 'null' }}">September</option>
-              <option value="10" data-target="{{ $target->target_unit_10 ?? 'null' }}">October</option>
-              <option value="11" data-target="{{ $target->target_unit_11 ?? 'null' }}">November</option>
-              <option value="12" data-target="{{ $target->target_unit_12 ?? 'null' }}">December</option>
+            <option value="01" data-target="{{ $target->target_unit_1 ?? '' }}" data-unit="{{ $target->unit }}" data-zero="{{ $target->target_unit_1 == 0 ? 'yes' : 'no' }}">January</option>
+            <option value="02" data-target="{{ $target->target_unit_2 ?? '' }}" data-unit="{{ $target->unit }}" data-zero="{{ $target->target_unit_2 == 0 ? 'yes' : 'no' }}" >February</option>
+            <option value="03" data-target="{{ $target->target_unit_3 ?? '' }}" data-unit="{{ $target->unit }}" data-zero="{{ $target->target_unit_3 == 0 ? 'yes' : 'no' }}">March</option>
+            <option value="04" data-target="{{ $target->target_unit_4 ?? '' }}" data-unit="{{ $target->unit }}" data-zero="{{ $target->target_unit_4 == 0 ? 'yes' : 'no' }}">April</option>
+            <option value="05" data-target="{{ $target->target_unit_5 ?? '' }}" data-unit="{{ $target->unit }}" data-zero="{{ $target->target_unit_5 == 0 ? 'yes' : 'no' }}">May</option>
+            <option value="06" data-target="{{ $target->target_unit_6 ?? '' }}" data-unit="{{ $target->unit }}" data-zero="{{ $target->target_unit_6 == 0 ? 'yes' : 'no' }}">June</option>
+            <option value="07" data-target="{{ $target->target_unit_7 ?? '' }}" data-unit="{{ $target->unit }}" data-zero="{{ $target->target_unit_7 == 0 ? 'yes' : 'no' }}">July</option>
+            <option value="08" data-target="{{ $target->target_unit_8 ?? '' }}" data-unit="{{ $target->unit }}" data-zero="{{ $target->target_unit_8 == 0 ? 'yes' : 'no' }}">August</option>
+            <option value="09" data-target="{{ $target->target_unit_9 ?? '' }}" data-unit="{{ $target->unit }}" data-zero="{{ $target->target_unit_9 == 0 ? 'yes' : 'no' }}">September</option>
+            <option value="10" data-target="{{ $target->target_unit_10 ?? '' }}" data-unit="{{ $target->unit }}" data-zero="{{ $target->target_unit_10 == 0 ? 'yes' : 'no' }}">October</option>
+            <option value="11" data-target="{{ $target->target_unit_11 ?? '' }}" data-unit="{{ $target->unit }}" data-zero="{{ $target->target_unit_11 == 0 ? 'yes' : 'no' }}">November</option>
+            <option value="12" data-target="{{ $target->target_unit_12 ?? '' }}" data-unit="{{ $target->unit }}" data-zero="{{ $target->target_unit_12 == 0 ? 'yes' : 'no' }}">December</option>
           </select>
           <div class="absolute inset-y-0 right-0 flex items-center">
           </div>
@@ -166,37 +165,212 @@
         document.getElementById('achievementForm').action = "{{ url('actual/input-actual-department-achievement/store') }}";
         document.getElementById('achievementForm').submit();
       });
-        function calculateAchievement() {
-            const target = parseFloat(document.getElementById('target').value);
-            const actual = parseFloat(document.getElementById('actual').value);
+      function calculateAchievement() {
+            const targetField = document.getElementById('target');
+            const actualField = document.getElementById('actual');
             const achievementField = document.getElementById('achievement');
-        
-            if (!isNaN(target) && !isNaN(actual) && actual !== 0) {
-                const achievement = (actual / target) * 100;
-                achievementField.value = Math.round(achievement) + '%';
+            const dateField = document.getElementById('date');
+            const selectedOption = dateField.options[dateField.selectedIndex];
+            const zeroValue = selectedOption.getAttribute('data-zero');
+            const unitValue = selectedOption.getAttribute('data-unit');
+    
+            let target = parseFloat(targetField.value.replace('%', ''));
+            let actual = parseFloat(actualField.value);
+    
+            if (zeroValue === 'yes' && unitValue == 'Freq') {
+                if (actual == 0) {
+                    achievementField.value = '100%';
+                } else if (actual == 1) {
+                    achievementField.value = '75%';
+                } else if (actual == 2) {
+                    achievementField.value = '50%';
+                } else if (actual == 3) {
+                    achievementField.value = '25%';
+                } else if (actual == 4) {
+                    achievementField.value = '10%';
+                } else {
+                    achievementField.value = '0%';
+                }
+            } else if (unitValue === 'Tgl') {
+                if (target === 1) { // Target == 1
+                    if (actual === target) {
+                        achievementField.value = '100%';
+                    } else if (actual === target + 1) {
+                        achievementField.value = '75%';
+                    } else if (actual === target + 2) {
+                        achievementField.value = '50%';
+                    } else {
+                        achievementField.value = '0%';
+                    }
+                } else if (target === 2) { // target == 2
+                    if (actual === target - 1) {
+                      achievementField.value = '105%';
+                    } else if (actual === target) {
+                        achievementField.value = '100%';
+                    } else if (actual === target + 1) {
+                        achievementField.value = '90%';
+                    } else if (actual === target + 2) {
+                        achievementField.value = '80%';
+                    } else {
+                        achievementField.value = '0%';
+                    }
+                } else if (target === 3) { // Target == 3
+                    if (actual === target - 2) {
+                        achievementField.value = '110%';
+                    } else if (actual === target - 1) {
+                      achievementField.value = '105%';
+                    } else if (actual === target) {
+                        achievementField.value = '100%';
+                    } else if (actual === target + 1) {
+                        achievementField.value = '90%';
+                    } else if (actual === target + 2) {
+                        achievementField.value = '80%';
+                    } else if (actual === target + 3) {
+                        achievementField.value = '70%';
+                    }
+                    else {
+                        achievementField.value = '0%';
+                    }
+                } else if (target === 4) { // Target == 4
+
+                    if (actual === target - 3) {
+                        achievementField.value = '115%';
+                    } else if (actual === target - 2) {
+                        achievementField.value = '110%';
+                    } else if (actual === target - 1) {
+                      achievementField.value = '105%';
+                    } else if (actual === target) {
+                        achievementField.value = '100%';
+                    } else if (actual === target + 1) {
+                        achievementField.value = '90%';
+                    } else if (actual === target + 2) {
+                        achievementField.value = '80%';
+                    } else if (actual === target + 3) {
+                        achievementField.value = '70%';
+                    } else if (actual === target + 4) {
+                        achievementField.value = '60%';
+                    }
+                    else {
+                        achievementField.value = '0%';
+                    }
+                } else if (target === 4) { // Target == 4
+
+                    if (actual === target - 3) {
+                        achievementField.value = '115%';
+                    } else if (actual === target - 2) {
+                        achievementField.value = '110%';
+                    } else if (actual === target - 1) {
+                      achievementField.value = '105%';
+                    } else if (actual === target) {
+                        achievementField.value = '100%';
+                    } else if (actual === target + 1) {
+                        achievementField.value = '90%';
+                    } else if (actual === target + 2) {
+                        achievementField.value = '80%';
+                    } else if (actual === target + 3) {
+                        achievementField.value = '70%';
+                    } else if (actual === target + 4) {
+                        achievementField.value = '60%';
+                    }
+                    else {
+                        achievementField.value = '0%';
+                    }
+                } else if (target === 5) { // Target == 5
+
+                    if (actual === target - 4) {
+                        achievementField.value = '120%';
+                    } else if (actual === target - 3) {
+                        achievementField.value = '115%';
+                    } else if (actual === target - 2) {
+                        achievementField.value = '110%';
+                    } else if (actual === target - 1) {
+                      achievementField.value = '105%';
+                    } else if (actual === target) {
+                        achievementField.value = '100%';
+                    } else if (actual === target + 1) {
+                        achievementField.value = '90%';
+                    } else if (actual === target + 2) {
+                        achievementField.value = '80%';
+                    } else if (actual === target + 3) {
+                        achievementField.value = '70%';
+                    } else if (actual === target + 4) {
+                        achievementField.value = '60%';
+                    } else if (actual === target + 5) {
+                        achievementField.value = '50%';
+                    }
+                    else {
+                        achievementField.value = '0%';
+                    }
+                } else if (target === 6) { // Target == 6
+
+                    if (actual === target - 5) {
+                        achievementField.value = '125%';
+                    } else if (actual === target - 4) {
+                        achievementField.value = '120%';
+                    } else if (actual === target - 3) {
+                        achievementField.value = '115%';
+                    } else if (actual === target - 2) {
+                        achievementField.value = '110%';
+                    } else if (actual === target - 1) {
+                      achievementField.value = '105%';
+                    } else if (actual === target) {
+                        achievementField.value = '100%';
+                    } else if (actual === target + 1) {
+                        achievementField.value = '90%';
+                    } else if (actual === target + 2) {
+                        achievementField.value = '80%';
+                    } else if (actual === target + 3) {
+                        achievementField.value = '70%';
+                    } else if (actual === target + 4) {
+                        achievementField.value = '60%';
+                    } else if (actual === target + 5) {
+                        achievementField.value = '50%';
+                    } else if (actual === target + 6) {
+                        achievementField.value = '40%';
+                    }
+                    else {
+                        achievementField.value = '0%';
+                    }
+                } 
             } else {
-                achievementField.value = '';
+                if (!isNaN(target) && !isNaN(actual) && target !== 0) {
+                    let achievement;
+                    if (unitValue === 'Rp') {
+                        achievement = (target / actual) * 100;
+                    } else {
+                        achievement = (actual / target) * 100;
+                    }
+                    achievementField.value = Math.round(achievement) + '%';
+                } else {
+                    achievementField.value = '';
+                }
             }
         }
-  
+    
         document.getElementById('date').addEventListener('change', function() {
-          var selectedOption = this.options[this.selectedIndex];
-          var targetValue = selectedOption.getAttribute('data-target');
-          document.getElementById('target').value = targetValue;
-          
-          if (unitValue === '%') {
+            var selectedOption = this.options[this.selectedIndex];
+            var targetValue = selectedOption.getAttribute('data-target');
+            var unitValue = selectedOption.getAttribute('data-unit');
+            var targetField = document.getElementById('target');
+    
+            if (unitValue === '%') {
                 targetValue = targetValue * 100;
                 targetField.value = targetValue + '%';
             } else {
                 targetField.value = targetValue;
             }
-      });
-      var actualInput = document.getElementById('actual');
-      var unitInput = document.getElementById('kpi_unit');
-
-      if (unitInput.value === '%') {
-          actualInput.value = actualInput.value + '%';
-      }
+    
+            calculateAchievement();
+        });
+    
+        var actualInput = document.getElementById('actual');
+        actualInput.addEventListener('input', function() {
+            calculateAchievement();
+        });
+    
+        document.getElementById('target').addEventListener('input', function() {
+            calculateAchievement();
+        });
   
         </script>
   

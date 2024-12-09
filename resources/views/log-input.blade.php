@@ -13,6 +13,7 @@
                 <span class=" font-bold text-gray-600 text-2xl">LOG INPUT KPI</span>
             </div>
         </div>
+        
         <div class="flex justify-between">
             <div class="p-0 5">
                 <form action="{{ url('/log-input') }}" method="GET">
@@ -49,12 +50,89 @@
                  </div>
                  </form>
             </div>
+            @php
+            // dd($targetUnitCountAll);
+            $monthQuery = request()->query('month');
+                switch ($monthQuery) {
+                    case '01':
+                        $totalTgUnit = $targetUnitCountAll->total_1 ?? 0;
+                        $totalTgUnitDept = $targetUnitCountAllDept->total_1 ?? 0;
+                        break;
+
+                    case '02':
+                        $totalTgUnit = $targetUnitCountAll->total_2 ?? 0;
+                        $totalTgUnitDept = $targetUnitCountAllDept->total_2 ?? 0;
+                        break;
+
+                    case '03':
+                        $totalTgUnit = $targetUnitCountAll->total_3 ?? 0;
+                        $totalTgUnitDept = $targetUnitCountAllDept->total_4 ?? 0;
+                        break;
+
+                    case '04':
+                        $totalTgUnit = $targetUnitCountAll->total_4 ?? 0;
+                        $totalTgUnitDept = $targetUnitCountAllDept->total_4 ?? 0;
+                        break;
+
+                    case '05':
+                        $totalTgUnit = $targetUnitCountAll->total_5 ?? 0;
+                        $totalTgUnitDept = $targetUnitCountAllDept->total_5 ?? 0;
+                        break;
+                        
+                    case '06':
+                        $totalTgUnit = $targetUnitCountAll->total_6 ?? 0;
+                        $totalTgUnitDept = $targetUnitCountAllDept->total_6 ?? 0;
+                        break;
+
+                    case '07':
+                        $totalTgUnit = $targetUnitCountAll->total_7 ?? 0;
+                        $totalTgUnitDept = $targetUnitCountAllDept->total_7 ?? 0;
+                        break; 
+
+                    case '08':
+                        $totalTgUnit = $targetUnitCountAll->total_8 ?? 0;
+                        $totalTgUnitDept = $targetUnitCountAllDept->total_8 ?? 0;
+                        break;
+
+                    case '09':
+                        $totalTgUnit = $targetUnitCountAll->total_9 ?? 0;
+                        $totalTgUnitDept = $targetUnitCountAllDept->total_9 ?? 0;
+                        break;
+
+                    case '10':
+                        $totalTgUnit = $targetUnitCountAll->total_10 ?? 0;
+                        $totalTgUnitDept = $targetUnitCountAllDept->total_10 ?? 0;
+                        break;
+
+                    case '11':
+                        $totalTgUnit = $targetUnitCountAll->total_11 ?? 0;
+                        $totalTgUnitDept = $targetUnitCountAllDept->total_11 ?? 0;
+                        break;
+
+                    case '12':
+                        $totalTgUnit = $targetUnitCountAll->total_12 ?? 0;
+                        $totalTgUnitDept = $targetUnitCountAllDept->total_12 ?? 0;
+                        break;
+                    default:
+                        $totalTgUnit = 0;
+                        $totalTgUnitDept = 0;
+                        break;
+                }
+
+                $totalFl = $actualFilledCount->total_filled ?? 0;
+                $totalFlDept = $actualFilledCountDept->total_filled ?? 0;
+                $totalFlAll = $totalFl + $totalFlDept;
+                $month = request()->query('month');
+                $year = request()->query('year');
+                $totalTgAll = $totalTgUnit + $totalTgUnitDept;
+                
+                // dd('total filled:', $totalFl, 'total filled dept:', $totalFlDept, 'total filled dept and indiv', $totalFlAll, 'total target Unit dept + indiv', $totalTgAll);
+                
+            @endphp
             <div class="p-0.5">
-                @php
-                    $month = request()->query('month');
-                    $year = request()->query('year');
-                @endphp
+                @if ($totalFlAll == $totalTgAll - 1 )
                 <button type="submit" class="rounded-md bg-green-700 text-white p-2">Generate TTE</button>
+                @endif
             </div>
         </div>
         <table class="w-full bg-white">
@@ -100,8 +178,12 @@
                 
             @endphp
             <td class="border-2 border-gray-400 tracking-wide px-2 py-0 text-[13px] text-center">{{ $totalEmployee->total_employee }}</td>
+
+            
             <td class="border-2 border-gray-400 tracking-wide px-2 py-0 text-[13px] text-center">
+                @if ($totalFlAll == $totalTgAll)
                 {{ $af ? $af->input_by : '' }} | {{ $af ? $af->input_at : '' }}
+                @endif
             </td>
             <td class="border-2 border-gray-400 tracking-wide px-2 py-0 text-[13px] text-center">
                 {{ $afc ? '' : ($af->checked_by ?? '') }} | {{ $afc ? '' : ($af->checked_at ?? '') }}
@@ -120,3 +202,32 @@
 </x-app-layout>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfobject/2.3.0/pdfobject.min.js" integrity="sha512-Nr6NV16pWOefJbWJiT8SrmZwOomToo/84CNd0MN6DxhP5yk8UAoPUjNuBj9KyRYVpESUb14RTef7FKxLVA4WGQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const monthSelect = document.getElementById('month');
+        const yearSelect = document.getElementById('year');
+
+        // Restore the values from local storage
+        const savedmonth = localStorage.getItem('selectedmonth');
+        const savedyear = localStorage.getItem('selectedyear');
+
+        if (savedmonth) {
+            monthSelect.value = savedmonth;
+        }
+
+        if (savedyear) {
+            yearSelect.value = savedyear;
+        }
+
+        // Save the values to local storage when they change
+        monthSelect.addEventListener('change', function() {
+            localStorage.setItem('selectedmonth', monthSelect.value);
+        });
+
+        yearSelect.addEventListener('change', function() {
+            localStorage.setItem('selectedyear', yearSelect.value);
+        });
+    });
+</script>

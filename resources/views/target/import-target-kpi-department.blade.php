@@ -1,6 +1,6 @@
 <x-app-layout :title="$title" :desc="$desc">
     <div class="ml-64 mt-4 overflow-x-auto p-2 bg-white border border-gray-100 shadow-md shadow-black/10 rounded-md">
-        <form action="{{ url('target/import-target-kpi-department/store') }}" method="POST" enctype="multipart/form-data">
+        <form id="importForm" action="{{ url('target/import-target-kpi-department/store') }}" method="POST" enctype="multipart/form-data">
             @csrf
         <div class="p-1 flex justify-center">
             <div class="mt-1 rounded-md border">
@@ -20,4 +20,12 @@
             <button type="button" class="px-4 py-2 bg-blue-600 text-white rounded-md"><a href="/target/input-target-kpi?department={{ request()->query('department') }}&year={{ request()->query('year') }}">Back</a></button>
         </div>
     </div>
+
+    <script>
+        document.getElementById('importForm').addEventListener('submit', function() {
+            var submitBtn = document.getElementById('submitBtn');
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = 'Loading...'; // Optional: Show loading text
+        });
+    </script>
 </x-app-layout>
