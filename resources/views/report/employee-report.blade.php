@@ -233,7 +233,7 @@
                                     </div>
                                     <div id="checkbox-container-{{ $modalId }}" class="p-1 flex justify-center gap-3">
                                         <label class="text-[14px]">
-                                            <input type="checkbox" class="status-checkbox" data-actual-id="{{ $actual->actual_id }}" data-status="Checked" {{ $actual->status == 'Checked' ? 'checked' : '' }}>
+                                            <input type="checkbox" class="status-checkbox" data-actual-id="{{ $actual->actual_id }}" data-status="Checked" {{ $actual->status == 'Checked' || 'Approved' ? 'checked' : '' }}>
                                             Check
                                         </label>
                                         <label class="text-[14px]">
@@ -410,6 +410,11 @@ document.addEventListener('DOMContentLoaded', function() {
             const status = this.getAttribute('data-status');
             const isChecked = this.checked;
 
+            console.log('Sending request with data:', {
+                actual_id: actualId,
+                status: status,
+                checked: isChecked
+            });
             fetch('/actual/input-actual-achievement/update', {
                 method: 'PUT',
                 headers: {

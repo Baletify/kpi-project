@@ -44,7 +44,7 @@ class ActionPlanController extends Controller
         if ($request->hasFile('action_plan_file')) {
             $recordFile = $request->file('action_plan_file');
             $recordFileName = Str::random(40) . '.' . $recordFile->getClientOriginalExtension();
-            $recordFile->move(public_path('action_plan_files'), $recordFileName);;
+            $recordFile->move(public_path('action_plan_files'), $recordFileName);
         }
 
         ActionPlan::create(

@@ -134,7 +134,9 @@
                         <span class="p-4 font-bold text-xl">Persyaratan KPI</span>
                     </div>
                     <div class="p-2">
-                        <button class="bg-blue-500 rounded-md text-white p-1 font-medium">Upload</button>
+                        <a href="/kpi-requirement/create-requirement">
+                            <button class="bg-blue-500 rounded-md text-white p-1 font-medium">Upload</button>
+                        </a>
                     </div>
                 </div>
                 <div class="flex justify-center">
@@ -145,11 +147,11 @@
             <div id="documentModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center hidden">
             <div class="bg-white rounded-lg p-4 w-1/2">
                 <div class="flex justify-between items-center">
-                    <h2 class="text-xl font-bold">Document</h2>
+                    <h2 class="text-xl font-bold">Persyaratan KPI</h2>
                     <button id="closeModalBtn" class="text-gray-500 hover:text-gray-700">&times;</button>
                 </div>
                 <div class="mt-4">
-                    <object data="object" type="application/pdf" width="100%" height="400px"></object>
+                    <object id="pdfObject" data="" type="application/pdf" width="100%" height="600px"></object>
                 </div>
             </div>
         </div>
@@ -168,10 +170,10 @@
     </div>
 
     
-
     <script src="https://unpkg.com/pdfobject"></script>
+
     <script>
-      document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function() {
   const departmentElement = document.getElementById('department');
   const filterNameElement = document.getElementById('filterName');
   const yearElement = document.getElementById('year');
@@ -250,9 +252,24 @@ document.getElementById('viewDocumentBtn').addEventListener('click', function() 
     });
 
     document.getElementById('viewDocumentBtn').addEventListener('click', function() {
-        const pdfUrl = '/view-kpi-requirement'; // Replace with the actual URL of your PDF file
-        document.getElementById('pdfObject').setAttribute('data', pdfUrl);
-        document.getElementById('documentModal').classList.remove('hidden');
-    });
+            fetch('/kpi-requirement/view-requirement')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.length > 0) {
+                        const pdfUrl = data[0].file;
+                        
+                        document.getElementById('pdfObject').setAttribute('data', `/kpi_requirement_files/${pdfUrl}`);
+                        document.getElementById('documentModal').classList.remove('hidden');
+                    } else {
+                        console.error('No PDF found');
+                    }
+                })
+                .catch(error => console.error('Error fetching PDF URL:', error));
+        });
+
+        document.getElementById('closeModalBtn').addEventListener('click', function() {
+            document.getElementById('documentModal').classList.add('hidden');
+        });
+
     </script>
 </x-app-layout>

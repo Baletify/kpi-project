@@ -1,16 +1,17 @@
 <?php
 
-use App\Http\Controllers\ActualController;
-use App\Http\Controllers\EmployeeController;
-use App\Http\Controllers\ReportController;
-use App\Http\Controllers\TargetController;
-use App\Http\Controllers\LogController;
-use App\Http\Controllers\ActionPlanController;
 use App\Models\Actual;
 use App\Models\Preview;
-use App\Http\Controllers\PreviewController;
-use App\Http\Controllers\RequirementController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\LogController;
+use App\Http\Controllers\ActualController;
+use App\Http\Controllers\ReportController;
+use App\Http\Controllers\TargetController;
+use App\Http\Controllers\PreviewController;
+use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\ActionPlanController;
+use App\Http\Controllers\GeneratePdfController;
+use App\Http\Controllers\RequirementController;
 use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 
 Route::get('/', function () {
@@ -70,7 +71,10 @@ Route::prefix('action-plan')->group(function () {
     Route::get('/input-action-plan/edit/{id}', [ActionPlanController::class, 'editFile']);
     Route::put('/input-action-plan/update/{id}', [ActionPlanController::class, 'updateFile']);
 });
+Route::prefix('kpi-requirement')->group(function () {
+    Route::get('/view-requirement', [RequirementController::class, 'index'])->name('index');
+    Route::get('/create-requirement', [RequirementController::class, 'create'])->name('create');
+    Route::post('/create-requirement/store', [RequirementController::class, 'store'])->name('store');
+});
 
-Route::get('/view-kpi-requirment', [RequirementController::class, 'index'])->name('index');
-Route::post('/create-requirement', [RequirementController::class, 'create'])->name('create');
-Route::put('/update-requirement', [RequirementController::class, 'update'])->name('update');
+Route::get('generate-pdf-input', [GeneratePdfController::class, 'generatePdfInput'])->name('generatePdfInput');

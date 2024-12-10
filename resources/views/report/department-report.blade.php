@@ -198,7 +198,7 @@
                                     </div>
                                     <div id="checkbox-container-{{ $modalId }}" class="p-1 flex justify-center gap-3">
                                         <label class="text-[14px]">
-                                            <input type="checkbox" class="status-checkbox" data-actual-id="{{ $actual->department_actual_id }}" data-status="Checked" {{ $actual->status == 'Checked' ? 'checked' : '' }}>
+                                            <input type="checkbox" class="status-checkbox" data-actual-id="{{ $actual->department_actual_id }}" data-status="Checked" {{ $actual->status == 'Checked' || 'Approved' ? 'checked' : '' }}>
                                             Check
                                         </label>
                                         <label class="text-[14px]">
@@ -374,4 +374,41 @@
             }
         });
     }
+
+    document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.status-checkbox').forEach(function(checkbox) {
+        checkbox.addEventListener('change', function() {
+            const actualId = this.getAttribute('data-actual-id');
+            const status = this.getAttribute('data-status');
+            const isChecked = this.checked;
+
+            console.log('Sending request with data:', {
+                actual_id: actualId,
+                status: status,
+                checked: isChecked
+            });
+            
+
+            fetch('/actual/input-actual-achievement/updateDept', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                body: JSON.stringify({
+                    actual_id: actualId,
+                    status: status,
+                    checked: isChecked
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success:', data);
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+        });
+    });
+});
     </script>

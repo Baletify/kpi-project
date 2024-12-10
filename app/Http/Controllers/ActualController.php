@@ -307,15 +307,15 @@ class ActualController extends Controller
         if (!$actual) {
             return abort(404, 'Actual not found');
         }
-
-
         if ($request->filled('status')) {
             $actual->status = $request->status;
 
             if ($request->status == 'Checked') {
                 $actual->checked_at = now();
+                $actual->checked_by = 'Mr. X';
             } elseif ($request->status == 'Approved') {
-                $actual->approved_at == now();
+                $actual->approved_at = now();
+                $actual->approved_by = 'Mr. Y';
             };
         }
 
@@ -325,17 +325,22 @@ class ActualController extends Controller
 
     public function updateActualDept(Request $request)
     {
-        $actualDept = DepartmentActual::find($request->department_actual_id);
-        $actualYear = $actualYear = $request->input('year', now()->year);
+        $actual = DepartmentActual::find($request->actual_id);
 
-        if (!$actualDept) {
-            return abort(404, 'Dept Actual Not Found');
+        if (!$actual) {
+            return abort(404, 'Actual not found');
+        }
+        if ($request->filled('status')) {
+            $actual->status = $request->status;
+
+            if ($request->status === 'Checked') {
+                $actual->checked_at = now();
+            } elseif ($request->status === 'Approved') {
+                $actual->approved_at = now();
+            };
         }
 
-
-        $actualDept->status = $request->status;
-        $actualDept->save();
-
-        return redirect()->to('/report/department-report/' . $actualDept->department_id . '?semester=' . $actualDept->semester . '&year=' . urlencode($actualYear))->with('success', 'Status updated');
+        $actual->save();
+        return response()->json(['message' => 'Status updated successfully']);
     }
 }

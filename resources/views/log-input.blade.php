@@ -4,6 +4,7 @@
         $currentYear = Carbon\Carbon::now()->year;
         $startYear = 2024; 
         $endYear = $currentYear + 2;
+        $department_id = request()->query('department')
         @endphp
         <div class="p-2">
             <div class="px-1">
@@ -17,7 +18,7 @@
         <div class="flex justify-between">
             <div class="p-0 5">
                 <form action="{{ url('/log-input') }}" method="GET">
-                    <input type="hidden" name="department" id="department" value="{{ $department_id = request()->query('department') }}">
+                    <input type="hidden" name="department" id="department" value="{{ $department_id }}">
                  <div class="flex gap-x-2">
                      <div class="my-2">
                          <select name="month" id="month" class=" w-24 h-10 text-[12px]">
@@ -125,13 +126,26 @@
                 $month = request()->query('month');
                 $year = request()->query('year');
                 $totalTgAll = $totalTgUnit + $totalTgUnitDept;
+
+                // dd($totalFlAll, $totalTgAll);
                 
                 // dd('total filled:', $totalFl, 'total filled dept:', $totalFlDept, 'total filled dept and indiv', $totalFlAll, 'total target Unit dept + indiv', $totalTgAll);
                 
             @endphp
             <div class="p-0.5">
                 @if ($totalFlAll == $totalTgAll - 1 )
-                <button type="submit" class="rounded-md bg-green-700 text-white p-2">Generate TTE</button>
+                <form action="{{ url('/generate-pdf-input') }}" method="GET">
+                    @php
+                        $lastInput = $actualFilled->first(function($item) use ($department_id) {
+                            return $item->department_id == $department_id;
+                        });
+
+                        
+                    @endphp
+                    <input type="hidden" name="department_id" id="department_id" value="{{ $department_id }}">
+                    <input type="hidden" name="input_at" id="input_at" value="{{ $lastInput->input_at }}">
+                    <button type="submit" class="rounded-md bg-green-700 text-white p-2">Generate TTE</button>
+                </form>
                 @endif
             </div>
         </div>
@@ -202,32 +216,3 @@
 </x-app-layout>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfobject/2.3.0/pdfobject.min.js" integrity="sha512-Nr6NV16pWOefJbWJiT8SrmZwOomToo/84CNd0MN6DxhP5yk8UAoPUjNuBj9KyRYVpESUb14RTef7FKxLVA4WGQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
-
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const monthSelect = document.getElementById('month');
-        const yearSelect = document.getElementById('year');
-
-        // Restore the values from local storage
-        const savedmonth = localStorage.getItem('selectedmonth');
-        const savedyear = localStorage.getItem('selectedyear');
-
-        if (savedmonth) {
-            monthSelect.value = savedmonth;
-        }
-
-        if (savedyear) {
-            yearSelect.value = savedyear;
-        }
-
-        // Save the values to local storage when they change
-        monthSelect.addEventListener('change', function() {
-            localStorage.setItem('selectedmonth', monthSelect.value);
-        });
-
-        yearSelect.addEventListener('change', function() {
-            localStorage.setItem('selectedyear', yearSelect.value);
-        });
-    });
-</script>
