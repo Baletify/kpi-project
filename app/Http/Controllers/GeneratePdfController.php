@@ -29,6 +29,6 @@ class GeneratePdfController extends Controller
 
         $pdf = Pdf::loadView('generatePdfInput', $data);
 
-        return $pdf->download('TTE_Input.pdf');
+        return $pdf->download('TTE-Input-' . now()->format('d-M-Y') . '.pdf');
     }
 }

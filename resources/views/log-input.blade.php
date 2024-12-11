@@ -4,14 +4,27 @@
         $currentYear = Carbon\Carbon::now()->year;
         $startYear = 2024; 
         $endYear = $currentYear + 2;
-        $department_id = request()->query('department')
+        $department_id = request()->query('department');
+        $monthQuery = request()->query('month');
+        $date = DateTime::createFromFormat('!m', $monthQuery);
+        $monthName = $date->format('F');
+        function formatDate($dateString) {
+        if ($dateString) {
+            return Carbon\Carbon::parse($dateString)->format('d F Y H:i:s');
+        }
+        return '';
+    } 
         @endphp
-        <div class="p-2">
+        <div class="p-0">
             <div class="px-1">
                 <span class="font-medium text-gray-600 text-sm">PT BRIDGESTONE KALIMANTAN PLANTATION</span>
             </div>
             <div class="px-1">
                 <span class=" font-bold text-gray-600 text-2xl">LOG INPUT KPI</span>
+            </div>
+            <div class="px-1">
+
+                <span class=" font-semibold text-gray-600 text-sm">Bulan: {{ $monthName }}</span>
             </div>
         </div>
         
@@ -196,14 +209,15 @@
             
             <td class="border-2 border-gray-400 tracking-wide px-2 py-0 text-[13px] text-center">
                 @if ($totalFlAll == $totalTgAll)
-                {{ $af ? $af->input_by : '' }} | {{ $af ? $af->input_at : '' }}
+                {{ $af ? $af->input_by : '' }} | {{  $af ? formatDate($af->input_at) : '' }}
                 @endif
             </td>
             <td class="border-2 border-gray-400 tracking-wide px-2 py-0 text-[13px] text-center">
-                {{ $afc ? '' : ($af->checked_by ?? '') }} | {{ $afc ? '' : ($af->checked_at ?? '') }}
+
+                {{ $afc ? '' : ($af->checked_by ?? '') }} | {{ $afc ? '' : (formatDate($af->checked_at ?? '')) }}
             </td>
             <td class="border-2 border-gray-400 tracking-wide px-2 py-0 text-[13px] text-center">
-                {{ $ap ? ($af->approved_by ?? '') : '' }} | {{ $ap ? ($af->approved_at ?? '') : '' }}
+                {{ $ap ? ($af->approved_by ?? '') : '' }} | {{ $ap ? (formatDate($af->approved_at ?? '')) : '' }}
             </td>
             @empty
             <td class="border-2 border-gray-400 tracking-wide px-2 py-0 text-[13px] text-center" colspan="5">No data available</td>

@@ -1,31 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    @vite('resources/css/app.css')
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-    <link
-    href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css"
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
-/>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
+    <style>
+        table, th, td {
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 8px;
+        }
+        .text-center {
+            text-align: center;
+            align-items: center;
+
+        }
+    </style>
 </head>
 <body>
     <table class="table-auto w-96">
         <tr>
-            <td class="border-2 border-gray-400 tracking-wide px-2 py-0">
-               <span class="font-bold">{{ $title }}</span>
+            <td class="text-center">
+               <span class=""><b>{{ $title }}</b></span>
                <br>
-               <span class="font-bold">{{ $sub_1 }}</span>
+               <span class=""><b>{{ $sub_1 }}</b></span>
                <br>
-               <span class="font-bold">{{ $sub_2 }}</span>
+               <span class=""><b>{{ $sub_2 }}</b></span>
             </td>
         </tr>
         <tr>
-            <td class="border-2 border-gray-400 tracking-wide px-2 py-0">
+            <td class="">
                <span class="font-medium">No. TTE:        {{ $no_tte }}</span>
                <br>
                <span class="font-medium">Tgl Pelaporan:  {{ $last_input }}</span>
@@ -34,7 +41,7 @@
             </td>
         </tr>
         <tr>
-            <td class="border-2 border-gray-400 tracking-wide px-2 py-0">
+            <td class="">
                <span class="font-medium">Dept:  {{ $department }}</span>
                <br>
                <span class="font-medium">NIK:   {{ $nik }}</span>
@@ -43,16 +50,23 @@
             </td>
         </tr>
         <tr>
-            <td class="border-2 border-gray-400 tracking-wide px-2 py-0">
+            <td class="">
                <span class="font-medium">{{ $desc_1 }}</span>
                <br>
                <span class="font-medium">{{ $desc_2 }}</span>
                <br>
+               <br>
+               <br>
                <span class="font-medium">Tertanda</span>
+               <br>
                <br>
                <span class="font-medium">{{ $signature }}</span>
             </td>
         </tr>
     </table>
+    <br>
+    <br>
+    <span style="color: red">*</span>
+    <span style="font-style: italic">Note: TTE Ini digunakan sebagai bukti penyelesaian pengisian KPI</span>
 </body>
 </html>

@@ -43,21 +43,31 @@
                     </tr>
                 </table>
             </div>
-            
+            <div class="bg-gray-100">
+                
+            </div>
+            <div class="bg-gray-100">
+                
+            </div>
+            <div class="bg-gray-100">
+                <div class="flex justify-end">
+                    <button id="exportBtn" class="p-1.5 rounded-md text-white bg-green-500">Export</button>
+                </div>
+            </div>
         </div>
         <div class="mx-1">
-        <table class="w-full table-auto">
+        <table id="exportTable" class="w-full table-auto">
             <thead>
-                <tr>
-                    <th style="width: 3%;" class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-white py-1 px-0.5 bg-blue-700" rowspan="2">No. KPI</th>
-                    <th style="width: 25%" class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-white py-1 px-0.5 bg-blue-700" rowspan="2" >KPI</th>
-                    <th style="width: 3%" class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-white py-1 px-0.5 bg-blue-700" rowspan="2" >Trend</th>
-                    <th style="width: 4%" class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-white py-1 px-0.5 bg-blue-700" rowspan="2" >Periode Review</th>
-                    <th style="width: 3%" class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-white py-1 px-0.5 bg-blue-700" rowspan="2" >Unit</th>
-                    <th style="width: 4%" class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-white py-1 px-0.5 bg-blue-700" rowspan="2" >Bobot "%"</th>
-                    <th style="width: 6%" class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-white py-1 px-0.5 bg-blue-700" rowspan="2"></th>
-                    <th style="width: 40%" class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-white py-1 px-0.5 bg-blue-700" colspan="7">Target & Actual KPI</th>
-                    <th class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-white py-1 px-0.5 bg-blue-700" rowspan="2">Bobot Pencapaian</th>
+                <tr >
+                    <th data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" style="width: 3%;" class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-white py-1 px-0.5 bg-blue-700" rowspan="2">No. KPI</th>
+                    <th data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" style="width: 25%" class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-white py-1 px-0.5 bg-blue-700" rowspan="2" >KPI</th>
+                    <th data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" style="width: 3%" class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-white py-1 px-0.5 bg-blue-700" rowspan="2" >Trend</th>
+                    <th data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" style="width: 4%" class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-white py-1 px-0.5 bg-blue-700" rowspan="2" >Periode Review</th>
+                    <th data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" style="width: 3%" class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-white py-1 px-0.5 bg-blue-700" rowspan="2" >Unit</th>
+                    <th data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" style="width: 4%" class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-white py-1 px-0.5 bg-blue-700" rowspan="2" >Bobot "%"</th>
+                    <th data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" style="width: 6%" class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-white py-1 px-0.5 bg-blue-700" rowspan="2"></th>
+                    <th data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" style="width: 40%" class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-white py-1 px-0.5 bg-blue-700" colspan="7">Target & Actual KPI</th>
+                    <th data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-white py-1 px-0.5 bg-blue-700" rowspan="2">Bobot Pencapaian</th>
                 </tr>
                 @php
                 $months = [];
@@ -76,9 +86,9 @@
                 }
                 @endphp
                 <tr> @foreach ($months as $month)
-                    <th style="width: 7%" class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-white py-1 px-0.5 bg-blue-700" >{{ $month }}</th>
+                    <th data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" style="width: 7%" class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-white py-1 px-0.5 bg-blue-700" >{{ $month }}</th>
                     @endforeach
-                    <th style="width: 7%" class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-white py-1 px-0.5 bg-blue-700" >Total</th>
+                    <th data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" style="width: 7%" class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-white py-1 px-0.5 bg-blue-700" >Total</th>
                 </tr>
             </thead>
             <tbody>
@@ -90,32 +100,32 @@
                     $i++;
                 @endphp
                 <tr class="{{ $i % 2 === 0 ? 'bg-gray-50' : 'bg-blue-100' }}">
-                    <td class="border-2 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-2" rowspan="5">{{ $target->code }}</td>
-                    <td class="border-2 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-3" rowspan="5">{{ $target->indicator }}</td>
-                    <td class="border-2 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-3" rowspan="5">{{ $target->trend }}</td>
-                    <td class="border-2 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center" rowspan="5">{{ $target->period }}</td>
-                    <td class="border-2 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center" rowspan="5">{{ $target->unit }}</td>
-                    <td class="border-2 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center" rowspan="5">
+                    <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" class="border-2 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-2" rowspan="5">{{ $target->code }}</td>
+                    <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" class="border-2 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-3" rowspan="5">{{ $target->indicator }}</td>
+                    <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" class="border-2 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-3" rowspan="5">{{ $target->trend }}</td>
+                    <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" class="border-2 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center" rowspan="5">{{ $target->period }}</td>
+                    <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" class="border-2 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center" rowspan="5">{{ $target->unit }}</td>
+                    <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" class="border-2 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center" rowspan="5">
                         {{ $target->weighting }}
                     </td>
                 </tr>
                 
                 <tr>
-                    <td class="border-2 bg-blue-100  border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center">Target</td>
+                    <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" class="border-2 bg-blue-100  border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center">Target</td>
                     @foreach ($months as $month => $monthName)
                 @php
                     $actual = $actuals->first(function($item) use ($target, $month) {
                         return \Carbon\Carbon::parse($item->date)->format('m') == $month && $item->kpi_item == $target->indicator;
                     });
                 @endphp
-                <td class="border-2 bg-blue-100 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center">{{ $actual ? $actual->target : '' }}</td>
+                <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" class="border-2 bg-blue-100 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center">{{ $actual ? $actual->target : '' }}</td>
             @endforeach
                     
                     @php
                         $totalTarget = $totals[$target->code]['total_target'] ?? 0;
                     @endphp
                 @if ($totalTarget > 0)
-                     <td class="border-2 bg-blue-100 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center">
+                     <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" class="border-2 bg-blue-100 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center">
                         @if ($target->unit === '%')
                             {{ $totalTarget }}%
                         @else
@@ -123,20 +133,20 @@
                         @endif
                      </td>
                  @else
-                     <td class="border-2 bg-blue-100 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center"></td>
+                     <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" class="border-2 bg-blue-100 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center"></td>
                  @endif
                     @php
                         $totalWeightingAchievement = $totals[$target->code] 
                         ['total_achievement_weight'] ?? 0 ;
                     @endphp
                      @if ($totalWeightingAchievement > 0)
-                     <td class="border-2 bg-blue-100 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center" rowspan="4">{{ number_format($totalWeightingAchievement, 1) }}%</td>
+                     <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" class="border-2 bg-blue-100 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center" rowspan="4">{{ number_format($totalWeightingAchievement, 1) }}%</td>
                     @else
-                     <td class="border-2 bg-blue-100 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center" rowspan="4"></td>
+                     <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" class="border-2 bg-blue-100 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center" rowspan="4"></td>
                     @endif
                 </tr>
                 <tr>
-                    <td class="border-2 bg-gray-50 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center">Actual</td>
+                    <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" class="border-2 bg-gray-50 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center">Actual</td>
                     @foreach ($months as $month => $monthName)
                     @php
                         $actual = $actuals->first(function($item) use ($target, $month) {
@@ -144,7 +154,7 @@
                         });
                     @endphp
                     
-                    <td class="border-2 bg-gray-50 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center">
+                    <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" class="border-2 bg-gray-50 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center">
                     {{ $actual ? $actual->actual : ''}}
                     </td>
                     @endforeach
@@ -153,7 +163,7 @@
                          $totalActual = $totals[$target->code]['total_actual'] ?? 0;
                     @endphp
                     @if ($totalTarget > 0)
-                     <td class="border-2 bg-gray-50 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center">
+                     <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" class="border-2 bg-gray-50 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center">
                         @if ($target->unit === '%')
                         {{ $totalActual }}%
                         @else
@@ -161,38 +171,38 @@
                         @endif
                      </td>
                  @else
-                     <td class="border-2 bg-gray-50 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center"></td>
+                     <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" class="border-2 bg-gray-50 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center"></td>
                  @endif
                 </tr>
                 <tr>
-                    <td class="border-2 bg-blue-100 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center">%</td>
+                    <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" class="border-2 bg-blue-100 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center">%</td>
                     @foreach ($months as $month => $monthName)
                     @php
                         $actual = $actuals->first(function($item) use ($target, $month) {
                             return \Carbon\Carbon::parse($item->date)->format('m') == $month && $item->kpi_item == $target->indicator;
                         });
                     @endphp
-                    <td class="border-2 bg-blue-100 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center">{{ $actual ? $actual->kpi_percentage : '' }}</td>
+                    <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" class="border-2 bg-blue-100 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center">{{ $actual ? $actual->kpi_percentage : '' }}</td>
                     @endforeach
                     @php
                          $totalPercentage = $totals[$target->code]['total_percentage'] ?? 0;
 
                     @endphp
                     @if ($totalTarget > 0)
-                     <td class="border-2 bg-blue-100 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center">{{ number_format($totalPercentage) }} %</td>
+                     <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" class="border-2 bg-blue-100 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center">{{ number_format($totalPercentage) }}%</td>
                  @else
                      <td class="border-2 bg-blue-100 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center"></td>
                  @endif
                 </tr>
                 <tr>
-                    <td class="border-2 bg-gray-50 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center">Rekaman</td>
+                    <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" class="border-2 bg-gray-50 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center">Rekaman</td>
                     @foreach ($months as $month => $monthName)
                     @php
                         $actual = $actuals->first(function($item) use ($target, $month) {
                             return \Carbon\Carbon::parse($item->date)->format('m') == $month && $item->kpi_item == $target->indicator;
                         });
                     @endphp
-                    <td class="border-2 bg-gray-50 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center hover:underline">
+                    <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" class="border-2 bg-gray-50 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center hover:underline">
                         @if ($actual)
                             @if ($actual->record_file)
                             @php
@@ -213,8 +223,8 @@
                                 <span class="text-yellow-500">Check</span>
                                 @endif
                             </button>
-                            <div id="{{ $backgroundId }}" class="fixed inset-0 bg-gray-800 bg-opacity-75 hidden"></div>
-                            <div id="{{ $modalId }}" class="modal fixed inset-0 justify-center hidden" data-month="{{ $date->format('m') }}">
+                            <div id="{{ $backgroundId }}" class="fixed inset-0 bg-gray-800 bg-opacity-75 hidden exclude-from-export"></div>
+                            <div id="{{ $modalId }}" class="modal fixed inset-0 justify-center hidden exclude-from-export" data-month="{{ $date->format('m') }}">
                                 <div class="flex justify-center mt-3">
                                     <div class="bg-gray-50 rounded-lg shadow-lg p-3 w-1/2 max-h-screen overflow-y-hidden">
                                     <div class="flex flex-col">
@@ -231,15 +241,16 @@
                                     <div id="pdfViewer" class="mt-1">
                                         <object id="{{ $pdfObjectId }}" type="application/pdf" width="100%" height="400px"></object>
                                     </div>
-                                    <div id="checkbox-container-{{ $modalId }}" class="p-1 flex justify-center gap-3">
+                                    <div id="checkbox-container-{{ $modalId }}" class="p-1 flex justify-center gap-3 mt-0.5">
                                         <label class="text-[14px]">
-                                            <input type="checkbox" class="status-checkbox" data-actual-id="{{ $actual->actual_id }}" data-status="Checked" {{ $actual->status == 'Checked' || 'Approved' ? 'checked' : '' }}>
+                                            <input type="checkbox" class="status-checkbox" data-actual-id="{{ $actual->actual_id }}" data-status="Checked" {{ $actual->status == 'Filled'  ? '' : 'checked' }}>
                                             Check
                                         </label>
                                         <label class="text-[14px]">
                                             <input type="checkbox" class="status-checkbox" data-actual-id="{{ $actual->actual_id }}" data-status="Approved" {{ $actual->status == 'Approved' ? 'checked' : '' }}>
                                             Approve
                                         </label>
+                                        {{-- <button id="confirmRequest" class="button bg-blue-500 rounded-md text-white p-0.5 mt-1">Confirm</button> --}}
                                     </div>
                                     @if ($actual->status !== 'Approved')
                                     <div class="p-1 flex justify-start">
@@ -275,7 +286,7 @@
                         @endif
                     </td>
                     @endforeach
-                    <td class="border-2 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center"></td>
+                    {{-- <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" class="border-2 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center"></td> --}}
                 </tr>
                 @endforeach
             </tbody>
@@ -283,6 +294,7 @@
     </div>
     </div>
 
+    <script type="text/javascript" src="{{ asset('js/tableToExcel.js') }}"></script>
     <script src="https://unpkg.com/pdfobject"></script>
 
 
@@ -405,16 +417,14 @@ function updatePdfViewer(buttonId, actualId) {
 
 document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('.status-checkbox').forEach(function(checkbox) {
+        if (checkbox.checked) {
+            checkbox.disabled = true;
+        }
         checkbox.addEventListener('change', function() {
             const actualId = this.getAttribute('data-actual-id');
             const status = this.getAttribute('data-status');
             const isChecked = this.checked;
 
-            console.log('Sending request with data:', {
-                actual_id: actualId,
-                status: status,
-                checked: isChecked
-            });
             fetch('/actual/input-actual-achievement/update', {
                 method: 'PUT',
                 headers: {
@@ -437,6 +447,38 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 });
+
+let exportButton = document.getElementById("exportBtn");
+    exportButton.addEventListener("click", e => {
+        // Create a copy of the table
+        let originalTable = document.querySelector("#exportTable");
+        let tableCopy = originalTable.cloneNode(true);
+
+        // Remove modal elements from the copy
+        tableCopy.querySelectorAll('.exclude-from-export').forEach(element => {
+            element.remove();
+        });
+
+        tableCopy.querySelectorAll('td').forEach(cell => {
+            if (cell.textContent.trim() === 'No') {
+                cell.style.color = '#ffff0000'; // Red
+            } else if (cell.textContent.trim() === 'Yes') {
+                cell.style.color = '#ff00cc00'; // Green
+            } else if (cell.textContent.trim() === 'Review') {
+                cell.style.color = '#ff3399ff'; // Blue
+            } else if (cell.textContent.trim() === 'Check') {
+                cell.style.color = '#ffff9900'; // Orange
+            }
+        });
+
+        // Export the copied table
+        TableToExcel.convert(tableCopy, {
+            name: "employee_report.xlsx",
+            sheet: {
+                name: "Sheet 1"
+            }
+        });
+    });
 
 </script>
 </x-app-layout>
