@@ -22,12 +22,12 @@ class GeneratePdfController extends Controller
             'department' => $dept->name,
             'nik' => 'XXX-123',
             'name' => 'Mr. Z',
-            'desc_1' => 'Dokumen ini sah, diterbitkan secara elektronik melalui aplikasi KPI di PT Bridgestone Kalimantan Plantation sehingga tidak memerlukan cap dan tanda tangan',
-            'desc_2' => 'Terima kasih telah menyampaikan laporan KPI',
+            'desc_1' => 'Dokumen ini sah, diterbitkan secara elektronik melalui aplikasi KPI di PT Bridgestone Kalimantan Plantation sehingga tidak memerlukan cap dan tanda tangan.',
+            'desc_2' => 'Terima kasih telah menyampaikan laporan KPI. ',
             'signature' => 'Manajemen BSKP'
         ];
 
-        $pdf = Pdf::loadView('generatePdfInput', $data);
+        $pdf = Pdf::loadView('generatePdfInput', $data)->setPaper('a5', 'landscape');
 
         return $pdf->download('TTE-Input-' . now()->format('d-M-Y') . '.pdf');
     }
