@@ -1,39 +1,69 @@
 <x-app-layout :title="$title" :desc="$desc">
     <div class="ml-64 px-2">
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            <div class="bg-white rounded-md border border-gray-200 p-6 mt-2">
+            <div class="bg-gradient-to-bl from-[#3572EF] to-[#050C9C] rounded-md border border-gray-200 p-6 mt-2 shadow-md shadow-black/15">
                 <div class="flex justify-between">
                     <div>
-                        <i class="ri-group-fill text-xl"></i>
-                        <div class="text-2xl font-semibold mb-1">Manager</div>
+                        <i class="text-white ri-group-fill text-xl"></i>
+                        <div class="text-white text-xl font-semibold mb-1">Manager</div>
                     </div>
                     <div class="grid lg:grid-cols-1 w-24">
-                    <div class=" text-sm font-medium text-gray-500">Total: {{ $managerCount }} </div>
-                    <div class=" text-sm font-medium text-gray-500">Aktual: {{ $managerCountActual }} </div>
+                        <table>
+                            <tr>
+                                <td class="text-sm font-medium text-white" style="width: 50%">Total</td>
+                                <td class="text-sm font-medium text-white">:</td>
+                                <td class="text-sm font-medium text-white">{{ $managerCount }}</td>
+                            </tr>
+                            <tr>
+                                <td class="text-sm font-medium text-white">Aktual</td>
+                                <td class="text-sm font-medium text-white">:</td>
+                                <td class="text-sm font-medium text-white">{{ $managerCountActual }} </td>
+                            </tr>
+                        </table>
                 </div>
                 </div>
             </div>
-            <div class="bg-white rounded-md border border-gray-200 p-6 mt-2">
+            <div class="bg-gradient-to-bl from-[#3572EF] to-[#050C9C] rounded-md border border-gray-200 p-6 mt-2 shadow-md shadow-black/15">
                 <div class="flex justify-between">
                     <div>
-                        <i class="ri-team-fill text-2xl"></i>
-                        <div class="text-xl font-semibold mb-1">Asst Manager</div>
+                        <i class="text-white ri-team-fill text-2xl"></i>
+                        <div class="text-white text-xl font-semibold mb-1">Asst Manager</div>
                     </div>
                     <div class="grid lg:grid-cols-1 w-24">
-                        <div class=" text-sm font-medium text-gray-500">Total: {{ $assistantManagerCount }}</div>
-                        <div class=" text-sm font-medium text-gray-500">Aktual: {{ $assistantManagerCountActual }} </div>
+                        <table>
+                            <tr>
+                                <td class="text-sm font-medium text-white" style="width: 50%">Total</td>
+                                <td class="text-sm font-medium text-white">:</td>
+                                <td class="text-sm font-medium text-white">{{ $assistantManagerCount }}</td>
+                            </tr>
+                            <tr>
+                                <td class="text-sm font-medium text-white">Aktual</td>
+                                <td class="text-sm font-medium text-white">:</td>
+                                <td class="text-sm font-medium text-white">{{ $assistantManagerCountActual }}</td>
+                            </tr>
+                        </table>
                     </div>
                 </div>
             </div>
-            <div class="bg-white rounded-md border border-gray-200 p-6 mt-2">
+            <div class="bg-gradient-to-bl from-[#3572EF] to-[#050C9C] rounded-md border border-gray-200 p-6 mt-2 shadow-md shadow-black/15">
                 <div class="flex justify-between">
                     <div>
-                        <i class="ri-bar-chart-2-fill text-2xl"></i>
-                        <div class="text-xl font-semibold mb-1">Monthly</div>
+                        <i class="ri-bar-chart-2-fill text-white text-2xl"></i>
+                        <div class="text-white text-xl font-semibold mb-1">Monthly</div>
                     </div>
                     <div class="grid lg:grid-cols-1 w-24">
-                        <div class=" text-sm font-medium text-gray-500">Total: {{ $totalEmployees }}</div>
-                        <div class=" text-sm font-medium text-gray-500">Aktual: {{ $totalActualInputs }} </div>
+                        <table>
+                            <tr>
+                                <td class="text-sm font-medium text-white" style="width: 50%">Total</td>
+                                <td class="text-sm font-medium text-white">:</td>
+                                <td class="text-sm font-medium text-white">{{ $totalEmployees }}</td>
+                            </tr>
+                            <tr>
+                                <td class="text-sm font-medium text-white">Aktual</td>
+                                <td class="text-sm font-medium text-white">:</td>
+                                <td class="text-sm font-medium text-white">{{ $totalActualInputs }}</td>
+                            </tr>
+                        </table>
                     </div>
                 </div>
             </div>
@@ -99,10 +129,32 @@
             </div>
             <div class="p-1 bg-gray-100 mt-2 grid lg:grid-cols-1 border-gray-200 rounded-md gap-4">
                 <div class="bg-gray-200 rounded-md">
-                    <div class="px-2 py-2">
-                        <span class="p-4 font-bold text-xl">Notifikasi:</span>
+                    <div class="px-2 py-2 flex justify-between">
+                        <div class="">
+                            <p class="p-0.5 font-bold text-xl">Notifikasi:</p>
+                        </div>
+                        <div class="">
+                            <a href="">
+                                <p class="text-blue-500 hover:underline">See All</p>
+                            </a>
+                        </div>
                     </div>
-                    
+                    <a href="">
+                    <ul role="list" class="divide-y divide-gray-300 px-3 border">
+                        <li class="flex justify-between py-5 bg-gray-100 hover:bg-gray-300 p-2 rounded-lg shadow-lg shadow-black/15">
+                          <div class="flex min-w-0 gap-x-4 ml-3">
+                            <div class="min-w-0 flex-auto">
+                              <p class="text-lg/2 font-bold text-gray-900">Notifikasi baru</p>
+                              <p class="mt-0.5 truncate text-sm text-gray-500">Selalu utamakan keselamatan saat bekerja</p>
+                            </div>
+                          </div>
+                          <div class="hidden shrink-0 sm:flex sm:flex-col sm:items-end">
+                            <p class="text-sm/6 text-gray-900">HRD</p>
+                            <p class="mt-1 text-xs/5 text-gray-500">19 Dec 24 / 13:11</p>
+                          </div>
+                        </li>
+                    </ul>
+                </a>
                 </div>
                 
             </div>
@@ -128,7 +180,7 @@
                 </div>
             </div>
             
-            <div class="mb-2 bg-gray-200 rounded-md min-h-[200px]">
+            <div class="mb-2 bg-gray-200 rounded-md min-h-[200px] mr-1">
                 <div class="flex justify-between">
                     <div class="p-2">
                         <span class="p-4 font-bold text-xl">Persyaratan KPI</span>

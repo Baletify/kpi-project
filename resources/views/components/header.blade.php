@@ -1,5 +1,5 @@
 <header class="w-full bg-gray-50">
-    <div class="py-6 px-6 bg-blue-500 flex items-center shadow-md shadow-black/5">
+    <div class="py-6 px-6 bg-[#3572EF] flex items-center shadow-md shadow-black/5">
         {{-- <button class="text-lg text-gray-600">
             <i class="ri-menu-line text-lg"></i>
         </button> --}}

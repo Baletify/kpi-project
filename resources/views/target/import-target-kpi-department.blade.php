@@ -17,7 +17,7 @@
         </div>
         </form>
         <div class="flex justify-center">
-            <button type="button" class="px-4 py-2 bg-blue-600 text-white rounded-md"><a href="/target/input-target-kpi?department={{ request()->query('department') }}&year={{ request()->query('year') }}">Back</a></button>
+            <button type="button" class="px-4 py-2 bg-blue-600 text-white rounded-md"><a href="/target/input-target-kpi-department?department={{ request()->query('department') }}&year={{ request()->query('year') }}">Back</a></button>
         </div>
     </div>
 

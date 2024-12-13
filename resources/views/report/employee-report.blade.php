@@ -115,7 +115,7 @@
                     @foreach ($months as $month => $monthName)
                 @php
                     $actual = $actuals->first(function($item) use ($target, $month) {
-                        return \Carbon\Carbon::parse($item->date)->format('m') == $month && $item->kpi_item == $target->indicator;
+                        return \Carbon\Carbon::parse($item->date)->format('m') == $month && $item->kpi_code == $target->code;
                     });
                 @endphp
                 <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="{{ $i % 2 === 0 ? '#fff2f2f2' : '#ffffffff' }}" class="border-2 bg-blue-100 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center">{{ $actual ? $actual->target : '' }}</td>
@@ -150,7 +150,7 @@
                     @foreach ($months as $month => $monthName)
                     @php
                         $actual = $actuals->first(function($item) use ($target, $month) {
-                            return \Carbon\Carbon::parse($item->date)->format('m') == $month && $item->kpi_item == $target->indicator;
+                            return \Carbon\Carbon::parse($item->date)->format('m') == $month && $item->kpi_code == $target->code;
                         });
                     @endphp
                     
@@ -179,7 +179,7 @@
                     @foreach ($months as $month => $monthName)
                     @php
                         $actual = $actuals->first(function($item) use ($target, $month) {
-                            return \Carbon\Carbon::parse($item->date)->format('m') == $month && $item->kpi_item == $target->indicator;
+                            return \Carbon\Carbon::parse($item->date)->format('m') == $month && $item->kpi_code == $target->code;
                         });
                     @endphp
                     <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="{{ $i % 2 === 0 ? '#fff2f2f2' : '#ffffffff' }}" class="border-2 bg-blue-100 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center">{{ $actual ? $actual->kpi_percentage : '' }}</td>
@@ -198,7 +198,7 @@
                     @foreach ($months as $month => $monthName)
                     @php
                         $actual = $actuals->first(function($item) use ($target, $month) {
-                            return \Carbon\Carbon::parse($item->date)->format('m') == $month && $item->kpi_item == $target->indicator;
+                            return \Carbon\Carbon::parse($item->date)->format('m') == $month && $item->kpi_code == $target->code;
                         });
                     @endphp
                     <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="{{ $i % 2 === 0 ? '#fff2f2f2' : '#ffffffff' }}" class="border-2 bg-gray-50 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center hover:underline">
@@ -222,12 +222,14 @@
                                 <span class="text-yellow-500">Check</span>
                                 @endif
                             </button>
+
+                            {{-- MODAL STARTS --}}
                             <div id="{{ $backgroundId }}" class="fixed inset-0 bg-gray-800 bg-opacity-75 hidden exclude-from-export"></div>
-                            <div id="{{ $modalId }}" class="modal fixed inset-0 justify-center hidden exclude-from-export" data-month="{{ $date->format('m') }}">
-                                <div class="flex justify-center mt-3">
-                                    <div class="bg-gray-50 rounded-lg shadow-lg p-3 w-1/2 max-h-screen overflow-y-hidden">
+                            <div id="{{ $modalId }}" class="modal fixed mt-2 inset-0 justify-center hidden exclude-from-export" data-month="{{ $date->format('m') }}">
+                                <div class="flex justify-center">
+                                    <div class="bg-gray-50 rounded-lg shadow-lg px-4 py-2 w-1/2 max-h-screen overflow-y-hidden">
                                     <div class="flex flex-col">
-                                        <h2 class="text-xl font-bold mb-0.5">Review Data Pendukung</h2>
+                                        <h2 class="text-lg font-bold mb-0.5">Review Data Pendukung</h2>
                                         <span class="text-[12px] tracking-wide font-medium text-gray-600 mb-0.5">Bulan: {{ $monthName }}</span>
                                         <div class="">
                                             <span id="fileNumber-modal-{{ $actual->actual_id }}" class="text-[12px] tracking-wide font-medium text-gray-600 mb-1"></span>
@@ -238,7 +240,7 @@
                                         <button id="{{ $nextButtonId }}" class="bg-blue-500 text-white p-2 text-[12px] rounded">Next</button>
                                     </div>
                                     <div id="pdfViewer" class="mt-1">
-                                        <object id="{{ $pdfObjectId }}" type="application/pdf" width="100%" height="400px"></object>
+                                        <object id="{{ $pdfObjectId }}" type="application/pdf" width="100%" height="370px"></object>
                                     </div>
                                     <div id="checkbox-container-{{ $modalId }}" class="p-1 flex justify-center gap-3 mt-0.5">
                                         <label class="text-[14px]">
@@ -283,6 +285,7 @@
                         @else
                             <span></span>
                         @endif
+                        {{-- MODAL ENDS --}}
                     </td>
                     @endforeach
                     <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="{{ $i % 2 === 0 ? '#fff2f2f2' : '#ffffffff' }}" class="border-2 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center"><span></span></td>
