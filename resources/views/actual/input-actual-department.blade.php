@@ -11,7 +11,7 @@
             
             <div class="relative mt-1 rounded-md">
                 <div class="mt-2 mx-2">
-                    <select name="year" id="year" class="w-24 h-10 text-[12px]">
+                    <select name="year" id="year" class="col-start-1 row-start-1 w-full appearance-none rounded-md py-1.5 pl-3 pr-7 text-base text-gray-500 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
                         <option value="">-- Tahun --</option>
                         <option value="2024">2024</option>
                         <option value="2025">2025</option>
@@ -24,7 +24,7 @@
             </div>
             <div class="relative mt-1 rounded-md">
                 <div class="mt-2 mb-1 mx-2">
-                    <select name="semester" id="semester" class="w-28 h-10 text-[12px]">
+                    <select name="semester" id="semester" class="col-start-1 row-start-1 w-full appearance-none rounded-md py-1.5 pl-3 pr-7 text-base text-gray-500 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
                         <option value="">-- Semester --</option>
                         <option value="1">1</option>
                         <option value="2">2</option>
@@ -35,7 +35,7 @@
               </div>
             <div class="relative mt-1 rounded-md mb-1">
                 <button class="p-2 bg-blue-600 my-2 rounded-md">
-                    <a id="input-actual-link" href="/actual/input-actual-department-details?department={{ $departments->first()->department_id }}&semester=&year=">
+                    <a id="input-actual-link" href="/actual/input-actual-department-details?department={{ $departments->first()->department_id ?? '' }}&semester=&year=">
                         <span class="text-white">Input Aktual Dept</span>
                     </a>
                 </button>

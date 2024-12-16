@@ -76,7 +76,7 @@ class TargetController extends Controller
             return view('target.input-target-kpi-department', ['title' => 'Input KPI Target', 'desc' => 'Department', 'departments' => $dept, 'targets' => $targetDept]);
         } else {
 
-            abort(404, 'Not Found');
+            return view('components/404-page');
         }
     }
 
@@ -93,7 +93,7 @@ class TargetController extends Controller
 
             return view('target.input-target-department', ['title' => 'Input Target', 'desc' => 'Input KPI Target & Upload Program', 'departments' => $departments]);
         } else {
-            abort(404, 'No actuals found for the given year and semester');
+            return view('components/404-page');
         }
     }
 

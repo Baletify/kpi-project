@@ -28,7 +28,7 @@ class ReportController extends Controller
 
             return view('report.list-employee-report', ['title' => 'Report', 'desc' => 'Employee List', 'departments' => $departments]);
         } else {
-            abort(404, 'No actuals found for the given year and semester');
+            return view('components/404-page');
         }
     }
     public function show($id, Request $request)
@@ -99,7 +99,7 @@ class ReportController extends Controller
             return view('report.employee-report', ['title' => 'Report', 'desc' => 'Employee Report', 'employee' => $employee, 'actuals' => $actuals, 'targets' => $targets, 'totals' => $totals]);
         } else {
 
-            abort(404, 'No actuals found for the given year and semester');
+            return view('components/404-page');
         }
     }
 
@@ -217,7 +217,7 @@ class ReportController extends Controller
 
             return view('report.summary-department-report', ['title' => 'Report', 'desc' => 'Department Report', 'employees' => $employees, 'employeeTotals' => $employeeTotals,]);
         } else {
-            return abort(404, 'No actuals found for the given year and semester');
+            return view('components/404-page');
         }
     }
 

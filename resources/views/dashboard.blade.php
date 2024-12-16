@@ -74,7 +74,7 @@
                 <div class="relative mt-1 rounded-md">
                     <span class="pl-3 font-semibold">Departemen</span>  
                     <div class="pl-3 mb-3">
-                        <select name="department" id="department" class=" w-56 text-[12px]">
+                        <select name="department" id="department" class="col-start-1 row-start-1 w-full appearance-none rounded-md py-1.5 pl-3 pr-7 text-base text-gray-500 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
                             <option value="">-- Pilih Departemen --</option>
                             @foreach ($deptLists as $item)
                                 
@@ -88,7 +88,7 @@
                     <div class="relative mt-1 rounded-md">
                     <span class="pl-3 font-semibold">Semester</span>  
                     <div class="pl-2 mb-3">
-                        <select name="semester" id="semester" class=" w-28 text-[12px]">
+                        <select name="semester" id="semester" class=" col-start-1 row-start-1 w-full appearance-none rounded-md py-1.5 pl-3 pr-7 text-base text-gray-500 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
                             <option value="">-- Semester --</option>
                             <option value="1">1</option>
                             <option value="2">2</option>
@@ -100,7 +100,7 @@
                   <div class="relative mt-1 rounded-md">
                     <span class="pl-3 font-semibold">Tahun</span>  
                     <div class="pl-2 mb-3">
-                        <select name="year" id="year" class=" w-28 text-[12px]">
+                        <select name="year" id="year" class="col-start-1 row-start-1 w-full appearance-none rounded-md py-1.5 pl-3 pr-7 text-base text-gray-500 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
                             <option value="">-- Tahun --</option>
                             <option value="2024">2024</option>
                             <option value="2025">2025</option>
@@ -120,7 +120,7 @@
                 </div>
                 
                 <div class="relative mt-1 rounded-md">
-                    <span class="pl-3 font-semibold">Search</span>
+                    <span class="pl-0.5 font-semibold">Search</span>
                         <input type="text" name="filterName" id="filterName" class="w-64 rounded-md border-0 py-1.5 pl-4 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 mt-1" placeholder="Masukkan Nama" value="" autocomplete="off">
                     <div class="absolute inset-y-0 right-0 flex items-center">
                     </div>

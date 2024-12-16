@@ -98,7 +98,7 @@ class ActualController extends Controller
                 'departments' => $departments
             ]);
         } else {
-            abort(404, 'No actuals found for the given year and semester');
+            return view('components/404-page');
         }
     }
 

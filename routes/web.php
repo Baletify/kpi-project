@@ -78,3 +78,7 @@ Route::prefix('kpi-requirement')->group(function () {
 });
 
 Route::get('generate-pdf-input', [GeneratePdfController::class, 'generatePdfInput'])->name('generatePdfInput');
+
+Route::get('404-not-found', function () {
+    return view('components/404-page');
+})->name('404-page');

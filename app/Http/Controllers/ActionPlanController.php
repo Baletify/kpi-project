@@ -25,7 +25,7 @@ class ActionPlanController extends Controller
 
             return view('action-plan.action-plans', ['title' => 'Action Plan', 'desc' => 'View Action Plan', 'employees' => $employees]);
         } else {
-            abort(404, 'No action plans found for the given department');
+            return view('components/404-page');
         }
     }
 

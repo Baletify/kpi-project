@@ -21,7 +21,7 @@
         <div class="relative mt-1 rounded-md">
           <span class="pl-3 font-semibold">Bulan</span>
           <span class="text-red-500">*</span> 
-          <select name="date" id="date" class="block w-full text-[12px]">
+          <select name="date" id="date" class="col-start-1 row-start-1 w-full appearance-none rounded-md py-1.5 pl-3 pr-7 text-base text-gray-500 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
             <option value="">-- Pilih Bulan --</option>
             <option value="01" data-target="{{ $target->target_unit_1 ?? '' }}" data-unit="{{ $target->unit }}" data-zero="{{ $target->target_unit_1 == 0 ? 'yes' : 'no' }}">January</option>
             <option value="02" data-target="{{ $target->target_unit_2 ?? '' }}" data-unit="{{ $target->unit }}" data-zero="{{ $target->target_unit_2 == 0 ? 'yes' : 'no' }}" >February</option>

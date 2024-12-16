@@ -11,7 +11,7 @@
     rel="stylesheet"
     href="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
 />
-    <title>Document</title>
+    <title>KPI App</title>
 </head>
 <body class="text-gray-800 font-inter flex">
 

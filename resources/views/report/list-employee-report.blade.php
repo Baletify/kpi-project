@@ -12,7 +12,7 @@
         <div class="flex justify-end items-center mb-2">
             <div class="relative mt-1 rounded-md">
                 <div class="mt-2 mb-1 mx-2">
-                    <select name="year" id="year" class=" w-28 h-10 text-[12px]">
+                    <select name="year" id="year" class="col-start-1 row-start-1 w-full appearance-none rounded-md py-1.5 pl-3 pr-7 text-base text-gray-500 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
                         <option value="">-- Tahun --</option>
                         <option value="2024">2024</option>
                         <option value="2025">2025</option>
@@ -25,7 +25,7 @@
               </div>
               <div class="relative mt-1 rounded-md">
                 <div class="mt-2 mb-1 mx-2">
-                    <select name="semester" id="semester" class=" w-28 h-10 text-[12px]">
+                    <select name="semester" id="semester" class="col-start-1 row-start-1 w-full appearance-none rounded-md py-1.5 pl-3 pr-7 text-base text-gray-500 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
                         <option value="">-- Semester --</option>
                         <option value="1">1</option>
                         <option value="2">2</option>

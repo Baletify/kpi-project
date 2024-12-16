@@ -34,7 +34,7 @@
                     <input type="hidden" name="department" id="department" value="{{ $department_id }}">
                  <div class="flex gap-x-2">
                      <div class="my-2">
-                         <select name="month" id="month" class=" w-24 h-10 text-[12px]">
+                         <select name="month" id="month" class="col-start-1 row-start-1 w-full appearance-none rounded-md py-1.5 pl-3 pr-7 text-base text-gray-500 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
                              <option value="">-- Bulan --</option>
                              <option value="01">January</option>
                              <option value="02">February</option>
@@ -51,7 +51,7 @@
                          </select>
                      </div>
                      <div class="my-2">
-                         <select name="year" id="year" class=" w-24 h-10 text-[12px]">
+                         <select name="year" id="year" class="col-start-1 row-start-1 w-full appearance-none rounded-md py-1.5 pl-3 pr-7 text-base text-gray-500 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
                              <option value="">-- Tahun --</option>
                              @for ($year = $startYear; $year <= $endYear; $year++)
                              <option value="{{ $year }}">{{ $year }}</option>
