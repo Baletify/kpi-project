@@ -17,7 +17,6 @@ return new class extends Migration
             $table->text('content');
             $table->string('input_by');
             $table->string('input_dept');
-            $table->string('status')->default('unread');
             $table->timestamps();
         });
     }

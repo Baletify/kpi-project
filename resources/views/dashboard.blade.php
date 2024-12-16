@@ -133,28 +133,36 @@
                         <div class="">
                             <p class="p-0.5 font-bold text-xl">Notifikasi:</p>
                         </div>
-                        <div class="">
-                            <a href="">
+                        <div class="flex justify-between gap-x-3">
+                            <a href="/notifications/create">
+                                <i class="ri-add-line bg-green-600 text-white text-base p-0.5 rounded-sm"></i>
+                            </a>
+                            <a href="/notifications/all">
                                 <p class="text-blue-500 hover:underline">See All</p>
                             </a>
                         </div>
                     </div>
-                    <a href="">
+                    
                     <ul role="list" class="divide-y divide-gray-300 px-3 border">
-                        <li class="flex justify-between py-5 bg-gray-100 hover:bg-gray-300 p-2 rounded-lg shadow-lg shadow-black/15">
-                          <div class="flex min-w-0 gap-x-4 ml-3">
-                            <div class="min-w-0 flex-auto">
-                              <p class="text-lg/2 font-bold text-gray-900">Notifikasi baru</p>
-                              <p class="mt-0.5 truncate text-sm text-gray-500">Selalu utamakan keselamatan saat bekerja</p>
+                        <li x-data="{ open: false }" class="flex flex-col py-0 bg-gray-100 hover:bg-gray-300 p-2 rounded-lg shadow-lg shadow-black/15 mb-4" @click="open = !open">
+                            <div class="flex justify-between mb-1 items-center">
+                                <div class="flex min-w-0 gap-x-4 ml-3">
+                                    <div class="min-w-0 flex-auto">
+                                        <p class="text-base font-bold text-gray-900">{{ $notification->title ?? '' }}</p>
+                                        {{-- <p class="mt-0.5 truncate text-sm text-gray-500">{{ $notification->content }}</p> --}}
+                                    </div>
+                                </div>
+                                <div class="hidden shrink-0 sm:flex sm:flex-col sm:items-end">
+                                    <p class="text-sm/6 text-gray-900">{{ $notification->input_by }} / {{ $notification->input_dept ?? '' }}</p>
+                                    <p class="mt-1 text-xs/5 text-gray-500">{{ Carbon\Carbon::parse($notification->created_at)->format('d M Y ') ?? '' }} / {{ Carbon\Carbon::parse($notification->created_at)->format('H:i') ?? '' }}</p>
+                                </div>
                             </div>
-                          </div>
-                          <div class="hidden shrink-0 sm:flex sm:flex-col sm:items-end">
-                            <p class="text-sm/6 text-gray-900">HRD</p>
-                            <p class="mt-1 text-xs/5 text-gray-500">19 Dec 24 / 13:11</p>
-                          </div>
+                            <hr>
+                            <div x-show="open" x-transition class="ml-3 my-1.5">
+                                <p class="text-sm text-gray-700">{{ $notification->content }}</p>
+                            </div>
                         </li>
                     </ul>
-                </a>
                 </div>
                 
             </div>

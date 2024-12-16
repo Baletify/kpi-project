@@ -42,6 +42,9 @@ class EmployeeController extends Controller
         $managerCountActual = $actualInputsByDepartment->firstWhere('occupation', 'BSKP Staff')->total ?? 0;
         $assistantManagerCountActual = $actualInputsByDepartment->firstWhere('occupation', 'IT Staff')->total ?? 0;
 
+        $notification = DB::table('notifications')->orderBy('created_at', 'desc')
+            ->first();
+
         $totalActualInputs = $actualInputsByDepartment->sum('total');
         return view('dashboard', [
             'title' => 'Dashboard',
@@ -54,6 +57,7 @@ class EmployeeController extends Controller
             'managerCountActual' => $managerCountActual,
             'assistantManagerCountActual' => $assistantManagerCountActual,
             'deptLists' => $deptLists,
+            'notification' => $notification,
         ]);
     }
     public function filter(Request $request)

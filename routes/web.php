@@ -12,6 +12,7 @@ use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\ActionPlanController;
 use App\Http\Controllers\GeneratePdfController;
 use App\Http\Controllers\RequirementController;
+use App\Http\Controllers\NotificationController;
 use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 
 Route::get('/', function () {
@@ -75,6 +76,12 @@ Route::prefix('kpi-requirement')->group(function () {
     Route::get('/view-requirement', [RequirementController::class, 'index'])->name('index');
     Route::get('/create-requirement', [RequirementController::class, 'create'])->name('create');
     Route::post('/create-requirement/store', [RequirementController::class, 'store'])->name('store');
+});
+
+Route::prefix('notifications')->group(function () {
+    Route::get('/all', [NotificationController::class, 'index'])->name('notification.index');
+    Route::get('/create', [NotificationController::class, 'create'])->name('notification.create');
+    Route::post('/store', [NotificationController::class, 'store'])->name('notification.store');
 });
 
 Route::get('generate-pdf-input', [GeneratePdfController::class, 'generatePdfInput'])->name('generatePdfInput');
