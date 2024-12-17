@@ -141,13 +141,17 @@
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-2 ">
           <div class="relative mt-1 rounded-md">
               <span class="pl-3 font-semibold">Nama Rekaman Data Pendukung</span>  
-            <input type="text" name="supporting_document" id="supporting_document" class="block w-96 rounded-md border-0 py-1.5 pl-4 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 mt-1" placeholder="Nama Rekaman" value="{{ $target->supporting_document }}" readonly>
+              <textarea name="supporting_document" id="supporting_document" class="block w-96 rounded-md border-0 py-1.5 pl-4 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 mt-1" placeholder="Item KPI" rows="2" readonly>{{ $target->supporting_document }}</textarea>
             <div class="absolute inset-y-0 right-0 flex items-center">
             </div>
           </div>
           <div class="relative mt-1 rounded-md">
               <span class="mx-20 font-semibold">Upload Rekaman</span>  
             <input type="file" name="record_file" id="record_file" class=" w-56 mx-20 rounded-md border-0 py-1.5 pl-1.5 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 mt-1" placeholder="Departemen">
+            <div class="ml-20 text-xs mt-0.5">
+                <span class="text-red-500">*</span>
+                <span>Format: .pdf .jpeg</span>
+            </div>
             <div class="absolute inset-y-0 right-0 flex items-center">
             </div>
           </div>

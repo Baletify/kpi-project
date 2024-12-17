@@ -1,5 +1,12 @@
 <x-app-layout :title="$title" :desc="$desc">
     <div class="ml-64 mt-4 overflow-x-auto p-2 bg-gray-100 border border-gray-100 shadow-md shadow-black/10 rounded-md">
+        <div class="">
+            <span class="font-bold text-2xl">Monitoring Input Pencapaian KPI</span>
+        </div>
+        <div class="">
+            <span class="font-semibold text-base mb-2">Periode Semester {{ request()->query('semester') }} Tahun {{ request()->query('year') }}</span>
+        </div>
+        <div class="p-0 mt-2">
         <table class="w-full bg-white">
             @php
             $currentSemester = request()->query('semester');
@@ -7,12 +14,12 @@
         
             if ($currentSemester == 1) {
                 $months = [
-                    '01' => 'Jan', '02' => 'Feb', '03' => 'Mar', '04' => 'Apr', 
-                    '05' => 'May', '06' => 'Jun'
+                    '1' => 'Jan', '2' => 'Feb', '3' => 'Mar', '4' => 'Apr', 
+                    '5' => 'May', '6' => 'Jun'
                 ];
             } else {
                 $months = [
-                    '07' => 'Jul', '08' => 'Aug', '09' => 'Sep', '10' => 'Oct', 
+                    '7' => 'Jul', '8' => 'Aug', '9' => 'Sep', '10' => 'Oct', 
                     '11' => 'Nov', '12' => 'Dec'
                 ];
             }
@@ -39,28 +46,49 @@
                     <td class="border-2 border-gray-400 text-[10px] tracking-wide  py-0 px-2">{{ $target->code }}</td>
                     <td class="border-2 border-gray-400 text-[10px] tracking-wide  py-0 px-2">{{ $target->indicator }}</td>
                     <td class="border-2 border-gray-400 text-[10px] tracking-wide  py-0 px-2">{{ $target->period }}</td>
+                    @php
+                        
+                    if ($currentSemester === 1) {
+                        $targetUnits = $targetUnits1;
+                        $targetRange = range(1, 6);
+                    } else {
+                        $targetUnits = $targetUnits2;
+                        $targetRange = range(7, 12);
+                    }
+                    @endphp
                     @foreach ($months as $month => $monthName)
-                        @php
-$actual = $actuals->first(function($item) use ($target, $month) {
-            $itemMonth = \Carbon\Carbon::parse($item->actual_date)->format('m');
-            $itemIndicator = $item->kpi_code;
-            $targetIndicator = $target->code;
+                    @php
+                        $actual = $actuals->first(function($item) use ($target, $month) {
+                        $itemMonth = \Carbon\Carbon::parse($item->actual_date)->format('m');
+                        $itemIndicator = $item->kpi_code;
+                        $targetIndicator = $target->code;
 
-            // Debugging output
-            // dump('Item Month:', $itemMonth, 'Month:', $month, 'Item Indicator:', $itemIndicator, 'Target Indicator:', $targetIndicator);
+                        // Debugging output
+                        // dump('Item Month:', $itemMonth, 'Month:', $month, 'Item Indicator:', $itemIndicator, 'Target Indicator:', $targetIndicator);
 
-            return $itemMonth == $month && $itemIndicator == $targetIndicator;
-        });
+                        return $itemMonth == $month && $itemIndicator == $targetIndicator;
+                    });
+                    $targetUnitCheck = $targetUnits->first(function($item) use ($target, $month){
+                        return $target->id == $item->target_id;
+                    });
 
-        // Debugging output
-        // dump('Actual:', $actual);
+                    $targetColumn = 'target_' . $month;
+                    
+                    @endphp
+
+                    @if ($actual)   
+                        <td style="width: 6%" class="border-2 border-gray-400 text-[10px] tracking-wide py-0 px-2 text-center">
+                            <i class="ri-checkbox-circle-fill text-xl text-green-500"></i>
+                        </td>
+                    @elseif ($targetUnitCheck->$targetColumn)
+                    <td style="width: 6%" class="border-2 border-gray-400 text-[10px] tracking-wide py-0 px-2 text-center">
+                        <i class="ri-pencil-fill text-xl text-gray-500"></i>
+                    </td>
+                    @else
+                        <td style="width: 6%" class="border-2 border-gray-400 text-[10px] tracking-wide py-0 px-2 text-center">
                             
-                        @endphp
-                        @if ($actual)
-                            <td style="width: 6%" class="border-2 border-gray-400 text-[10px] tracking-wide  py-0 px-2 text-center"><i class="ri-checkbox-circle-fill text-xl text-green-500"></i></td>
-                        @else
-                            <td style="width: 6%" class="border-2 border-gray-400 text-[10px] tracking-wide  py-0 px-2"></td>
-                        @endif
+                        </td>
+                    @endif
                     @endforeach
                     <td class="border-2 border-gray-400 text-[10px] tracking-wide  py-0 px-2 text-center">
                         <div class="flex justify-center gap-2">
@@ -79,5 +107,6 @@ $actual = $actuals->first(function($item) use ($target, $month) {
                 </tr>
             @endforelse
         </table>
+    </div>
     </div>
 </x-app-layout>

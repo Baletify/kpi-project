@@ -18,9 +18,20 @@
                 <div class="absolute inset-y-0 right-0 flex items-center">
                 </div>
               </div>
+              <div class="relative mt-1 rounded-md">
+                <div class="mt-2 mb-1 mx-2">
+                    <select name="semester" id="semester" class="col-start-1 row-start-1 w-full appearance-none rounded-md py-1.5 pl-3 pr-7 text-base text-gray-500 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
+                        <option value="">-- Semester --</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                    </select>
+                </div>
+                <div class="absolute inset-y-0 right-0 flex items-center">
+                </div>
+              </div>
               <div class="relative mt-1 rounded-md mb-1">
                 <button class="p-2 bg-blue-600 my-2 rounded-md">
-                    <a id="input-target-link" href="/target/input-target-kpi-department?department={{ $departments->first()->department_id ?? '' }}&year=">
+                    <a id="input-target-link" href="/target/input-target-kpi-department?department={{ $departments->first()->department_id ?? '' }}">
                         <span class="text-white">Input Target Dept</span>
                       </a>
                 </button>
@@ -83,49 +94,56 @@
     </div>
 </x-app-layout>
 
+
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const yearDropdown = document.getElementById('year');
+        const semesterDropdown = document.getElementById('semester');
         const inputTargetLink = document.getElementById('input-target-link');
 
-        // Set the dropdown value from localStorage if it exists
+        // Set the dropdown values from localStorage if they exist
         const savedYear = localStorage.getItem('selectedYear');
+        const savedSemester = localStorage.getItem('selectedSemester');
         if (savedYear) {
             yearDropdown.value = savedYear;
         }
+        if (savedSemester) {
+            semesterDropdown.value = savedSemester;
+        }
 
-        // Save the dropdown value to localStorage on change
-        yearDropdown.addEventListener('change', function() {
-            const year = this.value;
-            localStorage.setItem('selectedYear', year);
+        // Function to update links
+        function updateLinks() {
+            const year = yearDropdown.value;
+            const semester = semesterDropdown.value;
 
-            // Update the employee links with the selected year
-            const links = document.querySelectorAll('a[id^="employee-link-"]');
-            links.forEach(link => {
+            // Update employee links
+            const employeeLinks = document.querySelectorAll('a[id^="employee-link-"]');
+            employeeLinks.forEach(link => {
                 const url = new URL(link.href);
                 url.searchParams.set('year', year);
+                url.searchParams.set('semester', semester);
                 link.href = url.toString();
             });
 
-            // Update the input target link with the selected year
             const url = new URL(inputTargetLink.href);
             url.searchParams.set('year', year);
+            url.searchParams.set('semester', semester);
             inputTargetLink.href = url.toString();
+
+        }
+
+        // Save the dropdown values to localStorage on change
+        yearDropdown.addEventListener('change', function() {
+            localStorage.setItem('selectedYear', this.value);
+            updateLinks();
         });
 
-        // Initial update of the links
-        const initialYear = yearDropdown.value;
-        if (initialYear) {
-            const links = document.querySelectorAll('a[id^="employee-link-"]');
-            links.forEach(link => {
-                const url = new URL(link.href);
-                url.searchParams.set('year', initialYear);
-                link.href = url.toString();
-            });
+        semesterDropdown.addEventListener('change', function() {
+            localStorage.setItem('selectedSemester', this.value);
+            updateLinks();
+        });
 
-            const url = new URL(inputTargetLink.href);
-            url.searchParams.set('year', initialYear);
-            inputTargetLink.href = url.toString();
-        }
+        // Initial update of links
+        updateLinks();
     });
 </script>

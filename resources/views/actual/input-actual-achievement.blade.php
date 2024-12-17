@@ -19,8 +19,8 @@
           </div>
         </div>
         <div class="relative mt-1 rounded-md">
-          <span class="pl-3 font-semibold">Bulan</span>
-          <span class="text-red-500">*</span> 
+        <span class="text-red-500">*</span> 
+          <span class="font-semibold">Bulan</span>
           <select name="date" id="date" class="col-start-1 row-start-1 w-full appearance-none rounded-md py-1.5 pl-3 pr-7 text-base text-gray-500 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
             <option value="">-- Pilih Bulan --</option>
             <option value="01" data-target="{{ $target->target_unit_1 ?? '' }}" data-unit="{{ $target->unit }}" data-zero="{{ $target->target_unit_1 == 0 ? 'yes' : 'no' }}">January</option>
@@ -104,8 +104,8 @@
           </div>
         </div>
         <div class="relative mt-1 rounded-md">
-            <span class="pl-3 font-semibold">Aktual</span>
             <span class="text-red-500">*</span>  
+            <span class="font-semibold">Aktual</span>
           <input type="text" name="actual" id="actual" class="block w-full rounded-md border-0 py-1.5 pl-4 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 mt-1" placeholder="Aktual" oninput="calculateAchievement()" autocomplete="off">
           <div class="absolute inset-y-0 right-0 flex items-center">
           </div>
@@ -147,13 +147,18 @@
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-2 ">
         <div class="relative mt-1 rounded-md">
             <span class="pl-3 font-semibold">Nama Rekaman Data Pendukung</span>  
-          <input type="text" name="supporting_document" id="supporting_document" class="block w-96 rounded-md border-0 py-1.5 pl-4 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 mt-1" placeholder="Nama Rekaman" value="{{ $target->supporting_document }}" readonly>
+            <textarea name="supporting_document" id="supporting_document" class="block w-96 rounded-md border-0 py-1.5 pl-4 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 mt-1" placeholder="Item KPI" rows="3" readonly>{{ $target->supporting_document }}</textarea>
           <div class="absolute inset-y-0 right-0 flex items-center">
           </div>
         </div>
         <div class="relative mt-1 rounded-md">
             <span class="mx-20 font-semibold">Upload Rekaman</span>  
           <input type="file" name="record_file" id="record_file" class=" w-56 mx-20 rounded-md border-0 py-1.5 pl-1.5 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 mt-1" placeholder="Departemen">
+          <div class="ml-20 text-xs mt-0.5">
+              <span class="text-red-500">*</span>
+              <span>Format: .pdf .jpeg</span>
+          </div>
+          
           <div class="absolute inset-y-0 right-0 flex items-center">
           </div>
         </div>
@@ -165,11 +170,6 @@
             </div>
             <div class="mb-2 mt-2">
               <button type="submit" id="previewBtn" class="bg-green-500 text-white py-2 px-4 rounded-md">Preview</button>
-          </div>
-          <div class="p-2 mb-2 mt-2">
-            <a href="#" class="p-4 bg-blue-500 py-2 items-center">
-                <span class="font-medium text-white">Excel</span>
-            </a>
           </div>
           <div class="absolute inset-y-0 right-0 flex items-center">
           </div>

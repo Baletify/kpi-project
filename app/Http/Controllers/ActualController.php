@@ -33,11 +33,18 @@ class ActualController extends Controller
         $actuals = DB::table('actuals')
             ->leftJoin('employees', 'actuals.employee_id', '=', 'employees.id')
             ->leftJoin('targets', 'actuals.kpi_code', '=', 'targets.code')
+            ->leftJoin('target_units', 'target_units.id', '=', 'targets.target_unit_id')
             ->select('actuals.kpi_code as kpi_code', 'targets.code as code', 'actuals.date as actual_date', 'targets.date as target_date', 'targets.indicator as indicator')
             // ->where(DB::raw('MONTH(actuals.date)'), '<=', $now->month)
             ->where('actuals.employee_id', $employeeID)
             ->where(DB::raw('YEAR(actuals.date)'), '=', $year)
             ->get();
+
+        $targetUnits1 = DB::table('target_units')->leftJoin('targets', 'targets.target_unit_id', '=', 'target_units.id')->select('target_1', 'target_2', 'target_3', 'target_4', 'target_5', 'target_6', 'targets.id as target_id', 'targets.date as month')->where('employee_id', '=', $employeeID)->whereYear('targets.date', '=', $year)->get();
+
+        $targetUnits2 = DB::table('target_units')->leftJoin('targets', 'targets.target_unit_id', '=', 'target_units.id')->select('target_7', 'target_8', 'target_9', 'target_10', 'target_11', 'target_12',  'targets.id as target_id', 'targets.date as month')->where('employee_id', '=', $employeeID)->whereYear('targets.date', '=', $year)->get();
+
+        // dd($actuals);
 
         // dd($actuals);
         return view('actual.input-actual-employee', [
@@ -45,7 +52,9 @@ class ActualController extends Controller
             'desc' => 'Employee Achievement',
             'employee' => $employee,
             'targets' => $targets,
-            'actuals' => $actuals
+            'actuals' => $actuals,
+            'targetUnits1' => $targetUnits1,
+            'targetUnits2' => $targetUnits2,
         ]);
     }
 
@@ -71,13 +80,19 @@ class ActualController extends Controller
             ->where('department_actuals.department_id', '=', $departmentID)
             ->get();
 
-        // dd($actuals);
+        $targetUnits1 = DB::table('target_units')->leftJoin('department_targets', 'department_targets.target_unit_id', '=', 'target_units.id')->select('target_1', 'target_2', 'target_3', 'target_4', 'target_5', 'target_6', 'department_targets.id as target_id', 'department_targets.date as month')->where('department_id', '=', $departmentID)->whereYear('department_targets.date', '=', $year)->get();
+
+        $targetUnits2 = DB::table('target_units')->leftJoin('department_targets', 'department_targets.target_unit_id', '=', 'target_units.id')->select('target_7', 'target_8', 'target_9', 'target_10', 'target_11', 'target_12',  'department_targets.id as target_id', 'department_targets.date as month')->where('department_id', '=', $departmentID)->whereYear('department_targets.date', '=', $year)->get();
+
+
         return view('actual.input-actual-department-details', [
             'title' => 'Input Data Realisasi',
             'desc' => 'Department Achievement',
             'departments' => $department,
             'targets' => $targets,
-            'actuals' => $actuals
+            'actuals' => $actuals,
+            'targetUnits1' => $targetUnits1,
+            'targetUnits2' => $targetUnits2,
         ]);
     }
 

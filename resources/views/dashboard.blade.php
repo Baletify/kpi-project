@@ -153,13 +153,13 @@
                                     </div>
                                 </div>
                                 <div class="hidden shrink-0 sm:flex sm:flex-col sm:items-end">
-                                    <p class="text-sm/6 text-gray-900">{{ $notification->input_by }} / {{ $notification->input_dept ?? '' }}</p>
-                                    <p class="mt-1 text-xs/5 text-gray-500">{{ Carbon\Carbon::parse($notification->created_at)->format('d M Y ') ?? '' }} / {{ Carbon\Carbon::parse($notification->created_at)->format('H:i') ?? '' }}</p>
+                                    <p class="text-sm/6 text-gray-900">{{ $notification->input_by ?? '' }} / {{ $notification->input_dept ?? '' }}</p>
+                                    <p class="mt-1 text-xs/5 text-gray-500">{{ Carbon\Carbon::parse($notification->created_at ?? '')->format('d M Y ') }} / {{ Carbon\Carbon::parse($notification->created_at ?? '')->format('H:i') }}</p>
                                 </div>
                             </div>
                             <hr>
                             <div x-show="open" x-transition class="ml-3 my-1.5">
-                                <p class="text-sm text-gray-700">{{ $notification->content }}</p>
+                                <p class="text-sm text-gray-700">{{ $notification->content ?? '' }}</p>
                             </div>
                         </li>
                     </ul>
@@ -191,7 +191,7 @@
             <div class="mb-2 bg-gray-200 rounded-md min-h-[200px] mr-1">
                 <div class="flex justify-between">
                     <div class="p-2">
-                        <span class="p-4 font-bold text-xl">Persyaratan KPI</span>
+                        <span class="p-4 font-bold text-xl">Kriteria KPI</span>
                     </div>
                     <div class="p-2">
                         <a href="/kpi-requirement/create-requirement">
@@ -207,7 +207,7 @@
             <div id="documentModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center hidden">
             <div class="bg-white rounded-lg p-4 w-1/2">
                 <div class="flex justify-between items-center">
-                    <h2 class="text-xl font-bold">Persyaratan KPI</h2>
+                    <h2 class="text-xl font-bold">Kriteria KPI</h2>
                     <button id="closeModalBtn" class="text-gray-500 hover:text-gray-700">&times;</button>
                 </div>
                 <div class="mt-4">

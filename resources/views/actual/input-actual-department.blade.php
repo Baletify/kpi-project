@@ -5,7 +5,7 @@
         @endphp
 
         <div class="p-0">
-            <span class="font-bold text-2xl">Input Data Realisasi</span>
+            <span class="font-bold text-2xl">Input Data Pencapaian KPI</span>
         </div>
         <div class="flex justify-end mb-2">
             
