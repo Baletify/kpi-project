@@ -153,7 +153,7 @@
         </div>
         <div class="relative mt-1 rounded-md">
             <span class="mx-20 font-semibold">Upload Rekaman</span>  
-          <input type="file" name="record_file" id="record_file" class=" w-56 mx-20 rounded-md border-0 py-1.5 pl-1.5 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 mt-1" placeholder="Departemen">
+          <input type="file" name="record_file" id="record_file" class="file:absolute file:right-0 file:top-7 file:rounded-md file:bg-blue-500 file:text-white file:border-none file:py-1.5 w-32 mx-20 rounded-md border-0 py-1.5 pl-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 mt-1">
           <div class="ml-20 text-xs mt-0.5">
               <span class="text-red-500">*</span>
               <span>Format: .pdf .jpeg</span>

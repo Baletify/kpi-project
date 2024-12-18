@@ -11,17 +11,10 @@ class NotificationController extends Controller
     public function index()
     {
         $notifications = DB::table('notifications')->orderBy('created_at', 'desc')
-            ->get();
+            ->paginate(10);
 
 
         return view('notification.notifications', ['title' => 'Notification', 'desc' => 'Notification Lists', 'notifications' => $notifications]);
-    }
-
-    public function show($id)
-    {
-        $notification = DB::table('notifications')->where('id', $id)->first();
-
-        return view('notification.notification-detail', ['title' => 'Notification', 'desc' => 'Notification Detail', 'notification' => $notification]);
     }
 
     public function create()

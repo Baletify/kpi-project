@@ -73,7 +73,7 @@
                 </button>
                 <ul x-show="open" x-transition:enter="transition ease-out duration-100" x-transition:enter-start="transform opacity-0 scale-95" x-transition:enter-end="transform opacity-100 scale-100" x-transition:leave="transition ease-in duration-75" x-transition:leave-start="transform opacity-100 scale-100" x-transition:leave-end="transform opacity-0 scale-95" class="mt-2 space-y-2">
                     <li>
-                        <a href="{{ url('report/summary-department-report?department=1&year=' . $yearToShow) }}" class="flex items-center py-2 px-6 text-gray-300 hover:bg-gray-700">
+                        <a href="{{ url('report/summary-department-report?year=' . $yearToShow) }}" class="flex items-center py-2 px-6 text-gray-300 hover:bg-gray-700">
                             <i class="ri-team-line text-2xl"></i>
                             <span class="ml-3">Summary Dept</span>
                         </a>

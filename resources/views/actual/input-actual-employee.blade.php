@@ -48,7 +48,7 @@
                     <td class="border-2 border-gray-400 text-[10px] tracking-wide  py-0 px-2">{{ $target->period }}</td>
                     @php
                         
-                    if ($currentSemester === 1) {
+                    if ($currentSemester == 1) {
                         $targetUnits = $targetUnits1;
                         $targetRange = range(1, 6);
                     } else {
@@ -76,7 +76,7 @@
                     
                     @endphp
 
-                    @if ($actual)   
+                    @if ($actual && $targetUnitCheck->$targetColumn)   
                         <td style="width: 6%" class="border-2 border-gray-400 text-[10px] tracking-wide py-0 px-2 text-center">
                             <i class="ri-checkbox-circle-fill text-xl text-green-500"></i>
                         </td>

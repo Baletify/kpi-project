@@ -97,6 +97,7 @@
             <tbody>
                 @php
                     $i = 0;
+                    $sumTotalWeightingAchievement = 0;
                 @endphp
                 @foreach ($targets as $target)
                 @php
@@ -118,8 +119,8 @@
                         return \Carbon\Carbon::parse($item->date)->format('m') == $month && $item->kpi_code == $target->code;
                     });
                 @endphp
-                <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="{{ $i % 2 === 0 ? '#fff2f2f2' : '#ffffffff' }}" class="border-2 bg-blue-100 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center">{{ $actual ? $actual->target : '' }}</td>
-            @endforeach
+                    <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="{{ $i % 2 === 0 ? '#fff2f2f2' : '#ffffffff' }}" class="border-2 bg-blue-100 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center">{{ $actual ? $actual->target : '' }} </td>
+                    @endforeach
                     
                     @php
                         $totalTarget = $totals[$target->code]['total_target'] ?? 0;
@@ -136,9 +137,11 @@
                      <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="{{ $i % 2 === 0 ? '#fff2f2f2' : '#ffffffff' }}" class="border-2 bg-blue-100 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center"></td>
                  @endif
                     @php
-                        $totalWeightingAchievement = $totals[$target->code] 
-                        ['total_achievement_weight'] ?? 0 ;
+                        $totalWeightingAchievement = $totals[$target->code]['total_achievement_weight'] ?? 0;
+                        $sumTotalWeightingAchievement += $totalWeightingAchievement;
                     @endphp
+
+
                      @if ($totalWeightingAchievement > 0)
                      <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="{{ $i % 2 === 0 ? '#fff2f2f2' : '#ffffffff' }}" class="border-2 bg-blue-100 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center" rowspan="4">{{ number_format($totalWeightingAchievement, 1) }}%</td>
                     @else
@@ -291,6 +294,13 @@
                     <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="{{ $i % 2 === 0 ? '#fff2f2f2' : '#ffffffff' }}" class="border-2 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center"><span></span></td>
                 </tr>
                 @endforeach
+                <tr>
+                    <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="#fff2f2f2" class="border-2 bg-blue-500 border-gray-400 text-[13px] tracking-wide font-medium text-white py-0 px-0.5 text-center" colspan="5">Total</td>
+                    <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="#fff2f2f2" class="border-2 bg-blue-500 border-gray-400 text-[13px] tracking-wide font-medium text-white py-0 px-0.5 text-center">{{ $sumWeighting }}%</td>
+                    <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="#fff2f2f2" class="border-2 bg-blue-500 border-gray-400 text-[13px] tracking-wide font-medium text-white py-0 px-0.5 text-center" colspan="8"></td>
+                    <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="#fff2f2f2" class="border-2 bg-blue-500 border-gray-400 text-[13px] tracking-wide font-medium text-white py-0 px-0.5 text-center" colspan="1">{{ number_format($sumTotalWeightingAchievement, 1) }}%</td>
+
+                </tr>
             </tbody>
         </table>
     </div>

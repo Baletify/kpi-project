@@ -8,7 +8,7 @@
                 <span class="text-gray-600 font-bold text-lg text-center">Key Performance Indicator</span>
             </div>
             <div class="">
-                <span class="text-gray-600 font-bold text-xs text-center">Periode: {{ $actuals->first()->semester }} {{ $actuals->first()->year }}</span>
+                <span class="text-gray-600 font-bold text-xs text-center">Semester {{ $actuals->first()->semester }} Tahun {{ $actuals->first()->year }}</span>
             </div>
             <div class="">
                 <span id="departmentName" class="text-gray-600 font-bold text-xs text-center">Divisi: {{ $actuals->first()->department }}</span>
@@ -57,6 +57,7 @@
                 <tbody>
                     @php
                         $i = 0;
+                        $sumTotalWeightingAchievement = 0;
                     @endphp
                     @foreach ($targets as $target)
                     @php        
@@ -95,6 +96,8 @@
                  @endif
                     @php
                         $totalWeightingAchievement = $totals[$target->code] ['total_achievement_weight'] ?? 0 ;
+
+                        $sumTotalWeightingAchievement += $totalWeightingAchievement;
                     @endphp
                      @if ($totalWeightingAchievement > 0)
                      <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="{{ $i % 2 === 0 ? '#fff2f2f2' : '#ffffffff' }}" class="border-2 bg-blue-100 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center" rowspan="4">{{ number_format($totalWeightingAchievement) }}%</td>
@@ -241,6 +244,13 @@
                     <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="{{ $i % 2 === 0 ? '#fff2f2f2' : '#ffffffff' }}" class="border-2 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center"></td>
                 </tr>
                 @endforeach
+                <tr>
+                    <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="#fff2f2f2" class="border-2 bg-blue-500 border-gray-400 text-[13px] tracking-wide font-medium text-white py-0 px-0.5 text-center" colspan="5">Total</td>
+                    <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="#fff2f2f2" class="border-2 bg-blue-500 border-gray-400 text-[13px] tracking-wide font-medium text-white py-0 px-0.5 text-center">{{ $sumWeighting }}%</td>
+                    <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="#fff2f2f2" class="border-2 bg-blue-500 border-gray-400 text-[13px] tracking-wide font-medium text-white py-0 px-0.5 text-center" colspan="8"></td>
+                    <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="#fff2f2f2" class="border-2 bg-blue-500 border-gray-400 text-[13px] tracking-wide font-medium text-white py-0 px-0.5 text-center" colspan="1">{{ number_format($sumTotalWeightingAchievement, 1) }}%</td>
+
+                </tr>
                 </tbody>
             </table>
         </div>
