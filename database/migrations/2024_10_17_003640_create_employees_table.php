@@ -15,6 +15,13 @@ return new class extends Migration
             $table->id();
             $table->string('nik')->unique();
             $table->string('name');
+            $table->string('status');
+            $table->string('grade');
+            $table->string('phone');
+            $table->string('email')->unique()->nullable();
+            $table->string('password')->nullable();
+            $table->string('input_type')->nullable();
+            $table->string('role')->nullable();
             $table->string('occupation');
             $table->foreignId('department_id')->nullable()->constrained()->cascadeOnUpdate()->nullOnDelete();
             $table->timestamps();
