@@ -135,33 +135,59 @@
 
                 $totalFl = $actualFilledCount->total_filled ?? 0;
                 $totalFlDept = $actualFilledCountDept->total_filled ?? 0;
+                $totalCheck = $actualCheckedCount->total_checked ?? 0;
+                $totalCheckDept = $actualCheckedCountDept->total_checked ?? 0;
                 $totalFlAll = $totalFl + $totalFlDept;
+                $totalCheckedAll = $totalCheck + $totalCheckDept;
                 $month = request()->query('month');
                 $year = request()->query('year');
                 $totalTgAll = $totalTgUnit + $totalTgUnitDept;
+
+                // dd($totalCheckedAll, $totalTgAll)
 
                 // dd($totalFlAll, $totalTgAll);
                 
                 // dd('total filled:', $totalFl, 'total filled dept:', $totalFlDept, 'total filled dept and indiv', $totalFlAll, 'total target Unit dept + indiv', $totalTgAll);
                 
             @endphp
-            <div class="p-0.5">
-                @if ($totalFlAll == $totalTgAll - 1 )
-                <form action="{{ url('/generate-pdf-input') }}" method="GET">
-                    @php
-                        $lastInput = $actualFilled->first(function($item) use ($department_id) {
-                            return $item->department_id == $department_id;
-                        });
-
-                        
-                    @endphp
-                    <input type="hidden" name="department_id" id="department_id" value="{{ $department_id }}">
-                    <input type="hidden" name="input_at" id="input_at" value="{{ $lastInput->input_at }}">
-                    <input type="hidden" name="input_by" id="input_by" value="{{ $lastInput->input_by }}">
-                    <button type="submit" class="rounded-md bg-green-700 text-white p-2">Generate TTE</button>
-                </form>
-                @endif
+            <div class="flex justify-between">
+                <div class="p-0.5">
+                    @if ($totalFlAll == $totalTgAll - 1 )
+                    <form action="{{ url('/generate-pdf-input') }}" method="GET">
+                        @php
+                            $lastInput = $actualFilled->first(function($item) use ($department_id) {
+                                return $item->department_id == $department_id;
+                            });
+    
+                            
+                        @endphp
+                        <input type="hidden" name="department_id" id="department_id" value="{{ $department_id }}">
+                        <input type="hidden" name="input_at" id="input_at" value="{{ $lastInput->input_at }}">
+                        <input type="hidden" name="input_by" id="input_by" value="{{ $lastInput->input_by }}">
+                        <button type="submit" class="rounded-md bg-green-700 text-white p-2">Generate TTE</button>
+                    </form>
+                    @endif
+                </div>
+                <div class="p-0.5">
+                    @if ($totalCheckedAll == $totalTgAll)
+                    <form action="{{ url('/generate-pdf-check') }}" method="GET">
+                        @php
+                            $lastInput = $actualFilled->first(function($item) use ($department_id) {
+                                return $item->department_id == $department_id;
+                            });
+    
+                            
+                        @endphp
+                        <input type="hidden" name="department_id" id="department_id" value="{{ $department_id }}">
+                        <input type="hidden" name="input_at" id="input_at" value="{{ $lastInput->input_at }}">
+                        <input type="hidden" name="input_by" id="input_by" value="{{ $lastInput->input_by }}">
+                        <button type="submit" class="rounded-md bg-blue-500 text-white p-2">Generate TTE</button>
+                    </form>
+                    @endif
+                </div>
             </div>
+            
+            
         </div>
         <table class="w-full bg-white">
             <tr>

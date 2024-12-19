@@ -49,7 +49,7 @@
                     <td class="border-2 border-gray-400 text-[10px] tracking-wide  py-0 px-2">{{ $target->period }}</td>
                     @php
                         
-                    if ($currentSemester === 1) {
+                    if ($currentSemester == 1) {
                         $targetUnits = $targetUnits1;
                         $targetRange = range(1, 6);
                     } else {
@@ -69,6 +69,8 @@
 
                         return $itemMonth == $month && $itemIndicator == $targetIndicator;
                     });
+
+                    
                     $targetUnitCheck = $targetUnits->first(function($item) use ($target, $month){
                         return $target->id == $item->target_id;
                     });
@@ -77,7 +79,7 @@
                     
                     @endphp
 
-                    @if ($actual)   
+                    @if ($actual && $targetUnitCheck->$targetColumn)   
                         <td style="width: 6%" class="border-2 border-gray-400 text-[10px] tracking-wide py-0 px-2 text-center">
                             <i class="ri-checkbox-circle-fill text-xl text-green-500"></i>
                         </td>
@@ -96,7 +98,7 @@
                             @php
                                 $year = request()->query('year');
                             @endphp
-                            <a href="{{ url('/actual/input-actual-achievement/edit/' . $target->id . '?year=' . $year) }}">
+                            <a href="{{ url('/actual/input-actual-department-achievement/edit/' . $target->id . '?year=' . $year) }}">
                                 <i class="ri-edit-box-line p-0.5 text-xl bg-yellow-400 text-white rounded-sm"></i>
                             </a>
                         </div>

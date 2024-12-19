@@ -256,6 +256,29 @@ class LogController extends Controller
                 ->groupBy('departments.id')
                 ->first();
 
+            $actualCheckedCount = DB::table('actuals')
+                ->join('employees', 'actuals.employee_id', '=', 'employees.id')
+                ->join('departments', 'employees.department_id', '=', 'departments.id')
+                ->where('departments.id', $department)
+                ->where('actuals.checked_at', '!=', '')
+                ->whereMonth('actuals.date', $month)
+                ->whereYear('actuals.date', $year)
+                ->select(DB::raw('count(actuals.id) as total_checked'), 'departments.id as department_id')
+                ->orderBy('actuals.input_at', 'desc')
+                ->groupBy('departments.id')
+                ->first();
+
+            $actualCheckedCountDept = DB::table('department_actuals')
+                ->join('departments', 'department_actuals.department_id', '=', 'departments.id')
+                ->where('departments.id', $department)
+                ->where('department_actuals.checked_at', '!=', '')
+                ->whereMonth('department_actuals.date', $month)
+                ->whereYear('department_actuals.date', $year)
+                ->select(DB::raw('count(department_actuals.id) as total_checked'), 'departments.id as department_id')
+                ->orderBy('department_actuals.input_at', 'desc')
+                ->groupBy('departments.id')
+                ->first();
+
             $targetUnitCountAll = DB::table('target_units')
                 ->leftJoin('targets', 'target_units.id', '=', 'targets.target_unit_id')
                 ->leftJoin('employees', 'targets.employee_id', '=', 'employees.id')
@@ -324,8 +347,10 @@ class LogController extends Controller
                 'departments' => $departments,
                 'countEmployees' => $countEmployees,
                 'actualFilledCount' => $actualFilledCount,
-                'targetUnitCountAll' => $targetUnitCountAll,
                 'actualFilledCountDept' => $actualFilledCountDept,
+                'actualCheckedCount' => $actualCheckedCount,
+                'actualCheckedCountDept' => $actualCheckedCountDept,
+                'targetUnitCountAll' => $targetUnitCountAll,
                 'targetUnitCountAllDept' => $targetUnitCountAllDept,
             ]);
         } else if ($department) {

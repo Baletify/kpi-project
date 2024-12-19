@@ -99,8 +99,23 @@ class ActualController extends Controller
     public function department(Request $request)
     {
         $department = $request->query('department');
+        $employee = $request->query('employee');
 
-        if ($department) {
+
+        if ($department && $employee) {
+            $departments = DB::table('departments')
+                ->leftJoin('employees', 'employees.department_id', '=', 'departments.id')
+                ->select('employees.id as employee_id', 'employees.nik as nik', 'employees.name as employee', 'employees.occupation as occupation', 'departments.name as department', 'departments.id as department_id')
+                ->where('departments.id', $department)
+                ->where('employees.id', $employee)
+                ->get();
+
+            return view('actual.input-actual-department', [
+                'title' => 'Input Data Realisasi',
+                'desc' => 'Achievement',
+                'departments' => $departments
+            ]);
+        } else if ($department) {
             $departments = DB::table('departments')
                 ->leftJoin('employees', 'employees.department_id', '=', 'departments.id')
                 ->select('employees.id as employee_id', 'employees.nik as nik', 'employees.name as employee', 'employees.occupation as occupation', 'departments.name as department', 'departments.id as department_id')
@@ -232,7 +247,7 @@ class ActualController extends Controller
 
         DepartmentActual::updateOrCreate($searchConditions, $dataToUpdateOrCreate);
 
-        return redirect()->to('actual/input-actual-department-details?department=' . $request->input('department_id') . '&year=' . $request->input('year'));
+        return redirect()->to('actual/input-actual-department-details?department=' . $request->input('department_id') . '&year=' . $request->input('year') . '&semester=' . $semester);
     }
 
     public function store(Request $request)
@@ -312,7 +327,7 @@ class ActualController extends Controller
         Actual::updateOrCreate($searchConditions, $dataToUpdateOrCreate);
 
         flash()->success('Data created successfully.');
-        return redirect()->to('actual/input-actual-employee?employee=' . $request->input('employee_id') . '&year=' . $yearToShow);
+        return redirect()->to('actual/input-actual-employee?employee=' . $request->input('employee_id') . '&year=' . $yearToShow . '&semester=' . $semester);
     }
 
     public function updateActual(Request $request)

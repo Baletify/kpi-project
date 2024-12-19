@@ -31,9 +31,10 @@ class TargetController extends Controller
     {
         $employeeID = $request->query('employee');
         $year = $request->query('year');
+        $semester = $request->query('semester');
 
 
-        if ($employeeID && $year) {
+        if ($employeeID && $year && $semester) {
             $employee = DB::table('employees')->leftJoin('departments', 'departments.id', 'employees.department_id')
                 ->select('employees.id', 'employees.name', 'employees.nik', 'employees.occupation', 'departments.name as department')
                 ->where('employees.id', '=', $employeeID)->first();
@@ -55,6 +56,7 @@ class TargetController extends Controller
     {
         $departmentID = $request->query('department');
         $year = $request->query('year');
+        $semester = $request->query('semester');
 
         if ($departmentID && $year) {
             $dept = DB::table('departments')->where('departments.id', '=', $departmentID)

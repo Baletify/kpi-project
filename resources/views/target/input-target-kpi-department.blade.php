@@ -2,12 +2,32 @@
     <div class="ml-64 mt-4 overflow-x-auto p-2 bg-white border border-gray-100 shadow-md shadow-black/10 rounded-md border-collapse">
         @php
             $yearQuery = request()->query('year');
+            $departmentQuery = request()->query('department');
         @endphp
         <div class="p-0">
             <span class="font-bold text-2xl">Target KPI Departemen {{ $departments->name }} Tahun {{ $yearQuery }}</span>
         </div>
         <div class="flex justify-end">
-            <div class="mb-3 mt-2">
+            <div class="relative mt-0 rounded-md">
+                <form action="{{ url('/target/input-target-kpi-department') }}" method="GET">
+                    <input type="hidden" name="department" id="department" value="{{ $departmentQuery }}">
+                    <input type="hidden" name="year" id="year" value="{{ $yearQuery }}">
+                <div class="mt-3 mx-2">
+                    <select name="semester" id="semester" class="col-start-1 row-start-1 w-full appearance-none rounded-md py-1.5 pl-3 pr-7 text-base text-gray-500 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
+                        <option value="">-- Semester --</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                    </select>
+                </div>
+                <div class="absolute inset-y-0 right-0 flex items-center">
+                </div>
+              </div>
+              <div class="mt-1 rounded-md mb-1">
+                <button class="p-2 bg-blue-600 my-2 rounded-md text-white">
+                    Filter
+                </button>
+            </div>
+            <div class="mt-3">
                 <a href="/target/import-target-kpi-department?department={{ request()->query('department') }}&year={{ request()->query('year') }}" class="p-1 mx-2 bg-blue-500 py-2 items-center rounded-md">
                     <i class="ri-import-line text-2xl text-white"></i>
                     <span class="font-medium text-white">Import</span>

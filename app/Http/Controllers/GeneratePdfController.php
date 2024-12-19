@@ -31,7 +31,7 @@ class GeneratePdfController extends Controller
 
         // dd($data);
 
-        $pdf = Pdf::loadView('generatePdfInput', $data)->setPaper('a5', 'landscape');
+        $pdf = Pdf::loadView('generate-pdf-input', $data)->setPaper('a5', 'landscape');
 
         return $pdf->download('TTE-Input-' . now()->format('d-M-Y') . '.pdf');
     }

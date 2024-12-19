@@ -11,7 +11,7 @@
         <div class="pl-1">
             <span class="font-bold text-xl">Target KPI Tahun {{ $yearQuery }}</span>
         </div>
-        <div class="grid grid-cols-5">
+        <div class="grid grid-cols-4">
             <div class="p-1">
                 <table>
                     <tr>
@@ -42,10 +42,27 @@
             </div>
             <div class="p-1">
             </div>
-            <div class="">
-
-            </div>
             <div class="flex justify-end items-center">
+                <div class="relative mt-0 rounded-md">
+                    <form action="{{ url('/target/input-target-kpi') }}" method="GET">
+                        <input type="hidden" name="employee" id="employee" value="{{ $employeeQuery }}">
+                        <input type="hidden" name="year" id="year" value="{{ $yearQuery }}">
+                    <div class="mt-2 mb-2 mx-2">
+                        <select name="semester" id="semester" class="col-start-1 row-start-1 w-full appearance-none rounded-md py-1.5 pl-3 pr-7 text-base text-gray-500 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
+                            <option value="">-- Semester --</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                        </select>
+                    </div>
+                    <div class="absolute inset-y-0 right-0 flex items-center">
+                    </div>
+                  </div>
+                  <div class="mt-1 rounded-md mb-1">
+                    <button class="p-2 bg-blue-600 my-2 rounded-md text-white">
+                        Filter
+                    </button>
+                </div>
+                </form>
                 <div class="">
                     <a href="{{ url('target/import-target-kpi-employee?employee=' . $employeeQuery . '&year=' . $yearQuery) }}" class="p-1 mx-2 bg-blue-500 py-2 items-center rounded-md">
                     <i class="ri-import-line text-2xl text-white"></i>

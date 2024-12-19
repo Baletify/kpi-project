@@ -51,7 +51,28 @@
             </div>
             <div class="bg-gray-100">
                 <div class="flex justify-end">
-                    <button id="exportBtn" class="p-1.5 rounded-md text-white bg-green-500">Export</button>
+                    <div class="relative mt-0 rounded-md">
+                        <form action="{{ url('report/employee-report/' . $actuals->first()->employee_id) }}" method="GET">
+                            <input type="hidden" name="year" id="year" value="{{ $year }}">
+                        <div class="mt-2 mx-2">
+                            <select name="semester" id="semester" class="col-start-1 row-start-1 w-full appearance-none rounded-md py-1.5 pl-3 pr-7 text-base text-gray-500 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
+                                <option value="">-- Semester --</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                            </select>
+                        </div>
+                        <div class="absolute inset-y-0 right-0 flex items-center">
+                        </div>
+                      </div>
+                      <div class="rounded-md">
+                        <button class="py-2 px-2 bg-blue-600 my-2 rounded-md text-white">
+                            Filter
+                        </button>
+                    </div>
+                    </form>
+                    <div class="mt-2 mx-2">
+                        <button id="exportBtn" class="p-1.5 rounded-md text-white bg-green-500">Export</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -247,7 +268,7 @@
                                     </div>
                                     <div id="checkbox-container-{{ $modalId }}" class="p-1 flex justify-center gap-3 mt-0.5">
                                         <label class="text-[14px]">
-                                            <input type="checkbox" class="status-checkbox" data-actual-id="{{ $actual->actual_id }}" data-status="Checked" {{ $actual->status == 'Filled'  ? '' : 'checked' }}>
+                                            <input type="checkbox" class="status-checkbox" data-actual-id="{{ $actual->actual_id }}" data-status="Checked" {{ $actual->status == 'Checked' || 'Approved' ? 'checked' : '' }}>
                                             Check
                                         </label>
                                         <label class="text-[14px]">

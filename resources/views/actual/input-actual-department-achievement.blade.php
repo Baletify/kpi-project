@@ -127,11 +127,6 @@
                   <div class="mb-2 mt-2">
                     <button type="submit" id="submitBtn" class="px-4 py-2 bg-blue-600 text-white rounded-md">Submit</button>
                   </div>
-                <div class="p-2 mb-2 mt-2">
-                  <a href="#" class="p-4 bg-blue-500 py-2 items-center">
-                      <span class="font-medium text-white">Excel</span>
-                  </a>
-                </div>
                 <div class="absolute inset-y-0 right-0 flex items-center">
                 </div>
               </div>

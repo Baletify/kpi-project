@@ -16,7 +16,7 @@ use App\Http\Controllers\NotificationController;
 use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 
 Route::get('/', function () {
-    return view('dashboard', ['title' => 'Dashboard', 'desc' => 'Analytics']);
+    return view('login-page');
 });
 Route::get('dashboard', [EmployeeController::class, 'index'])->name('dashboard');
 Route::get('dashboard/filter', [EmployeeController::class, 'filter']);
