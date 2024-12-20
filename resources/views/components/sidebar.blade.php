@@ -51,15 +51,21 @@
             </button>
             <ul x-show="open" x-transition:enter="transition ease-out duration-100" x-transition:enter-start="transform opacity-0 scale-95" x-transition:enter-end="transform opacity-100 scale-100" x-transition:leave="transition ease-in duration-75" x-transition:leave-start="transform opacity-100 scale-100" x-transition:leave-end="transform opacity-0 scale-95" class="mt-2 space-y-2">
                 <li>
-                    <a href="{{ url('/log-check?year=' . $yearToShow) }}" class="flex items-center py-2 px-6 text-gray-300 hover:bg-gray-700">
+                    <a href="{{ url('/logs/log-check?year=' . $yearToShow) }}" class="flex items-center py-2 px-6 text-gray-300 hover:bg-gray-700">
                         <i class="ri-file-check-line text-2xl"></i>
                         <span class="ml-3">Log Pengecekan</span>
                     </a>
                 </li>
                 <li>
-                    <a href="{{ url('/log-input?department=1&month=' . $currentMonth - 1 . '&year=2024') }}" class="flex items-center py-2 px-6 text-gray-300 hover:bg-gray-700">
+                    <a href="{{ url('/logs/log-input?department=1&month=' . $currentMonth - 1 . '&year=2024') }}" class="flex items-center py-2 px-6 text-gray-300 hover:bg-gray-700">
                         <i class="ri-history-line text-2xl"></i>
                         <span class="ml-3">Log Input</span>
+                    </a>
+                </li>             
+                <li>
+                    <a href="{{ url('/logs/log-input-individual?department=1&month=' . $currentMonth - 1 . '&year=2024') }}" class="flex items-center py-2 px-6 text-gray-300 hover:bg-gray-700">
+                        <i class="ri-user-follow-fill text-2xl"></i>
+                        <span class="ml-3">Log Input Individual</span>
                     </a>
                 </li>             
             </ul>

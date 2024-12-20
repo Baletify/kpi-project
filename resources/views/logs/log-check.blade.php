@@ -5,7 +5,7 @@
                 <span class="font-medium text-gray-600 text-sm">PT BRIDGESTONE KALIMANTAN PLANTATION</span>
             </div>
             <div class="px-1">
-                <span class=" font-bold text-gray-600 text-2xl">LOG Pengecekan KPI</span>
+                <span class=" font-bold text-gray-600 text-2xl">Log Pengecekan KPI</span>
             </div>
         </div>
 

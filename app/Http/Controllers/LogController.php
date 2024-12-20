@@ -156,7 +156,7 @@ class LogController extends Controller
             });
 
 
-        return view('log-check', [
+        return view('logs/log-check', [
             'title' => 'Log Input',
             'desc' => 'History',
             'departments' => $departments,
@@ -336,7 +336,7 @@ class LogController extends Controller
                 ->leftJoin('departments', 'departments.id', '=', 'employees.department_id')->select(DB::raw('count(employees.id) as total_employee'), 'departments.id as department_id',)->where('departments.id', $department)->groupBy('departments.id')->get();
 
             // dd($actualFilledCheck, $actualCheckedCheck, $actualApproved, $actualChecked, $countEmployees);
-            return view('log-input', [
+            return view('logs/log-input', [
                 'title' => 'Log Input',
                 'desc' => 'History',
                 'actualFilledCheck' => $actualFilledCheck,
@@ -354,7 +354,50 @@ class LogController extends Controller
                 'targetUnitCountAllDept' => $targetUnitCountAllDept,
             ]);
         } else if ($department) {
-            return view('log-input', [
+            return view('logs/log-input', [
+                'title' => 'Log Input',
+                'desc' => 'History',
+            ]);
+        }
+    }
+
+    public function individual(Request $request)
+    {
+
+        $department = $request->query('department');
+        $month = $request->query('month');
+        $year = $request->query('year');
+
+
+        if ($department && $month && $year) {
+
+            $employees = DB::table('employees')->leftJoin('departments', 'departments.id', '=', 'employees.department_id')
+                ->select('employees.*', 'departments.name as department')
+                ->where('employees.department_id',  '=', $department)->get();
+
+
+            $employeesInput = DB::table('actuals')
+                ->leftJoin('employees', 'employees.id', '=', 'actuals.employee_id')
+                ->leftJoin('departments', 'departments.id', '=', 'employees.department_id')
+                ->whereMonth('actuals.date', '=', $month)
+                ->whereYear('actuals.date', '=', $year)
+                ->where('departments.id', '=', $department)
+                ->select('employees.id', 'employees.name', 'departments.name as department', DB::raw('MAX(actuals.input_at) as latest_input_at'), DB::raw('MAX(actuals.approved_at) as latest_approved_at'))
+                ->groupBy('employees.id', 'employees.name', 'departments.name')
+                ->orderBy('latest_input_at', 'desc')
+                ->get();
+
+
+
+            return view('logs/log-input-individual', [
+                'title' => 'Log Input Individual',
+                'desc' => 'History',
+                'employeesInput' => $employeesInput,
+                'employees' => $employees,
+
+            ]);
+        } else if ($department) {
+            return view('logs/log-input-individual', [
                 'title' => 'Log Input',
                 'desc' => 'History',
             ]);

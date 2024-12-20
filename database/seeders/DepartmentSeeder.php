@@ -19,7 +19,7 @@ class DepartmentSeeder extends Seeder
                 'code' => 'BSKP',
             ],
             [
-                'name' => 'Supply Chain, Procurement, Inventory, and Distribution',
+                'name' => 'SPID',
                 'code' => 'SPID',
             ],
             [

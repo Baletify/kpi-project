@@ -12,12 +12,12 @@
                             <tr>
                                 <td class="text-sm font-medium text-white" style="width: 50%">Total</td>
                                 <td class="text-sm font-medium text-white">:</td>
-                                <td class="text-sm font-medium text-white">{{ $managerCount }}</td>
+                                <td class="text-sm font-medium text-white">{{ $manager ?? 0 }}</td>
                             </tr>
                             <tr>
                                 <td class="text-sm font-medium text-white">Aktual</td>
                                 <td class="text-sm font-medium text-white">:</td>
-                                <td class="text-sm font-medium text-white">{{ $managerCountActual }} </td>
+                                <td class="text-sm font-medium text-white">{{ $actualManager ?? 0 }}</td>
                             </tr>
                         </table>
                 </div>
@@ -34,12 +34,12 @@
                             <tr>
                                 <td class="text-sm font-medium text-white" style="width: 50%">Total</td>
                                 <td class="text-sm font-medium text-white">:</td>
-                                <td class="text-sm font-medium text-white">{{ $assistantManagerCount }}</td>
+                                <td class="text-sm font-medium text-white">{{ $asstMng ?? 0 }}</td>
                             </tr>
                             <tr>
                                 <td class="text-sm font-medium text-white">Aktual</td>
                                 <td class="text-sm font-medium text-white">:</td>
-                                <td class="text-sm font-medium text-white">{{ $assistantManagerCountActual }}</td>
+                                <td class="text-sm font-medium text-white">{{ $actualAsstManager }}</td>
                             </tr>
                         </table>
                     </div>
@@ -56,12 +56,12 @@
                             <tr>
                                 <td class="text-sm font-medium text-white" style="width: 50%">Total</td>
                                 <td class="text-sm font-medium text-white">:</td>
-                                <td class="text-sm font-medium text-white">{{ $totalEmployees }}</td>
+                                <td class="text-sm font-medium text-white">{{ $monthly ?? 0 }}</td>
                             </tr>
                             <tr>
                                 <td class="text-sm font-medium text-white">Aktual</td>
                                 <td class="text-sm font-medium text-white">:</td>
-                                <td class="text-sm font-medium text-white">{{ $totalActualInputs }}</td>
+                                <td class="text-sm font-medium text-white">{{ $actualMonthly ?? 0 }}</td>
                             </tr>
                         </table>
                     </div>

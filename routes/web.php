@@ -70,8 +70,12 @@ Route::prefix('report')->group(function () {
     Route::get('/file-preview-dept', [ReportController::class, 'showFileDept'])->name('report.showFileDept');
 });
 
-Route::get('/log-check', [LogController::class, 'index'])->name('log-check.index');
-Route::get('/log-input', [LogController::class, 'indexInput'])->name('log-input.indexInput');
+Route::prefix('logs')->group(function () {
+    Route::get('/log-check', [LogController::class, 'index'])->name('log-check.index');
+    Route::get('/log-input', [LogController::class, 'indexInput'])->name('log-input.indexInput');
+    Route::get('/log-input-individual', [LogController::class, 'individual'])->name('log-input.individual');
+});
+
 Route::prefix('action-plan')->group(function () {
     Route::get('/action-plans', [ActionPlanController::class, 'show'])->name('action-plan.show');
     Route::get('/input-action-plan/{id}', [ActionPlanController::class, 'addEmployeeFile'])->name('action-plan.addEmployeeFile');

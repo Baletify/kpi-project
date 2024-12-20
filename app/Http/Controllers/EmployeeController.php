@@ -12,6 +12,8 @@ class EmployeeController extends Controller
 
     public function index()
     {
+        $month = Carbon::now()->month;
+        $year = Carbon::now()->year;
         $employees = DB::table('employees')
             ->leftJoin('departments', 'employees.department_id', '=', 'departments.id')
             ->select('employees.id', 'employees.nik', 'employees.name', 'employees.occupation', 'departments.name as department')
@@ -19,45 +21,49 @@ class EmployeeController extends Controller
 
         $deptLists = DB::table('departments')->get();
 
-        // Count of employees by occupation
-        $employeeCountsByOccupation = DB::table('employees')
-            ->select('occupation', DB::raw('count(*) as total'))
-            ->groupBy('occupation')
-            ->get();
 
-        // Total actual inputs for the current month by department
-        $currentMonth = Carbon::now()->month;
-        $actualInputsByDepartment = DB::table('actuals')
-            ->leftJoin('employees', 'actuals.employee_id', '=', 'employees.id')
-            ->leftJoin('departments', 'employees.department_id', '=', 'departments.id')
-            ->select('departments.name', DB::raw('count(*) as total'), 'employees.occupation as occupation')
-            ->whereMonth('actuals.date', $currentMonth)
-            ->groupBy('departments.name', 'employees.name', 'employees.occupation')
-            ->get();
+        $manager = Employee::where('status', '=', 'Manager')->count();
+        $asstMng = Employee::where('status', '=', 'Staff')->count();
+        $monthly = Employee::where('status', '=', 'Monthly')->count();
 
-        $managerCount = $employeeCountsByOccupation->firstWhere('occupation', 'BSKP Staff')->total ?? 0;
-        $assistantManagerCount = $employeeCountsByOccupation->firstWhere('occupation', 'IT Staff')->total ?? 0;
-        $totalEmployees = $employees->count();
+        $actualManager = DB::table('actuals')
+            ->join('employees', 'actuals.employee_id', '=', 'employees.id')
+            ->where('employees.status', '=', 'Manager')
+            ->whereMonth('actuals.date', '=', value: $month)
+            ->whereYear('actuals.date', '=', value: $year)
+            ->count();
 
-        $managerCountActual = $actualInputsByDepartment->firstWhere('occupation', 'BSKP Staff')->total ?? 0;
-        $assistantManagerCountActual = $actualInputsByDepartment->firstWhere('occupation', 'IT Staff')->total ?? 0;
+        $actualAsstManager = DB::table('actuals')
+            ->join('employees', 'actuals.employee_id', '=', 'employees.id')
+            ->where('employees.status', '=', 'Staff')
+            ->whereMonth('actuals.date', '=', value: $month)
+            ->whereYear('actuals.date', '=', value: $year)
+            ->count();
+
+        $actualMonthly = DB::table('actuals')
+            ->join('employees', 'actuals.employee_id', '=', 'employees.id')
+            ->where('employees.status', '=', 'Monthly')
+            ->whereMonth('actuals.date', '=', value: $month)
+            ->whereYear('actuals.date', '=', value: $year)
+            ->count();
+
+        // dd($actualMonthly, $actualAsstManager, $actualManager);
 
         $notification = DB::table('notifications')->orderBy('created_at', 'desc')
             ->first();
 
-        $totalActualInputs = $actualInputsByDepartment->sum('total');
         return view('dashboard', [
             'title' => 'Dashboard',
             'desc' => 'Analytics',
             'employees' => $employees,
-            'managerCount' => $managerCount,
-            'assistantManagerCount' => $assistantManagerCount,
-            'totalEmployees' => $totalEmployees,
-            'totalActualInputs' => $totalActualInputs,
-            'managerCountActual' => $managerCountActual,
-            'assistantManagerCountActual' => $assistantManagerCountActual,
             'deptLists' => $deptLists,
             'notification' => $notification,
+            'manager' => $manager,
+            'asstMng' => $asstMng,
+            'monthly' => $monthly,
+            'actualManager' => $actualManager,
+            'actualAsstManager' => $actualAsstManager,
+            'actualMonthly' => $actualMonthly
         ]);
     }
     public function filter(Request $request)

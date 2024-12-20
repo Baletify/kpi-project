@@ -224,6 +224,15 @@ class ActualController extends Controller
             'department_id' => $request->department_id,
         ];
 
+        $existingActual = DepartmentActual::where($searchConditions)
+            ->whereIn('status', ['Checked', 'Approved'])
+            ->first();
+
+        if ($existingActual) {
+            flash()->error('This KPI item already checked or approved');
+            return redirect()->back()->withErrors(['status' => 'Cannot update or create record because the status is already Checked or Approved.']);
+        }
+
         $dataToUpdateOrCreate = [
             'kpi_item' => $request->kpi_item,
             'kpi_unit' => $request->kpi_unit,
@@ -246,7 +255,7 @@ class ActualController extends Controller
         ];
 
         DepartmentActual::updateOrCreate($searchConditions, $dataToUpdateOrCreate);
-
+        flash()->success('Data created successfully.');
         return redirect()->to('actual/input-actual-department-details?department=' . $request->input('department_id') . '&year=' . $request->input('year') . '&semester=' . $semester);
     }
 
@@ -302,6 +311,15 @@ class ActualController extends Controller
             'date' => $date,
             'employee_id' => $request->employee_id,
         ];
+
+        $existingActual = Actual::where($searchConditions)
+            ->whereIn('status', ['Checked', 'Approved'])
+            ->first();
+
+        if ($existingActual) {
+            flash()->error('This KPI item already Checked or Approved');
+            return redirect()->back()->withErrors(['status' => 'Cannot update or create record because the status is already Checked or Approved.']);
+        }
 
         $dataToUpdateOrCreate = [
             'kpi_item' => $request->kpi_item,
