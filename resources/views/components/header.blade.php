@@ -11,9 +11,12 @@
             <li class="text-white mr-2 text-xl"> {{ $desc }} </li>
         </ul>
         <ul class="ml-auto flex items-center">
-            <li class="mr-1">
-                <a href="#" class="text-white hover:text-red-600 font-bold">Logout</a>
-            </li>
+            <div class="p-0">
+                <form method="POST" action="{{ route('auth.logout') }}">
+                    @csrf
+                    <button class="text-white font-bold hover:underline" type="submit">Logout</button>
+                </form>
+            </div>
         </ul>
     </div>
     <div class="px-6 flex-2">

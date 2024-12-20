@@ -19,7 +19,8 @@
             <div class="sm:w-1/2 px-5">
                 <h2 class="font-bold text-3xl">Login</h2>
                 <p class="text-sm mt-4 mb-6">Login untuk melanjutkan ke Aplikasi KPI</p>
-                <form action="" class="flex flex-col">
+                <form action="{{ url('auth/me') }}" method="POST" class="flex flex-col">
+                    @csrf
                     <label for="email" class="font-semibold mb-0.5">Email:</label>
                     <input class="p-2 rounded-xl border-none mb-2" type="text" name="email" id="email" placeholder="Email" autocomplete="off">
                     <label for="password" class="font-semibold mb-0.5">Password:</label>

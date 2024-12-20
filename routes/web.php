@@ -24,6 +24,7 @@ Route::get('/', function () {
 Route::get('/login', [AuthController::class, 'login'])->name('auth.login');
 
 Route::post('auth/me', [AuthController::class, 'authMe'])->name('auth.me');
+Route::post('/logout', [AuthController::class, 'logout'])->name('auth.logout');
 
 
 Route::get('dashboard', [EmployeeController::class, 'index'])->name('dashboard');

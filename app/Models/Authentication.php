@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class Authentication extends Authenticatable
 {
@@ -52,6 +53,7 @@ class Authentication extends Authenticatable
      */
     public function setPasswordAttribute($password)
     {
+        Log::info('setPasswordAttribute called with: ' . $password);
         $this->attributes['password'] = bcrypt($password);
     }
 }
