@@ -228,6 +228,8 @@ class ActualController extends Controller
             $semester = '1';
         }
 
+        $input_by = Auth::user()->name;
+
         $actual = '';
         $kpi_percentage = '';
         if ($request->record_file == null) {
@@ -271,7 +273,7 @@ class ActualController extends Controller
             'status' => $request->status,
             'semester' => $semester,
             'detail' => $request->detail,
-            'input_by' => $request->input_by,
+            'input_by' => $input_by,
             'input_at' => now(),
         ];
 
@@ -327,6 +329,8 @@ class ActualController extends Controller
             $kpi_percentage = $request->achievement;
         }
 
+        $input_by = Auth::user()->name;
+
         $searchConditions = [
             'kpi_code' => $request->kpi_code,
             'date' => $date,
@@ -359,7 +363,7 @@ class ActualController extends Controller
             'status' => $request->status,
             'semester' => $semester,
             'detail' => $request->detail,
-            'input_by' => $request->input_by,
+            'input_by' => $input_by,
             'input_at' => now(),
         ];
 
@@ -372,6 +376,8 @@ class ActualController extends Controller
     public function updateActual(Request $request)
     {
         $actual = Actual::find($request->actual_id);
+        $checked_by = Auth::user()->name;
+        $approved_by = Auth::user()->name;
 
         if (!$actual) {
             return abort(404, 'Actual not found');
@@ -381,10 +387,10 @@ class ActualController extends Controller
 
             if ($request->status == 'Checked') {
                 $actual->checked_at = now();
-                $actual->checked_by = 'Mr. X';
+                $actual->checked_by = $checked_by;
             } elseif ($request->status == 'Approved') {
                 $actual->approved_at = now();
-                $actual->approved_by = 'Mr. Y';
+                $actual->approved_by = $approved_by;
             };
         }
 
@@ -395,6 +401,8 @@ class ActualController extends Controller
     public function updateActualDept(Request $request)
     {
         $actual = DepartmentActual::find($request->actual_id);
+        $checked_by = Auth::user()->name;
+        $approved_by = Auth::user()->name;
 
         if (!$actual) {
             return abort(404, 'Actual not found');
@@ -402,10 +410,12 @@ class ActualController extends Controller
         if ($request->filled('status')) {
             $actual->status = $request->status;
 
-            if ($request->status === 'Checked') {
+            if ($request->status == 'Checked') {
                 $actual->checked_at = now();
-            } elseif ($request->status === 'Approved') {
+                $actual->checked_by = $checked_by;
+            } elseif ($request->status == 'Approved') {
                 $actual->approved_at = now();
+                $actual->approved_by = $approved_by;
             };
         }
 

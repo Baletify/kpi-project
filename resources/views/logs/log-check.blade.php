@@ -64,7 +64,7 @@
 
                             
                             $currentMonth = \Carbon\Carbon::now()->month;
-                            if ($currentMonth >= 2 && $currentMonth < 7) {
+                            if ($semester == '1') {
                                 $targetUnitCounts = $targetUnitCounts1;
                                 $targetUnitCountsDept = $targetUnitCountsDept1; 
                             } else {

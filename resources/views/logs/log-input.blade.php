@@ -181,8 +181,8 @@
                             
                         @endphp
                         <input type="hidden" name="department_id" id="department_id" value="{{ $department_id }}">
-                        <input type="hidden" name="input_at" id="input_at" value="{{ $lastInput->input_at ?? '' }}">
-                        <input type="hidden" name="input_by" id="input_by" value="{{ $lastInput->input_by ?? '' }}">
+                        <input type="hidden" name="input_at" id="input_at" value="{{ $lastInput->checked_at ?? '' }}">
+                        <input type="hidden" name="input_by" id="input_by" value="{{ $lastInput->checked_by ?? '' }}">
                         <button type="submit" class="rounded-md bg-blue-500 text-white p-2">Generate TTE</button>
                     </form>
                     @endif

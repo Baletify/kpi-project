@@ -2,16 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Models\Department;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
-use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 
 class GeneratePdfController extends Controller
 {
     public function generatePdfInput(Request $request)
     {
         $input_at = Carbon::parse($request->input_at);
+        $nik = Auth::user()->nik;
 
         $dept = Department::where('id', $request->department_id)->first();
         $data = [
@@ -22,7 +24,7 @@ class GeneratePdfController extends Controller
             'last_input' => $input_at->format('d M Y H:i:s'),
             'created_at' => now()->format('d M Y H:i:s'),
             'department' => $dept->name,
-            'nik' => 'XXX-123',
+            'nik' => $nik,
             'name' => $request->input_by,
             'desc_1' => 'Dokumen ini sah, diterbitkan secara elektronik melalui aplikasi KPI di PT Bridgestone Kalimantan Plantation sehingga tidak memerlukan cap dan tanda tangan.',
             'desc_2' => 'Terima kasih telah menyampaikan laporan KPI. ',
