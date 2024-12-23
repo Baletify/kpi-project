@@ -26,7 +26,7 @@ class DepartmentTargetSeeder extends Seeder
                 'department_id' => 6,
                 'date' => '2024-01-08 01:49:17',
                 'detail' => 'Persentasi ketaatan terhadap peraturan yang berkaitan dengan K3',
-                'target_unit_id' => 19,
+                'target_unit_id' => 1,
             ],
             [
                 'code' => 'HSE.02',
@@ -40,7 +40,7 @@ class DepartmentTargetSeeder extends Seeder
                 'department_id' => 6,
                 'date' => '2024-01-08 01:49:17',
                 'detail' => 'Persentasi ketaatan terhadap peraturan yang berkaitan dengan K3',
-                'target_unit_id' => 20,
+                'target_unit_id' => 2,
             ],
             [
                 'code' => 'HSE.03',
@@ -54,7 +54,7 @@ class DepartmentTargetSeeder extends Seeder
                 'department_id' => 6,
                 'date' => '2024-01-08 01:49:17',
                 'detail' => 'Permentan No. 05 th 2028 Pembukaan dan / atau pengolahan lahan perkebunan tanpa membakar',
-                'target_unit_id' => 21,
+                'target_unit_id' => 3,
             ],
             [
                 'code' => 'HSE.04',
@@ -68,7 +68,7 @@ class DepartmentTargetSeeder extends Seeder
                 'department_id' => 6,
                 'date' => '2024-01-08 01:49:17',
                 'detail' => '',
-                'target_unit_id' => 22,
+                'target_unit_id' => 4,
             ],
             [
                 'code' => 'HSE.05',
@@ -82,7 +82,7 @@ class DepartmentTargetSeeder extends Seeder
                 'department_id' => 6,
                 'date' => '2024-01-08 01:49:17',
                 'detail' => 'Kegiatan Sekretariat P2K3',
-                'target_unit_id' => 23,
+                'target_unit_id' => 5,
             ],
         ];
 

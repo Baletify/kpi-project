@@ -7,6 +7,8 @@
     $currentMonth = now()->month;
     $currentYear = now()->year;
     $yearToShow = ($currentMonth == 1) ? $currentYear - 1 : $currentYear;
+    $userID = auth()->id();
+    $departmentID = auth()->user()->department_id;
     @endphp
     <ul class="mt-4">
         <li>
@@ -23,18 +25,36 @@
                 </svg>
             </button>
             <ul x-show="open" x-transition:enter="transition ease-out duration-100" x-transition:enter-start="transform opacity-0 scale-95" x-transition:enter-end="transform opacity-100 scale-100" x-transition:leave="transition ease-in duration-75" x-transition:leave-start="transform opacity-100 scale-100" x-transition:leave-end="transform opacity-0 scale-95" class="mt-2 space-y-2"> --}}
+                @if (auth()->user()->input_type == 'Group')
                 <li>
-                    <a href="{{ url('/target/input-target-department?department=1') }}" class="flex items-center py-2 px-6 text-gray-300 hover:bg-gray-700">
+                    <a href="{{ url('/target/input-target-department?department=' . $departmentID) }}" class="flex items-center py-2 px-6 text-gray-300 hover:bg-gray-700">
                         <i class="ri-crosshair-2-line text-2xl"></i>
                         <span class="ml-3">Input Target</span>
                     </a>
                 </li>
+                @elseif (auth()->user()->input_type == 'Individual')
+                <li>
+                    <a href="{{ url('/target/input-target-department?employee=' . $userID) }}" class="flex items-center py-2 px-6 text-gray-300 hover:bg-gray-700">
+                        <i class="ri-crosshair-2-line text-2xl"></i>
+                        <span class="ml-3">Input Target</span>
+                    </a>
+                </li>
+                @endif
+                @if (auth()->user()->input_type == 'Group')
                 <li>    
-                    <a href="{{ url('/actual/input-actual-department?department=1') }}" class="flex items-center py-2 px-6 text-gray-300 hover:bg-gray-700">
+                    <a href="{{ url('/actual/input-actual-department?department=' . $departmentID) }}" class="flex items-center py-2 px-6 text-gray-300 hover:bg-gray-700">
                         <i class="ri-book-2-line text-2xl"></i>
                         <span class="ml-3">Input Pencapaian Aktual</span>
                     </a>
                 </li>
+                @elseif (auth()->user()->input_type == 'Individual')
+                <li>    
+                    <a href="{{ url('/actual/input-actual-department?employee=' . $userID) }}" class="flex items-center py-2 px-6 text-gray-300 hover:bg-gray-700">
+                        <i class="ri-book-2-line text-2xl"></i>
+                        <span class="ml-3">Input Pencapaian Aktual</span>
+                    </a>
+                </li>
+                @endif
             {{-- </ul>
         </div> --}}
         {{-- <li>
@@ -84,12 +104,21 @@
                             <span class="ml-3">Summary Dept</span>
                         </a>
                     </li>
+                    @if (auth()->user()->input_type == 'Group')
                     <li>
-                        <a href="{{ url('/report/list-employee-report?department=1') }}" class="flex items-center py-2 px-6 text-gray-300 hover:bg-gray-700">
+                        <a href="{{ url('/report/list-employee-report?department=' . $departmentID) }}" class="flex items-center py-2 px-6 text-gray-300 hover:bg-gray-700">
                             <i class="ri-contacts-book-2-line text-2xl"></i>
                             <span class="ml-3">Summary KPI Employee</span>
                         </a>
                     </li>
+                    @elseif (auth()->user()->input_type == 'Individual')
+                    <li>
+                        <a href="{{ url('/report/list-employee-report?employee=' . $userID) }}" class="flex items-center py-2 px-6 text-gray-300 hover:bg-gray-700">
+                            <i class="ri-contacts-book-2-line text-2xl"></i>
+                            <span class="ml-3">Summary KPI Employee</span>
+                        </a>
+                    </li>
+                    @endif
                     <li>
                         <a href="{{ url('/report/department-report/1?semester=2&year=2024') }}" class="flex items-center py-2 px-6 text-gray-300 hover:bg-gray-700">
                             <i class="ri-file-list-3-fill text-2xl"></i>

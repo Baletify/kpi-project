@@ -15,20 +15,19 @@
         return '';
     } 
         @endphp
-        <div class="p-0">
-            <div class="px-1">
-                <span class="font-medium text-gray-600 text-sm">PT BRIDGESTONE KALIMANTAN PLANTATION</span>
-            </div>
-            <div class="px-1">
-                <span class=" font-bold text-gray-600 text-2xl">LOG INPUT KPI</span>
-            </div>
-            <div class="px-1">
-
-                <span class=" font-semibold text-gray-600 text-sm">Bulan: {{ $monthName }}</span>
-            </div>
-        </div>
-        
         <div class="flex justify-between">
+            <div class="p-0">
+                <div class="px-1">
+                    <span class="font-medium text-gray-600 text-sm">PT BRIDGESTONE KALIMANTAN PLANTATION</span>
+                </div>
+                <div class="px-1">
+                    <span class=" font-bold text-gray-600 text-2xl">LOG INPUT KPI</span>
+                </div>
+                <div class="px-1">
+    
+                    <span class=" font-semibold text-gray-600 text-sm">Bulan: {{ $monthName }}</span>
+                </div>
+            </div>
             <div class="p-0 5">
                 <form action="{{ url('logs/log-input') }}" method="GET">
                     <input type="hidden" name="department" id="department" value="{{ $department_id }}">
@@ -64,6 +63,9 @@
                  </div>
                  </form>
             </div>
+        </div>
+        
+        <div class="flex justify-end">
             @php
             // dd($targetUnitCountAll);
             $monthQuery = request()->query('month');
@@ -150,7 +152,7 @@
                 // dd('total filled:', $totalFl, 'total filled dept:', $totalFlDept, 'total filled dept and indiv', $totalFlAll, 'total target Unit dept + indiv', $totalTgAll);
                 
             @endphp
-            <div class="flex justify-between">
+            <div class="flex justify-end">
                 <div class="p-0.5">
                     @if ($totalFlAll == $totalTgAll - 1 )
                     <form action="{{ url('/generate-pdf-input') }}" method="GET">

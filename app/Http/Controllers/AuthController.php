@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\Authentication;
 use Illuminate\Support\Facades\Auth;
 
+use function PHPUnit\Framework\isEmpty;
+
 class AuthController extends Controller
 {
     public function login()
@@ -23,12 +25,11 @@ class AuthController extends Controller
             'password' => ['required'],
         ]);
 
-
         // Attempt to authenticate the user
         if (Auth::attempt($credentials)) {
             // Authentication passed, regenerate session
             $request->session()->regenerate();
-            flash()->success('Welcome!');
+            flash()->success('Selamat Datang Di Aplikasi KPI!');
             // Redirect to the intended page or dashboard
 
             return redirect()->intended('dashboard');
@@ -36,10 +37,9 @@ class AuthController extends Controller
 
         flash()->error('The provided credentials do not match our records.');
 
-        // Authentication failed, redirect back with an error message
         return back()->withErrors([
-            'email' => '',
-        ]);
+            'email' => 'The provided credentials do not match our records.',
+        ])->onlyInput('email');
     }
 
     public function logout(Request $request)

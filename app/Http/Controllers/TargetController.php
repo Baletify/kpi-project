@@ -2,20 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Department;
-use Illuminate\Http\Request;
-use App\Models\Employee;
-use App\Models\TargetUnit;
-use Illuminate\View\View;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\DB;
-use Maatwebsite\Excel\Facades\Excel;
-use App\Imports\TargetImport;
-use App\Imports\TargetUnitImport;
-use App\Models\DepartmentTarget;
-use App\Models\Target;
-use Dflydev\DotAccessData\Data;
 use Carbon\Carbon;
+use App\Models\Target;
+use App\Models\Employee;
+use Illuminate\View\View;
+use App\Models\Department;
+use App\Models\TargetUnit;
+use Illuminate\Http\Request;
+use App\Imports\TargetImport;
+use Dflydev\DotAccessData\Data;
+use App\Models\DepartmentTarget;
+use App\Imports\TargetUnitImport;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
+use Maatwebsite\Excel\Facades\Excel;
 
 class TargetController extends Controller
 {
@@ -85,10 +86,28 @@ class TargetController extends Controller
     public function department(Request $request)
     {
         $departmentID = $request->query('department');
+        $employeeID = $request->query('employee');
 
         if ($departmentID) {
+            $userDepartmentID = Auth::user()->department_id;
+            if ($departmentID != $userDepartmentID) {
+                abort(403, 'Unauthorized');
+            }
+
             $departments = DB::table('departments')->where('departments.id', $departmentID)
                 ->leftJoin('employees', 'employees.department_id', '=', 'departments.id')
+                ->leftJoin('action_plans', 'action_plans.employee_id', '=', 'employees.id')
+                ->select('employees.id as employee_id', 'employees.name as employee', 'employees.nik as nik', 'employees.occupation as occupation', 'departments.name as department', 'departments.id as department_id', 'action_plans.file as file', 'action_plans.id as action_plan_id')
+                ->get();
+
+            return view('target.input-target-department', ['title' => 'Input Target', 'desc' => 'Input KPI Target & Upload Program', 'departments' => $departments]);
+        } elseif ($employeeID) {
+            $userID = Auth::user()->id;
+            if ($employeeID != $userID) {
+                abort(403, 'Unauthorized action.');
+            }
+            $departments = DB::table('employees')->where('employees.id', $employeeID)
+                ->leftJoin('departments', 'departments.id', '=', 'employees.department_id')
                 ->leftJoin('action_plans', 'action_plans.employee_id', '=', 'employees.id')
                 ->select('employees.id as employee_id', 'employees.name as employee', 'employees.nik as nik', 'employees.occupation as occupation', 'departments.name as department', 'departments.id as department_id', 'action_plans.file as file', 'action_plans.id as action_plan_id')
                 ->get();

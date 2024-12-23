@@ -75,12 +75,20 @@
                             $targetColumn = 'total_' . $month;
                             $targetUnitCount = $targetUnitCounts->where('department_code', $department)->first();
                             $targetUnitCountDept = $targetUnitCountsDept->where('department_code', $department)->first();
+
+                            $totalActual = ($actualCount['total'] ?? 0) + ($actualCountDept['total'] ?? 0)
+
+                            
                         @endphp
                         <td class="border-2 border-gray-400 tracking-wide text-[11px] py-0 text-center">
-                            {{ ($actualCount || $actualCountDept) ? (($actualCount ? $actualCount['total'] : 0) + ($actualCountDept ? $actualCountDept['total'] : 0)) : '' }}
+                            {{ $actualCount || $actualCountDept ? $totalActual : ''}}
                         </td>
                         <td class="border-2 border-gray-400 tracking-wide text-[11px] py-0 text-center">
-                            {{ ($targetUnitCount || $targetUnitCountDept) ? (($targetUnitCount ? $targetUnitCount->$targetColumn : 0) + ($targetUnitCountDept ? $targetUnitCountDept->$targetColumn : 0)) : '' }}
+                            @if ($targetUnitCount || $targetUnitCountDept)
+                                {{ ($targetUnitCount ? $targetUnitCount->$targetColumn : 0) + ($targetUnitCountDept ? $targetUnitCountDept->$targetColumn : 0) - ($totalActual ?? 0) }}
+                            @else
+                                ''
+                            @endif
                         </td>
                     @endforeach
                 </tr>

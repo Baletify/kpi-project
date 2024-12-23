@@ -2,16 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Models\Employee;
-use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Str;
 use App\Models\Actual;
-use App\Models\ActualDepartment;
+use App\Models\Employee;
 use App\Models\Department;
+use Illuminate\Support\Str;
+use Illuminate\Http\Request;
+use App\Models\ActualDepartment;
 use App\Models\DepartmentActual;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
 class ActualController extends Controller
 {
@@ -116,10 +117,30 @@ class ActualController extends Controller
                 'departments' => $departments
             ]);
         } else if ($department) {
+            $userDepartmentID = Auth::user()->department_id;
+            if ($department != $userDepartmentID) {
+                abort(403, 'Unauthorized');
+            }
             $departments = DB::table('departments')
                 ->leftJoin('employees', 'employees.department_id', '=', 'departments.id')
                 ->select('employees.id as employee_id', 'employees.nik as nik', 'employees.name as employee', 'employees.occupation as occupation', 'departments.name as department', 'departments.id as department_id')
                 ->where('departments.id', $department)
+                ->get();
+
+            return view('actual.input-actual-department', [
+                'title' => 'Input Data Realisasi',
+                'desc' => 'Achievement',
+                'departments' => $departments
+            ]);
+        } elseif ($employee) {
+            $userDepartmentID = Auth::user()->id;
+            if ($employee != $userDepartmentID) {
+                abort(403, 'Unauthorized');
+            }
+            $departments = DB::table('departments')
+                ->leftJoin('employees', 'employees.department_id', '=', 'departments.id')
+                ->select('employees.id as employee_id', 'employees.nik as nik', 'employees.name as employee', 'employees.occupation as occupation', 'departments.name as department', 'departments.id as department_id')
+                ->where('employees.id', $employee)
                 ->get();
 
             return view('actual.input-actual-department', [

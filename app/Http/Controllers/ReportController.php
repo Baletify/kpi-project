@@ -3,13 +3,14 @@
 namespace App\Http\Controllers;
 
 
-use Illuminate\Http\Request;
-use App\Models\Employee;
-use Illuminate\Support\Facades\DB;
-use App\Models\Actual;
-use App\Models\Department;
-use App\Models\DepartmentActual;
 use Carbon\Carbon;
+use App\Models\Actual;
+use App\Models\Employee;
+use App\Models\Department;
+use Illuminate\Http\Request;
+use App\Models\DepartmentActual;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Response;
 
@@ -19,11 +20,29 @@ class ReportController extends Controller
     public function index(Request $request)
     {
         $department = $request->query('department');
+        $employee = $request->query('employee');
+
         if ($department) {
+            $departmentID = Auth::user()->department_id;
+            if ($department != $departmentID) {
+                abort(403, 'Unauthorized');
+            }
             $departments = DB::table('departments')
                 ->leftJoin('employees', 'employees.department_id', '=', 'departments.id')
                 ->select('employees.id as employee_id', 'employees.nik as nik', 'employees.name as employee', 'employees.occupation as occupation', 'departments.name as department', 'departments.id as department_id')
                 ->where('departments.id', $department)
+                ->get();
+
+            return view('report.list-employee-report', ['title' => 'Report', 'desc' => 'Employee List', 'departments' => $departments]);
+        } elseif ($employee) {
+            $userID = Auth::user()->id;
+            if ($employee != $userID) {
+                abort(403, 'Unauthorized');
+            }
+            $departments = DB::table('departments')
+                ->leftJoin('employees', 'employees.department_id', '=', 'departments.id')
+                ->select('employees.id as employee_id', 'employees.nik as nik', 'employees.name as employee', 'employees.occupation as occupation', 'departments.name as department', 'departments.id as department_id')
+                ->where('employees.id', $employee)
                 ->get();
 
             return view('report.list-employee-report', ['title' => 'Report', 'desc' => 'Employee List', 'departments' => $departments]);
@@ -197,28 +216,28 @@ class ReportController extends Controller
     {
         $department = $request->query('department');
         $yearToShow = $request->query('year');
-        $occupation = $request->query('occupation');
+        $status = $request->query('status');
         $allDept = Department::all();
-        $allOccupation = Employee::select('occupation')->distinct()->get();
+        $allStatus = Employee::select('status')->distinct()->get();
 
-        if ($yearToShow && $department && $occupation) {
+        if ($yearToShow && $department && $status) {
             $employees = DB::table('employees')->leftJoin('departments', 'departments.id', '=', 'employees.department_id')->select('departments.name as dept', 'employees.name as name', 'employees.nik', 'employees.occupation', 'employees.id as employee_id', 'department_id')
-                ->where('employees.occupation', $occupation)
+                ->where('employees.status', $status)
                 ->where('departments.id', $department)
-                ->paginate(10)
-                ->appends(['year' => $yearToShow, 'department' => $department, 'occupation' => $occupation]);
+                ->paginate(18)
+                ->appends(['year' => $yearToShow, 'department' => $department, 'occupation' => $status]);
 
             $actuals = DB::table('actuals')->leftJoin('employees', 'employees.id', '=', 'actuals.employee_id')->leftJoin('departments', 'departments.id', '=', 'employees.department_id')
                 ->where('departments.id', $department)
                 ->where(DB::raw('YEAR(actuals.date)'), '=', $yearToShow)
-                ->paginate(10)
-                ->appends(['year' => $yearToShow, 'department' => $department, 'occupation' => $occupation]);
+                ->paginate(18)
+                ->appends(['year' => $yearToShow, 'department' => $department, 'occupation' => $status]);
 
             $actualsDept = DB::table('department_actuals')->leftJoin('departments', 'departments.id', '=', 'department_actuals.department_id')->leftJoin('employees', 'department_actuals.department_id', '=', 'employees.department_id')
                 ->where('departments.id', $department)
                 ->where(DB::raw('YEAR(department_actuals.date)'), '=', $yearToShow)
-                ->paginate(10)
-                ->appends(['year' => $yearToShow, 'department' => $department, 'occupation' => $occupation]);
+                ->paginate(18)
+                ->appends(['year' => $yearToShow, 'department' => $department, 'occupation' => $status]);
 
 
             $actualsCollection = collect($actuals->items());
@@ -296,24 +315,24 @@ class ReportController extends Controller
             // dd($employeeTotals);
 
 
-            return view('report.summary-department-report', ['title' => 'Report', 'desc' => 'Department Report', 'employees' => $employees, 'employeeTotals' => $employeeTotals, 'allDept' =>  $allDept, 'allOccupation' => $allOccupation]);
+            return view('report.summary-department-report', ['title' => 'Report', 'desc' => 'Department Report', 'employees' => $employees, 'employeeTotals' => $employeeTotals, 'allDept' =>  $allDept, 'allOccupation' => $allStatus]);
         } elseif ($yearToShow && $department) {
             $employees = DB::table('employees')->leftJoin('departments', 'departments.id', '=', 'employees.department_id')->select('departments.name as dept', 'employees.name as name', 'employees.nik', 'employees.occupation', 'employees.id as employee_id', 'department_id')
                 ->where('departments.id', $department)
-                ->paginate(10)
-                ->appends(['year' => $yearToShow, 'department' => $department, 'occupation' => $occupation]);
+                ->paginate(18)
+                ->appends(['year' => $yearToShow, 'department' => $department, 'occupation' => $status]);
 
             $actuals = DB::table('actuals')->leftJoin('employees', 'employees.id', '=', 'actuals.employee_id')->leftJoin('departments', 'departments.id', '=', 'employees.department_id')
                 ->where('departments.id', $department)
                 ->where(DB::raw('YEAR(actuals.date)'), '=', $yearToShow)
-                ->paginate(10)
-                ->appends(['year' => $yearToShow, 'department' => $department, 'occupation' => $occupation]);
+                ->paginate(18)
+                ->appends(['year' => $yearToShow, 'department' => $department, 'occupation' => $status]);
 
             $actualsDept = DB::table('department_actuals')->leftJoin('departments', 'departments.id', '=', 'department_actuals.department_id')->leftJoin('employees', 'department_actuals.department_id', '=', 'employees.department_id')
                 ->where('departments.id', $department)
                 ->where(DB::raw('YEAR(department_actuals.date)'), '=', $yearToShow)
-                ->paginate(10)
-                ->appends(['year' => $yearToShow, 'department' => $department, 'occupation' => $occupation]);
+                ->paginate(18)
+                ->appends(['year' => $yearToShow, 'department' => $department, 'occupation' => $status]);
 
 
             $actualsCollection = collect($actuals->items());
@@ -388,23 +407,23 @@ class ReportController extends Controller
                 ];
             }
 
-            return view('report.summary-department-report', ['title' => 'Report', 'desc' => 'Department Report', 'employees' => $employees, 'employeeTotals' => $employeeTotals, 'allDept' => $allDept, 'allOccupation' => $allOccupation]);
-        } elseif ($yearToShow && $occupation) {
+            return view('report.summary-department-report', ['title' => 'Report', 'desc' => 'Department Report', 'employees' => $employees, 'employeeTotals' => $employeeTotals, 'allDept' => $allDept, 'allOccupation' => $allStatus]);
+        } elseif ($yearToShow && $status) {
             $employees = DB::table('employees')->leftJoin('departments', 'departments.id', '=', 'employees.department_id')
                 ->select('departments.name as dept', 'employees.name as name', 'employees.nik', 'employees.occupation', 'employees.id as employee_id', 'department_id')
-                ->where('employees.occupation', '=', $occupation)
-                ->paginate(10)
-                ->appends(['year' => $yearToShow, 'department' => $department, 'occupation' => $occupation]);
+                ->where('employees.status', '=', $status)
+                ->paginate(18)
+                ->appends(['year' => $yearToShow, 'department' => $department, 'occupation' => $status]);
 
             $actuals = DB::table('actuals')->leftJoin('employees', 'employees.id', '=', 'actuals.employee_id')->leftJoin('departments', 'departments.id', '=', 'employees.department_id')
                 ->where(DB::raw('YEAR(actuals.date)'), '=', $yearToShow)
-                ->paginate(10)
-                ->appends(['year' => $yearToShow, 'department' => $department, 'occupation' => $occupation]);
+                ->paginate(18)
+                ->appends(['year' => $yearToShow, 'department' => $department, 'occupation' => $status]);
 
             $actualsDept = DB::table('department_actuals')->leftJoin('departments', 'departments.id', '=', 'department_actuals.department_id')->leftJoin('employees', 'department_actuals.department_id', '=', 'employees.department_id')
                 ->where(DB::raw('YEAR(department_actuals.date)'), '=', $yearToShow)
-                ->paginate(10)
-                ->appends(['year' => $yearToShow, 'department' => $department, 'occupation' => $occupation]);
+                ->paginate(18)
+                ->appends(['year' => $yearToShow, 'department' => $department, 'occupation' => $status]);
 
 
             $actualsCollection = collect($actuals->items());
@@ -480,20 +499,20 @@ class ReportController extends Controller
             }
 
 
-            return view('report.summary-department-report', ['title' => 'Report', 'desc' => 'Department Report', 'employees' => $employees, 'employeeTotals' => $employeeTotals, 'allDept' => $allDept, 'allOccupation' => $allOccupation]);
+            return view('report.summary-department-report', ['title' => 'Report', 'desc' => 'Department Report', 'employees' => $employees, 'employeeTotals' => $employeeTotals, 'allDept' => $allDept, 'allOccupation' => $allStatus]);
         } elseif ($yearToShow) {
             $employees = DB::table('employees')->leftJoin('departments', 'departments.id', '=', 'employees.department_id')->select('departments.name as dept', 'employees.name as name', 'employees.nik', 'employees.occupation', 'employees.id as employee_id', 'department_id')
-                ->paginate(10)
-                ->appends(['year' => $yearToShow, 'department' => $department, 'occupation' => $occupation]);
+                ->paginate(18)
+                ->appends(['year' => $yearToShow, 'department' => $department, 'occupation' => $status]);
 
             $actuals = DB::table('actuals')->leftJoin('employees', 'employees.id', '=', 'actuals.employee_id')->leftJoin('departments', 'departments.id', '=', 'employees.department_id')
                 ->where(DB::raw('YEAR(actuals.date)'), '=', $yearToShow)
-                ->paginate(10)
-                ->appends(['year' => $yearToShow, 'department' => $department, 'occupation' => $occupation]);
+                ->paginate(18)
+                ->appends(['year' => $yearToShow, 'department' => $department, 'occupation' => $status]);
             $actualsDept = DB::table('department_actuals')->leftJoin('departments', 'departments.id', '=', 'department_actuals.department_id')->leftJoin('employees', 'department_actuals.department_id', '=', 'employees.department_id')
                 ->where(DB::raw('YEAR(department_actuals.date)'), '=', $yearToShow)
-                ->paginate(10)
-                ->appends(['year' => $yearToShow, 'department' => $department, 'occupation' => $occupation]);
+                ->paginate(18)
+                ->appends(['year' => $yearToShow, 'department' => $department, 'occupation' => $status]);
 
 
             $actualsCollection = collect($actuals->items());
@@ -569,7 +588,7 @@ class ReportController extends Controller
             }
 
 
-            return view('report.summary-department-report', ['title' => 'Report', 'desc' => 'Department Report', 'employees' => $employees, 'employeeTotals' => $employeeTotals, 'allDept' => $allDept, 'allOccupation' => $allOccupation]);
+            return view('report.summary-department-report', ['title' => 'Report', 'desc' => 'Department Report', 'employees' => $employees, 'employeeTotals' => $employeeTotals, 'allDept' => $allDept, 'allOccupation' => $allStatus]);
         } else {
             return view('components/404-page');
         }

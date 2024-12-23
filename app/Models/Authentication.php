@@ -17,6 +17,7 @@ class Authentication extends Authenticatable
      */
     protected $table = 'employees';
     protected $fillable = [
+        'id',
         'name',
         'email',
         'password',
@@ -45,15 +46,15 @@ class Authentication extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    /**
-     * Automatically hash the password when it is set.
-     *
-     * @param string $password
-     * @return void
-     */
-    public function setPasswordAttribute($password)
-    {
-        Log::info('setPasswordAttribute called with: ' . $password);
-        $this->attributes['password'] = bcrypt($password);
-    }
+    // /**
+    //  * Automatically hash the password when it is set.
+    //  *
+    //  * @param string $password
+    //  * @return void
+    //  */
+    // public function setPasswordAttribute($password)
+    // {
+    //     Log::info('setPasswordAttribute called with: ' . $password);
+    //     $this->attributes['password'] = bcrypt($password);
+    // }
 }
