@@ -77,7 +77,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="{{ route('log-input.indexInput', 'department=' . $departmentID . '&month=' . $currentMonth - 1, '&year=' . $yearToShow) }}" class="flex items-center py-2 px-6 text-gray-300 hover:bg-gray-700">
+                    <a href="{{ route('log-input.indexInput', 'department=' . $departmentID . '&month=' . $currentMonth - 1 . '&year=' . $yearToShow) }}" class="flex items-center py-2 px-6 text-gray-300 hover:bg-gray-700">
                         <i class="ri-history-line text-2xl"></i>
                         <span class="ml-3">Log Input</span>
                     </a>

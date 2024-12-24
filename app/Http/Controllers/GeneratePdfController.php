@@ -14,6 +14,7 @@ class GeneratePdfController extends Controller
     {
         $input_at = Carbon::parse($request->input_at);
         $nik = Auth::user()->nik;
+        $name = Auth::user()->name;
 
         $dept = Department::where('id', $request->department_id)->first();
         $data = [
@@ -25,7 +26,7 @@ class GeneratePdfController extends Controller
             'created_at' => now()->format('d M Y H:i:s'),
             'department' => $dept->name,
             'nik' => $nik,
-            'name' => $request->input_by,
+            'name' => $name,
             'desc_1' => 'Dokumen ini sah, diterbitkan secara elektronik melalui aplikasi KPI di PT Bridgestone Kalimantan Plantation sehingga tidak memerlukan cap dan tanda tangan.',
             'desc_2' => 'Terima kasih telah menyampaikan laporan KPI. ',
             'signature' => 'Manajemen BSKP'
@@ -42,6 +43,7 @@ class GeneratePdfController extends Controller
     {
         $input_at = Carbon::parse($request->input_at);
         $nik = Auth::user()->nik;
+        $name = Auth::user()->name;
 
         $dept = Department::where('id', $request->department_id)->first();
         $data = [
@@ -53,7 +55,7 @@ class GeneratePdfController extends Controller
             'created_at' => now()->format('d M Y H:i:s'),
             'department' => $dept->name,
             'nik' => $nik,
-            'name' => $request->input_by,
+            'name' => $name,
             'desc_1' => 'Dokumen ini sah, diterbitkan secara elektronik melalui aplikasi KPI di PT Bridgestone Kalimantan Plantation sehingga tidak memerlukan cap dan tanda tangan.',
             'desc_2' => 'Terima kasih telah menyampaikan laporan KPI. ',
             'signature' => 'Manajemen BSKP'
@@ -61,8 +63,8 @@ class GeneratePdfController extends Controller
 
         // dd($data);
 
-        $pdf = Pdf::loadView('generate-pdf-input', $data)->setPaper('a5', 'landscape');
+        $pdf = Pdf::loadView('generate-pdf-check', $data)->setPaper('a5', 'landscape');
 
-        return $pdf->download('TTE-Input-' . now()->format('d-M-Y') . '.pdf');
+        return $pdf->download('TTE-check-' . now()->format('d-M-Y') . '.pdf');
     }
 }
