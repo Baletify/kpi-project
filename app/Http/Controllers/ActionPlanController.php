@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Employee;
 use App\Models\ActionPlan;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Response;
 
@@ -55,7 +56,11 @@ class ActionPlanController extends Controller
             ]
         );
 
-        return redirect()->route('target.department', ['department' => $request->department_id]);
+        if (Auth::user()->input_type == 'Group') {
+            return redirect()->route('target.department', ['department' => $request->department_id]);
+        } else {
+            return redirect()->route('target.department', ['employee' => $request->employee_id]);
+        }
     }
 
     public function showFile($filename)
@@ -109,6 +114,10 @@ class ActionPlanController extends Controller
             ]
         );
 
-        return redirect()->route('target.department', ['department' => $request->department_id]);
+        if (Auth::user()->input_type == 'Group') {
+            return redirect()->route('target.department', ['department' => $request->department_id]);
+        } else {
+            return redirect()->route('target.department', ['employee' => $request->employee_id]);
+        }
     }
 }

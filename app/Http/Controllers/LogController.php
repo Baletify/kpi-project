@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Department;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
@@ -367,7 +368,7 @@ class LogController extends Controller
         $department = $request->query('department');
         $month = $request->query('month');
         $year = $request->query('year');
-
+        $allDept = Department::all();
 
         if ($department && $month && $year) {
 
@@ -394,6 +395,7 @@ class LogController extends Controller
                 'desc' => 'History',
                 'employeesInput' => $employeesInput,
                 'employees' => $employees,
+                'department' => $allDept,
 
             ]);
         } else if ($department) {

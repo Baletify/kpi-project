@@ -134,9 +134,11 @@
                             <p class="p-0.5 font-bold text-xl">Notifikasi:</p>
                         </div>
                         <div class="flex justify-between gap-x-3">
+                            @if (auth()->user()->role == 'Superadmin')      
                             <a href="/notifications/create">
                                 <i class="ri-add-line bg-green-600 text-white text-base p-0.5 rounded-sm"></i>
                             </a>
+                            @endif
                             <a href="/notifications/all">
                                 <p class="text-blue-500 hover:underline">See All</p>
                             </a>
@@ -191,7 +193,7 @@
             <div class="mb-2 bg-gray-200 rounded-md min-h-[200px] mr-1">
                 <div class="flex justify-between">
                     <div class="p-2">
-                        <span class="p-4 font-bold text-xl">Kriteria KPI</span>
+                        <span class="p-4 font-bold text-xl">Standar KPI</span>
                     </div>
                     <div class="p-2">
                         <a href="/kpi-requirement/create-requirement">

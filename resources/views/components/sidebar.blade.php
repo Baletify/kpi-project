@@ -12,7 +12,7 @@
     @endphp
     <ul class="mt-4">
         <li>
-            <a href="{{ url('/dashboard') }}" class="flex items-center py-2 px-6 text-gray-300 hover:bg-gray-700">
+            <a href="{{ route('dashboard') }}" class="flex items-center py-2 px-6 text-gray-300 hover:bg-gray-700">
                 <i class="ri-dashboard-2-line text-2xl"></i>
                 <span class="ml-3">Dashboard</span>
             </a>
@@ -27,14 +27,14 @@
             <ul x-show="open" x-transition:enter="transition ease-out duration-100" x-transition:enter-start="transform opacity-0 scale-95" x-transition:enter-end="transform opacity-100 scale-100" x-transition:leave="transition ease-in duration-75" x-transition:leave-start="transform opacity-100 scale-100" x-transition:leave-end="transform opacity-0 scale-95" class="mt-2 space-y-2"> --}}
                 @if (auth()->user()->input_type == 'Group')
                 <li>
-                    <a href="{{ url('/target/input-target-department?department=' . $departmentID) }}" class="flex items-center py-2 px-6 text-gray-300 hover:bg-gray-700">
+                    <a href="{{ route('target.department', 'department=' . $departmentID) }}" class="flex items-center py-2 px-6 text-gray-300 hover:bg-gray-700">
                         <i class="ri-crosshair-2-line text-2xl"></i>
                         <span class="ml-3">Input Target</span>
                     </a>
                 </li>
                 @elseif (auth()->user()->input_type == 'Individual')
                 <li>
-                    <a href="{{ url('/target/input-target-department?employee=' . $userID) }}" class="flex items-center py-2 px-6 text-gray-300 hover:bg-gray-700">
+                    <a href="{{ route('target.department', 'employee=' . $userID) }}" class="flex items-center py-2 px-6 text-gray-300 hover:bg-gray-700">
                         <i class="ri-crosshair-2-line text-2xl"></i>
                         <span class="ml-3">Input Target</span>
                     </a>
@@ -42,14 +42,14 @@
                 @endif
                 @if (auth()->user()->input_type == 'Group')
                 <li>    
-                    <a href="{{ url('/actual/input-actual-department?department=' . $departmentID) }}" class="flex items-center py-2 px-6 text-gray-300 hover:bg-gray-700">
+                    <a href="{{ route('actual.department', 'department=' . $departmentID) }}" class="flex items-center py-2 px-6 text-gray-300 hover:bg-gray-700">
                         <i class="ri-book-2-line text-2xl"></i>
                         <span class="ml-3">Input Pencapaian Aktual</span>
                     </a>
                 </li>
                 @elseif (auth()->user()->input_type == 'Individual')
                 <li>    
-                    <a href="{{ url('/actual/input-actual-department?employee=' . $userID) }}" class="flex items-center py-2 px-6 text-gray-300 hover:bg-gray-700">
+                    <a href="{{ route('actual.department', 'employee=' . $userID) }}" class="flex items-center py-2 px-6 text-gray-300 hover:bg-gray-700">
                         <i class="ri-book-2-line text-2xl"></i>
                         <span class="ml-3">Input Pencapaian Aktual</span>
                     </a>
@@ -71,19 +71,19 @@
             </button>
             <ul x-show="open" x-transition:enter="transition ease-out duration-100" x-transition:enter-start="transform opacity-0 scale-95" x-transition:enter-end="transform opacity-100 scale-100" x-transition:leave="transition ease-in duration-75" x-transition:leave-start="transform opacity-100 scale-100" x-transition:leave-end="transform opacity-0 scale-95" class="mt-2 space-y-2">
                 <li>
-                    <a href="{{ url('/logs/log-check?year=' . $yearToShow) }}" class="flex items-center py-2 px-6 text-gray-300 hover:bg-gray-700">
+                    <a href="{{ route('log-check.index', 'year=' . $yearToShow)}}" class="flex items-center py-2 px-6 text-gray-300 hover:bg-gray-700">
                         <i class="ri-file-check-line text-2xl"></i>
                         <span class="ml-3">Log Pengecekan</span>
                     </a>
                 </li>
                 <li>
-                    <a href="{{ url('/logs/log-input?department=1&month=' . $currentMonth - 1 . '&year=2024') }}" class="flex items-center py-2 px-6 text-gray-300 hover:bg-gray-700">
+                    <a href="{{ route('log-input.indexInput', 'department=' . $departmentID . '&month=' . $currentMonth - 1, '&year=' . $yearToShow) }}" class="flex items-center py-2 px-6 text-gray-300 hover:bg-gray-700">
                         <i class="ri-history-line text-2xl"></i>
                         <span class="ml-3">Log Input</span>
                     </a>
                 </li>             
                 <li>
-                    <a href="{{ url('/logs/log-input-individual?department=1&month=' . $currentMonth - 1 . '&year=2024') }}" class="flex items-center py-2 px-6 text-gray-300 hover:bg-gray-700">
+                    <a href="{{ route('log-input.individual', 'department=' . $departmentID . '&month=' . $currentMonth - 1 . '&year=' . $yearToShow) }}" class="flex items-center py-2 px-6 text-gray-300 hover:bg-gray-700">
                         <i class="ri-user-follow-fill text-2xl"></i>
                         <span class="ml-3">Log Input Individual</span>
                     </a>
@@ -99,28 +99,28 @@
                 </button>
                 <ul x-show="open" x-transition:enter="transition ease-out duration-100" x-transition:enter-start="transform opacity-0 scale-95" x-transition:enter-end="transform opacity-100 scale-100" x-transition:leave="transition ease-in duration-75" x-transition:leave-start="transform opacity-100 scale-100" x-transition:leave-end="transform opacity-0 scale-95" class="mt-2 space-y-2">
                     <li>
-                        <a href="{{ url('report/summary-department-report?year=' . $yearToShow) }}" class="flex items-center py-2 px-6 text-gray-300 hover:bg-gray-700">
+                        <a href="{{ route('report.summaryDept', 'year=' . $yearToShow) }}" class="flex items-center py-2 px-6 text-gray-300 hover:bg-gray-700">
                             <i class="ri-team-line text-2xl"></i>
                             <span class="ml-3">Summary Dept</span>
                         </a>
                     </li>
                     @if (auth()->user()->input_type == 'Group')
                     <li>
-                        <a href="{{ url('/report/list-employee-report?department=' . $departmentID) }}" class="flex items-center py-2 px-6 text-gray-300 hover:bg-gray-700">
+                        <a href="{{ route('report.index', 'department=' . $departmentID) }}" class="flex items-center py-2 px-6 text-gray-300 hover:bg-gray-700">
                             <i class="ri-contacts-book-2-line text-2xl"></i>
                             <span class="ml-3">Summary KPI Employee</span>
                         </a>
                     </li>
                     @elseif (auth()->user()->input_type == 'Individual')
                     <li>
-                        <a href="{{ url('/report/list-employee-report?employee=' . $userID) }}" class="flex items-center py-2 px-6 text-gray-300 hover:bg-gray-700">
+                        <a href="{{ route('report.index', 'employee=' . $userID) }}" class="flex items-center py-2 px-6 text-gray-300 hover:bg-gray-700">
                             <i class="ri-contacts-book-2-line text-2xl"></i>
                             <span class="ml-3">Summary KPI Employee</span>
                         </a>
                     </li>
                     @endif
                     <li>
-                        <a href="{{ url('/report/department-report/1?semester=2&year=2024') }}" class="flex items-center py-2 px-6 text-gray-300 hover:bg-gray-700">
+                        <a href="{{ route('report.department', $departmentID . '?semester=1&year='. $yearToShow) }}" class="flex items-center py-2 px-6 text-gray-300 hover:bg-gray-700">
                             <i class="ri-file-list-3-fill text-2xl"></i>
                             <span class="ml-3">Summary KPI Dept</span>
                         </a>

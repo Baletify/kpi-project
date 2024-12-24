@@ -47,18 +47,18 @@ Route::middleware(['auth'])->group(function () {
     Route::prefix('actual')->group(function () {
         Route::get('/input-actual-employee', [ActualController::class, 'show'])->name('actual.show');
         Route::get('/input-actual-department', [ActualController::class, 'department'])->name('actual.department');
-        Route::get('/input-actual-achievement/edit/{id}', [ActualController::class, 'edit']);
+        Route::get('/input-actual-achievement/edit/{id}', [ActualController::class, 'edit'])->name('actual.edit');
         Route::post('/input-actual-achievement/store', [ActualController::class, 'store'])->name('actual.store');
         Route::put('/input-actual-achievement/update', [ActualController::class, 'updateActual'])->name('actual.updateActual');
         Route::put('/input-actual-achievement/updateDept', [ActualController::class, 'updateActualDept'])->name('actual.updateActualDept');
         // Preview
-        Route::post('/preview/store', [PreviewController::class, 'store']);
+        Route::post('/preview/store', [PreviewController::class, 'store'])->name('preview.store');
         Route::get('/preview/{id}/{kpi_code}', [PreviewController::class, 'show'])->name('preview.show');
         Route::get('/preview/{id}/{kpi_code}/filter', [PreviewController::class, 'filter']);
         // Preview End
         // Actual Dept
         Route::get('/input-actual-department-details', [ActualController::class, 'showDept'])->name('actual.showDept');
-        Route::get('/input-actual-department-achievement/edit/{id}', [ActualController::class, 'editDept']);
+        Route::get('/input-actual-department-achievement/edit/{id}', [ActualController::class, 'editDept'])->name('actual.editDept');
         Route::post('/input-actual-department-achievement/store', [ActualController::class, 'storeDept'])->name('actual.storeDept');
     });
 
@@ -80,15 +80,15 @@ Route::middleware(['auth'])->group(function () {
     Route::prefix('action-plan')->group(function () {
         Route::get('/action-plans', [ActionPlanController::class, 'show'])->name('action-plan.show');
         Route::get('/input-action-plan/{id}', [ActionPlanController::class, 'addEmployeeFile'])->name('action-plan.addEmployeeFile');
-        Route::post('/input-action-plan/store', [ActionPlanController::class, 'storeFile']);
+        Route::post('/input-action-plan/store', [ActionPlanController::class, 'storeFile'])->name('action-plan.storeFile');
         Route::get('/file-preview/{id}', [ActionPlanController::class, 'showFile'])->name('action-plan.showFile');
-        Route::get('/input-action-plan/edit/{id}', [ActionPlanController::class, 'editFile']);
-        Route::put('/input-action-plan/update/{id}', [ActionPlanController::class, 'updateFile']);
+        Route::get('/input-action-plan/edit/{id}', [ActionPlanController::class, 'editFile'])->name('action-plan.editFile');
+        Route::put('/input-action-plan/update/{id}', [ActionPlanController::class, 'updateFile'])->name('action-plan.updateFile');
     });
     Route::prefix('kpi-requirement')->group(function () {
-        Route::get('/view-requirement', [RequirementController::class, 'index'])->name('index');
-        Route::get('/create-requirement', [RequirementController::class, 'create'])->name('create');
-        Route::post('/create-requirement/store', [RequirementController::class, 'store'])->name('store');
+        Route::get('/view-requirement', [RequirementController::class, 'index'])->name('requirement.index');
+        Route::get('/create-requirement', [RequirementController::class, 'create'])->name('requirement.create');
+        Route::post('/create-requirement/store', [RequirementController::class, 'store'])->name('requirement.store');
     });
 
     Route::prefix('notifications')->group(function () {
@@ -98,6 +98,7 @@ Route::middleware(['auth'])->group(function () {
     });
 
     Route::get('generate-pdf-input', [GeneratePdfController::class, 'generatePdfInput'])->name('generatePdfInput');
+    Route::get('generate-pdf-check', [GeneratePdfController::class, 'generatePdfInput'])->name('generatePdfInput');
 });
 
 

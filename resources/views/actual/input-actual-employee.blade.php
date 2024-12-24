@@ -95,7 +95,7 @@
                             @php
                                 $year = request()->query('year');
                             @endphp
-                            <a href="{{ url('/actual/input-actual-achievement/edit/' . $target->id . '?year=' . $year) }}">
+                            <a href="{{ route('actual.edit', $target->id . '?year=' . $year ) }}">
                                 <i class="ri-edit-box-line p-0.5 text-xl bg-yellow-400 text-white rounded-sm"></i>
                             </a>
                         </div>

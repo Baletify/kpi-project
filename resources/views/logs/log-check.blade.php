@@ -40,7 +40,7 @@
                 @endphp
                 <tr class="{{ $i % 2 === 0 ? 'bg-white' : 'bg-blue-100'}}">
                     <td class="border-2 pl-1 border-gray-400 tracking-wide text-[11px] py-0">
-                        <a href="{{ url('/report/list-employee-report?department=' . $departmentId) }}" class="hover:underline hover:text-blue-500">
+                        <a href="{{ route('report.index', 'department=' . $departmentId) }}" class="hover:underline hover:text-blue-500">
                             {{ $department }}
                         </a>
                     </td>

@@ -15,56 +15,66 @@
         return '';
     } 
         @endphp
-        <div class="p-0">
-            <div class="px-1">
-                <span class="font-medium text-gray-600 text-sm">PT BRIDGESTONE KALIMANTAN PLANTATION</span>
+        <div class="flex justify-between">
+            <div class="mb-2">
+                <div class="px-1">
+                    <span class="font-medium text-gray-600 text-sm">PT BRIDGESTONE KALIMANTAN PLANTATION</span>
+                </div>
+                <div class="px-1">
+                    <span class=" font-bold text-gray-600 text-2xl">LOG INPUT KPI</span>
+                </div>
+                <div class="px-1">
+                    <span class=" font-semibold text-gray-600 text-sm">Bulan: {{ $monthName }}</span>
+                </div>
             </div>
-            <div class="px-1">
-                <span class=" font-bold text-gray-600 text-2xl">LOG INPUT KPI</span>
-            </div>
-            <div class="px-1">
-
-                <span class=" font-semibold text-gray-600 text-sm">Bulan: {{ $monthName }}</span>
+            <div class="flex justify-between">
+                <div class="p-0 5">
+                    <form action="{{ route('log-input.individual') }}" method="GET">
+                     <div class="flex gap-x-2">
+                         <div class="my-2">
+                             <select name="month" id="month" class="col-start-1 row-start-1 w-full appearance-none rounded-md py-1.5 pl-3 pr-7 text-base text-gray-500 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
+                                 <option value="">-- Bulan --</option>
+                                 <option value="01">January</option>
+                                 <option value="02">February</option>
+                                 <option value="03">March</option>
+                                 <option value="04">April</option>
+                                 <option value="05">May</option>
+                                 <option value="06">June</option>
+                                 <option value="07">July</option>
+                                 <option value="08">August</option>
+                                 <option value="09">September</option>
+                                 <option value="10">October</option>
+                                 <option value="11">November</option>
+                                 <option value="12">December</option>
+                             </select>
+                         </div>
+                         <div class="my-2">
+                             <select name="year" id="year" class="col-start-1 row-start-1 w-full appearance-none rounded-md py-1.5 pl-3 pr-7 text-base text-gray-500 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
+                                 <option value="">-- Tahun --</option>
+                                 @for ($year = $startYear; $year <= $endYear; $year++)
+                                 <option value="{{ $year }}">{{ $year }}</option>
+                                 @endfor
+                             </select>
+                         </div>
+                         <div class="my-2">
+                             <select name="department" id="department" class="col-start-1 row-start-1 w-full appearance-none rounded-md py-1.5 pl-3 pr-7 text-base text-gray-500 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
+                                 <option value="">-- Department --</option>
+                                 @foreach ($department as $item)
+                                 <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                 @endforeach
+                    
+                             </select>
+                         </div> 
+                         <div class="my-2">
+                             <button type="submit" class="rounded-md bg-blue-500 text-white p-2">Filter</button>
+                         </div>
+                     </div>
+                     </form>
+                </div>
             </div>
         </div>
         
-        <div class="flex justify-between">
-            <div class="p-0 5">
-                <form action="{{ url('logs/log-input-individual') }}" method="GET">
-                 <div class="flex gap-x-2">
-                     <div class="my-2">
-                         <select name="month" id="month" class="col-start-1 row-start-1 w-full appearance-none rounded-md py-1.5 pl-3 pr-7 text-base text-gray-500 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
-                             <option value="">-- Bulan --</option>
-                             <option value="01">January</option>
-                             <option value="02">February</option>
-                             <option value="03">March</option>
-                             <option value="04">April</option>
-                             <option value="05">May</option>
-                             <option value="06">June</option>
-                             <option value="07">July</option>
-                             <option value="08">August</option>
-                             <option value="09">September</option>
-                             <option value="10">October</option>
-                             <option value="11">November</option>
-                             <option value="12">December</option>
-                         </select>
-                     </div>
-                     <div class="my-2">
-                         <select name="year" id="year" class="col-start-1 row-start-1 w-full appearance-none rounded-md py-1.5 pl-3 pr-7 text-base text-gray-500 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
-                             <option value="">-- Tahun --</option>
-                             @for ($year = $startYear; $year <= $endYear; $year++)
-                             <option value="{{ $year }}">{{ $year }}</option>
-                             @endfor
-                         </select>
-                     </div>
-                     <input type="hidden" name="department" id="department" value="{{ $department_id }}">
-                     <div class="my-2">
-                         <button type="submit" class="rounded-md bg-blue-500 text-white p-2">Filter</button>
-                     </div>
-                 </div>
-                 </form>
-            </div>
-        </div>
+        
                    
         <table class="w-full bg-white">
             <tr>

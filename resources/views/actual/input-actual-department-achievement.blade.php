@@ -1,5 +1,5 @@
 <x-app-layout :title="$title" :desc="$desc">
-    <form id="achievementForm" action="{{ url('actual/input-actual-department-achievement/store') }}" method="POST" enctype="multipart/form-data">
+    <form id="achievementForm" action="{{ route('actual.storeDept') }}" method="POST" enctype="multipart/form-data">
       @csrf
     <div class="ml-64 mt-4 overflow-y-auto p-2 bg-gray-100 border border-gray-200 shadow-md shadow-black/10 rounded-md">
    
@@ -161,7 +161,7 @@
   
         document.getElementById('submitBtn').addEventListener('click', function(event) {
         event.preventDefault();
-        document.getElementById('achievementForm').action = "{{ url('actual/input-actual-department-achievement/store') }}";
+        document.getElementById('achievementForm').action = "{{ route('actual.storeDept') }}";
         document.getElementById('achievementForm').submit();
       });
       function calculateAchievement() {

@@ -14,15 +14,15 @@ return new class extends Migration
         Schema::create('employees', function (Blueprint $table) {
             $table->id();
             $table->string('nik')->unique();
-            $table->string('name');
-            $table->string('status');
-            $table->string('grade');
+            $table->string('name')->nullable();
+            $table->string('status')->nullable();
+            $table->string('grade')->nullable();
             $table->string('phone')->nullable();
             $table->string('email')->nullable();
             $table->string('password')->nullable();
             $table->string('input_type')->nullable();
             $table->string('role')->nullable();
-            $table->string('occupation');
+            $table->string('occupation')->nullable();
             $table->foreignId('department_id')->nullable()->constrained()->cascadeOnUpdate()->nullOnDelete();
             $table->timestamps();
         });

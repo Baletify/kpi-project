@@ -27,6 +27,10 @@ class DepartmentSeeder extends Seeder
                 'code' => 'HRD',
             ],
             [
+                'name' => 'GA',
+                'code' => 'GA',
+            ],
+            [
                 'name' => 'Acc & Finance',
                 'code' => 'ACC',
             ],
@@ -51,8 +55,12 @@ class DepartmentSeeder extends Seeder
                 'code' => 'FAC',
             ],
             [
-                'name' => 'FAD/FSD',
+                'name' => 'FAD',
                 'code' => 'FAD',
+            ],
+            [
+                'name' => 'FSD',
+                'code' => 'FSD',
             ],
             [
                 'name' => 'Sub Div A',

@@ -30,7 +30,7 @@
                 </div>
             </div>
             <div class="w-full rounded-md border-0 pr-20 text-gray-900  sm:text-sm sm:leading-6 mt-6 flex justify-center gap-x-6">
-                <a href="/dashboard">
+                <a href="{{ route('dashboard') }}">
                     <div class="mb-2">
                         <button type="button" class="px-4 py-2 bg-red-500 text-white rounded-md">Cancel</button>
                     </div>

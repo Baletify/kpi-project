@@ -35,7 +35,7 @@
               </div>
             <div class="relative mt-1 rounded-md mb-1">
                 <button class="p-2 bg-blue-600 my-2 rounded-md">
-                    <a id="input-actual-link" href="/actual/input-actual-department-details?department={{ $departments->first()->department_id ?? '' }}&semester=&year=">
+                    <a id="input-actual-link" href="{{ route('actual.showDept' , 'department=' . $departments->first()->department_id ?? '' . '&semester=&year=') }}">
                         <span class="text-white">Input Aktual Dept</span>
                     </a>
                 </button>
@@ -64,7 +64,7 @@
                 <td class="border-2 border-gray-400 text-[12px] tracking-wide px-2 py-0">{{ $department->occupation }}</td>
                 <td class="border-2 border-gray-400 text-[12px] tracking-wide px-2 py-0">
                     <div class="flex justify-center gap-2 text-[12px]">
-                        <a id="employee-link-{{ $department->employee_id }}" href="/actual/input-actual-employee?employee={{ $department->employee_id }}&semester=&year=">
+                        <a id="employee-link-{{ $department->employee_id }}" href="{{ route('actual.show', 'employee=' . $department->employee_id . '&semester=&year='  ) }}">
                             <span class="hover:underline text-blue-600">Input Aktual Individu</span>
                         </a>
                     </div>

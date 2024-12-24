@@ -182,13 +182,13 @@
       <script>
         document.getElementById('submitBtn').addEventListener('click', function(event) {
             event.preventDefault();
-            document.getElementById('achievementForm').action = "{{ url('actual/input-actual-achievement/store') }}";
+            document.getElementById('achievementForm').action = "{{ route('actual.store') }}";
             document.getElementById('achievementForm').submit();
         });
     
         document.getElementById('previewBtn').addEventListener('click', function(event) {
             event.preventDefault();
-            document.getElementById('achievementForm').action = "{{ url('actual/preview/store') }}";
+            document.getElementById('achievementForm').action = "{{ route('preview.store') }}";
             document.getElementById('achievementForm').submit();
         });
     

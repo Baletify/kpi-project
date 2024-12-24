@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Notification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 class NotificationController extends Controller
 {
@@ -19,6 +20,10 @@ class NotificationController extends Controller
 
     public function create()
     {
+        if (Auth::user()->role != 'Superadmin') {
+            abort(403, 'Unauthorized');
+        }
+        
         return view('notification.create-notification', ['title' => 'Create Notification', 'desc' => 'Create Notification']);
     }
 
