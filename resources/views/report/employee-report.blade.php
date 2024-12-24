@@ -52,7 +52,7 @@
             <div class="bg-gray-100">
                 <div class="flex justify-end">
                     <div class="relative mt-0 rounded-md">
-                        <form action="{{ url('report/employee-report/' . $actuals->first()->employee_id) }}" method="GET">
+                        <form action="{{ route('report.show', $actuals->first()->employee_id) }}" method="GET">
                             <input type="hidden" name="year" id="year" value="{{ $year }}">
                         <div class="mt-2 mx-2">
                             <select name="semester" id="semester" class="col-start-1 row-start-1 w-full appearance-none rounded-md py-1.5 pl-3 pr-7 text-base text-gray-500 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">

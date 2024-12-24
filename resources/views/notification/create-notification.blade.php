@@ -1,6 +1,6 @@
 <x-app-layout :title="$title" :desc="$desc">
     <div class="ml-60 mt-4 overflow-x-auto p-2 bg-gray-100 border border-gray-200 shadow-md shadow-black/10 rounded-md">
-    <form action="{{ url('notifications/store') }}" method="POST">
+    <form action="{{ route('notification.store') }}" method="POST">
         @csrf
         <div class="grid grid-cols-1 gap-x-3">
             <div class="grid grid-cols-2 gap-x-3">

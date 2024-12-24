@@ -1,6 +1,6 @@
 <x-app-layout :title="$title" :desc="$desc">
     <div class="ml-64 mt-4 overflow-x-auto p-2 bg-white border border-gray-100 shadow-md shadow-black/10 rounded-md">
-        <form id="importForm" action="{{ url('target/import-target-kpi-employee/store') }}" method="POST" enctype="multipart/form-data">
+        <form id="importForm" action="{{ route('target.import') }}" method="POST" enctype="multipart/form-data">
             @csrf
         <div class="p-1 flex justify-center">
             <div class="mt-1 rounded-md border">

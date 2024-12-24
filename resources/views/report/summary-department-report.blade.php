@@ -17,7 +17,7 @@
                 </div>
             </div>
             <div class="flex justify-end">
-                <form action="{{ url('/report/summary-department-report') }}" method="GET">
+                <form action="{{ route('report.summaryDept') }}" method="GET">
                 <div class="p-0 flex justify-between gap-x-1">
                     <div class="relative mt-1 rounded-md">
                         <div class="mt-2">

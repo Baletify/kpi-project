@@ -45,7 +45,7 @@
             </div>
             <div class="flex justify-end items-center">
                 <div class="relative mt-0 rounded-md">
-                    <form action="{{ url('/target/input-target-kpi') }}" method="GET">
+                    <form action="{{ route('target.show') }}" method="GET">
                         <input type="hidden" name="employee" id="employee" value="{{ $employeeQuery }}">
                         <input type="hidden" name="year" id="year" value="{{ $yearQuery }}">
                     <div class="mt-2 mb-2 mx-2">

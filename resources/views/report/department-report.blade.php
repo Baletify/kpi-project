@@ -16,7 +16,7 @@
         </div>
         <div class="flex justify-end mr-1">
             <div class="relative mt-0 rounded-md">
-                <form action="{{ url('report/department-report/' . $actuals->first()->department_id) }}" method="GET">
+                <form action="{{ route('report.department', $actuals->first()->department_id) }}" method="GET">
                     <input type="hidden" name="year" id="year" value="{{ $actuals->first()->year }}">
                 <div class="mt-2 mx-2">
                     <select name="semester" id="semester" class="col-start-1 row-start-1 w-full appearance-none rounded-md py-1.5 pl-3 pr-7 text-base text-gray-500 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
