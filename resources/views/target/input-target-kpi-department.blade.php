@@ -27,8 +27,13 @@
                     Filter
                 </button>
             </div>
+            @php
+                $currentSemester = request()->query('semester');
+                $department = request()->query('department');
+                $year = request()->query('year');
+            @endphp
             <div class="mt-3">
-                <a href="/target/import-target-kpi-department?department={{ request()->query('department') }}&year={{ request()->query('year') }}&semester={{ request()->query('semester') }}" class="p-1 mx-2 bg-blue-500 py-2 items-center rounded-md">
+                <a href="{{ route('target.showImportDept', 'semester=' . $currentSemester . '&department=' . $department . '&year=' . $year) }}" class="p-1 mx-2 bg-blue-500 py-2 items-center rounded-md">
                     <i class="ri-import-line text-2xl text-white"></i>
                     <span class="font-medium text-white">Import</span>
                 </a>

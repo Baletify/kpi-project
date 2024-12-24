@@ -16,8 +16,18 @@
             </div>
         </div>
         </form>
+
         <div class="flex justify-center">
-            <button type="button" class="px-4 py-2 bg-blue-600 text-white rounded-md"><a href="/target/input-target-kpi-department?department={{ request()->query('department') }}&year={{ request()->query('year') }}&semester={{ request()->query('semester') }}">Back</a></button>
+            @php
+            $departmentID = request()->query('department');
+            $year = request()->query('year');
+            $semester = request()->query('semester');
+            $employeeID = auth()->user()->id
+            @endphp
+            <button type="button" class="px-4 py-2 bg-blue-600 text-white rounded-md">
+                <a href="{{ route('target.showDept', 'department=' . $departmentID) . '&year=' . $year . '&semester=' . $semester }}">Back</a>
+            </button>
+            
         </div>
     </div>
 

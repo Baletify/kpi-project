@@ -31,11 +31,11 @@ Route::middleware(['auth'])->group(function () {
     Route::get('dashboard/filter', [EmployeeController::class, 'filter']);
 
     Route::prefix('target')->group(function () {
-        Route::get('/input-target-kpi', [TargetController::class, 'show']);
+        Route::get('/input-target-kpi', [TargetController::class, 'show'])->name('target.show');
         Route::get('/input-target-employee/edit/{id}', [TargetController::class, 'edit'])->name('target.edit');
         Route::get('/input-target-department', [TargetController::class, 'department'])->name('target.department');
         Route::get('/input-target-kpi-department/edit/{id}', [TargetController::class, 'editDept'])->name('target.editDept');
-        Route::get('/input-target-kpi-department', [TargetController::class, 'showDept'])->name('showDept');
+        Route::get('/input-target-kpi-department', [TargetController::class, 'showDept'])->name('target.showDept');
         Route::get('/import-target-kpi-employee', [TargetController::class, 'showImport'])->name('target.showImport');
         Route::get('/import-target-kpi-department', [TargetController::class, 'showImportDept'])->name('target.showImportDept');
         Route::post('/import-target-kpi-employee/store', [TargetController::class, 'import'])->name('target.import');
@@ -98,7 +98,7 @@ Route::middleware(['auth'])->group(function () {
     });
 
     Route::get('generate-pdf-input', [GeneratePdfController::class, 'generatePdfInput'])->name('generatePdfInput');
-    Route::get('generate-pdf-check', [GeneratePdfController::class, 'generatePdfInput'])->name('generatePdfInput');
+    Route::get('generate-pdf-check', [GeneratePdfController::class, 'generatePdfCheck'])->name('generatePdfCheck');
 });
 
 

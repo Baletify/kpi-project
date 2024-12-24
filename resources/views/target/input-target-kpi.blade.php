@@ -65,7 +65,7 @@
                 </div>
                 </form>
                 <div class="">
-                    <a href="{{ url('target/import-target-kpi-employee?employee=' . $employeeQuery . '&year=' . $yearQuery . '&semester=' . $semesterQuery) }}" class="p-1 mx-2 bg-blue-500 py-2 items-center rounded-md">
+                    <a href="{{ route('target.showImport', 'semester=' . $semesterQuery . '&employee=' . $employeeQuery . '&year=' . $yearQuery) }}" class="p-1 mx-2 bg-blue-500 py-2 items-center rounded-md">
                     <i class="ri-import-line text-2xl text-white"></i>
                     <span class="font-medium text-white">Import</span>
                     </a>

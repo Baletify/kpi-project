@@ -31,7 +31,7 @@
               </div>
               <div class="relative mt-1 rounded-md mb-1">
                 <button class="p-2 bg-blue-600 my-2 rounded-md">
-                    <a id="input-target-link" href="/target/input-target-kpi-department?department={{ $departments->first()->department_id ?? '' }}">
+                    <a id="input-target-link" href="{{ route('target.showDept', 'department=' . $departments->first()->department_id ?? '' ) }}" >
                         <span class="text-white">Input Target Dept</span>
                       </a>
                 </button>
@@ -64,14 +64,14 @@
                 <td class="border-2 border-gray-400 tracking-wide text-[12px] px-2 py-0">{{ $department->occupation }}</td>
                 <td class="border-2 border-gray-400 tracking-wide text-[12px] px-2 py-0">
                     <div class="flex justify-center gap-2">
-                    <a id="employee-link-{{ $department->employee_id }}" href="/target/input-target-kpi?employee={{ $department->employee_id }}">
+                    <a id="employee-link-{{ $department->employee_id }}" href="{{ route('target.show', 'employee=' . $department->employee_id) }}">
                       <span class="text-blue-500 hover:underline">Input Target Individu</span>
                     </a>
                 </div>
                 </td>
                 <td class="border-2 text-[12px] border-gray-400 tracking-wide px-2 text-center">
                     @if(!$department->file)
-                    <a href="{{ url('action-plan/input-action-plan/' . $department->employee_id ) }}">
+                    <a href="{{ route('action-plan.addEmployeeFile', $department->employee_id) }}">
                         <i class="ri-add-line bg-green-600 text-white text-sm p-0.5 rounded-sm"></i>
                        </a>
                      @endif
@@ -79,7 +79,7 @@
                    <a href="{{ route('action-plan.showFile', $department->file) }}" target="_blank">
                     <i class="ri-eye-fill text-sm p-0.5 bg-blue-600 text-white rounded-sm"></i>
                    </a>
-                   <a href="{{ url('action-plan/input-action-plan/edit/' . $department->action_plan_id) }}">
+                   <a href="{{ route('action-plan.editFile', $department->action_plan_id) }}">
                     <i class="ri-edit-box-line p-0.5 text-sm bg-yellow-400 text-white rounded-sm"></i>
                    </a>
                    @endif
