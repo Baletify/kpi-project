@@ -3,6 +3,7 @@
 namespace App\Imports;
 
 use App\Http\Controllers\TargetController;
+use Illuminate\Http\Request;
 use App\Models\Target;
 use App\Models\TargetUnit;
 use Maatwebsite\Excel\Concerns\ToCollection;
@@ -29,6 +30,10 @@ class TargetImport implements ToCollection, WithHeadingRow, WithSkipDuplicates
 
     public function collection(Collection $rows)
     {
+        $yearQuery = request()->input('year');
+        $year = Carbon::parse($yearQuery . '-01-01')->startOfDay()->format('Y-m-d H:i:s');
+
+
 
         foreach ($rows as $row) {
             if ($row->filter()->isEmpty()) {
@@ -50,9 +55,8 @@ class TargetImport implements ToCollection, WithHeadingRow, WithSkipDuplicates
             ];
 
             $targetUnit = TargetUnit::Create($data);
-
             // Insert into Target table with the new target unit ID
-            $this->controller->storeTarget($row->toArray(), $targetUnit->id);
+            $this->controller->storeTarget($row->toArray(), $targetUnit->id, $year);
         }
         flash()->success('Targets successfully Imported');
     }

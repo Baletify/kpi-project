@@ -138,16 +138,16 @@ class TargetController extends Controller
         return back();
     }
 
-    public function storeTarget(array $row, $targetUnitId)
+    public function storeTarget(array $row, $targetUnitId, $year)
     {
         $employee = DB::table('employees')->where('nik', $row['nik'])->value('id');
         // dd($employee);
-        $year = Carbon::createFromDate(now()->year, 1, 1)->startOfMonth();
+        $yearToInsert = $year;
 
 
         $searchConditions = [
             'code' => $row['kode_kpi'],
-            'date' => $year,
+            'date' => $yearToInsert,
             'employee_id' => $employee,
         ];
 
