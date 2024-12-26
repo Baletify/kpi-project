@@ -220,11 +220,11 @@
                                     </div>
                                     <div id="checkbox-container-{{ $modalId }}" class="p-1 flex justify-center gap-3">
                                         <label class="text-[14px]">
-                                            <input type="checkbox" class="status-checkbox" data-actual-id="{{ $actual->department_actual_id }}" data-status="Checked" {{ $actual->status == 'Checked' || $actual->status == 'Approved' ? 'checked' : '' }}>
+                                            <input type="checkbox" class="status-checkbox" data-actual-id="{{ $actual->department_actual_id }}" data-status="Checked" {{ $actual->status == 'Checked' || $actual->status == 'Approved' ? 'checked' : '' }} {{ auth()->user()->role == 'Checker' ? '' : 'disabled' }}>
                                             Check
                                         </label>
                                         <label class="text-[14px]">
-                                            <input type="checkbox" class="status-checkbox" data-actual-id="{{ $actual->department_actual_id }}" data-status="Approved" {{ $actual->status == 'Approved' ? 'checked' : '' }}>
+                                            <input type="checkbox" class="status-checkbox" data-actual-id="{{ $actual->department_actual_id }}" data-status="Approved" {{ $actual->status == 'Approved' ? 'checked' : '' }} {{ auth()->user()->role == 'Approver' ? '' : 'disabled' }}>
                                             Approve
                                         </label>
                                     </div>
@@ -356,7 +356,8 @@
     
         if (pdfUrls.length > 0) {
             const currentPdf = pdfUrls[currentIndex];
-            pdfObject.data = `/record_files/${currentPdf.record_file}`;
+            const baseUrl = "{{ asset('record_files') }}";
+            pdfObject.data = `${baseUrl}/${currentPdf.record_file}`;
             fileNumberElement.textContent = `${currentPdf.kpi_code} | ${currentPdf.kpi_item}`;
         } else {
             pdfObject.data = '';

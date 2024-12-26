@@ -12,7 +12,11 @@
         <div class="p-1 flex justify-center">
             <div class="mt-1 rounded-md border">
                 <div class="">
-                    <span class="mx-20 font-semibold">Upload Target KPI</span>  
+                    <span class="mx-20 font-semibold">Upload Target KPI</span> 
+                </div>
+                <div class="flex justify-center">
+                    <span class="text-xs text-red-500">*</span>  
+                  <span class="text-xs">Format .xlsx</span> 
                 </div>
               <input type="file" name="file" id="file" class=" w-60 rounded-sm border-0 ml-7 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 mt-2 mb-3" placeholder="Departemen">
                 <input type="hidden" name="year" value="{{ $year }}">
@@ -21,6 +25,7 @@
                 </div>
               <div class="absolute inset-y-0 right-0 flex items-center">
               </div>
+              
             </div>
         </div>
         </form>

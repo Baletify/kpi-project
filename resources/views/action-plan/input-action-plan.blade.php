@@ -39,6 +39,8 @@
                   <input type="file" name="action_plan_file" id="action_plan_file" class=" block w-full rounded-md border-0 py-1.5 pl-1.5 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 mt-1" placeholder="Departemen">
                   <input type="hidden" name="employee_id" id="employee_id" value="{{ $employee->id }}">
                   <input type="hidden" name="department_id" id="edaprtment_id" value="{{ $employee->department_id }}">
+                  <span class="pl-3 text-xs text-red-500">*</span>  
+                  <span class="text-xs">Format .pdf</span>  
                   <div class="absolute inset-y-0 right-0 flex items-center">
                   </div>
                 </div>

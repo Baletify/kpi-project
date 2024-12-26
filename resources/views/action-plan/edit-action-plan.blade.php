@@ -43,6 +43,8 @@
                   <input type="hidden" value="{{ $employee->action_plan_id }}" name="action_plan_id" id="action_plan_id">
                   <div class="absolute inset-y-0 right-0 flex items-center">
                   </div>
+                  <span class="pl-3 text-xs text-red-500">*</span>  
+                  <span class="text-xs">Format .pdf</span>  
                 </div>
                 
                 <div class="relative mt-1 rounded-md">
