@@ -9,7 +9,7 @@
         </div>
         <div class="flex justify-end">
             <div class="relative mt-0 rounded-md">
-                <form action="{{ route('target.ShowDept') }}" method="GET">
+                <form action="{{ route('target.showDept') }}" method="GET">
                     <input type="hidden" name="department" id="department" value="{{ $departmentQuery }}">
                     <input type="hidden" name="year" id="year" value="{{ $yearQuery }}">
                 <div class="mt-3 mx-2">

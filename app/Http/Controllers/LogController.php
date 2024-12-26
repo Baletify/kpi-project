@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Models\Department;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 
 class LogController extends Controller
 {
@@ -182,6 +183,29 @@ class LogController extends Controller
         $department = $request->query('department');
         $month = $request->query('month');
         $year = $request->query('year');
+        $user = Auth::user();
+        $role = $user->role;
+        $departmentNames = [];
+
+        if ($role == 'Checker Div 1') {
+            $allDept = DB::table('departments')->whereIn('name', ['Sub Div A', 'Sub Div B', 'Sub Div C'])->get();
+            $departmentNames = ['Sub Div A', 'Sub Div B', 'Sub Div C'];
+        } elseif ($role == 'Checker Div 2') {
+            $allDept = DB::table('departments')->whereIn('name', ['Sub Div D', 'Sub Div E', 'Sub Div F'])->get();
+            $departmentNames = ['Sub Div D', 'Sub Div E', 'Sub Div F'];
+        } elseif ($role == 'Approver') {
+            $allDept = Department::all();
+            $departmentName = DB::table('departments')->where('id', $department)->value('name');
+            if ($departmentName) {
+                $departmentNames = [$departmentName];
+            }
+        } else {
+            $allDept = DB::table('departments')->where('id', '=', $department)->get();
+            $departmentName = DB::table('departments')->where('id', $department)->value('name');
+            if ($departmentName) {
+                $departmentNames = [$departmentName];
+            }
+        }
 
 
         if ($department && $month && $year) {
@@ -257,79 +281,142 @@ class LogController extends Controller
                 ->groupBy('departments.id')
                 ->first();
 
-            $actualCheckedCount = DB::table('actuals')
-                ->join('employees', 'actuals.employee_id', '=', 'employees.id')
-                ->join('departments', 'employees.department_id', '=', 'departments.id')
-                ->where('departments.id', $department)
-                ->where('actuals.checked_at', '!=', '')
-                ->whereMonth('actuals.date', $month)
-                ->whereYear('actuals.date', $year)
-                ->select(DB::raw('count(actuals.id) as total_checked'), 'departments.id as department_id')
-                ->orderBy('actuals.input_at', 'desc')
-                ->groupBy('departments.id')
-                ->first();
+            if (!empty($departmentNames)) {
+                $actualCheckedCount = DB::table('actuals')
+                    ->join('employees', 'actuals.employee_id', '=', 'employees.id')
+                    ->join('departments', 'employees.department_id', '=', 'departments.id')
+                    ->whereIn('departments.name', $departmentNames)
+                    ->where('actuals.checked_at', '!=', '')
+                    ->whereMonth('actuals.date', $month)
+                    ->whereYear('actuals.date', $year)
+                    ->count();
 
-            $actualCheckedCountDept = DB::table('department_actuals')
-                ->join('departments', 'department_actuals.department_id', '=', 'departments.id')
-                ->where('departments.id', $department)
-                ->where('department_actuals.checked_at', '!=', '')
-                ->whereMonth('department_actuals.date', $month)
-                ->whereYear('department_actuals.date', $year)
-                ->select(DB::raw('count(department_actuals.id) as total_checked'), 'departments.id as department_id')
-                ->orderBy('department_actuals.input_at', 'desc')
-                ->groupBy('departments.id')
-                ->first();
+                $actualCheckedCountDept = DB::table('department_actuals')
+                    ->join('departments', 'department_actuals.department_id', '=', 'departments.id')
+                    ->whereIn('departments.name', $departmentNames)
+                    ->where('department_actuals.checked_at', '!=', '')
+                    ->whereMonth('department_actuals.date', $month)
+                    ->whereYear('department_actuals.date', $year)
+                    ->count();
 
-            $targetUnitCountAll = DB::table('target_units')
-                ->leftJoin('targets', 'target_units.id', '=', 'targets.target_unit_id')
-                ->leftJoin('employees', 'targets.employee_id', '=', 'employees.id')
-                ->leftJoin('departments', 'employees.department_id', '=', 'departments.id')
-                ->where('departments.id', '=', $department)
-                ->whereYear('targets.date', $year)
-                // ->whereNotNull('target_units.id')
-                ->select(
-                    'departments.id as department_id',
-                    DB::raw('count(target_units.target_1) as total_1'),
-                    DB::raw('count(target_units.target_2) as total_2'),
-                    DB::raw('count(target_units.target_3) as total_3'),
-                    DB::raw('count(target_units.target_4) as total_4'),
-                    DB::raw('count(target_units.target_5) as total_5'),
-                    DB::raw('count(target_units.target_6) as total_6'),
-                    DB::raw('count(target_units.target_7) as total_7'),
-                    DB::raw('count(target_units.target_8) as total_8'),
-                    DB::raw('count(target_units.target_9) as total_9'),
-                    DB::raw('count(target_units.target_10) as total_10'),
-                    DB::raw('count(target_units.target_11) as total_11'),
-                    DB::raw('count(target_units.target_12) as total_12'),
-                )
-                ->groupBy('departments.id')
-                ->first();
+                $targetUnitCountAll = DB::table('target_units')
+                    ->leftJoin('targets', 'target_units.id', '=', 'targets.target_unit_id')
+                    ->leftJoin('employees', 'targets.employee_id', '=', 'employees.id')
+                    ->leftJoin('departments', 'employees.department_id', '=', 'departments.id')
+                    ->whereIn('departments.name', $departmentNames)
+                    ->whereYear('targets.date', $year)
+                    ->select(
+                        'departments.id as department_id',
+                        DB::raw('count(target_units.target_1) as total_1'),
+                        DB::raw('count(target_units.target_2) as total_2'),
+                        DB::raw('count(target_units.target_3) as total_3'),
+                        DB::raw('count(target_units.target_4) as total_4'),
+                        DB::raw('count(target_units.target_5) as total_5'),
+                        DB::raw('count(target_units.target_6) as total_6'),
+                        DB::raw('count(target_units.target_7) as total_7'),
+                        DB::raw('count(target_units.target_8) as total_8'),
+                        DB::raw('count(target_units.target_9) as total_9'),
+                        DB::raw('count(target_units.target_10) as total_10'),
+                        DB::raw('count(target_units.target_11) as total_11'),
+                        DB::raw('count(target_units.target_12) as total_12'),
+                    )
+                    ->groupBy('departments.id')
+                    ->first();
 
-            $targetUnitCountAllDept = DB::table('target_units')
-                ->leftJoin('department_targets', 'target_units.id', '=', 'department_targets.target_unit_id')
-                ->leftJoin('departments', 'department_targets.department_id', '=', 'departments.id')
-                ->where('departments.id', '=', $department)
-                ->whereYear('department_targets.date', $year)
-                // ->whereNotNull('target_units.id')
-                ->select(
-                    'departments.id as department_id',
-                    DB::raw('count(target_units.target_1) as total_1'),
-                    DB::raw('count(target_units.target_2) as total_2'),
-                    DB::raw('count(target_units.target_3) as total_3'),
-                    DB::raw('count(target_units.target_4) as total_4'),
-                    DB::raw('count(target_units.target_5) as total_5'),
-                    DB::raw('count(target_units.target_6) as total_6'),
-                    DB::raw('count(target_units.target_7) as total_7'),
-                    DB::raw('count(target_units.target_8) as total_8'),
-                    DB::raw('count(target_units.target_9) as total_9'),
-                    DB::raw('count(target_units.target_10) as total_10'),
-                    DB::raw('count(target_units.target_11) as total_11'),
-                    DB::raw('count(target_units.target_12) as total_12'),
-                )
-                ->groupBy('departments.id')
-                ->first();
-            // dd($actualFilledCount, $targetUnitCountAll, $actualFilledCountDept, $targetUnitCountAllDept);
-            // dd($actualFilledCountDept, $targetUnitCountAllDept);
+                $targetUnitCountAllDept = DB::table('target_units')
+                    ->leftJoin('department_targets', 'target_units.id', '=', 'department_targets.target_unit_id')
+                    ->leftJoin('departments', 'department_targets.department_id', '=', 'departments.id')
+                    ->whereIn('departments.name', $departmentNames)
+                    ->whereYear('department_targets.date', $year)
+                    ->select(
+                        'departments.id as department_id',
+                        DB::raw('count(target_units.target_1) as total_1'),
+                        DB::raw('count(target_units.target_2) as total_2'),
+                        DB::raw('count(target_units.target_3) as total_3'),
+                        DB::raw('count(target_units.target_4) as total_4'),
+                        DB::raw('count(target_units.target_5) as total_5'),
+                        DB::raw('count(target_units.target_6) as total_6'),
+                        DB::raw('count(target_units.target_7) as total_7'),
+                        DB::raw('count(target_units.target_8) as total_8'),
+                        DB::raw('count(target_units.target_9) as total_9'),
+                        DB::raw('count(target_units.target_10) as total_10'),
+                        DB::raw('count(target_units.target_11) as total_11'),
+                        DB::raw('count(target_units.target_12) as total_12'),
+                    )
+                    ->groupBy('departments.id')
+                    ->first();
+                // dd($departmentNames, $actualCheckedCount, $actualCheckedCountDept, $targetUnitCountAll, $targetUnitCountAllDept, $actualFilledCount, $actualFilledCountDept);
+            } elseif ($role == 'Checker WS') {
+                $actualCheckedCount = DB::table('actuals')
+                    ->join('employees', 'actuals.employee_id', '=', 'employees.id')
+                    ->join('departments', 'employees.department_id', '=', 'departments.id')
+                    ->where('departments.id', '=', $department)
+                    ->where('actuals.checked_at', '!=', '')
+                    ->whereMonth('actuals.date', $month)
+                    ->whereYear('actuals.date', $year)
+                    ->select(DB::raw('count(actuals.id) as total_checked'), 'departments.id as department_id')
+                    ->orderBy('actuals.input_at', 'desc')
+                    ->groupBy('departments.id')
+                    ->first();
+
+                $actualCheckedCountDept = DB::table('department_actuals')
+                    ->join('departments', 'department_actuals.department_id', '=', 'departments.id')
+                    ->where('departments.id', '=', $department)
+                    ->where('department_actuals.checked_at', '!=', '')
+                    ->whereMonth('department_actuals.date', $month)
+                    ->whereYear('department_actuals.date', $year)
+                    ->select(DB::raw('count(department_actuals.id) as total_checked'), 'departments.id as department_id')
+                    ->orderBy('department_actuals.input_at', 'desc')
+                    ->groupBy('departments.id')
+                    ->first();
+
+                $targetUnitCountAll = DB::table('target_units')
+                    ->leftJoin('targets', 'target_units.id', '=', 'targets.target_unit_id')
+                    ->leftJoin('employees', 'targets.employee_id', '=', 'employees.id')
+                    ->leftJoin('departments', 'employees.department_id', '=', 'departments.id')
+                    ->where('departments.id', '=', $department)
+                    ->whereYear('targets.date', $year)
+                    ->select(
+                        'departments.id as department_id',
+                        DB::raw('count(target_units.target_1) as total_1'),
+                        DB::raw('count(target_units.target_2) as total_2'),
+                        DB::raw('count(target_units.target_3) as total_3'),
+                        DB::raw('count(target_units.target_4) as total_4'),
+                        DB::raw('count(target_units.target_5) as total_5'),
+                        DB::raw('count(target_units.target_6) as total_6'),
+                        DB::raw('count(target_units.target_7) as total_7'),
+                        DB::raw('count(target_units.target_8) as total_8'),
+                        DB::raw('count(target_units.target_9) as total_9'),
+                        DB::raw('count(target_units.target_10) as total_10'),
+                        DB::raw('count(target_units.target_11) as total_11'),
+                        DB::raw('count(target_units.target_12) as total_12'),
+                    )
+                    ->groupBy('departments.id')
+                    ->first();
+
+                $targetUnitCountAllDept = DB::table('target_units')
+                    ->leftJoin('department_targets', 'target_units.id', '=', 'department_targets.target_unit_id')
+                    ->leftJoin('departments', 'department_targets.department_id', '=', 'departments.id')
+                    ->where('departments.id', '=', $department)
+                    ->whereYear('department_targets.date', $year)
+                    ->select(
+                        'departments.id as department_id',
+                        DB::raw('count(target_units.target_1) as total_1'),
+                        DB::raw('count(target_units.target_2) as total_2'),
+                        DB::raw('count(target_units.target_3) as total_3'),
+                        DB::raw('count(target_units.target_4) as total_4'),
+                        DB::raw('count(target_units.target_5) as total_5'),
+                        DB::raw('count(target_units.target_6) as total_6'),
+                        DB::raw('count(target_units.target_7) as total_7'),
+                        DB::raw('count(target_units.target_8) as total_8'),
+                        DB::raw('count(target_units.target_9) as total_9'),
+                        DB::raw('count(target_units.target_10) as total_10'),
+                        DB::raw('count(target_units.target_11) as total_11'),
+                        DB::raw('count(target_units.target_12) as total_12'),
+                    )
+                    ->groupBy('departments.id')
+                    ->first();
+            }
 
 
             $departments = DB::table('departments')->where('departments.id', '=', $department)->get();
@@ -353,6 +440,7 @@ class LogController extends Controller
                 'actualCheckedCountDept' => $actualCheckedCountDept,
                 'targetUnitCountAll' => $targetUnitCountAll,
                 'targetUnitCountAllDept' => $targetUnitCountAllDept,
+                'allDept' => $allDept,
             ]);
         } else if ($department) {
             return view('logs/log-input', [

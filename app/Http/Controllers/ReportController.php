@@ -21,31 +21,59 @@ class ReportController extends Controller
     {
         $department = $request->query('department');
         $employee = $request->query('employee');
+        $role = $request->role;
 
-        if ($department) {
-            $departmentID = Auth::user()->department_id;
-            if ($department != $departmentID) {
+        if ($department && $role) {
+            if ($role == '') {
                 abort(403, 'Unauthorized');
             }
+
+            $div1Dept = DB::table('departments')->whereIn('name', ['Sub Div A', 'Sub Div B', 'Sub Div C'])->get();
+            $div2Dept = DB::table('departments')->whereIn('name', ['Sub Div D', 'Sub Div E', 'Sub Div F'])->get();
+            $ws = DB::table('departments')->where('name', '=', 'Workshop');
+            $allDept = Department::all();
+
             $departments = DB::table('departments')
                 ->leftJoin('employees', 'employees.department_id', '=', 'departments.id')
                 ->select('employees.id as employee_id', 'employees.nik as nik', 'employees.name as employee', 'employees.occupation as occupation', 'departments.name as department', 'departments.id as department_id')
                 ->where('departments.id', $department)
                 ->get();
 
-            return view('report.list-employee-report', ['title' => 'Report', 'desc' => 'Employee List', 'departments' => $departments]);
+            return view('report.list-employee-report', ['title' => 'Report', 'desc' => 'Employee List', 'departments' => $departments, 'div1Dept' => $div1Dept, 'div2Dept' => $div2Dept, 'allDept' => $allDept, 'ws' => $ws,]);
+        } else if ($department) {
+            $departmentID = Auth::user()->department_id;
+            if ($department != $departmentID) {
+                abort(403, 'Unauthorized');
+            }
+            $div1Dept = DB::table('departments')->whereIn('name', ['Sub Div A', 'Sub Div B', 'Sub Div C'])->get();
+            $div2Dept = DB::table('departments')->whereIn('name', ['Sub Div D', 'Sub Div E', 'Sub Div F'])->get();
+            $ws = DB::table('departments')->where('name', '=', 'Workshop');
+            $allDept = Department::all();
+
+            $departments = DB::table('departments')
+                ->leftJoin('employees', 'employees.department_id', '=', 'departments.id')
+                ->select('employees.id as employee_id', 'employees.nik as nik', 'employees.name as employee', 'employees.occupation as occupation', 'departments.name as department', 'departments.id as department_id')
+                ->where('departments.id', $department)
+                ->get();
+
+            return view('report.list-employee-report', ['title' => 'Report', 'desc' => 'Employee List', 'departments' => $departments, 'div1Dept' => $div1Dept, 'div2Dept' => $div2Dept, 'allDept' => $allDept, 'ws' => $ws,]);
         } elseif ($employee) {
             $userID = Auth::user()->id;
             if ($employee != $userID) {
                 abort(403, 'Unauthorized');
             }
+            $div1Dept = DB::table('departments')->whereIn('name', ['Sub Div A', 'Sub Div B', 'Sub Div C'])->get();
+            $div2Dept = DB::table('departments')->whereIn('name', ['Sub Div D', 'Sub Div E', 'Sub Div F'])->get();
+            $ws = DB::table('departments')->where('name', '=', 'Workshop');
+            $allDept = Department::all();
+
             $departments = DB::table('departments')
                 ->leftJoin('employees', 'employees.department_id', '=', 'departments.id')
                 ->select('employees.id as employee_id', 'employees.nik as nik', 'employees.name as employee', 'employees.occupation as occupation', 'departments.name as department', 'departments.id as department_id')
                 ->where('employees.id', $employee)
                 ->get();
 
-            return view('report.list-employee-report', ['title' => 'Report', 'desc' => 'Employee List', 'departments' => $departments]);
+            return view('report.list-employee-report', ['title' => 'Report', 'desc' => 'Employee List', 'departments' => $departments, 'div1Dept' => $div1Dept, 'div2Dept' => $div2Dept, 'allDept' => $allDept, 'ws' => $ws,]);
         } else {
             return view('components/404-page');
         }

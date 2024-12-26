@@ -1,6 +1,7 @@
 <x-app-layout :title="$title" :desc="$desc">
     <div class="ml-64 mt-4 overflow-x-auto p-2 bg-gray-100 border border-gray-200 shadow-md shadow-black/10 rounded-md">
         @php 
+        $yearQuery = request()->query('year');
         $currentYear = Carbon\Carbon::now()->year;
         $startYear = 2024; 
         $endYear = $currentYear + 2;
@@ -13,7 +14,8 @@
             return Carbon\Carbon::parse($dateString)->format('d F Y H:i:s');
         }
         return '';
-    } 
+    }  
+        
         @endphp
         <div class="flex justify-between">
             <div class="p-0">
@@ -25,7 +27,7 @@
                 </div>
                 <div class="px-1">
     
-                    <span class=" font-semibold text-gray-600 text-sm">Bulan: {{ $monthName }}</span>
+                    <span class=" font-semibold text-gray-600 text-base">Periode {{ $monthName }} {{ $yearQuery }}</span>
                 </div>
             </div>
             <div class="p-0 5">
@@ -57,6 +59,17 @@
                              @endfor
                          </select>
                      </div>
+                     @if (auth()->user()->role != 'Inputer')
+
+                     <div class="mt-2 mb-1 mx-2">
+                         <select name="department" id="department" class="col-start-1 row-start-1 w-full appearance-none rounded-md py-1.5 pl-3 pr-7 text-base text-gray-500 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
+                            <option value="">-- Departmen --</option>
+                            @foreach ($allDept as $item)  
+                            <option value="{{ $item->id }}">{{ $item->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    @endif
                      <div class="my-2">
                          <button type="submit" class="rounded-md bg-blue-500 text-white p-2">Filter</button>
                      </div>

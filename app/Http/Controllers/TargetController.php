@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\Validator;
 
 class TargetController extends Controller
 {
@@ -125,12 +126,16 @@ class TargetController extends Controller
 
     public function import(Request $request)
     {
-
-        // dd($request->file);
-        // Validate the request
-        $request->validate([
-            'file' => 'required|mimes:xlsx,xls,csv',
+        $validator = Validator::make($request->all(), [
+            'file' => 'required|mimes:xlsx',
         ]);
+
+        if ($validator->fails()) {
+            flash()->error('Import target only accept .xlsx format');
+            return redirect()->back()
+                ->withErrors($validator)
+                ->withInput();
+        }
 
         // Import the data without saving the file
         Excel::import(new TargetImport($this), $request->file('file'));

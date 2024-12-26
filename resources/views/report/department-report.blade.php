@@ -220,7 +220,7 @@
                                     </div>
                                     <div id="checkbox-container-{{ $modalId }}" class="p-1 flex justify-center gap-3">
                                         <label class="text-[14px]">
-                                            <input type="checkbox" class="status-checkbox" data-actual-id="{{ $actual->department_actual_id }}" data-status="Checked" {{ $actual->status == 'Checked' || $actual->status == 'Approved' ? 'checked' : '' }} {{ auth()->user()->role == 'Checker' ? '' : 'disabled' }}>
+                                            <input type="checkbox" class="status-checkbox" data-actual-id="{{ $actual->department_actual_id }}" data-status="Checked" {{ $actual->status == 'Checked' || $actual->status == 'Approved' ? 'checked' : '' }} {{ auth()->user()->role == 'Checker Div 1' || auth()->user()->role == 'Checker Div 2' || auth()->user()->role == 'Checker WS' ? '' : 'disabled' }}>
                                             Check
                                         </label>
                                         <label class="text-[14px]">
@@ -416,7 +416,7 @@
             const actualId = this.getAttribute('data-actual-id');
             const status = this.getAttribute('data-status');
             const isChecked = this.checked;
-            const url = "{{ route('actual.updateActual') }}"
+            const url = "{{ route('actual.updateActualDept') }}"
 
             fetch(url, {
                 method: 'PUT',

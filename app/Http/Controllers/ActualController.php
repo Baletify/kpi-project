@@ -205,9 +205,12 @@ class ActualController extends Controller
         $validator = Validator::make($request->all(), [
             'date' => 'required',
             'actual' => 'required',
+            'record_file' => 'required|mimes:jpeg,pdf',
+
         ]);
 
         if ($validator->fails()) {
+            flash()->error('Please fill all required field and upload a valid file format');
             return redirect()->back()
                 ->withErrors($validator)
                 ->withInput();
@@ -285,13 +288,13 @@ class ActualController extends Controller
     public function store(Request $request)
     {
 
-
         $validator = Validator::make($request->all(), [
             'date' => 'required',
             'actual' => 'required',
+            'record_file' => 'required|mimes:jpeg,pdf',
         ]);
         if ($validator->fails()) {
-            flash()->error('Please fill all the required field');
+            flash()->error('Please fill all required field and upload a valid file format');
             return redirect()->back()
                 ->withErrors($validator)
                 ->withInput();

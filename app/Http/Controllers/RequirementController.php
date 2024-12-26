@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Models\KpiRequirement;
+use Illuminate\Support\Facades\Validator;
 
 class RequirementController extends Controller
 {
@@ -22,6 +23,17 @@ class RequirementController extends Controller
 
     public function store(Request $request)
     {
+        $validator = Validator::make($request->all(), [
+            'file' => 'required|mimes:pdf',
+        ]);
+
+        if ($validator->fails()) {
+            flash()->error('Only accept .pdf format');
+            return redirect()->back()
+                ->withErrors($validator)
+                ->withInput();
+        }
+
         if ($request->hasFile('file')) {
             $recordFile = $request->file('file');
             $recordFileName = Str::random(40) . '.' . $recordFile->getClientOriginalExtension();

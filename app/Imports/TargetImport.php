@@ -30,10 +30,9 @@ class TargetImport implements ToCollection, WithHeadingRow, WithSkipDuplicates
 
     public function collection(Collection $rows)
     {
+        
         $yearQuery = request()->input('year');
         $year = Carbon::parse($yearQuery . '-01-01')->startOfDay()->format('Y-m-d H:i:s');
-
-
 
         foreach ($rows as $row) {
             if ($row->filter()->isEmpty()) {
