@@ -120,7 +120,7 @@
                     </li>
                     @endif
                     <li>
-                        <a href="{{ route('report.department', $departmentID . '?semester=1&year='. $yearToShow) }}" class="flex items-center py-2 px-6 text-gray-300 hover:bg-gray-700">
+                        <a href="{{ route('report.department', $departmentID . '?semester=&year='. $yearToShow) }}" class="flex items-center py-2 px-6 text-gray-300 hover:bg-gray-700" id="department-link">
                             <i class="ri-file-list-3-fill text-2xl"></i>
                             <span class="ml-3">Summary KPI Dept</span>
                         </a>
@@ -130,3 +130,26 @@
             </div>
     </ul>
 </div>
+
+<script>
+       document.addEventListener('DOMContentLoaded', function() {
+        const departmentLink = document.getElementById('department-link');
+        const savedSemester = localStorage.getItem('selectedSemester');
+        const savedYear = localStorage.getItem('selectedYear');
+
+        function updateDepartmentLink() {
+            const semester =  savedSemester;
+            const year = savedYear;
+
+            // Update department link
+            const departmentUrl = new URL(departmentLink.href);
+            departmentUrl.searchParams.set('semester', semester);
+            departmentUrl.searchParams.set('year', year);
+            departmentLink.href = departmentUrl.toString();
+        }
+
+        // Initial update of the department link
+        updateDepartmentLink();
+    });
+
+</script>

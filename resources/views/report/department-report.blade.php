@@ -326,11 +326,12 @@
 
     // fetch pdf url 
     function fetchPdfUrls(month, actualId, buttonId) {
-        fetch(`/report/file-preview-dept?month=${month}&actual_id=${actualId}`)
+        const filePreviewUrl = "{{ route('report.showFileDept') }}";
+        const url = `${filePreviewUrl}?month=${month}&actual_id=${actualId}`;
+        fetch(url)
             .then(response => response.json())
             .then(data => {
                
-                
                 const index = buttonId.split('-').pop();
                 pdfData[index] = data; // Store pdfUrls for this modal
                 currentIndexes[index] = 0; // Initialize currentIndex for this modal
@@ -414,8 +415,9 @@
             const actualId = this.getAttribute('data-actual-id');
             const status = this.getAttribute('data-status');
             const isChecked = this.checked;
+            const url = "{{ route('actual.updateActual') }}"
 
-            fetch('/actual/input-actual-achievement/updateDept', {
+            fetch(url, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',

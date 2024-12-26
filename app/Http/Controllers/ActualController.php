@@ -370,7 +370,7 @@ class ActualController extends Controller
         Actual::updateOrCreate($searchConditions, $dataToUpdateOrCreate);
 
         flash()->success('Data created successfully.');
-        return redirect()->to('actual/input-actual-employee?employee=' . $request->input('employee_id') . '&year=' . $yearToShow . '&semester=' . $semester);
+        return redirect()->to('actual/input-actual-employee?employee=' . $request->input('employee_id') . '&year=' . $request->input('year') . '&semester=' . $semester);
     }
 
     public function updateActual(Request $request)

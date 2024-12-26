@@ -341,6 +341,7 @@ document.querySelectorAll('.modal').forEach(modal => {
     const month = modal.dataset.month;
     const actualId = modal.id.split('-').pop();
     
+    
     if (!modalOrder[month]) {
         modalOrder[month] = [];
     }
@@ -372,11 +373,12 @@ document.querySelectorAll('div[id^="modal-background-"]').forEach(background => 
 });
 
 function fetchPdfUrls(month, actualId, buttonId) {
-    fetch(`/report/file-preview?month=${month}&actual_id=${actualId}`)
+    const filePreviewUrl = "{{ route('report.showFile') }}";
+    const url = `${filePreviewUrl}?month=${month}&actual_id=${actualId}`;
+    fetch(url)
         .then(response => response.json())
         .then(data => {
            
-            
             const index = buttonId.split('-').pop();
             pdfData[index] = data; // Store pdfUrls for this modal
             currentIndexes[index] = 0; // Initialize currentIndex for this modal
@@ -457,8 +459,9 @@ document.addEventListener('DOMContentLoaded', function() {
             const actualId = this.getAttribute('data-actual-id');
             const status = this.getAttribute('data-status');
             const isChecked = this.checked;
+            const url = "{{ route('actual.updateActual') }}"
 
-            fetch('/actual/input-actual-achievement/update', {
+            fetch(url, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
