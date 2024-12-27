@@ -78,6 +78,33 @@ class ReportController extends Controller
             return view('components/404-page');
         }
     }
+
+    public function indexDept()
+    {
+        $user = Auth::user();
+        $role = $user->role;
+
+        $div1Dept = DB::table('departments')->whereIn('name', ['Sub Div A', 'Sub Div B', 'Sub Div C', 'FAD',])->get();
+        $div2Dept = DB::table('departments')->whereIn('name', ['Sub Div D', 'Sub Div E', 'Sub Div F', 'FAD'])->get();
+        $ws = DB::table('departments')->where('name', '=', 'Workshop');
+        $allDept = Department::all();
+
+        if ($role == 'Inputer' || $role == '') {
+            abort(403, 'Unauthorized');
+        } else if ($role == 'Checker Div 1') {
+            $deptList = $div1Dept;
+            return view('report.list-department-report', ['title' => 'Report', 'desc' => 'Department List', 'deptList' => $deptList]);
+        } else if ($role == 'Checker Div 2') {
+            $deptList = $div2Dept;
+            return view('report.list-department-report', ['title' => 'Report', 'desc' => 'Department List', 'deptList' => $deptList]);
+        } else if ($role == 'Checker WS') {
+            $deptList = $ws;
+            return view('report.list-department-report', ['title' => 'Report', 'desc' => 'Department List', 'deptList' => $deptList]);
+        } else if ($role == 'Approver') {
+            $deptList = $allDept;
+            return view('report.list-department-report', ['title' => 'Report', 'desc' => 'Department List', 'deptList' => $deptList]);
+        }
+    }
     public function show($id, Request $request)
     {
         $semester = $request->query('semester');

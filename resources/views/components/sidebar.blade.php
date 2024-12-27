@@ -8,6 +8,7 @@
     $currentYear = now()->year;
     $yearToShow = ($currentMonth == 1) ? $currentYear - 1 : $currentYear;
     $userID = auth()->id();
+    $role = auth()->user()->role;
     $departmentID = auth()->user()->department_id;
     @endphp
     <ul class="mt-4">
@@ -119,12 +120,21 @@
                         </a>
                     </li>
                     @endif
+                    @if ($role == 'Inputer' || $role == '')   
                     <li>
                         <a href="{{ route('report.department', $departmentID . '?semester=&year='. $yearToShow) }}" class="flex items-center py-2 px-6 text-gray-300 hover:bg-gray-700" id="department-link">
                             <i class="ri-file-list-3-fill text-2xl"></i>
                             <span class="ml-3">Summary KPI Dept</span>
                         </a>
                     </li>
+                    @else
+                    <li>
+                        <a href="{{ route('report.indexDept') }}" class="flex items-center py-2 px-6 text-gray-300 hover:bg-gray-700" id="department-link">
+                            <i class="ri-file-list-3-fill text-2xl"></i>
+                            <span class="ml-3">Summary KPI Dept</span>
+                        </a>
+                    </li>
+                    @endif
                     
                 </ul>
             </div>
