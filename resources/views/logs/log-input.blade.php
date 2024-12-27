@@ -86,77 +86,92 @@
                     case '01':
                         $totalTgUnit = $targetUnitCountAll->total_1 ?? 0;
                         $totalTgUnitDept = $targetUnitCountAllDept->total_1 ?? 0;
+                        $totalsTg = $totalTgUnitAll['total_1'] ?? 0;
                         break;
 
                     case '02':
                         $totalTgUnit = $targetUnitCountAll->total_2 ?? 0;
                         $totalTgUnitDept = $targetUnitCountAllDept->total_2 ?? 0;
+                        $totalsTg = $totalTgUnitAll['total_2'] ?? 0;
                         break;
 
                     case '03':
                         $totalTgUnit = $targetUnitCountAll->total_3 ?? 0;
-                        $totalTgUnitDept = $targetUnitCountAllDept->total_4 ?? 0;
+                        $totalTgUnitDept = $targetUnitCountAllDept->total_3 ?? 0;
+                        $totalsTg = $totalTgUnitAll['total_3'] ?? 0;
                         break;
 
                     case '04':
                         $totalTgUnit = $targetUnitCountAll->total_4 ?? 0;
                         $totalTgUnitDept = $targetUnitCountAllDept->total_4 ?? 0;
+                        $totalsTg = $totalTgUnitAll['total_4'] ?? 0;
                         break;
 
                     case '05':
                         $totalTgUnit = $targetUnitCountAll->total_5 ?? 0;
                         $totalTgUnitDept = $targetUnitCountAllDept->total_5 ?? 0;
+                        $totalsTg = $totalTgUnitAll['total_5'] ?? 0;
                         break;
                         
                     case '06':
                         $totalTgUnit = $targetUnitCountAll->total_6 ?? 0;
                         $totalTgUnitDept = $targetUnitCountAllDept->total_6 ?? 0;
+                        $totalsTg = $totalTgUnitAll['total_6'] ?? 0;
                         break;
 
                     case '07':
                         $totalTgUnit = $targetUnitCountAll->total_7 ?? 0;
                         $totalTgUnitDept = $targetUnitCountAllDept->total_7 ?? 0;
+                        $totalsTg = $totalTgUnitAll['total_7'] ?? 0;
                         break; 
 
                     case '08':
                         $totalTgUnit = $targetUnitCountAll->total_8 ?? 0;
                         $totalTgUnitDept = $targetUnitCountAllDept->total_8 ?? 0;
+                        $totalsTg = $totalTgUnitAll['total_8'] ?? 0;
                         break;
 
                     case '09':
                         $totalTgUnit = $targetUnitCountAll->total_9 ?? 0;
                         $totalTgUnitDept = $targetUnitCountAllDept->total_9 ?? 0;
+                        $totalsTg = $totalTgUnitAll['total_9'] ?? 0;
                         break;
 
                     case '10':
                         $totalTgUnit = $targetUnitCountAll->total_10 ?? 0;
                         $totalTgUnitDept = $targetUnitCountAllDept->total_10 ?? 0;
+                        $totalsTg = $totalTgUnitAll['total_10'] ?? 0;
                         break;
 
                     case '11':
                         $totalTgUnit = $targetUnitCountAll->total_11 ?? 0;
                         $totalTgUnitDept = $targetUnitCountAllDept->total_11 ?? 0;
+                        $totalsTg = $totalTgUnitAll['total_11'] ?? 0;
                         break;
 
                     case '12':
                         $totalTgUnit = $targetUnitCountAll->total_12 ?? 0;
                         $totalTgUnitDept = $targetUnitCountAllDept->total_12 ?? 0;
+                        $totalsTg = $totalTgUnitAll['total_12'] ?? 0;
                         break;
                     default:
                         $totalTgUnit = 0;
                         $totalTgUnitDept = 0;
+                        $totalsTg = 0;
                         break;
                 }
 
                 $totalFl = $actualFilledCount->total_filled ?? 0;
                 $totalFlDept = $actualFilledCountDept->total_filled ?? 0;
-                $totalCheck = $actualCheckedCount->total_checked ?? 0;
-                $totalCheckDept = $actualCheckedCountDept->total_checked ?? 0;
+                $totalCheck = $actualCheckedCount ?? 0;
+                $totalCheckDept = $actualCheckedCountDept ?? 0;
                 $totalFlAll = $totalFl + $totalFlDept;
                 $totalCheckedAll = $totalCheck + $totalCheckDept;
                 $month = request()->query('month');
                 $year = request()->query('year');
                 $totalTgAll = $totalTgUnit + $totalTgUnitDept;
+                // dd($totalsTg, $totalCheck, $totalCheckDept);
+                // dd($totalCheck, $totalCheckDept, $totalTgAll);
 
                 // dd($totalCheckedAll, $totalTgAll)
 
@@ -184,7 +199,7 @@
                     @endif
                 </div>
                 <div class="p-0.5">
-                    @if ($totalCheckedAll == $totalTgAll)
+                    @if ($totalCheckedAll == $totalsTg)
                     <form action="{{ url('/generate-pdf-check') }}" method="GET">
                         @php
                             $lastInput = $actualFilled->first(function($item) use ($department_id) {
@@ -244,7 +259,7 @@
                     return $item->department_id == $department->id;
                 });
                 
-                
+                // dd($af);
             @endphp
             <td class="border-2 border-gray-400 tracking-wide px-2 py-0 text-[13px] text-center">{{ $totalEmployee->total_employee }}</td>
 

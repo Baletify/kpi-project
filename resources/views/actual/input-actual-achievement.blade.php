@@ -362,7 +362,10 @@
             } else {
                 if (!isNaN(target) && !isNaN(actual) && target !== 0) {
                     let achievement;
+                    var trendValue = document.getElementById('trend').value; // Retrieve the trend value
                     if (unitValue === 'Rp') {
+                        achievement = (target / actual) * 100;
+                    } else if (trendValue === 'Negatif') {
                         achievement = (target / actual) * 100;
                     } else {
                         achievement = (actual / target) * 100;
