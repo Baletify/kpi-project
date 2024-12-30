@@ -1,4 +1,4 @@
-<div class="fixed left-0 top-0 w-64 h-full bg-[#0F1035] p-4">
+<div class="fixed left-0 top-0 w-64 h-full bg-[#0F1035] p-4 overflow-y-auto">
     <a href="#" class="flex items-center pb-4 border-b border-b-gray-300">
         <img src="https://via.placeholder.com/150" alt="logo" class="w-12 h-12 rounded object-cover">
         <span class="text-lg font-bold text-gray-200 ml-3">Key Performance Indicator</span>
@@ -64,6 +64,7 @@
                 <span class="ml-3">Action Plan</span>
             </a>
         </li> --}}
+        @if ($role != '' || $role == 'Superadmin')
          <div x-data="{ open: false }" class="items-center">
             <button @click="open = !open" class="flex items-center w-full justify-between text-gray-200 px-4 py-2 hover:bg-gray-700 ">
                 {{-- <i class="ri-history-line text-2xl"></i> --}}
@@ -71,26 +72,31 @@
                 <i class="ri-arrow-down-wide-line ml-20 ont-bold"></i>
             </button>
             <ul x-show="open" x-transition:enter="transition ease-out duration-100" x-transition:enter-start="transform opacity-0 scale-95" x-transition:enter-end="transform opacity-100 scale-100" x-transition:leave="transition ease-in duration-75" x-transition:leave-start="transform opacity-100 scale-100" x-transition:leave-end="transform opacity-0 scale-95" class="mt-2 space-y-2">
+                @if ($role == 'Approver')
                 <li>
                     <a href="{{ route('log-check.index', 'year=' . $yearToShow)}}" class="flex items-center py-2 px-6 text-gray-300 hover:bg-gray-700">
                         <i class="ri-file-check-line text-2xl"></i>
                         <span class="ml-3">Log Pengecekan</span>
                     </a>
                 </li>
+                @endif
                 <li>
                     <a href="{{ route('log-input.indexInput', 'department=' . $departmentID . '&month=' . $currentMonth - 1 . '&year=' . $yearToShow) }}" class="flex items-center py-2 px-6 text-gray-300 hover:bg-gray-700">
                         <i class="ri-history-line text-2xl"></i>
                         <span class="ml-3">Log Input</span>
                     </a>
-                </li>             
+                </li>
+                @if ($role == 'Approver')             
                 <li>
                     <a href="{{ route('log-input.individual', 'department=' . $departmentID . '&month=' . $currentMonth - 1 . '&year=' . $yearToShow) }}" class="flex items-center py-2 px-6 text-gray-300 hover:bg-gray-700">
                         <i class="ri-user-follow-fill text-2xl"></i>
                         <span class="ml-3">Log Input Individual</span>
                     </a>
-                </li>             
+                </li>  
+                @endif           
             </ul>
         </div>
+        @endif
         <li>
             <div x-data="{ open: false }" class="items-center">
                 <button @click="open = !open" class="flex items-center w-full justify-between text-gray-200 px-4 py-2 hover:bg-gray-700 ">

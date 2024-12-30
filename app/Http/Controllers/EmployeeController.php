@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Employee;
-use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
+use App\Models\Employee;
+use App\Models\Department;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class EmployeeController extends Controller
 {
@@ -19,7 +21,69 @@ class EmployeeController extends Controller
             ->select('employees.id', 'employees.nik', 'employees.name', 'employees.occupation', 'departments.name as department')
             ->get();
 
-        $deptLists = DB::table('departments')->get();
+        $user = Auth::user();
+        $role = $user->role;
+        $email = $user->email;
+
+        $div1Dept = DB::table('departments')->whereIn('name', ['Sub Div A', 'Sub Div B', 'Sub Div C', 'FAD',])->get();
+        $div2Dept = DB::table('departments')->whereIn('name', ['Sub Div D', 'Sub Div E', 'Sub Div F', 'FAD'])->get();
+        $ws = DB::table('departments')->where('name', '=', 'Workshop')->get();
+        $fsd = DB::table('departments')->where('name', '=', 'FSD')->get();
+        $factory = DB::table('departments')->where('name', '=', 'Factory')->get();
+        $diva = DB::table('departments')->where('name', '=', 'Sub Div A')->get();
+        $divb = DB::table('departments')->where('name', '=', 'Sub Div B')->get();
+        $divc = DB::table('departments')->where('name', '=', 'Sub Div C')->get();
+        $divd = DB::table('departments')->where('name', '=', 'Sub Div D')->get();
+        $dive = DB::table('departments')->where('name', '=', 'Sub Div E')->get();
+        $divf = DB::table('departments')->where('name', '=', 'Sub Div F')->get();
+        $allDept = Department::all();
+
+        if ($role == 'Checker Div 1') {
+            $deptList = $div1Dept;
+        } else if ($role == 'Checker Div 2') {
+            $deptList = $div2Dept;
+        } else if ($role == 'Checker WS') {
+            $deptList = $ws;
+        } else if ($role == 'Checker Factory') {
+            $deptList = $factory;
+        } else if ($role == 'Approver') {
+            $deptList = $allDept;
+        } elseif ($role == 'Inputer' && $email == 'fsd@bskp.co.id') {
+            $deptList = $fsd;
+        } elseif ($role == 'Inputer' && $email == 'sub.divisi.a@bskp.co.id') {
+            $deptList = $diva;
+        } elseif ($role == 'Inputer' && $email == 'sub.divisi.b@bskp.co.id') {
+            $deptList = $divb;
+        } elseif ($role == 'Inputer' && $email == 'sub.divisi.c@bskp.co.id') {
+            $deptList = $divc;
+        } elseif ($role == 'Inputer' && $email == 'sub.divisi.d@bskp.co.id') {
+            $deptList = $divd;
+        } elseif ($role == 'Inputer' && $email == 'sub.divisi.e@bskp.co.id') {
+            $deptList = $dive;
+        } elseif ($role == 'Inputer' && $email == 'sub.divisi.f@bskp.co.id') {
+            $deptList = $divf;
+        } else {
+            $deptList = [];
+        }
+
+        // dd($deptList, $role, $email, $dive);
+
+        // if ($email == 'sub.divisi.a@bskp.co.id') {
+        //     $deptList = $diva;
+        // } else if ($email == 'sub.divisi.b@bskp.co.id') {
+        //     $deptList = $divb;
+        // } else if ($email == 'sub.divisi.c@bskp.co.id') {
+        //     $deptList = $divc;
+        // } else if ($email == 'sub.divisi.d@bskp.co.id') {
+        //     $deptList = $divd;
+        // } else if ($email == 'sub.divisi.e@bskp.co.id') {
+        //     $deptList = $dive;
+        // } else if ($email == 'sub.divisi.f@bskp.co.id') {
+        //     $deptList = $divf;
+        // } else {
+        //     $deptList = [];
+        // }
+
 
 
         $manager = Employee::where('status', '=', 'Manager')->count();
@@ -56,7 +120,7 @@ class EmployeeController extends Controller
             'title' => 'Dashboard',
             'desc' => 'Analytics',
             'employees' => $employees,
-            'deptLists' => $deptLists,
+            'deptLists' => $deptList,
             'notification' => $notification,
             'manager' => $manager,
             'asstMng' => $asstMng,
@@ -66,6 +130,7 @@ class EmployeeController extends Controller
             'actualMonthly' => $actualMonthly
         ]);
     }
+
     public function filter(Request $request)
     {
         $department = $request->query('department');
@@ -73,54 +138,88 @@ class EmployeeController extends Controller
         $year = $request->query('year');
         $semester = $request->query('semester');
 
-        if ($department && $semester && $year) {
-            $data = DB::table('employees')
-                ->leftJoin('departments', 'employees.department_id', '=', 'departments.id')
-                ->leftJoin('actuals', 'employees.id', '=', 'actuals.employee_id')
-                ->select('employees.id', 'employees.nik', 'employees.name', 'employees.occupation', 'departments.name as department', 'departments.id as department_id', 'departments.id as department_id', DB::raw('MIN(actuals.date) as actual_date'))
-                ->where('actuals.semester', '=', $semester)
-                ->where(DB::raw('YEAR(actuals.date)'), $year)
-                ->where('departments.id', '=', $department)
-                ->groupBy('employees.id', 'employees.nik', 'employees.name', 'employees.occupation', 'departments.name', 'departments.id')
-                ->get();
-            return response()->json($data);
-        } else if ($name && $semester && $year) {
-            $data = DB::table('employees')
+        $user = Auth::user();
+        $role = $user->role;
+        $email = $user->email;
+
+        $div1Dept = DB::table('departments')->whereIn('name', ['Sub Div A', 'Sub Div B', 'Sub Div C', 'FAD',])->get();
+        $div2Dept = DB::table('departments')->whereIn('name', ['Sub Div D', 'Sub Div E', 'Sub Div F', 'FAD'])->get();
+        $ws = DB::table('departments')->where('name', '=', 'Workshop')->get();
+        $fsd = DB::table('departments')->where('name', '=', 'FSD')->get();
+        $factory = DB::table('departments')->where('name', '=', 'Factory')->get();
+        $diva = DB::table('departments')->where('name', '=', 'Sub Div A')->get();
+        $divb = DB::table('departments')->where('name', '=', 'Sub Div B')->get();
+        $divc = DB::table('departments')->where('name', '=', 'Sub Div C')->get();
+        $divd = DB::table('departments')->where('name', '=', 'Sub Div D')->get();
+        $dive = DB::table('departments')->where('name', '=', 'Sub Div E')->get();
+        $divf = DB::table('departments')->where('name', '=', 'Sub Div F')->get();
+        $allDept = Department::all();
+
+        if ($role == 'Checker Div 1') {
+            $deptList = $div1Dept;
+        } else if ($role == 'Checker Div 2') {
+            $deptList = $div2Dept;
+        } else if ($role == 'Checker WS') {
+            $deptList = $ws;
+        } else if ($role == 'Checker Factory') {
+            $deptList = $factory;
+        } else if ($role == 'Approver') {
+            $deptList = $allDept;
+        } elseif ($role == 'Inputer' && $email == 'fsd@bskp.co.id') {
+            $deptList = $fsd;
+        } elseif ($role == 'Inputer' && $email == 'sub.divisi.a@bskp.co.id') {
+            $deptList = $diva;
+        } elseif ($role == 'Inputer' && $email == 'sub.divisi.b@bskp.co.id') {
+            $deptList = $divb;
+        } elseif ($role == 'Inputer' && $email == 'sub.divisi.c@bskp.co.id') {
+            $deptList = $divc;
+        } elseif ($role == 'Inputer' && $email == 'sub.divisi.d@bskp.co.id') {
+            $deptList = $divd;
+        } elseif ($role == 'Inputer' && $email == 'sub.divisi.e@bskp.co.id') {
+            $deptList = $dive;
+        } elseif ($role == 'Inputer' && $email == 'sub.divisi.f@bskp.co.id') {
+            $deptList = $divf;
+        } else {
+            $deptList = collect();
+        }
+
+        $deptNames = $deptList->pluck('name')->toArray();
+
+        $department = $request->input('department');
+        $name = $request->input('name');
+        $year = $request->input('year');
+        $semester = $request->input('semester');
+
+
+        if ($department || $name || $year || $semester) {
+            $query = DB::table('employees')
                 ->leftJoin('departments', 'employees.department_id', '=', 'departments.id')
                 ->leftJoin('actuals', 'employees.id', '=', 'actuals.employee_id')
                 ->select('employees.id', 'employees.nik', 'employees.name', 'employees.occupation', 'departments.name as department', 'departments.id as department_id', DB::raw('MIN(actuals.date) as actual_date'))
-                ->where('actuals.semester', '=', $semester)
-                ->where(DB::raw('YEAR(actuals.date)'), $year)
-                ->where('employees.name', 'LIKE', '%' . $name . '%')
-                ->groupBy('employees.id', 'employees.nik', 'employees.name', 'employees.occupation', 'departments.name', 'departments.id')
-                ->get();
-            return response()->json($data);
-        } else if ($year && $semester) {
-            $data = DB::table('employees')
-                ->leftJoin('departments', 'employees.department_id', '=', 'departments.id')
-                ->leftJoin('actuals', 'employees.id', '=', 'actuals.employee_id')
-                ->select('employees.id', 'employees.nik', 'employees.name', 'employees.occupation', 'departments.name as department', 'departments.id as department_id', DB::raw('MIN(actuals.date) as actual_date'))
-                ->where('actuals.semester', '=', $semester)
-                ->where(DB::raw('YEAR(actuals.date)'), $year)
-                ->groupBy('employees.id', 'employees.nik', 'employees.name', 'employees.occupation', 'departments.name', 'departments.id')
-                ->get();
-            return response()->json($data);
-        } else if ($name) {
-            $data = DB::table('employees')
-                ->leftJoin('departments', 'employees.department_id', '=', 'departments.id')
-                ->select('employees.id', 'employees.nik', 'employees.name', 'employees.occupation', 'departments.name as department', 'departments.id as department_id')
-                ->where('employees.name', 'LIKE', '%' . $name . '%')
-                ->get();
+                ->whereIn('departments.name', $deptNames);
+
+            if ($department) {
+                $query->where('departments.id', $department);
+            }
+
+            if ($name) {
+                $query->where('employees.name', 'like', '%' . $name . '%');
+            }
+
+            if ($year) {
+                $query->whereYear('actuals.date', $year);
+            }
+
+            if ($semester) {
+                $query->where('actuals.semester', $semester);
+            }
+
+            $data = $query->groupBy('employees.id', 'employees.nik', 'employees.name', 'employees.occupation', 'departments.name', 'departments.id')->get();
 
             return response()->json($data);
-        } else if ($department) {
-            $data = DB::table('employees')
-                ->leftJoin('departments', 'employees.department_id', '=', 'departments.id')
-                ->select('employees.id', 'employees.nik', 'employees.name', 'employees.occupation', 'departments.name as department', 'departments.id as department_id', 'departments.id as department_id')
-                ->where('departments.id', $department)
-                ->get();
-
-            return response()->json($data);
+        } else {
+            // Return an empty response or a default message if no query parameters are provided
+            return response()->json([]);
         }
     }
 }

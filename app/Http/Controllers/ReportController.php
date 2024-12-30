@@ -31,6 +31,8 @@ class ReportController extends Controller
             $div1Dept = DB::table('departments')->whereIn('name', ['Sub Div A', 'Sub Div B', 'Sub Div C'])->get();
             $div2Dept = DB::table('departments')->whereIn('name', ['Sub Div D', 'Sub Div E', 'Sub Div F'])->get();
             $ws = DB::table('departments')->where('name', '=', 'Workshop');
+            $factory = DB::table('departments')->where('name', '=', 'Factory');
+            $fsd = DB::table('departments')->where('name', '=', 'FSD');
             $allDept = Department::all();
 
             $departments = DB::table('departments')
@@ -39,7 +41,7 @@ class ReportController extends Controller
                 ->where('departments.id', $department)
                 ->get();
 
-            return view('report.list-employee-report', ['title' => 'Report', 'desc' => 'Employee List', 'departments' => $departments, 'div1Dept' => $div1Dept, 'div2Dept' => $div2Dept, 'allDept' => $allDept, 'ws' => $ws,]);
+            return view('report.list-employee-report', ['title' => 'Report', 'desc' => 'Employee List', 'departments' => $departments, 'div1Dept' => $div1Dept, 'div2Dept' => $div2Dept, 'allDept' => $allDept, 'ws' => $ws, 'factory' => $factory, 'fsd' => $fsd]);
         } else if ($department) {
             $departmentID = Auth::user()->department_id;
             if ($department != $departmentID) {
@@ -48,6 +50,8 @@ class ReportController extends Controller
             $div1Dept = DB::table('departments')->whereIn('name', ['Sub Div A', 'Sub Div B', 'Sub Div C'])->get();
             $div2Dept = DB::table('departments')->whereIn('name', ['Sub Div D', 'Sub Div E', 'Sub Div F'])->get();
             $ws = DB::table('departments')->where('name', '=', 'Workshop');
+            $factory = DB::table('departments')->where('name', '=', 'Factory');
+            $fsd = DB::table('departments')->where('name', '=', 'FSD');
             $allDept = Department::all();
 
             $departments = DB::table('departments')
@@ -56,7 +60,7 @@ class ReportController extends Controller
                 ->where('departments.id', $department)
                 ->get();
 
-            return view('report.list-employee-report', ['title' => 'Report', 'desc' => 'Employee List', 'departments' => $departments, 'div1Dept' => $div1Dept, 'div2Dept' => $div2Dept, 'allDept' => $allDept, 'ws' => $ws,]);
+            return view('report.list-employee-report', ['title' => 'Report', 'desc' => 'Employee List', 'departments' => $departments, 'div1Dept' => $div1Dept, 'div2Dept' => $div2Dept, 'allDept' => $allDept, 'ws' => $ws, 'factory' => $factory, 'fsd' => $fsd]);
         } elseif ($employee) {
             $userID = Auth::user()->id;
             if ($employee != $userID) {
@@ -65,6 +69,8 @@ class ReportController extends Controller
             $div1Dept = DB::table('departments')->whereIn('name', ['Sub Div A', 'Sub Div B', 'Sub Div C'])->get();
             $div2Dept = DB::table('departments')->whereIn('name', ['Sub Div D', 'Sub Div E', 'Sub Div F'])->get();
             $ws = DB::table('departments')->where('name', '=', 'Workshop');
+            $factory = DB::table('departments')->where('name', '=', 'Factory');
+            $fsd = DB::table('departments')->where('name', '=', 'FSD');
             $allDept = Department::all();
 
             $departments = DB::table('departments')
@@ -73,7 +79,7 @@ class ReportController extends Controller
                 ->where('employees.id', $employee)
                 ->get();
 
-            return view('report.list-employee-report', ['title' => 'Report', 'desc' => 'Employee List', 'departments' => $departments, 'div1Dept' => $div1Dept, 'div2Dept' => $div2Dept, 'allDept' => $allDept, 'ws' => $ws,]);
+            return view('report.list-employee-report', ['title' => 'Report', 'desc' => 'Employee List', 'departments' => $departments, 'div1Dept' => $div1Dept, 'div2Dept' => $div2Dept, 'allDept' => $allDept, 'ws' => $ws, 'factory' => $factory, 'fsd' => $fsd]);
         } else {
             return view('components/404-page');
         }
@@ -87,6 +93,7 @@ class ReportController extends Controller
         $div1Dept = DB::table('departments')->whereIn('name', ['Sub Div A', 'Sub Div B', 'Sub Div C', 'FAD',])->get();
         $div2Dept = DB::table('departments')->whereIn('name', ['Sub Div D', 'Sub Div E', 'Sub Div F', 'FAD'])->get();
         $ws = DB::table('departments')->where('name', '=', 'Workshop');
+        $factory = DB::table('departments')->where('name', '=', 'Factory');
         $allDept = Department::all();
 
         if ($role == 'Inputer' || $role == '') {
@@ -99,6 +106,9 @@ class ReportController extends Controller
             return view('report.list-department-report', ['title' => 'Report', 'desc' => 'Department List', 'deptList' => $deptList]);
         } else if ($role == 'Checker WS') {
             $deptList = $ws;
+            return view('report.list-department-report', ['title' => 'Report', 'desc' => 'Department List', 'deptList' => $deptList]);
+        } else if ($role == 'Checker Factory') {
+            $deptList = $factory;
             return view('report.list-department-report', ['title' => 'Report', 'desc' => 'Department List', 'deptList' => $deptList]);
         } else if ($role == 'Approver') {
             $deptList = $allDept;

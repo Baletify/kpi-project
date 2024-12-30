@@ -440,7 +440,7 @@ class LogController extends Controller
                     $totals['total_11'] += $item->total_11;
                     $totals['total_12'] += $item->total_12;
                 }
-            } elseif ($role == 'Checker WS') {
+            } elseif ($role == 'Checker WS' || $role == 'Checker Factory') {
                 $actualCheckedCount = DB::table('actuals')
                     ->join('employees', 'actuals.employee_id', '=', 'employees.id')
                     ->join('departments', 'employees.department_id', '=', 'departments.id')
