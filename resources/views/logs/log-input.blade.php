@@ -6,6 +6,7 @@
         $startYear = 2024; 
         $endYear = $currentYear + 2;
         $department_id = request()->query('department');
+        $role = auth()->user()->role;
         $monthQuery = request()->query('month');
         $date = DateTime::createFromFormat('!m', $monthQuery);
         $monthName = $date->format('F');
@@ -182,7 +183,7 @@
             @endphp
             <div class="flex justify-end">
                 <div class="p-0.5">
-                    @if ($totalFlAll == $totalTgAll - 1 )
+                    @if ($totalFlAll == $totalTgAll - 1 && $role == 'Inputer')
                     <form action="{{ url('/generate-pdf-input') }}" method="GET">
                         @php
                             $lastInput = $actualFilled->first(function($item) use ($department_id) {
@@ -199,7 +200,7 @@
                     @endif
                 </div>
                 <div class="p-0.5">
-                    @if ($totalCheckedAll == $totalsTg)
+                    @if ($totalCheckedAll == $totalsTg && $role == 'Checker')
                     <form action="{{ url('/generate-pdf-check') }}" method="GET">
                         @php
                             $lastInput = $actualFilled->first(function($item) use ($department_id) {

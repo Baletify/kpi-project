@@ -228,25 +228,31 @@
                                             Approve
                                         </label>
                                     </div>
-                                    @if ($actual->status !== 'Approved')
-                                    <div class="p-1 flex justify-start">
-                                        <span class="text-semibold mb-1 text-[12px]">Berikan Komentar</span>
-                                    </div>
-                                    <div class="p-0 mb-2 flex justify-center">
-                                        <textarea name="comment" id="comment" cols="58" rows="2"></textarea>
-                                    </div>
-                                    <div class="flex justify-center gap-3">
-                                        
-                                        <div class="flex flex-col">
-                                            <button class="bg-yellow-500 text-white px-4 py-2 rounded text-[12px] mb-3">
-                                                <i class="ri-send-plane-line"></i>
-                                                <span>Kirim Revisi</span>
-                                            </button>
-                                            
-                                        </div>
-                                        
-                                    </div>
-                                    @endif
+                                    @php
+                                    $user = auth()->user();
+                                    $role = $user->role;
+                                    @endphp
+                                        @if ($role != 'Inputer' && $role != '')
+                                            @if ($actual->status !== 'Approved')
+                                            <div class="p-1 flex justify-start">
+                                                <span class="text-semibold mb-1 text-[12px]">Berikan Komentar</span>
+                                            </div>
+                                            <div class="p-0 mb-2 flex justify-center">
+                                                <textarea name="comment" id="comment" cols="58" rows="2"></textarea>
+                                            </div>
+                                            <div class="flex justify-center gap-3">
+    
+                                                <div class="flex flex-col">
+                                                    <button class="bg-yellow-500 text-white px-4 py-2 rounded text-[12px] mb-3">
+                                                        <i class="ri-send-plane-line"></i>
+                                                        <span>Kirim Revisi</span>
+                                                    </button>
+                                                    
+                                                </div>
+                                                
+                                            </div>
+                                            @endif
+                                        @endif
                                     
                                     <div class="flex justify-end">
                                         <button id="close-modal-{{ $modalId }}" class="bg-red-500 text-white px-4 py-2 rounded mr-2 text-[12px] mt-0.5">Close</button>

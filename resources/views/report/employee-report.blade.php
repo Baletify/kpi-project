@@ -123,6 +123,7 @@
                 @foreach ($targets as $target)
                 @php
                     $i++;
+                    
                 @endphp
                 <tr class="{{ $i % 2 === 0 ? 'bg-gray-50' : 'bg-blue-100' }}">
                     <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="{{ $i % 2 === 0 ? 'FFF2F2F2' : 'FFFFFFFF' }}" class="border-2 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-2" rowspan="4">{{ $target->code }}</td>
@@ -277,24 +278,30 @@
                                         </label>
                                         {{-- <button id="confirmRequest" class="button bg-blue-500 rounded-md text-white p-0.5 mt-1">Confirm</button> --}}
                                     </div>
-                                    @if ($actual->status !== 'Approved')
-                                    <div class="p-1 flex justify-start">
-                                        <span class="text-semibold mb-1 text-[12px]">Berikan Komentar</span>
-                                    </div>
-                                    <div class="p-0 mb-2 flex justify-center">
-                                        <textarea name="comment" id="comment" cols="58" rows="2"></textarea>
-                                    </div>
-                                    <div class="flex justify-center gap-3">
-                                        
-                                        <div class="flex flex-col">
-                                            <button class="bg-yellow-500 text-white px-4 py-2 rounded text-[12px] mb-3">
-                                                <i class="ri-send-plane-line"></i>
-                                                <span>Kirim Revisi</span>
-                                            </button>
+                                @php
+                                $user = auth()->user();
+                                $role = $user->role;
+                                @endphp
+                                    @if ($role != 'Inputer' && $role != '')
+                                        @if ($actual->status !== 'Approved')
+                                        <div class="p-1 flex justify-start">
+                                            <span class="text-semibold mb-1 text-[12px]">Berikan Komentar</span>
+                                        </div>
+                                        <div class="p-0 mb-2 flex justify-center">
+                                            <textarea name="comment" id="comment" cols="58" rows="2"></textarea>
+                                        </div>
+                                        <div class="flex justify-center gap-3">
+
+                                            <div class="flex flex-col">
+                                                <button class="bg-yellow-500 text-white px-4 py-2 rounded text-[12px] mb-3">
+                                                    <i class="ri-send-plane-line"></i>
+                                                    <span>Kirim Revisi</span>
+                                                </button>
+                                                
+                                            </div>
                                             
                                         </div>
-                                        
-                                    </div>
+                                        @endif
                                     @endif
                                     
                                     <div class="flex justify-end">
