@@ -12,6 +12,7 @@ use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\ActionPlanController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\GeneratePdfController;
+use App\Http\Controllers\MailController;
 use App\Http\Controllers\RequirementController;
 use App\Http\Controllers\NotificationController;
 use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
@@ -100,7 +101,10 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('generate-pdf-input', [GeneratePdfController::class, 'generatePdfInput'])->name('generatePdfInput');
     Route::get('generate-pdf-check', [GeneratePdfController::class, 'generatePdfCheck'])->name('generatePdfCheck');
+
+    Route::post('/email/send', [MailController::class, 'sendEmail'])->name('email.sendEmail');
 });
+
 
 
 Route::get('404-not-found', function () {

@@ -125,7 +125,6 @@ class ReportController extends Controller
             abort(404, 'Employee not found');
         }
 
-
         if ($semester && $year) {
 
             $targets = DB::table('targets')
@@ -137,7 +136,7 @@ class ReportController extends Controller
             $actuals = DB::table('actuals')
                 ->leftJoin('employees', 'actuals.employee_id', '=', 'employees.id')
                 ->leftJoin('departments', 'employees.department_id', '=', 'departments.id')
-                ->select('actuals.date as date', 'actuals.employee_id as employee_id', 'actuals.kpi_item', 'actuals.kpi_code as kpi_code', 'actuals.kpi_weighting', 'actuals.kpi_percentage as achievement', 'employees.name as name', 'departments.name as department', 'employees.occupation as occupation', 'employees.nik as nik', 'actuals.semester as semester', 'actuals.date as year', 'actuals.target', 'actuals.actual', 'actuals.kpi_percentage', 'actuals.record_file', 'actuals.id as actual_id', 'actuals.status as status')
+                ->select('actuals.date as date', 'actuals.employee_id as employee_id', 'actuals.kpi_item', 'actuals.kpi_code as kpi_code', 'actuals.kpi_weighting', 'actuals.kpi_percentage as achievement', 'employees.name as name', 'employees.email as email', 'departments.name as department', 'employees.occupation as occupation', 'employees.nik as nik', 'actuals.semester as semester', 'actuals.date as year', 'actuals.target', 'actuals.actual', 'actuals.kpi_percentage', 'actuals.record_file', 'actuals.id as actual_id', 'actuals.status as status')
                 ->where('actuals.employee_id', $id)
                 ->where('actuals.semester', $semester)
                 ->where(DB::raw('YEAR(actuals.date)'), $year)

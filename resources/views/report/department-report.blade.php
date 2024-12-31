@@ -1,5 +1,8 @@
 <x-app-layout :title="$title" :desc="$desc">
     <div class="ml-64 mt-4 overflow-x-auto p-2 bg-gray-100 border border-gray-200 shadow-md shadow-black/10 rounded-md">
+        @php
+            $role = auth()->user()->role;
+        @endphp
         <div class="p-1">
             <span class="text-gray-600 font-bold text-lg">PT BRIDGESTONE KALIMANTAN PLANTATION</span>
         </div>
@@ -220,11 +223,11 @@
                                     </div>
                                     <div id="checkbox-container-{{ $modalId }}" class="p-1 flex justify-center gap-3">
                                         <label class="text-[14px]">
-                                            <input type="checkbox" class="status-checkbox" data-actual-id="{{ $actual->department_actual_id }}" data-status="Checked" {{ $actual->status == 'Checked' || $actual->status == 'Approved' ? 'checked' : '' }} {{ auth()->user()->role == 'Checker Div 1' || auth()->user()->role == 'Checker Div 2' || auth()->user()->role == 'Checker WS' || auth()->user()->role == 'Checker Factory' ? '' : 'disabled' }}>
+                                            <input type="checkbox" class="status-checkbox" data-actual-id="{{ $actual->department_actual_id }}" data-status="Checked" {{ $actual->status == 'Checked' || $actual->status == 'Approved' ? 'checked' : '' }} {{ $role == 'Checker Div 1' || $role == 'Checker Div 2' || $role == 'Checker WS' || $role == 'Checker Factory' || $role == 'Approver' ? '' : 'disabled' }}>
                                             Check
                                         </label>
                                         <label class="text-[14px]">
-                                            <input type="checkbox" class="status-checkbox" data-actual-id="{{ $actual->department_actual_id }}" data-status="Approved" {{ $actual->status == 'Approved' ? 'checked' : '' }} {{ auth()->user()->role == 'Approver' ? '' : 'disabled' }}>
+                                            <input type="checkbox" class="status-checkbox" data-actual-id="{{ $actual->department_actual_id }}" data-status="Approved" {{ $actual->status == 'Approved' ? 'checked' : '' }} {{ $role == 'Approver' ? '' : 'disabled' }}>
                                             Approve
                                         </label>
                                     </div>
@@ -234,23 +237,27 @@
                                     @endphp
                                         @if ($role != 'Inputer' && $role != '')
                                             @if ($actual->status !== 'Approved')
-                                            <div class="p-1 flex justify-start">
-                                                <span class="text-semibold mb-1 text-[12px]">Berikan Komentar</span>
-                                            </div>
-                                            <div class="p-0 mb-2 flex justify-center">
-                                                <textarea name="comment" id="comment" cols="58" rows="2"></textarea>
-                                            </div>
-                                            <div class="flex justify-center gap-3">
-    
-                                                <div class="flex flex-col">
-                                                    <button class="bg-yellow-500 text-white px-4 py-2 rounded text-[12px] mb-3">
-                                                        <i class="ri-send-plane-line"></i>
-                                                        <span>Kirim Revisi</span>
-                                                    </button>
+                                            <form action="">
+                                                <div class="p-1 flex justify-start">
+                                                    <span class="text-semibold mb-1 text-[12px]">Berikan Komentar
+                                                        
+                                                    </span>
+                                                </div>
+                                                <div class="p-0 mb-2 flex justify-center">
+                                                    <textarea name="comment" id="comment" cols="58" rows="2"></textarea>
+                                                </div>
+                                                <div class="flex justify-center gap-3">
+
+                                                    <div class="flex flex-col">
+                                                        <button class="bg-yellow-500 text-white px-4 py-2 rounded text-[12px] mb-3">
+                                                            <i class="ri-send-plane-line"></i>
+                                                            <span>Kirim Revisi</span>
+                                                        </button>
+                                                        
+                                                    </div>
                                                     
                                                 </div>
-                                                
-                                            </div>
+                                            </form>
                                             @endif
                                         @endif
                                     
