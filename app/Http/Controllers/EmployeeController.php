@@ -46,7 +46,7 @@ class EmployeeController extends Controller
             $deptList = $ws;
         } else if ($role == 'Checker Factory') {
             $deptList = $factory;
-        } else if ($role == 'Approver') {
+        } else if ($role == 'Approver' || $role == 'Superadmin') {
             $deptList = $allDept;
         } elseif ($role == 'Inputer' && $email == 'fsd@bskp.co.id') {
             $deptList = $fsd;
@@ -163,7 +163,7 @@ class EmployeeController extends Controller
             $deptList = $ws;
         } else if ($role == 'Checker Factory') {
             $deptList = $factory;
-        } else if ($role == 'Approver') {
+        } else if ($role == 'Approver' || $role == 'Superadmin') {
             $deptList = $allDept;
         } elseif ($role == 'Inputer' && $email == 'fsd@bskp.co.id') {
             $deptList = $fsd;

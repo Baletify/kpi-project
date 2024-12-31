@@ -134,7 +134,7 @@
                             <p class="p-0.5 font-bold text-xl">Notifikasi:</p>
                         </div>
                         <div class="flex justify-between gap-x-3">
-                            @if (auth()->user()->role == 'Superadmin')      
+                            @if (auth()->user()->role == 'Superadmin' || auth()->user()->role == 'Approver' )   
                             <a href="/notifications/create">
                                 <i class="ri-add-line bg-green-600 text-white text-base p-0.5 rounded-sm"></i>
                             </a>

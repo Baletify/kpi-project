@@ -20,11 +20,15 @@ class NotificationController extends Controller
 
     public function create()
     {
-        if (Auth::user()->role != 'Superadmin') {
+        if (Auth::user()->role != 'Superadmin' && Auth::user()->role != 'Approver') {
             abort(403, 'Unauthorized');
         }
-        
-        return view('notification.create-notification', ['title' => 'Create Notification', 'desc' => 'Create Notification']);
+
+        $userDept = Auth::user()->department_id;
+
+        $department = DB::table('departments')->where('id', '=', $userDept)->first();
+
+        return view('notification.create-notification', ['title' => 'Create Notification', 'desc' => 'Create Notification', 'department' => $department,]);
     }
 
     public function store(Request $request)

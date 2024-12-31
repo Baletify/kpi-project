@@ -110,7 +110,7 @@ class ReportController extends Controller
         } else if ($role == 'Checker Factory') {
             $deptList = $factory;
             return view('report.list-department-report', ['title' => 'Report', 'desc' => 'Department List', 'deptList' => $deptList]);
-        } else if ($role == 'Approver') {
+        } else if ($role == 'Approver' || $role == 'Superadmin') {
             $deptList = $allDept;
             return view('report.list-department-report', ['title' => 'Report', 'desc' => 'Department List', 'deptList' => $deptList]);
         }

@@ -12,7 +12,7 @@
                 </div>
                 <div class="relative mt-1 rounded-md">
                     <span class="pl-3 font-semibold">Author</span>  
-                    <input type="text" name="author" id="author" class="block w-full rounded-md border-0 py-1.5 pl-4 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 mt-1" placeholder="Author" value="" autocomplete="off">
+                    <input type="text" name="author" id="author" class="block w-full rounded-md border-0 py-1.5 pl-4 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 mt-1" placeholder="Author" value="{{ auth()->user()->name }}" autocomplete="off">
                   <div class="absolute inset-y-0 right-0 flex items-center">
                   </div>
                 </div>
@@ -24,7 +24,7 @@
                 </div>
                 <div class="relative mt-1 rounded-md">
                     <span class="pl-3 font-semibold">Departemen</span>  
-                    <input type="text" name="department" id="department" class="block w-full rounded-md border-0 py-1.5 pl-4 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 mt-1" placeholder="Departmen" value="" autocomplete="off">
+                    <input type="text" name="department" id="department" class="block w-full rounded-md border-0 py-1.5 pl-4 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 mt-1" placeholder="Departmen" value="{{ $department->name }}" autocomplete="off">
                   <div class="absolute inset-y-0 right-0 flex items-center">
                   </div>
                 </div>

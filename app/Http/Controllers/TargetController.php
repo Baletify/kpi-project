@@ -91,7 +91,7 @@ class TargetController extends Controller
 
         if ($departmentID) {
             $userDepartmentID = Auth::user()->department_id;
-            if ($departmentID != $userDepartmentID) {
+            if ($departmentID != $userDepartmentID && Auth::user()->role != 'Superadmin') {
                 abort(403, 'Unauthorized');
             }
 
@@ -104,8 +104,8 @@ class TargetController extends Controller
             return view('target.input-target-department', ['title' => 'Input Target', 'desc' => 'Input KPI Target & Upload Program', 'departments' => $departments]);
         } elseif ($employeeID) {
             $userID = Auth::user()->id;
-            if ($employeeID != $userID) {
-                abort(403, 'Unauthorized action.');
+            if ($employeeID != $userID && Auth::user()->role != 'Superadmin') {
+                abort(403, 'Unauthorized');
             }
             $departments = DB::table('employees')->where('employees.id', $employeeID)
                 ->leftJoin('departments', 'departments.id', '=', 'employees.department_id')

@@ -72,7 +72,7 @@
                 <i class="ri-arrow-down-wide-line ml-20 ont-bold"></i>
             </button>
             <ul x-show="open" x-transition:enter="transition ease-out duration-100" x-transition:enter-start="transform opacity-0 scale-95" x-transition:enter-end="transform opacity-100 scale-100" x-transition:leave="transition ease-in duration-75" x-transition:leave-start="transform opacity-100 scale-100" x-transition:leave-end="transform opacity-0 scale-95" class="mt-2 space-y-2">
-                @if ($role == 'Approver')
+                @if ($role == 'Approver' || $role == 'Superadmin')
                 <li>
                     <a href="{{ route('log-check.index', 'year=' . $yearToShow)}}" class="flex items-center py-2 px-6 text-gray-300 hover:bg-gray-700">
                         <i class="ri-file-check-line text-2xl"></i>
@@ -86,7 +86,7 @@
                         <span class="ml-3">Log Input</span>
                     </a>
                 </li>
-                @if ($role == 'Approver')             
+                @if ($role == 'Approver' || $role == 'Superadmin')             
                 <li>
                     <a href="{{ route('log-input.individual', 'department=' . $departmentID . '&month=' . $currentMonth - 1 . '&year=' . $yearToShow) }}" class="flex items-center py-2 px-6 text-gray-300 hover:bg-gray-700">
                         <i class="ri-user-follow-fill text-2xl"></i>
@@ -105,7 +105,7 @@
                     <i class="ri-arrow-down-wide-line ml-9 ont-bold"></i>
                 </button>
                 <ul x-show="open" x-transition:enter="transition ease-out duration-100" x-transition:enter-start="transform opacity-0 scale-95" x-transition:enter-end="transform opacity-100 scale-100" x-transition:leave="transition ease-in duration-75" x-transition:leave-start="transform opacity-100 scale-100" x-transition:leave-end="transform opacity-0 scale-95" class="mt-2 space-y-2">
-                    @if (auth()->user()->role == 'Approver')
+                    @if (auth()->user()->role == 'Approver' || $role == 'Superadmin')
                     <li>
                         <a href="{{ route('report.summaryDept', 'year=' . $yearToShow) }}" class="flex items-center py-2 px-6 text-gray-300 hover:bg-gray-700">
                             <i class="ri-team-line text-2xl"></i>
