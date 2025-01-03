@@ -272,7 +272,7 @@
                                     </div>
                                     <div id="checkbox-container-{{ $modalId }}" class="p-1 flex justify-center gap-3 mt-0.5">
                                         <label class="text-[14px]">
-                                            <input type="checkbox" class="status-checkbox" data-actual-id="{{ $actual->actual_id }}" data-status="Checked" {{ $actual->status == 'Checked' || $actual->status == 'Approved' ? 'checked' : '' }} {{ $role == 'Checker Div 1' || $role == 'Checker Div 2' || $role == 'Checker WS' || $role == 'Checker Factory' ? '' || $role == 'Approver' : 'disabled' }}>
+                                            <input type="checkbox" class="status-checkbox" data-actual-id="{{ $actual->actual_id }}" data-status="Checked" {{ $actual->status == 'Checked' || $actual->status == 'Approved' ? 'checked' : '' }} {{ $role == 'Checker Div 1' || $role == 'Checker Div 2' || $role == 'Checker WS' || $role == 'Checker Factory' || $role == 'Approver' ?  ''  : 'disabled' }}>
                                             Check
                                         </label>
                                         <label class="text-[14px]">

@@ -6,6 +6,7 @@
         $currentYear = \Carbon\Carbon::now()->year;
         $yearToShow = ($currentMonth == 1) ? $currentYear - 1 : $currentYear;
         @endphp
+        <div class="flex justify-between">
         <div class="p-0">
             <span class="font-bold text-2xl">Summary KPI Departemen</span>
         </div>
@@ -35,8 +36,10 @@
                 </div>
               </div>
         </div>
+    </div>
 
-        <table class="w-full">
+        <div class="flex justify-center">
+        <table class="w-1/2">
             <tr>
                 <th style="width: 3%;" class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-white py-1 px-4 bg-blue-700">No.</th>
                 <th class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-white py-1 px-4 bg-blue-700">Departemen</th>
@@ -66,6 +69,7 @@
             </tr>
             @endforelse
         </table>
+    </div>
     </div>
 </x-app-layout>
 <script>

@@ -30,9 +30,9 @@ class ReportController extends Controller
 
             $div1Dept = DB::table('departments')->whereIn('name', ['Sub Div A', 'Sub Div B', 'Sub Div C'])->get();
             $div2Dept = DB::table('departments')->whereIn('name', ['Sub Div D', 'Sub Div E', 'Sub Div F'])->get();
-            $ws = DB::table('departments')->where('name', '=', 'Workshop');
-            $factory = DB::table('departments')->where('name', '=', 'Factory');
-            $fsd = DB::table('departments')->where('name', '=', 'FSD');
+            $ws = DB::table('departments')->where('name', '=', 'Workshop')->get();
+            $factory = DB::table('departments')->where('name', '=', 'Factory')->get();
+            $fsd = DB::table('departments')->where('name', '=', 'FSD')->get();
             $allDept = Department::all();
 
             $departments = DB::table('departments')
@@ -49,9 +49,9 @@ class ReportController extends Controller
             }
             $div1Dept = DB::table('departments')->whereIn('name', ['Sub Div A', 'Sub Div B', 'Sub Div C'])->get();
             $div2Dept = DB::table('departments')->whereIn('name', ['Sub Div D', 'Sub Div E', 'Sub Div F'])->get();
-            $ws = DB::table('departments')->where('name', '=', 'Workshop');
-            $factory = DB::table('departments')->where('name', '=', 'Factory');
-            $fsd = DB::table('departments')->where('name', '=', 'FSD');
+            $ws = DB::table('departments')->where('name', '=', 'Workshop')->get();
+            $factory = DB::table('departments')->where('name', '=', 'Factory')->get();
+            $fsd = DB::table('departments')->where('name', '=', 'FSD')->get();
             $allDept = Department::all();
 
             $departments = DB::table('departments')
@@ -68,9 +68,9 @@ class ReportController extends Controller
             }
             $div1Dept = DB::table('departments')->whereIn('name', ['Sub Div A', 'Sub Div B', 'Sub Div C'])->get();
             $div2Dept = DB::table('departments')->whereIn('name', ['Sub Div D', 'Sub Div E', 'Sub Div F'])->get();
-            $ws = DB::table('departments')->where('name', '=', 'Workshop');
-            $factory = DB::table('departments')->where('name', '=', 'Factory');
-            $fsd = DB::table('departments')->where('name', '=', 'FSD');
+            $ws = DB::table('departments')->where('name', '=', 'Workshop')->get();
+            $factory = DB::table('departments')->where('name', '=', 'Factory')->get();
+            $fsd = DB::table('departments')->where('name', '=', 'FSD')->get();
             $allDept = Department::all();
 
             $departments = DB::table('departments')
@@ -92,8 +92,8 @@ class ReportController extends Controller
 
         $div1Dept = DB::table('departments')->whereIn('name', ['Sub Div A', 'Sub Div B', 'Sub Div C', 'FAD',])->get();
         $div2Dept = DB::table('departments')->whereIn('name', ['Sub Div D', 'Sub Div E', 'Sub Div F', 'FAD'])->get();
-        $ws = DB::table('departments')->where('name', '=', 'Workshop');
-        $factory = DB::table('departments')->where('name', '=', 'Factory');
+        $ws = DB::table('departments')->where('name', '=', 'Workshop')->get();
+        $factory = DB::table('departments')->where('name', '=', 'Factory')->get();
         $allDept = Department::all();
 
         if ($role == 'Inputer' || $role == '') {

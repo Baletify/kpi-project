@@ -201,6 +201,8 @@
                                 <span class="text-blue-500">Review</span>
                                 @elseif ($actual->status == 'Filled')
                                 <span class="text-yellow-500">Check</span>
+                                @elseif ($actual->status == 'Revisi')
+                                <span class="text-yellow-500">Revisi</span>
                                 @endif
                             </button>
                             <div id="{{ $backgroundId }}" class="fixed inset-0 bg-gray-800 bg-opacity-75 hidden exclude-from-export"></div>
@@ -239,8 +241,7 @@
                                             @if ($actual->status !== 'Approved')
                                             <form action="">
                                                 <div class="p-1 flex justify-start">
-                                                    <span class="text-semibold mb-1 text-[12px]">Berikan Komentar
-                                                        
+                                                    <span class="text-semibold mb-1 text-[12px]">Berikan Komentar      
                                                     </span>
                                                 </div>
                                                 <div class="p-0 mb-2 flex justify-center">

@@ -13,7 +13,7 @@ class LogController extends Controller
     public function index(Request $request)
     {
         $currentMonth = Carbon::now()->month;
-        $semester = ($currentMonth < 7) ? '1' : '2';
+        $semester = $request->query('semester');
         $year = $request->query('year');
 
         if ($semester === '1') {
@@ -65,7 +65,7 @@ class LogController extends Controller
             ->leftJoin('employees', 'targets.employee_id', '=', 'employees.id')
             ->leftJoin('departments', 'employees.department_id', '=', 'departments.id')
 
-            ->whereYear('targets.date', $year)
+            ->whereYear('targets.date', '=', $year)
             // ->whereNotNull('target_units.id')
             ->select(
                 'departments.code as department_code',
@@ -84,7 +84,7 @@ class LogController extends Controller
             ->leftJoin('targets', 'target_units.id', '=', 'targets.target_unit_id')
             ->leftJoin('employees', 'targets.employee_id', '=', 'employees.id')
             ->leftJoin('departments', 'employees.department_id', '=', 'departments.id')
-            ->whereYear('targets.date', $year)
+            ->whereYear('targets.date', '=', $year)
             ->select(
                 'departments.code as department_code',
                 DB::raw('count(target_units.target_7) as total_7'),
@@ -101,7 +101,7 @@ class LogController extends Controller
             ->leftJoin('department_targets', 'target_units.id', '=', 'department_targets.target_unit_id')
             ->leftJoin('departments', 'department_targets.department_id', '=', 'departments.id')
 
-            ->whereYear('department_targets.date', $year)
+            ->whereYear('department_targets.date', '=', $year)
             // ->whereNotNull('target_units.id')
             ->select(
                 'departments.code as department_code',
@@ -118,7 +118,7 @@ class LogController extends Controller
         $targetUnitCountsDept2 = DB::table('target_units')
             ->leftJoin('department_targets', 'target_units.id', '=', 'department_targets.target_unit_id')
             ->leftJoin('departments', 'department_targets.department_id', '=', 'departments.id')
-            ->whereYear('department_targets.date', $year)
+            ->whereYear('department_targets.date', '=', $year)
             ->select(
                 'departments.code as department_code',
                 DB::raw('count(target_units.target_7) as total_7'),
@@ -131,6 +131,8 @@ class LogController extends Controller
             ->groupBy('departments.code')
             ->get();
 
+
+        // dd($targetUnitCounts1, $targetUnitCounts2, $targetUnitCountsDept1, $targetUnitCountsDept2);
 
         $actualCounts = DB::table('actuals')
             ->leftJoin('employees', 'employees.id', '=', 'actuals.employee_id')
@@ -163,7 +165,6 @@ class LogController extends Controller
             'desc' => 'History',
             'departments' => $departments,
             'months' => $months,
-            'semester' => $semester,
             'targetCounts' => $targetCounts,
             'targetCountsDept' => $targetCountsDept,
             'actualCounts' => $actualCounts,

@@ -2,15 +2,16 @@
     <div class="ml-64 mt-4 overflow-x-auto p-2 bg-white border border-gray-100 shadow-md shadow-black/10 rounded-md">
         @php
         $i = 0;
+        $role = auth()->user()->role;
         @endphp
 
+        <div class="flex justify-between">
         <div class="p-0">
             <span class="font-bold text-2xl">Input Data Pencapaian KPI</span>
         </div>
-        <div class="flex justify-end mb-2">
-            
-            <div class="relative mt-1 rounded-md">
-                <div class="mt-2 mx-2">
+        <div class="flex justify-end mb-2"> 
+            <div class="relative mt-0 rounded-md">
+                <div class="mt-0 mx-2">
                     <select name="year" id="year" class="col-start-1 row-start-1 w-full appearance-none rounded-md py-1.5 pl-3 pr-7 text-base text-gray-500 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
                         <option value="">-- Tahun --</option>
                         <option value="2024">2024</option>
@@ -22,8 +23,8 @@
                 <div class="absolute inset-y-0 right-0 flex items-center">
                 </div>
             </div>
-            <div class="relative mt-1 rounded-md">
-                <div class="mt-2 mb-1 mx-2">
+            <div class="relative mt-0 rounded-md">
+                <div class="mt-0 mb-0 mx-2">
                     <select name="semester" id="semester" class="col-start-1 row-start-1 w-full appearance-none rounded-md py-1.5 pl-3 pr-7 text-base text-gray-500 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
                         <option value="">-- Semester --</option>
                         <option value="1">1</option>
@@ -33,14 +34,37 @@
                 <div class="absolute inset-y-0 right-0 flex items-center">
                 </div>
               </div>
-            <div class="relative mt-1 rounded-md mb-1">
-                <button class="p-2 bg-blue-600 my-2 rounded-md">
+            <div class="relative mt-0 rounded-md mb-1">
+                <button class="p-2 bg-blue-600 my-0 rounded-md">
                     <a id="input-actual-link" href="{{ route('actual.showDept' , 'department=' . $departments->first()->department_id ?? '' . '&semester=&year=') }}">
                         <span class="text-white">Input Aktual Dept</span>
                     </a>
                 </button>
             </div>
         </div>
+    </div>
+    @if ($role != '' && $role != 'Inputer' )
+    <form action="{{ route('actual.department') }}" method="GET">
+    <div class="flex justify-end">
+            <div class="mt-2 mb-1 mx-2">
+                <select name="department" id="department" class="col-start-1 row-start-1 w-full appearance-none rounded-md py-1.5 pl-3 pr-7 text-base text-gray-500 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
+                    <option value="">-- Departemen --</option>
+                    @foreach ($allDept as $item)  
+                    <option value="{{ $item->id }}">{{ $item->name }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="absolute inset-y-0 right-0 flex items-center">
+            </div>
+            <input type="hidden" name="role" id="role" value="{{ auth()->user()->role }}">
+            <div class="mt-0 rounded-md mb-1">
+                <button type="submit" class="p-2 bg-blue-600 mt-2 rounded-md text-white">
+                    Filter
+                </button>
+            </div>
+        </div>
+    </form>
+    @endif
 
         <table class="w-full">
             <tr>

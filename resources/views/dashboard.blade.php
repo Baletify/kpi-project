@@ -4,7 +4,7 @@
             <div class="bg-gradient-to-bl from-[#3572EF] to-[#050C9C] rounded-md border border-gray-200 p-6 mt-2 shadow-md shadow-black/15">
                 <div class="flex justify-between">
                     <div>
-                        <i class="text-white ri-group-fill text-xl"></i>
+                        <i class="text-white ri-user-fill text-xl"></i>
                         <div class="text-white text-xl font-semibold mb-1">Manager</div>
                     </div>
                     <div class="grid lg:grid-cols-1 w-24">
@@ -26,7 +26,7 @@
             <div class="bg-gradient-to-bl from-[#3572EF] to-[#050C9C] rounded-md border border-gray-200 p-6 mt-2 shadow-md shadow-black/15">
                 <div class="flex justify-between">
                     <div>
-                        <i class="text-white ri-team-fill text-2xl"></i>
+                        <i class="text-white ri-group-fill text-2xl"></i>
                         <div class="text-white text-xl font-semibold mb-1">Asst Manager</div>
                     </div>
                     <div class="grid lg:grid-cols-1 w-24">
@@ -48,7 +48,7 @@
             <div class="bg-gradient-to-bl from-[#3572EF] to-[#050C9C] rounded-md border border-gray-200 p-6 mt-2 shadow-md shadow-black/15">
                 <div class="flex justify-between">
                     <div>
-                        <i class="ri-bar-chart-2-fill text-white text-2xl"></i>
+                        <i class="ri-team-fill text-white text-2xl"></i>
                         <div class="text-white text-xl font-semibold mb-1">Monthly</div>
                     </div>
                     <div class="grid lg:grid-cols-1 w-24">
@@ -116,12 +116,13 @@
                     </div>
                   </div>
                   </div>
-                  
                 </div>
                 
                 <div class="relative mt-1 rounded-md">
                     <span class="pl-0.5 font-semibold">Search</span>
-                        <input type="text" name="filterName" id="filterName" class="w-64 rounded-md border-0 py-1.5 pl-4 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 mt-1" placeholder="Masukkan Nama" value="" autocomplete="off">
+                    <div class="p-0">
+                        <input type="text" name="filterName" id="filterName" class="w-64 rounded-md border-0 py-1.5 pl-4 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 mt-0" placeholder="Masukkan Nama" value="" autocomplete="off">
+                    </div>
                     <div class="absolute inset-y-0 right-0 flex items-center">
                     </div>
                   </div>  
@@ -211,7 +212,7 @@
             <div id="documentModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center hidden">
             <div class="bg-white rounded-lg p-4 w-1/2">
                 <div class="flex justify-between items-center">
-                    <h2 class="text-xl font-bold">Kriteria KPI</h2>
+                    <h2 class="text-xl font-bold">Standar KPI</h2>
                     <button id="closeModalBtn" class="text-gray-500 hover:text-gray-700">&times;</button>
                 </div>
                 <div class="mt-4">
@@ -242,6 +243,17 @@
   const filterNameElement = document.getElementById('filterName');
   const yearElement = document.getElementById('year');
   const semesterElement = document.getElementById('semester');
+  var reportShowUrl = "{{ route('report.show', ['id' => ':id']) }}";
+  var reportShowDeptUrl = "{{ route('report.department', ['id' => ':id']) }}";
+
+
+  function getReportUrl(id, semester, year) {
+        return reportShowUrl.replace(':id', id) + '?semester=' + semester + '&year=' + year;
+    }
+
+    function getReportDeptUrl(department_id, semester, year){
+        return reportShowDeptUrl.replace(':id', department_id) + '?semester=' + semester + '&year=' + year;
+    }
 
   function fetchData() {
     const department = departmentElement.value;
@@ -269,11 +281,11 @@
             const row = `<tr class="${index % 2 === 0 ? 'bg-blue-100' : 'bg-white'}">
               <td class="border-2 border-gray-400 tracking-wide px-2 py-0 text-center">${index + 1}</td>
               <td class="border-2 border-gray-400 tracking-wide px-2 py-0">
-                <a href="/report/employee-report/${item.id}?semester=${semester}&year=${year}" class="hover:underline">${item.name}</a>
+                <a href="${getReportUrl(item.id, semester, year)}">${item.name}</a>
               </td>
               <td class="border-2 border-gray-400 tracking-wide px-2 py-0">${item.occupation}</td>
               <td class="border-2 border-gray-400 tracking-wide px-2 py-0">
-                <a href="/target/input-target-kpi-department?department=${item.department_id}&year=${year}" class="hover:underline">${item.department}</a>
+               <a href="${getReportDeptUrl(item.department_id, semester, year)}">${item.department}</a>
               </td>
             </tr>`;
             tbody.innerHTML += row;

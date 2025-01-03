@@ -218,6 +218,18 @@
                 } else {
                     achievementField.value = '0%';
                 }
+            } else if (target === 1) {
+                if (actual === target) {
+                    achievementField.value = '100%';
+                } else if (actual == target + 1) {
+                    achievementField.value = '105%';
+                } else if (actual == target + 2) {
+                    achievementField.value = '110%';
+                } else if (actual == target + 3) {
+                    achievementField.value = '115%';
+                } else if (actual >= target + 4) {
+                    achievementField.value = '120%';
+                } 
             } else if (unitValue === 'Tgl') {
                 if (target === 1) { // Target == 1
                     if (actual === target) {

@@ -6,7 +6,8 @@
     @php
     $currentMonth = now()->month;
     $currentYear = now()->year;
-    $yearToShow = ($currentMonth == 1) ? $currentYear - 1 : $currentYear;
+    $semester = ($currentMonth < 7 ? '1' : '2');
+    // $yearToShow = ($currentMonth == 1) ? $currentYear - 1 : $currentYear;
     $userID = auth()->id();
     $role = auth()->user()->role;
     $departmentID = auth()->user()->department_id;
@@ -74,21 +75,21 @@
             <ul x-show="open" x-transition:enter="transition ease-out duration-100" x-transition:enter-start="transform opacity-0 scale-95" x-transition:enter-end="transform opacity-100 scale-100" x-transition:leave="transition ease-in duration-75" x-transition:leave-start="transform opacity-100 scale-100" x-transition:leave-end="transform opacity-0 scale-95" class="mt-2 space-y-2">
                 @if ($role == 'Approver' || $role == 'Superadmin')
                 <li>
-                    <a href="{{ route('log-check.index', 'year=' . $yearToShow)}}" class="flex items-center py-2 px-6 text-gray-300 hover:bg-gray-700">
+                    <a href="{{ route('log-check.index', 'year=' . $currentYear . '&semester=' . $semester)}}" class="flex items-center py-2 px-6 text-gray-300 hover:bg-gray-700">
                         <i class="ri-file-check-line text-2xl"></i>
                         <span class="ml-3">Log Pengecekan</span>
                     </a>
                 </li>
                 @endif
                 <li>
-                    <a href="{{ route('log-input.indexInput', 'department=' . $departmentID . '&month=' . $currentMonth - 1 . '&year=' . $yearToShow) }}" class="flex items-center py-2 px-6 text-gray-300 hover:bg-gray-700">
+                    <a href="{{ route('log-input.indexInput', 'department=' . $departmentID . '&month=' . $currentMonth . '&year=' . $currentYear) }}" class="flex items-center py-2 px-6 text-gray-300 hover:bg-gray-700">
                         <i class="ri-history-line text-2xl"></i>
                         <span class="ml-3">Log Input</span>
                     </a>
                 </li>
                 @if ($role == 'Approver' || $role == 'Superadmin')             
                 <li>
-                    <a href="{{ route('log-input.individual', 'department=' . $departmentID . '&month=' . $currentMonth - 1 . '&year=' . $yearToShow) }}" class="flex items-center py-2 px-6 text-gray-300 hover:bg-gray-700">
+                    <a href="{{ route('log-input.individual', 'department=' . $departmentID . '&month=' . $currentMonth . '&year=' . $currentYear) }}" class="flex items-center py-2 px-6 text-gray-300 hover:bg-gray-700">
                         <i class="ri-user-follow-fill text-2xl"></i>
                         <span class="ml-3">Log Input Individual</span>
                     </a>
@@ -107,8 +108,8 @@
                 <ul x-show="open" x-transition:enter="transition ease-out duration-100" x-transition:enter-start="transform opacity-0 scale-95" x-transition:enter-end="transform opacity-100 scale-100" x-transition:leave="transition ease-in duration-75" x-transition:leave-start="transform opacity-100 scale-100" x-transition:leave-end="transform opacity-0 scale-95" class="mt-2 space-y-2">
                     @if (auth()->user()->role == 'Approver' || $role == 'Superadmin')
                     <li>
-                        <a href="{{ route('report.summaryDept', 'year=' . $yearToShow) }}" class="flex items-center py-2 px-6 text-gray-300 hover:bg-gray-700">
-                            <i class="ri-team-line text-2xl"></i>
+                        <a href="{{ route('report.summaryDept', 'year=' . $currentYear) }}" class="flex items-center py-2 px-6 text-gray-300 hover:bg-gray-700">
+                            <i class="ri-line-chart-line text-2xl"></i>
                             <span class="ml-3">Summary Dept</span>
                         </a>
                     </li>
@@ -130,7 +131,7 @@
                     @endif
                     @if ($role == 'Inputer' || $role == '')   
                     <li>
-                        <a href="{{ route('report.department', $departmentID . '?semester=&year='. $yearToShow) }}" class="flex items-center py-2 px-6 text-gray-300 hover:bg-gray-700" id="department-link">
+                        <a href="{{ route('report.department', $departmentID . '?semester=&year='. $currentYear) }}" class="flex items-center py-2 px-6 text-gray-300 hover:bg-gray-700" id="department-link">
                             <i class="ri-file-list-3-fill text-2xl"></i>
                             <span class="ml-3">Summary KPI Dept</span>
                         </a>

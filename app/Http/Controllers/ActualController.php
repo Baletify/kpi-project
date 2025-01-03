@@ -101,7 +101,7 @@ class ActualController extends Controller
     {
         $department = $request->query('department');
         $employee = $request->query('employee');
-
+        $allDept = Department::all();
 
         if ($department && $employee) {
             $departments = DB::table('departments')
@@ -114,13 +114,15 @@ class ActualController extends Controller
             return view('actual.input-actual-department', [
                 'title' => 'Input Data Realisasi',
                 'desc' => 'Achievement',
-                'departments' => $departments
+                'departments' => $departments,
+                'allDept' => $allDept,
             ]);
         } else if ($department) {
-            $userDepartmentID = Auth::user()->department_id;
-            if ($department != $userDepartmentID) {
-                abort(403, 'Unauthorized');
-            }
+            // $userDepartmentID = Auth::user()->department_id;
+            // if ($department != $userDepartmentID) {
+            //     abort(403, 'Unauthorized');
+            // }
+
             $departments = DB::table('departments')
                 ->leftJoin('employees', 'employees.department_id', '=', 'departments.id')
                 ->select('employees.id as employee_id', 'employees.nik as nik', 'employees.name as employee', 'employees.occupation as occupation', 'departments.name as department', 'departments.id as department_id')
@@ -130,7 +132,8 @@ class ActualController extends Controller
             return view('actual.input-actual-department', [
                 'title' => 'Input Data Realisasi',
                 'desc' => 'Achievement',
-                'departments' => $departments
+                'departments' => $departments,
+                'allDept' => $allDept,
             ]);
         } elseif ($employee) {
             $userDepartmentID = Auth::user()->id;
@@ -146,7 +149,8 @@ class ActualController extends Controller
             return view('actual.input-actual-department', [
                 'title' => 'Input Data Realisasi',
                 'desc' => 'Achievement',
-                'departments' => $departments
+                'departments' => $departments,
+                'allDept' => $allDept,
             ]);
         } else {
             return view('components/404-page');
