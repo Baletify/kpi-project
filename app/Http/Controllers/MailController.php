@@ -4,13 +4,16 @@ namespace App\Http\Controllers;
 
 use App\Mail\PostMail;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 
 class MailController extends Controller
 {
     public function sendEmail(Request $request)
     {
+        $from = Auth::user()->email;
         $details = [
+            'from' => $from,
             'email' => $request->email,
             'title' => 'Revisi Data Pendukung KPI',
             'msg' => 'Dengan Hormat saya sampaikan bahwa terjadi kesalahan pada data pendukung KPI yang telah diinputkan. Berikut ini adalah data yang perlu direvisi:',

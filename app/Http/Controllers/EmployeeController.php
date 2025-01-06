@@ -93,22 +93,22 @@ class EmployeeController extends Controller
         $actualManager = DB::table('actuals')
             ->join('employees', 'actuals.employee_id', '=', 'employees.id')
             ->where('employees.status', '=', 'Manager')
-            ->whereMonth('actuals.date', '=', value: $month)
-            ->whereYear('actuals.date', '=', value: $year)
+            ->whereMonth('actuals.created_at', '=', value: $month)
+            ->whereYear('actuals.created_at', '=', value: $year)
             ->count();
 
         $actualAsstManager = DB::table('actuals')
             ->join('employees', 'actuals.employee_id', '=', 'employees.id')
             ->where('employees.status', '=', 'Staff')
-            ->whereMonth('actuals.date', '=', value: $month)
-            ->whereYear('actuals.date', '=', value: $year)
+            ->whereMonth('actuals.created_at', '=', value: $month)
+            ->whereYear('actuals.created_at', '=', value: $year)
             ->count();
 
         $actualMonthly = DB::table('actuals')
             ->join('employees', 'actuals.employee_id', '=', 'employees.id')
             ->where('employees.status', '=', 'Monthly')
-            ->whereMonth('actuals.date', '=', value: $month)
-            ->whereYear('actuals.date', '=', value: $year)
+            ->whereMonth('actuals.created_at', '=', value: $month)
+            ->whereYear('actuals.created_at', '=', value: $year)
             ->count();
 
         // dd($actualMonthly, $actualAsstManager, $actualManager);
