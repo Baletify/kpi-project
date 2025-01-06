@@ -9,5 +9,6 @@ class KpiRequirement extends Model
     protected $fillable = [
         'file',
         'id',
+        'status',
     ];
 }

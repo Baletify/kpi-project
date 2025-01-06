@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('kpi_requirements', function (Blueprint $table) {
             $table->id();
             $table->string('file');
+            $table->string('status');
             $table->timestamps();
         });
     }

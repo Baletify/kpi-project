@@ -151,7 +151,6 @@ class TargetController extends Controller
 
 
         $searchConditions = [
-            'code' => $row['kode_kpi'],
             'date' => $yearToInsert,
             'employee_id' => $employee,
         ];
@@ -159,6 +158,7 @@ class TargetController extends Controller
         $weighting = isset($row['bobot']) ? ((float)$row['bobot'] * 100) . '%' : '0%';
 
         $data = [
+            'code' => $row['kode_kpi'],
             'indicator' => $row['kpi'],
             'calculation' => $row['cara_menghitung'],
             'supporting_document' => $row['data_pendukung_harus_di_isi'],

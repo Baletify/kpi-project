@@ -194,7 +194,7 @@
             <div class="mb-2 bg-gray-200 rounded-md min-h-[200px] mr-1">
                 <div class="flex justify-between">
                     <div class="p-2">
-                        <span class="p-4 font-bold text-xl">Standar KPI</span>
+                        <span class="p-4 font-bold text-xl">Standar KPI & Panduan Aplikasi KPI</span>
                     </div>
                     @if (auth()->user()->role == 'Superadmin' ||  auth()->user()->role == 'Approver' )
                     <div class="p-2">
@@ -204,8 +204,11 @@
                     </div>
                     @endif
                 </div>
-                <div class="flex justify-center">
-                    <button id="viewDocumentBtn" class="text-blue-500 hover:underline">View Document</button>
+                <div class="flex justify-center mt-2">
+                    <button id="viewDocumentBtn" class="text-white bg-blue-500 p-2 rounded-md">View Standar KPI</button>
+                </div>
+                <div class="flex justify-center mt-4">
+                    <button id="viewTutorialBtn" class="text-white bg-blue-500 p-2 rounded-md">Panduan Aplikasi KPI</button>
                 </div>
             </div>
             <!-- Modal -->
@@ -220,6 +223,18 @@
                 </div>
             </div>
         </div>
+
+        <div id="tutorialModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center hidden">
+            <div class="bg-white rounded-lg p-4 w-1/2">
+                <div class="flex justify-between items-center">
+                    <h2 class="text-xl font-bold">Panduan Aplikasi KPI</h2>
+                    <button id="closeModalTutorialBtn" class="text-gray-500 hover:text-gray-700">&times;</button>
+                </div>
+                <div class="mt-4">
+                    <object id="pdfObjectTutorial" data="" type="application/pdf" width="100%" height="600px"></object>
+                </div>
+            </div>
+        </div> 
 
         </div>
         
@@ -311,12 +326,20 @@
   semesterElement.addEventListener('change', fetchData);
 });
 
-document.getElementById('viewDocumentBtn').addEventListener('click', function() {
+    document.getElementById('viewDocumentBtn').addEventListener('click', function() {
         document.getElementById('documentModal').classList.remove('hidden');
+    });
+
+    document.getElementById('viewTutorialBtn').addEventListener('click', function() {
+        document.getElementById('tutorialModal').classList.remove('hidden');
     });
 
     document.getElementById('closeModalBtn').addEventListener('click', function() {
         document.getElementById('documentModal').classList.add('hidden');
+    });
+
+    document.getElementById('closeModalTutorialBtn').addEventListener('click', function() {
+        document.getElementById('tutorialModal').classList.add('hidden');
     });
 
     // Close the modal when clicking outside of it
@@ -327,8 +350,15 @@ document.getElementById('viewDocumentBtn').addEventListener('click', function() 
         }
     });
 
-    document.getElementById('viewDocumentBtn').addEventListener('click', function() {
-            fetch('/kpi-requirement/view-requirement')
+    window.addEventListener('click', function(event) {
+        const modal = document.getElementById('tutorialModal');
+        if (event.target === modal) {
+            modal.classList.add('hidden');
+        }
+    });
+
+        document.getElementById('viewDocumentBtn').addEventListener('click', function() {
+            fetch('/kpi-requirement/view-requirement?status=Standard')
                 .then(response => response.json())
                 .then(data => {
                     if (data.length > 0) {
@@ -343,9 +373,24 @@ document.getElementById('viewDocumentBtn').addEventListener('click', function() 
                 .catch(error => console.error('Error fetching PDF URL:', error));
         });
 
-        document.getElementById('closeModalBtn').addEventListener('click', function() {
-            document.getElementById('documentModal').classList.add('hidden');
+        
+
+        document.getElementById('viewTutorialBtn').addEventListener('click', function() {
+            fetch('/kpi-requirement/view-requirement?status=Tutorial')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.length > 0) {
+                        const pdfUrl = data[0].file;
+                        
+                        document.getElementById('pdfObjectTutorial').setAttribute('data', `/kpi_requirement_files/${pdfUrl}`);
+                        document.getElementById('tutorialModal').classList.remove('hidden');
+                    } else {
+                        console.error('No PDF found');
+                    }
+                })
+                .catch(error => console.error('Error fetching PDF URL:', error));
         });
+
 
     </script>
 </x-app-layout>

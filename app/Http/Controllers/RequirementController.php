@@ -9,9 +9,10 @@ use Illuminate\Support\Facades\Validator;
 
 class RequirementController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $data = KpiRequirement::orderBy('created_at', 'desc')->get();
+        $status = $request->query('status');
+        $data = KpiRequirement::where('status', '=', $status)->orderBy('created_at', 'desc')->get();
 
         return response()->json($data);
     }
@@ -43,9 +44,10 @@ class RequirementController extends Controller
         KpiRequirement::create(
             [
                 'file' => $recordFileName,
+                'status' => $request->status,
             ]
         );
 
-        return redirect()->route('dashboard')->with('success', 'KPI Requirement has been added');
+        return redirect()->route('dashboard')->with('success', 'KPI standard successfully created');
     }
 }
