@@ -1,5 +1,10 @@
 <x-app-layout :title="$title" :desc="$desc">
     <div class="ml-64 px-2">
+        @php
+            $currentYear = Carbon\Carbon::now()->year;
+            $startYear = 2024; 
+            $endYear = $currentYear + 2;
+        @endphp
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             <div class="bg-gradient-to-bl from-[#3572EF] to-[#050C9C] rounded-md border border-gray-200 p-6 mt-2 shadow-md shadow-black/15">
                 <div class="flex justify-between">
@@ -102,10 +107,9 @@
                     <div class="pl-2 mb-3">
                         <select name="year" id="year" class="col-start-1 row-start-1 w-full appearance-none rounded-md py-1.5 pl-3 pr-7 text-base text-gray-500 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
                             <option value="">-- Tahun --</option>
-                            <option value="2024">2024</option>
-                            <option value="2025">2025</option>
-                            <option value="2026">2026</option>
-                            <option value="2027">2027</option>
+                            @for ($year = $startYear; $year <= $endYear; $year++ )
+                            <option value="{{ $year }}">{{ $year }}</option>
+                            @endfor
                         </select>
                     </div>
                     <div class="absolute inset-y-0 right-0 flex items-center">

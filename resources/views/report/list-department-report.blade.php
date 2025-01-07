@@ -2,9 +2,9 @@
     <div class="ml-64 mt-4 overflow-x-auto p-2 bg-white border border-gray-100 shadow-md shadow-black/10 rounded-md">
         @php
         $i = 0;
-        $currentMonth = \Carbon\Carbon::now()->month;
-        $currentYear = \Carbon\Carbon::now()->year;
-        $yearToShow = ($currentMonth == 1) ? $currentYear - 1 : $currentYear;
+        $currentYear = Carbon\Carbon::now()->year;
+        $startYear = 2024; 
+        $endYear = $currentYear + 2;
         @endphp
         <div class="flex justify-between">
         <div class="p-0">
@@ -15,10 +15,9 @@
                 <div class="mt-2 mb-1 mx-2">
                     <select name="year" id="year" class="col-start-1 row-start-1 w-full appearance-none rounded-md py-1.5 pl-3 pr-7 text-base text-gray-500 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
                         <option value="">-- Tahun --</option>
-                        <option value="2024">2024</option>
-                        <option value="2025">2025</option>
-                        <option value="2026">2026</option>
-                        <option value="2027">2027</option>
+                        @for ($year = $startYear; $year <= $endYear; $year++)
+                        <option value="{{ $year }}">{{ $year }}</option>
+                        @endfor
                     </select>
                 </div>
                 <div class="absolute inset-y-0 right-0 flex items-center">

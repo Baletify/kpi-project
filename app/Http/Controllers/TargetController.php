@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use App\Imports\TargetImport;
 use Dflydev\DotAccessData\Data;
 use App\Models\DepartmentTarget;
+use App\Imports\TargetDeptImport;
 use App\Imports\TargetUnitImport;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -153,6 +154,7 @@ class TargetController extends Controller
         $searchConditions = [
             'date' => $yearToInsert,
             'employee_id' => $employee,
+            'code' => $row['kode_kpi']
         ];
 
         $weighting = isset($row['bobot']) ? ((float)$row['bobot'] * 100) . '%' : '0%';
@@ -178,6 +180,59 @@ class TargetController extends Controller
     public function showImportDept()
     {
         return view('target.import-target-kpi-department', ['title' => 'Import Target', 'desc' => 'Import Target Department']);
+    }
+
+    public function importDept(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'file' => 'required|mimes:xlsx',
+        ]);
+
+        if ($validator->fails()) {
+            flash()->error('Import target only accept .xlsx format');
+            return redirect()->back()
+                ->withErrors($validator)
+                ->withInput();
+        }
+
+        // Import the data without saving the file
+        Excel::import(new TargetDeptImport($this), $request->file('file'));
+
+        return back();
+    }
+
+    public function storeTargetDept(array $row, $targetUnitId, $year, $department_id)
+    {
+        // dd($row);
+        $department = DB::table('departments')->where('id', '=', $department_id)->value('id');
+        // dd($department);
+        $yearToInsert = $year;
+
+        $weighting = isset($row['bobot']) ? ((float)$row['bobot'] * 100) . '%' : '0%';
+
+        $searchConditions = [
+            'date' => $yearToInsert,
+            'department_id' => $department,
+            'code' => $row['kode_kpi']
+        ];
+
+        $data = [
+            'code' => $row['kode_kpi'],
+            'indicator' => $row['kpi'],
+            'calculation' => $row['cara_menghitung'],
+            'supporting_document' => $row['data_pendukung_harus_di_isi'],
+            'trend' => $row['trend'],
+            'period' => $row['periode_review'],
+            'unit' => $row['unit'],
+            'weighting' => $weighting,
+            'detail' => $row['penjelasan'],
+            'target_unit_id' => $targetUnitId,
+        ];
+
+        // dd($data);
+
+        $response = DepartmentTarget::updateOrCreate($searchConditions, $data);
+        // dd($response);
     }
 
     public function edit($id)
