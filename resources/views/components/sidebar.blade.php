@@ -65,7 +65,7 @@
                 <span class="ml-3">Action Plan</span>
             </a>
         </li> --}}
-        <div class="flex items-center pb-4 border-b border-b-gray-600"></div>
+        <div class="flex items-center pb-0 border-b border-b-gray-600"></div>
         @if ($role != '' || $role == 'Superadmin')
             <ul x-show="open" x-transition:enter="transition ease-out duration-100" x-transition:enter-start="transform opacity-0 scale-95" x-transition:enter-end="transform opacity-100 scale-100" x-transition:leave="transition ease-in duration-75" x-transition:leave-start="transform opacity-100 scale-100" x-transition:leave-end="transform opacity-0 scale-95" class="mt-2 space-y-2">
                 @if ($role == 'Approver' || $role == 'Superadmin')
@@ -100,9 +100,10 @@
                 </button>
             </div> --}}
 
-            <div class="flex items-center pb-4 border-b border-b-gray-600"></div>
+            
             <ul class="mt-2 space-y-2">
                 @if (auth()->user()->role == 'Approver' || $role == 'Superadmin')
+                <div class="flex items-center pb-0 border-b border-b-gray-600"></div>
                 <li>
                     <a href="{{ route('report.summaryDept', 'year=' . $currentYear) }}" class="flex items-center py-2 px-6 text-gray-300 hover:bg-gray-700">
                         <i class="ri-line-chart-line text-2xl"></i>
@@ -111,6 +112,7 @@
                 </li>
                 @endif
                 @if (auth()->user()->input_type == 'Group')
+                <div class="flex items-center pb-0 border-b border-b-gray-600"></div>
                 <li>
                     <a href="{{ route('report.index', 'department=' . $departmentID) }}" class="flex items-center py-2 px-6 text-gray-300 hover:bg-gray-700">
                         <i class="ri-contacts-book-2-line text-2xl"></i>
