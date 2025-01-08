@@ -7,12 +7,13 @@
         $endYear = $currentYear + 2;
         $department_id = request()->query('department');
         $role = auth()->user()->role;
+        $currentMonth = Carbon\Carbon::now()->month;
         $monthQuery = request()->query('month');
         $date = DateTime::createFromFormat('!m', $monthQuery);
         $monthName = $date->format('F');
         function formatDate($dateString) {
         if ($dateString) {
-            return Carbon\Carbon::parse($dateString)->format('d F Y H:i:s');
+            return Carbon\Carbon::parse($dateString)->format('d M Y H:i:s');
         }
         return '';
     }  
@@ -33,11 +34,10 @@
             </div>
             <div class="p-0 5">
                 <form action="{{ url('logs/log-input') }}" method="GET">
-                    <input type="hidden" name="department" id="department" value="{{ $department_id }}">
                  <div class="flex gap-x-2">
                      <div class="my-2">
                          <select name="month" id="month" class="col-start-1 row-start-1 w-full appearance-none rounded-md py-1.5 pl-3 pr-7 text-base text-gray-500 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
-                             <option value="">-- Bulan --</option>
+                             <option value="{{ $currentMonth }}">-- Bulan --</option>
                              <option value="01">January</option>
                              <option value="02">February</option>
                              <option value="03">March</option>
@@ -54,7 +54,7 @@
                      </div>
                      <div class="my-2">
                          <select name="year" id="year" class="col-start-1 row-start-1 w-full appearance-none rounded-md py-1.5 pl-3 pr-7 text-base text-gray-500 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
-                             <option value="">-- Tahun --</option>
+                             <option value="{{ $currentYear }}">-- Tahun --</option>
                              @for ($year = $startYear; $year <= $endYear; $year++)
                              <option value="{{ $year }}">{{ $year }}</option>
                              @endfor
@@ -65,6 +65,9 @@
                      <div class="mt-2 mb-1 mx-2">
                          <select name="department" id="department" class="col-start-1 row-start-1 w-full appearance-none rounded-md py-1.5 pl-3 pr-7 text-base text-gray-500 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
                             <option value="">-- Departmen --</option>
+                            @if ($role == 'Approver' || $role == 'Superadmin')
+                            <option value="All Dept">All Dept</option>
+                            @endif
                             @foreach ($allDept as $item)  
                             <option value="{{ $item->id }}">{{ $item->name }}</option>
                             @endforeach
@@ -83,76 +86,197 @@
             @php
             // dd($targetUnitCountAll);
             $monthQuery = request()->query('month');
+            $departmentQuery = request()->query('department');
+            $totalTgUnit = 0;
+            $totalTgUnitDept = 0;
+            $totalsTg = 0;
                 switch ($monthQuery) {
                     case '01':
-                        $totalTgUnit = $targetUnitCountAll->total_1 ?? 0;
-                        $totalTgUnitDept = $targetUnitCountAllDept->total_1 ?? 0;
+                    if ($departmentQuery == 'All Dept') {
+                            $totalTgUnit = $targetUnitCountAll->first(function($item) use ($department_id) {
+                                return $item->department_id == $department_id && $item->total_1 ?? 0;
+                            }) ?? 0;
+                            $totalTgUnitDept = $targetUnitCountAllDept->first(function($item) use ($department_id) {
+                                return $item->department_id == $department_id && $item->total_1 ?? 0;
+                            }) ?? 0;
+                        } else {
+                            $totalTgUnit = $targetUnitCountAll->total_1 ?? 0;
+                            $totalTgUnitDept = $targetUnitCountAllDept->total_1 ?? 0;
+                        }
+
                         $totalsTg = $totalTgUnitAll['total_1'] ?? 0;
                         break;
 
                     case '02':
-                        $totalTgUnit = $targetUnitCountAll->total_2 ?? 0;
-                        $totalTgUnitDept = $targetUnitCountAllDept->total_2 ?? 0;
+
+                    if ($departmentQuery == 'All Dept') {   
+                        $totalTgUnit = $targetUnitCountAll->first(function($item) use ($department_id) {
+                                    return $item->department_id == $department_id && $item->total_2 ?? 0;
+                                }) ?? 0;
+                            $totalTgUnitDept = $targetUnitCountAllDept->first(function($item) use ($department_id) {
+                                    return $item->department_id == $department_id && $item->total_2 ?? 0;
+                                }) ?? 0;
+                        } else {
+                            $totalTgUnit = $targetUnitCountAll->total_2 ?? 0;
+                            $totalTgUnitDept = $targetUnitCountAllDept->total_2 ?? 0;
+                        }
                         $totalsTg = $totalTgUnitAll['total_2'] ?? 0;
                         break;
 
                     case '03':
-                        $totalTgUnit = $targetUnitCountAll->total_3 ?? 0;
-                        $totalTgUnitDept = $targetUnitCountAllDept->total_3 ?? 0;
+
+                    if ($departmentQuery == 'All Dept') {
+                        $totalTgUnit = $targetUnitCountAll->first(function($item) use ($department_id) {
+                            return $item->department_id == $department_id && $item->total_3 ?? 0;
+                                }) ?? 0;
+                        $totalTgUnitDept = $targetUnitCountAllDept->first(function($item) use ($department_id) {
+                            return $item->department_id == $department_id && $item->total_3 ?? 0;
+                            }) ?? 0;
+                        } else {
+                            $totalTgUnit = $targetUnitCountAll->total_3 ?? 0;
+                            $totalTgUnitDept = $targetUnitCountAllDept->total_3 ?? 0;
+                        }
                         $totalsTg = $totalTgUnitAll['total_3'] ?? 0;
                         break;
 
                     case '04':
-                        $totalTgUnit = $targetUnitCountAll->total_4 ?? 0;
-                        $totalTgUnitDept = $targetUnitCountAllDept->total_4 ?? 0;
+                    if ($departmentQuery == 'All Dept') {
+                        $totalTgUnit = $targetUnitCountAll->first(function($item) use ($department_id) {
+                                    return $item->department_id == $department_id && $item->total_ ?? 0;
+                                }) ?? 0;
+                            $totalTgUnitDept = $targetUnitCountAllDept->first(function($item) use ($department_id) {
+                                    return $item->department_id == $department_id && $item->total_4 ?? 0;
+                                }) ?? 0;
+                        } else {
+                            $totalTgUnit = $targetUnitCountAll->total_4 ?? 0;
+                            $totalTgUnitDept = $targetUnitCountAllDept->total_4 ?? 0;
+                        }
                         $totalsTg = $totalTgUnitAll['total_4'] ?? 0;
                         break;
 
                     case '05':
-                        $totalTgUnit = $targetUnitCountAll->total_5 ?? 0;
-                        $totalTgUnitDept = $targetUnitCountAllDept->total_5 ?? 0;
+
+                    if ($departmentQuery == 'All Dept') {
+                        $totalTgUnit = $targetUnitCountAll->first(function($item) use ($department_id) {
+                                    return $item->department_id == $department_id && $item->total_5 ?? 0;
+                                }) ?? 0;
+                            $totalTgUnitDept = $targetUnitCountAllDept->first(function($item) use ($department_id) {
+                                    return $item->department_id == $department_id && $item->total_5 ?? 0;
+                                }) ?? 0;
+                        } else {
+                            $totalTgUnit = $targetUnitCountAll->total_5 ?? 0;
+                            $totalTgUnitDept = $targetUnitCountAllDept->total_5 ?? 0;
+                        }
                         $totalsTg = $totalTgUnitAll['total_5'] ?? 0;
                         break;
                         
                     case '06':
-                        $totalTgUnit = $targetUnitCountAll->total_6 ?? 0;
-                        $totalTgUnitDept = $targetUnitCountAllDept->total_6 ?? 0;
+                    if ($departmentQuery == 'All Dept') {
+                        $totalTgUnit = $targetUnitCountAll->first(function($item) use ($department_id) {
+                                    return $item->department_id == $department_id && $item->total_6 ?? 0;
+                                }) ?? 0;
+                            $totalTgUnitDept = $targetUnitCountAllDept->first(function($item) use ($department_id) {
+                                    return $item->department_id == $department_id && $item->total_6 ?? 0;
+                                }) ?? 0;
+                        } else {
+                            $totalTgUnit = $targetUnitCountAll->total_6 ?? 0;
+                            $totalTgUnitDept = $targetUnitCountAllDept->total_6 ?? 0;
+                        }
                         $totalsTg = $totalTgUnitAll['total_6'] ?? 0;
                         break;
 
                     case '07':
-                        $totalTgUnit = $targetUnitCountAll->total_7 ?? 0;
-                        $totalTgUnitDept = $targetUnitCountAllDept->total_7 ?? 0;
+
+                    if ($departmentQuery == 'All Dept') {
+                        
+                        $totalTgUnit = $targetUnitCountAll->first(function($item) use ($department_id) {
+                                    return $item->department_id == $department_id && $item->total_7 ?? 0;
+                                }) ?? 0;
+                            $totalTgUnitDept = $targetUnitCountAllDept->first(function($item) use ($department_id) {
+                                    return $item->department_id == $department_id && $item->total_7 ?? 0;
+                                }) ?? 0;
+                        } else {
+                            $totalTgUnit = $targetUnitCountAll->total_7 ?? 0;
+                            $totalTgUnitDept = $targetUnitCountAllDept->total_7 ?? 0;
+                        }
                         $totalsTg = $totalTgUnitAll['total_7'] ?? 0;
                         break; 
 
                     case '08':
-                        $totalTgUnit = $targetUnitCountAll->total_8 ?? 0;
-                        $totalTgUnitDept = $targetUnitCountAllDept->total_8 ?? 0;
+                    if ($departmentQuery == 'All Dept') {
+                        $totalTgUnit = $targetUnitCountAll->first(function($item) use ($department_id) {
+                                    return $item->department_id == $department_id && $item->total_8 ?? 0;
+                                }) ?? 0;
+                            $totalTgUnitDept = $targetUnitCountAllDept->first(function($item) use ($department_id) {
+                                    return $item->department_id == $department_id && $item->total_8 ?? 0;
+                                }) ?? 0;
+                           
+                        } else {
+                            $totalTgUnit = $targetUnitCountAll->total_8 ?? 0;
+                            $totalTgUnitDept = $targetUnitCountAllDept->total_8 ?? 0;
+                        }
                         $totalsTg = $totalTgUnitAll['total_8'] ?? 0;
                         break;
 
                     case '09':
-                        $totalTgUnit = $targetUnitCountAll->total_9 ?? 0;
-                        $totalTgUnitDept = $targetUnitCountAllDept->total_9 ?? 0;
-                        $totalsTg = $totalTgUnitAll['total_9'] ?? 0;
+                    if ($departmentQuery == 'All Dept') {
+                        $totalTgUnit = $targetUnitCountAll->first(function($item) use ($department_id) {
+                                    return $item->department_id == $department_id && $item->total_9 ?? 0;
+                                }) ?? 0;
+                            $totalTgUnitDept = $targetUnitCountAllDept->first(function($item) use ($department_id) {
+                                    return $item->department_id == $department_id && $item->total_9 ?? 0;
+                                }) ?? 0;
+                                
+                            } else {
+                                $totalTgUnit = $targetUnitCountAll->total_9 ?? 0;
+                                $totalTgUnitDept = $targetUnitCountAllDept->total_9 ?? 0;
+                            }
+                            $totalsTg = $totalTgUnitAll['total_9'] ?? 0;
                         break;
 
                     case '10':
-                        $totalTgUnit = $targetUnitCountAll->total_10 ?? 0;
-                        $totalTgUnitDept = $targetUnitCountAllDept->total_10 ?? 0;
+
+                    if ($departmentQuery == 'All Dept') {
+                        $totalTgUnit = $targetUnitCountAll->first(function($item) use ($department_id) {
+                            return $item->department_id == $department_id && $item->total_10 ?? 0;
+                                }) ?? 0;
+                        $totalTgUnitDept = $targetUnitCountAllDept->first(function($item) use ($department_id) {
+                            return $item->department_id == $department_id && $item->total_10 ?? 0;
+                                }) ?? 0;     
+                        } else {
+                            $totalTgUnit = $targetUnitCountAll->total_10 ?? 0;
+                            $totalTgUnitDept = $targetUnitCountAllDept->total_10 ?? 0;
+                        }
                         $totalsTg = $totalTgUnitAll['total_10'] ?? 0;
                         break;
 
                     case '11':
-                        $totalTgUnit = $targetUnitCountAll->total_11 ?? 0;
-                        $totalTgUnitDept = $targetUnitCountAllDept->total_11 ?? 0;
+                    if ($departmentQuery == 'All Dept') {
+                        $totalTgUnit = $targetUnitCountAll->first(function($item) use ($department_id) {
+                            return $item->department_id == $department_id && $item->total_11 ?? 0;
+                                }) ?? 0;
+                            $totalTgUnitDept = $targetUnitCountAllDept->first(function($item) use ($department_id) {
+                            return $item->department_id == $department_id && $item->total_11 ?? 0;
+                                }) ?? 0;
+                    } else {
+                            $totalTgUnit = $targetUnitCountAll->total_11 ?? 0;
+                            $totalTgUnitDept = $targetUnitCountAllDept->total_11 ?? 0;
+                        }
                         $totalsTg = $totalTgUnitAll['total_11'] ?? 0;
                         break;
-
                     case '12':
-                        $totalTgUnit = $targetUnitCountAll->total_12 ?? 0;
-                        $totalTgUnitDept = $targetUnitCountAllDept->total_12 ?? 0;
+                    if ($departmentQuery == 'All Dept') {
+                        $totalTgUnit = $targetUnitCountAll->first(function($item) use ($department_id) {
+                                    return $item->department_id == $department_id && $item->total_12 ?? 0;
+                                }) ?? 0;
+                            $totalTgUnitDept = $targetUnitCountAllDept->first(function($item) use ($department_id) {
+                                    return $item->department_id == $department_id && $item->total_12 ?? 0;
+                                }) ?? 0;
+                           
+                        } else {
+                            $totalTgUnit = $targetUnitCountAll->total_12 ?? 0;
+                            $totalTgUnitDept = $targetUnitCountAllDept->total_12 ?? 0;
+                        }
                         $totalsTg = $totalTgUnitAll['total_12'] ?? 0;
                         break;
                     default:
@@ -162,8 +286,21 @@
                         break;
                 }
 
+                if ($departmentQuery == 'All Dept') {
+                    $totalFl = $actualFilledCount->first(function($item) use ($department_id) {
+                                    return $item->department_id == $department_id;
+                                }) ?? 0;
+                    $totalFlDept = $actualFilledCount->first(function($item) use ($department_id) {
+                                    return $item->department_id == $department_id;
+                                }) ?? 0;
+                    
+                } else { 
                 $totalFl = $actualFilledCount->total_filled ?? 0;
                 $totalFlDept = $actualFilledCountDept->total_filled ?? 0;
+
+                }
+                
+                
                 $totalCheck = $actualCheckedCount ?? 0;
                 $totalCheckDept = $actualCheckedCountDept ?? 0;
                 $totalFlAll = $totalFl + $totalFlDept;
@@ -179,7 +316,7 @@
                 // dd($totalFlAll, $totalTgAll);
                 
                 // dd('total filled:', $totalFl, 'total filled dept:', $totalFlDept, 'total filled dept and indiv', $totalFlAll, 'total target Unit dept + indiv', $totalTgAll);
-                
+                // dd($totalFlAll, $totalTgAll);
             @endphp
             <div class="flex justify-end">
                 <div class="p-0.5">
@@ -200,7 +337,7 @@
                     @endif
                 </div>
                 <div class="p-0.5">
-                    @if ($totalCheckedAll == $totalsTg && $role == 'Checker')
+                    @if ($totalCheckedAll == $totalsTg && $role == 'Checker Div 1' || $role == 'Checker Div 2' || $role == 'Checker WS' || $role == 'Checker Factory')
                     <form action="{{ url('/generate-pdf-check') }}" method="GET">
                         @php
                             $lastInput = $actualFilled->first(function($item) use ($department_id) {
@@ -261,6 +398,7 @@
                 });
                 
                 // dd($af);
+                // dump($totalFlAll, $totalTgAll, $totalFl, $totalFlDept, $af)
             @endphp
             <td class="border-2 border-gray-400 tracking-wide px-2 py-0 text-[13px] text-center">{{ $totalEmployee->total_employee }}</td>
 

@@ -27,6 +27,8 @@ class GeneratePdfController extends Controller
 
         $actual = DB::table('actuals')->select('input_at')->where('employee_id', '=', $employee->id)->orderBy('input_at', 'desc')->first();
 
+
+
         $actualDept = DB::table('department_actuals')->select('input_at')->where('department_id', '=', $departmentID)->orderBy('input_at', 'desc')->first();
 
         $actualTimestamp = $actual ? strtotime($actual->input_at) : 0;
@@ -34,6 +36,7 @@ class GeneratePdfController extends Controller
         $newestTimestamp = $actualTimestamp > $actualDeptTimestamp ? $actualTimestamp : $actualDeptTimestamp;
 
         $last_input = date('d M Y H:i:s', $newestTimestamp);
+        $tteNumber = date('His', $newestTimestamp) . '/' . date('m', $newestTimestamp) . '/' . date('Y', $newestTimestamp);
 
 
         $dept = Department::where('id', $request->department_id)->first();
@@ -41,7 +44,7 @@ class GeneratePdfController extends Controller
             'title' => 'TANDA TERIMA ELEKTRONIK',
             'sub_1' => 'PELAPORAN DATA KEY PERFORMANCE INDICATOR (KPI)',
             'sub_2' => 'PT BRIDGESTONE KALIMANTAN PLANTATION',
-            'no_tte' => 'XXXX-1234',
+            'no_tte' => $tteNumber,
             'last_input' => $last_input,
             'created_at' => now()->format('d M Y H:i:s'),
             'department' => $dept->name,
@@ -82,13 +85,14 @@ class GeneratePdfController extends Controller
         $newestTimestamp = $actualTimestamp > $actualDeptTimestamp ? $actualTimestamp : $actualDeptTimestamp;
 
         $last_input = date('d M Y H:i:s', $newestTimestamp);
+        $tteNumber = date('His', $newestTimestamp) . '/' . date('m', $newestTimestamp) . '/' . date('Y', $newestTimestamp);
 
         $dept = Department::where('id', $request->department_id)->first();
         $data = [
             'title' => 'TANDA TERIMA ELEKTRONIK',
             'sub_1' => 'PELAPORAN DATA KEY PERFORMANCE INDICATOR (KPI)',
             'sub_2' => 'PT BRIDGESTONE KALIMANTAN PLANTATION',
-            'no_tte' => 'XXXX-1234',
+            'no_tte' => $tteNumber,
             'last_input' => $last_input,
             'created_at' => now()->format('d M Y H:i:s'),
             'department' => $dept->name,

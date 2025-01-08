@@ -300,11 +300,11 @@
             const row = `<tr class="${index % 2 === 0 ? 'bg-blue-100' : 'bg-white'}">
               <td class="border-2 border-gray-400 tracking-wide px-2 py-0 text-center">${index + 1}</td>
               <td class="border-2 border-gray-400 tracking-wide px-2 py-0">
-                <a href="${getReportUrl(item.id, semester, year)}">${item.name}</a>
+                <a href="${getReportUrl(item.id, semester, year)}" class="hover:underline">${item.name}</a>
               </td>
-              <td class="border-2 border-gray-400 tracking-wide px-2 py-0">${item.occupation}</td>
+              <td class="border-2 border-gray-400 tracking-wide px-2 py-0" >${item.occupation}</td>
               <td class="border-2 border-gray-400 tracking-wide px-2 py-0">
-               <a href="${getReportDeptUrl(item.department_id, semester, year)}">${item.department}</a>
+               <a href="${getReportDeptUrl(item.department_id, semester, year)}" class="hover:underline">${item.department}</a>
               </td>
             </tr>`;
             tbody.innerHTML += row;

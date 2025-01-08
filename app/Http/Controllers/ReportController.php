@@ -294,21 +294,16 @@ class ReportController extends Controller
             $actuals = DB::table('actuals')->leftJoin('employees', 'employees.id', '=', 'actuals.employee_id')->leftJoin('departments', 'departments.id', '=', 'employees.department_id')
                 ->where('departments.id', $department)
                 ->where(DB::raw('YEAR(actuals.date)'), '=', $yearToShow)
-                ->paginate(18)
-                ->appends(['year' => $yearToShow, 'department' => $department, 'occupation' => $status]);
+                ->get();
 
             $actualsDept = DB::table('department_actuals')->leftJoin('departments', 'departments.id', '=', 'department_actuals.department_id')->leftJoin('employees', 'department_actuals.department_id', '=', 'employees.department_id')
                 ->where('departments.id', $department)
                 ->where(DB::raw('YEAR(department_actuals.date)'), '=', $yearToShow)
-                ->paginate(18)
-                ->appends(['year' => $yearToShow, 'department' => $department, 'occupation' => $status]);
+                ->get();
 
 
-            $actualsCollection = collect($actuals->items());
-            $actualsDeptCollection = collect($actualsDept->items());
-
-            $groupedData = $actualsCollection->groupBy(['employee_id', 'semester']);
-            $groupedDeptData = $actualsDeptCollection->groupBy(['department_id', 'semester']);
+            $groupedData = $actuals->groupBy(['employee_id', 'semester']);
+            $groupedDeptData = $actualsDept->groupBy(['department_id', 'semester']);
 
             // Hitung total target dan actual untuk setiap kelompok
             $totals = $groupedData->map(function ($semesterGroups) {
@@ -389,21 +384,16 @@ class ReportController extends Controller
             $actuals = DB::table('actuals')->leftJoin('employees', 'employees.id', '=', 'actuals.employee_id')->leftJoin('departments', 'departments.id', '=', 'employees.department_id')
                 ->where('departments.id', $department)
                 ->where(DB::raw('YEAR(actuals.date)'), '=', $yearToShow)
-                ->paginate(18)
-                ->appends(['year' => $yearToShow, 'department' => $department, 'occupation' => $status]);
+                ->get();
 
             $actualsDept = DB::table('department_actuals')->leftJoin('departments', 'departments.id', '=', 'department_actuals.department_id')->leftJoin('employees', 'department_actuals.department_id', '=', 'employees.department_id')
                 ->where('departments.id', $department)
                 ->where(DB::raw('YEAR(department_actuals.date)'), '=', $yearToShow)
-                ->paginate(18)
-                ->appends(['year' => $yearToShow, 'department' => $department, 'occupation' => $status]);
+                ->get();
 
 
-            $actualsCollection = collect($actuals->items());
-            $actualsDeptCollection = collect($actualsDept->items());
-
-            $groupedData = $actualsCollection->groupBy(['employee_id', 'semester']);
-            $groupedDeptData = $actualsDeptCollection->groupBy(['department_id', 'semester']);
+            $groupedData = $actuals->groupBy(['employee_id', 'semester']);
+            $groupedDeptData = $actualsDept->groupBy(['department_id', 'semester']);
 
             // Hitung total target dan actual untuk setiap kelompok
             $totals = $groupedData->map(function ($semesterGroups) {
@@ -481,20 +471,15 @@ class ReportController extends Controller
 
             $actuals = DB::table('actuals')->leftJoin('employees', 'employees.id', '=', 'actuals.employee_id')->leftJoin('departments', 'departments.id', '=', 'employees.department_id')
                 ->where(DB::raw('YEAR(actuals.date)'), '=', $yearToShow)
-                ->paginate(18)
-                ->appends(['year' => $yearToShow, 'department' => $department, 'occupation' => $status]);
+                ->get();
 
             $actualsDept = DB::table('department_actuals')->leftJoin('departments', 'departments.id', '=', 'department_actuals.department_id')->leftJoin('employees', 'department_actuals.department_id', '=', 'employees.department_id')
                 ->where(DB::raw('YEAR(department_actuals.date)'), '=', $yearToShow)
-                ->paginate(18)
-                ->appends(['year' => $yearToShow, 'department' => $department, 'occupation' => $status]);
+                ->get();
 
 
-            $actualsCollection = collect($actuals->items());
-            $actualsDeptCollection = collect($actualsDept->items());
-
-            $groupedData = $actualsCollection->groupBy(['employee_id', 'semester']);
-            $groupedDeptData = $actualsDeptCollection->groupBy(['department_id', 'semester']);
+            $groupedData = $actuals->groupBy(['employee_id', 'semester']);
+            $groupedDeptData = $actualsDept->groupBy(['department_id', 'semester']);
 
             // Hitung total target dan actual untuk setiap kelompok
             $totals = $groupedData->map(function ($semesterGroups) {
@@ -571,19 +556,14 @@ class ReportController extends Controller
 
             $actuals = DB::table('actuals')->leftJoin('employees', 'employees.id', '=', 'actuals.employee_id')->leftJoin('departments', 'departments.id', '=', 'employees.department_id')
                 ->where(DB::raw('YEAR(actuals.date)'), '=', $yearToShow)
-                ->paginate(18)
-                ->appends(['year' => $yearToShow, 'department' => $department, 'occupation' => $status]);
+                ->get();
             $actualsDept = DB::table('department_actuals')->leftJoin('departments', 'departments.id', '=', 'department_actuals.department_id')->leftJoin('employees', 'department_actuals.department_id', '=', 'employees.department_id')
                 ->where(DB::raw('YEAR(department_actuals.date)'), '=', $yearToShow)
-                ->paginate(18)
-                ->appends(['year' => $yearToShow, 'department' => $department, 'occupation' => $status]);
+                ->get();
 
 
-            $actualsCollection = collect($actuals->items());
-            $actualsDeptCollection = collect($actualsDept->items());
-
-            $groupedData = $actualsCollection->groupBy(['employee_id', 'semester']);
-            $groupedDeptData = $actualsDeptCollection->groupBy(['department_id', 'semester']);
+            $groupedData = $actuals->groupBy(['employee_id', 'semester']);
+            $groupedDeptData = $actualsDept->groupBy(['department_id', 'semester']);
 
             // Hitung total target dan actual untuk setiap kelompok
             $totals = $groupedData->map(function ($semesterGroups) {
