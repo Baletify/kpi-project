@@ -89,6 +89,13 @@
               @php
                   $i = 0;
                   $startIndex = ($employees->currentPage() - 1) * $employees->perPage() + 1;
+                  $totalSemester1Weight = 0;
+                    $totalSemester2Weight = 0;
+                    $totalSemester1DeptWeight = 0;
+                    $totalSemester2DeptWeight = 0;
+                    $totalWeightSum = 0;
+                    $totalDeptWeightSum = 0;
+                    $totalAllSum = 0;
               @endphp
               @foreach ($employees as $index => $employee)
               @php
@@ -100,6 +107,16 @@
                   $totalWeight = $employeeTotals[$employee->employee_id]['total'];
                   $totalDeptWeight = $employeeTotals[$employee->employee_id]['totalDept'];
                   $totalAll = $totalWeight + $totalDeptWeight;
+
+                // Sum Values
+                $totalSemester1Weight += $semester1TotalWeight;
+                $totalSemester2Weight += $semester2TotalWeight;
+                $totalSemester1DeptWeight += $semester1DeptTotalWeight;
+                $totalSemester2DeptWeight += $semester2DeptTotalWeight;
+                $totalWeightSum += $totalWeight;
+                $totalDeptWeightSum += $totalDeptWeight;
+                $totalAllSum += $totalAll;
+                  
                   @endphp
             <tr class="{{ $i % 2 === 0 ? 'bg-white' : 'bg-blue-100' }}">
                 <td class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-gray-600 py-0.5 px-2 text-center">{{ $startIndex + $index }}</td>
@@ -142,6 +159,25 @@
                 <td class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-gray-600 py-0.5 px-2 text-center">{{ number_format($totalAll, 2) }}%</td>
               </tr>
               @endforeach
+              @if(request()->query('department'))
+              <tr class="bg-gray-200">
+                <td class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-gray-600 py-0.5 px-2 text-center"></td>
+                <td class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-gray-600 py-0.5 px-2 text-center" colspan="4">Total</td>
+                <td class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-gray-600 py-0.5 px-2 text-center">{{ number_format($totalSemester1Weight, 2) }}%</td>
+                <td class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-gray-600 py-0.5 px-2 text-center">{{ number_format($totalSemester2Weight, 2) }}%</td>
+                <td class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-gray-600 py-0.5 px-2 text-center">{{ number_format($totalSemester1DeptWeight, 2) }}%</td>
+                <td class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-gray-600 py-0.5 px-2 text-center">{{ number_format($totalSemester2DeptWeight, 2) }}%</td>
+                <td class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-gray-600 py-0.5 px-2 text-center">{{ number_format($totalWeightSum, 2) }}%</td>
+                <td class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-gray-600 py-0.5 px-2 text-center">{{ number_format($totalDeptWeightSum, 2) }}%</td>
+                <td class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-gray-600 py-0.5 px-2 text-center">{{ number_format($totalAllSum, 2) }}%</td>
+            </tr>
+            @endif
+        </table>
+    </div>
+
+    <div class="mt-5">
+        <table class="w-full">
+            
         </table>
     </div>
     
