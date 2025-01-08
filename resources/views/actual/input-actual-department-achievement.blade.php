@@ -179,7 +179,7 @@
             console.log(zeroValue);
             
     
-            if (zeroValue === 'yes') {
+            if (zeroValue === 'yes' && unitValue == 'Freq') {
                 if (actual == 0) {
                     achievementField.value = '100%';
                 } else if (actual == 1) {
