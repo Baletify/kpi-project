@@ -144,18 +144,26 @@
                         return \Carbon\Carbon::parse($item->date)->format('m') == $month && $item->kpi_code == $target->code;
                     });
                 @endphp
-                    <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="{{ $i % 2 === 0 ? 'FFF2F2F2' : 'FFFFFFFF' }}" class="border-2 bg-blue-100 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center">{{ $actual ? $actual->target : '' }} </td>
+                    <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="{{ $i % 2 === 0 ? 'FFF2F2F2' : 'FFFFFFFF' }}" class="border-2 bg-blue-100 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center">
+                    @if ($target->unit == 'Rp')
+                    {{ $actual ? 'Rp. ' . substr(number_format($actual->target, 0, ',', '.'), 0, 7) : ''}}
+                    @else
+                        {{ $actual ? $actual->target : '' }} 
+                    @endif
+                    </td>
                     @endforeach
                     
                     @php
                         $totalTarget = $totals[$target->code]['total_target'] ?? 0;
                     @endphp
-                @if ($totalTarget > 0)
+                @if ($totalTarget >= 0)
                      <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="{{ $i % 2 === 0 ? 'FFF2F2F2' : 'FFFFFFFF' }}" class="border-2 bg-blue-100 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center">
                         @if ($target->unit === '%')
                             {{ $totalTarget }}%
+                        @elseif ($target->unit === 'Rp')
+                        Rp. {{ substr(number_format($totalTarget, 0, ',', '.'), 0, 7) }}
                         @else
-                            {{ $totalTarget }}
+                        {{ $totalTarget }}
                         @endif
                      </td>
                  @else
@@ -167,7 +175,7 @@
                     @endphp
 
 
-                     @if ($totalWeightingAchievement > 0)
+                     @if ($totalWeightingAchievement >= 0)
                      <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="{{ $i % 2 === 0 ? 'FFF2F2F2' : 'FFFFFFFF' }}" class="border-2 bg-blue-100 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center" rowspan="4">{{ number_format($totalWeightingAchievement, 1) }}%</td>
                     @else
                      <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="{{ $i % 2 === 0 ? 'FFF2F2F2' : 'FFFFFFFF' }}" class="border-2 bg-blue-100 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center" rowspan="4"></td>
@@ -183,17 +191,23 @@
                     @endphp
                     
                     <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="{{ $i % 2 === 0 ? 'FFF2F2F2' : 'FFFFFFFF' }}" class="border-2 bg-gray-50 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center">
+                    @if ($target->unit == 'Rp')
+                    {{ $actual ? 'Rp. ' . substr(number_format($actual->actual, 0, ',', '.'), 0, 7) : ''}}
+                    @else
                     {{ $actual ? $actual->actual : ''}}
+                    @endif
                     </td>
                     @endforeach
 
                     @php
                          $totalActual = $totals[$target->code]['total_actual'] ?? 0;
                     @endphp
-                    @if ($totalTarget > 0)
+                    @if ($totalTarget >= 0)
                      <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="{{ $i % 2 === 0 ? 'FFF2F2F2' : 'FFFFFFFF' }}" class="border-2 bg-gray-50 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center">
                         @if ($target->unit === '%')
                         {{ $totalActual }}%
+                        @elseif ($target->unit === 'Rp')
+                        Rp. {{ substr(number_format($totalActual, 0, ',', '.'), 0, 7) }}
                         @else
                         {{ $totalActual }}
                         @endif
@@ -215,7 +229,7 @@
                     @php
                          $totalPercentage = $totals[$target->code]['total_percentage'] ?? 0;
                     @endphp
-                    @if ($totalTarget > 0)
+                    @if ($totalTarget >= 0)
                      <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="{{ $i % 2 === 0 ? 'FFF2F2F2' : 'FFFFFFFF' }}" class="border-2 bg-blue-100 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center">{{ number_format($totalPercentage) }}%</td>
                  @else
                      <td class="border-2 bg-blue-100 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center"></td>

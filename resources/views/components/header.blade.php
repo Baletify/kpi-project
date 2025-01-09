@@ -12,7 +12,7 @@
         </ul>
         <ul class="ml-auto flex items-center">
             <div class="p-0">
-                <form method="POST" action="{{ route('auth.logout') }}">
+                <form method="POST" action="{{ route('auth.logout') }}" onsubmit="clearLocalStorage()">
                     @csrf
                     <button class="text-white font-bold hover:underline" type="submit">Logout</button>
                 </form>
@@ -23,3 +23,9 @@
         {{ $slot }}
     </div>
 </header>
+
+<script>
+    function clearLocalStorage() {
+        localStorage.clear();
+    }
+</script>

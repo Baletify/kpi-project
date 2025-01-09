@@ -72,8 +72,8 @@
                 <th class="border-2 border-gray-400 text-[13px] tracking-wide font-medium text-white py-0.5 px-2 bg-blue-700" rowspan="2" style="width: 3%">No.</th>
                 <th class="border-2 border-gray-400 text-[13px] tracking-wide font-medium text-white py-0.5 px-2 bg-blue-700" rowspan="2" style="width: 10%">Dept</th>
                 <th class="border-2 border-gray-400 text-[13px] tracking-wide font-medium text-white py-0.5 px-2 bg-blue-700" rowspan="2" style="width: 6%">NIK</th>
-                <th class="border-2 border-gray-400 text-[13px] tracking-wide font-medium text-white py-0.5 px-2 bg-blue-700" rowspan="2" style="width: 25%">Nama</th>
-                <th class="border-2 border-gray-400 text-[13px] tracking-wide font-medium text-white py-0.5 px-2 bg-blue-700" rowspan="2" style="width: 7%">Posisi</th>
+                <th class="border-2 border-gray-400 text-[13px] tracking-wide font-medium text-white py-0.5 px-2 bg-blue-700" rowspan="2" style="width: 23%">Nama</th>
+                <th class="border-2 border-gray-400 text-[13px] tracking-wide font-medium text-white py-0.5 px-2 bg-blue-700" rowspan="2" style="width: 12%">Posisi</th>
                 <th class="border-2 border-gray-400 text-[13px] tracking-wide font-medium text-white py-0.5 px-2 bg-blue-700" colspan="3">Pencapaian KPI Dept 30%</th>
                 <th class="border-2 border-gray-400 text-[13px] tracking-wide font-medium text-white py-0.5 px-2 bg-blue-700" colspan="3">Pencapaian KPI Individu 70%</th>
                 <th class="border-2 border-gray-400 text-[13px] tracking-wide font-medium text-white py-0.5 px-2 bg-blue-700" rowspan="2">Total</th>
@@ -163,12 +163,12 @@
               <tr class="bg-gray-200">
                 <td class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-gray-600 py-0.5 px-2 text-center"></td>
                 <td class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-gray-600 py-0.5 px-2 text-center" colspan="4">Total</td>
-                <td class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-gray-600 py-0.5 px-2 text-center">{{ number_format($totalSemester1Weight, 2) }}%</td>
-                <td class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-gray-600 py-0.5 px-2 text-center">{{ number_format($totalSemester2Weight, 2) }}%</td>
                 <td class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-gray-600 py-0.5 px-2 text-center">{{ number_format($totalSemester1DeptWeight, 2) }}%</td>
                 <td class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-gray-600 py-0.5 px-2 text-center">{{ number_format($totalSemester2DeptWeight, 2) }}%</td>
-                <td class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-gray-600 py-0.5 px-2 text-center">{{ number_format($totalWeightSum, 2) }}%</td>
                 <td class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-gray-600 py-0.5 px-2 text-center">{{ number_format($totalDeptWeightSum, 2) }}%</td>
+                <td class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-gray-600 py-0.5 px-2 text-center">{{ number_format($totalSemester1Weight, 2) }}%</td>
+                <td class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-gray-600 py-0.5 px-2 text-center">{{ number_format($totalSemester2Weight, 2) }}%</td>
+                <td class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-gray-600 py-0.5 px-2 text-center">{{ number_format($totalWeightSum, 2) }}%</td>
                 <td class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-gray-600 py-0.5 px-2 text-center">{{ number_format($totalAllSum, 2) }}%</td>
             </tr>
             @endif

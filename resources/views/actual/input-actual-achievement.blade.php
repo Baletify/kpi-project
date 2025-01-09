@@ -23,18 +23,18 @@
           <span class="font-semibold">Bulan</span>
           <select name="date" id="date" class="col-start-1 row-start-1 w-full appearance-none rounded-md py-1.5 pl-3 pr-7 text-base text-gray-500 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
             <option value="">-- Pilih Bulan --</option>
-            <option value="01" data-target="{{ $target->target_unit_1 ?? '' }}" data-unit="{{ $target->unit }}" data-zero="{{ $target->target_unit_1 == 0 ? 'yes' : 'no' }}">January</option>
-            <option value="02" data-target="{{ $target->target_unit_2 ?? '' }}" data-unit="{{ $target->unit }}" data-zero="{{ $target->target_unit_2 == 0 ? 'yes' : 'no' }}" >February</option>
-            <option value="03" data-target="{{ $target->target_unit_3 ?? '' }}" data-unit="{{ $target->unit }}" data-zero="{{ $target->target_unit_3 == 0 ? 'yes' : 'no' }}">March</option>
-            <option value="04" data-target="{{ $target->target_unit_4 ?? '' }}" data-unit="{{ $target->unit }}" data-zero="{{ $target->target_unit_4 == 0 ? 'yes' : 'no' }}">April</option>
-            <option value="05" data-target="{{ $target->target_unit_5 ?? '' }}" data-unit="{{ $target->unit }}" data-zero="{{ $target->target_unit_5 == 0 ? 'yes' : 'no' }}">May</option>
-            <option value="06" data-target="{{ $target->target_unit_6 ?? '' }}" data-unit="{{ $target->unit }}" data-zero="{{ $target->target_unit_6 == 0 ? 'yes' : 'no' }}">June</option>
-            <option value="07" data-target="{{ $target->target_unit_7 ?? '' }}" data-unit="{{ $target->unit }}" data-zero="{{ $target->target_unit_7 == 0 ? 'yes' : 'no' }}">July</option>
-            <option value="08" data-target="{{ $target->target_unit_8 ?? '' }}" data-unit="{{ $target->unit }}" data-zero="{{ $target->target_unit_8 == 0 ? 'yes' : 'no' }}">August</option>
-            <option value="09" data-target="{{ $target->target_unit_9 ?? '' }}" data-unit="{{ $target->unit }}" data-zero="{{ $target->target_unit_9 == 0 ? 'yes' : 'no' }}">September</option>
-            <option value="10" data-target="{{ $target->target_unit_10 ?? '' }}" data-unit="{{ $target->unit }}" data-zero="{{ $target->target_unit_10 == 0 ? 'yes' : 'no' }}">October</option>
-            <option value="11" data-target="{{ $target->target_unit_11 ?? '' }}" data-unit="{{ $target->unit }}" data-zero="{{ $target->target_unit_11 == 0 ? 'yes' : 'no' }}">November</option>
-            <option value="12" data-target="{{ $target->target_unit_12 ?? '' }}" data-unit="{{ $target->unit }}" data-zero="{{ $target->target_unit_12 == 0 ? 'yes' : 'no' }}">December</option>
+            <option value="01" data-target="{{ $target->target_unit_1 ?? '' }}" data-unit="{{ $target->unit }}" data-rp="{{ $target->unit == 'Rp' ? 'yes' : 'no' }}" data-zero="{{ $target->target_unit_1 == 0 ? 'yes' : 'no' }}">January</option>
+            <option value="02" data-target="{{ $target->target_unit_2 ?? '' }}" data-unit="{{ $target->unit }}" data-rp="{{ $target->unit == 'Rp' ? 'yes' : 'no' }}" data-zero="{{ $target->target_unit_2 == 0 ? 'yes' : 'no' }}" >February</option>
+            <option value="03" data-target="{{ $target->target_unit_3 ?? '' }}" data-unit="{{ $target->unit }}" data-rp="{{ $target->unit == 'Rp' ? 'yes' : 'no' }}" data-zero="{{ $target->target_unit_3 == 0 ? 'yes' : 'no' }}">March</option>
+            <option value="04" data-target="{{ $target->target_unit_4 ?? '' }}" data-unit="{{ $target->unit }}" data-rp="{{ $target->unit == 'Rp' ? 'yes' : 'no' }}" data-zero="{{ $target->target_unit_4 == 0 ? 'yes' : 'no' }}">April</option>
+            <option value="05" data-target="{{ $target->target_unit_5 ?? '' }}" data-unit="{{ $target->unit }}" data-rp="{{ $target->unit == 'Rp' ? 'yes' : 'no' }}" data-zero="{{ $target->target_unit_5 == 0 ? 'yes' : 'no' }}">May</option>
+            <option value="06" data-target="{{ $target->target_unit_6 ?? '' }}" data-unit="{{ $target->unit }}" data-rp="{{ $target->unit == 'Rp' ? 'yes' : 'no' }}" data-zero="{{ $target->target_unit_6 == 0 ? 'yes' : 'no' }}">June</option>
+            <option value="07" data-target="{{ $target->target_unit_7 ?? '' }}" data-unit="{{ $target->unit }}" data-rp="{{ $target->unit == 'Rp' ? 'yes' : 'no' }}" data-zero="{{ $target->target_unit_7 == 0 ? 'yes' : 'no' }}">July</option>
+            <option value="08" data-target="{{ $target->target_unit_8 ?? '' }}" data-unit="{{ $target->unit }}" data-rp="{{ $target->unit == 'Rp' ? 'yes' : 'no' }}" data-zero="{{ $target->target_unit_8 == 0 ? 'yes' : 'no' }}">August</option>
+            <option value="09" data-target="{{ $target->target_unit_9 ?? '' }}" data-unit="{{ $target->unit }}" data-rp="{{ $target->unit == 'Rp' ? 'yes' : 'no' }}" data-zero="{{ $target->target_unit_9 == 0 ? 'yes' : 'no' }}">September</option>
+            <option value="10" data-target="{{ $target->target_unit_10 ?? '' }}" data-unit="{{ $target->unit }}" data-rp="{{ $target->unit == 'Rp' ? 'yes' : 'no' }}" data-zero="{{ $target->target_unit_10 == 0 ? 'yes' : 'no' }}">October</option>
+            <option value="11" data-target="{{ $target->target_unit_11 ?? '' }}" data-unit="{{ $target->unit }}" data-rp="{{ $target->unit == 'Rp' ? 'yes' : 'no' }}" data-zero="{{ $target->target_unit_11 == 0 ? 'yes' : 'no' }}">November</option>
+            <option value="12" data-target="{{ $target->target_unit_12 ?? '' }}" data-unit="{{ $target->unit }}" data-rp="{{ $target->unit == 'Rp' ? 'yes' : 'no' }}" data-zero="{{ $target->target_unit_12 == 0 ? 'yes' : 'no' }}">December</option>
         </select>
         <div class="absolute inset-y-0 right-0 flex items-center">
         </div>
@@ -202,7 +202,7 @@
             const unitValue = selectedOption.getAttribute('data-unit');
     
             let target = parseFloat(targetField.value.replace('%', ''));
-            let actual = parseFloat(actualField.value);
+            let actual = parseFloat(actualField.value.replace(/[^0-9]/g, ''));
     
             if (zeroValue === 'yes' && unitValue == 'Freq') {
                 if (actual == 0) {
@@ -229,7 +229,9 @@
                     achievementField.value = '115%';
                 } else if (actual >= target + 4) {
                     achievementField.value = '120%';
-                } 
+                } else {
+                    achievementField.value = '0%';
+                }
             } else if (unitValue === 'Tgl') {
                 if (target === 1) { // Target == 1
                     if (actual === target) {
@@ -394,25 +396,50 @@
             var targetValue = selectedOption.getAttribute('data-target');
             var unitValue = selectedOption.getAttribute('data-unit');
             var targetField = document.getElementById('target');
-    
+
             if (unitValue === '%') {
                 targetValue = targetValue * 100;
                 targetField.value = targetValue + '%';
             } else {
                 targetField.value = targetValue;
             }
-    
+
             calculateAchievement();
         });
-    
+
         var actualInput = document.getElementById('actual');
         actualInput.addEventListener('input', function() {
+            var selectedOption = document.getElementById('date').options[document.getElementById('date').selectedIndex];
+            if (selectedOption.getAttribute('data-rp') === 'yes') {
+                limitInputLength(this, true);
+                this.value = formatCurrency(this.value);
+            } else {
+                limitInputLength(this, false);
+            }
             calculateAchievement();
         });
-    
+
         document.getElementById('target').addEventListener('input', function() {
+            limitInputLength(this, false);
             calculateAchievement();
         });
+
+        function limitInputLength(input, isCurrency) {
+            if (isCurrency) {
+                input.value = input.value.replace(/[^0-9]/g, ''); // Remove non-numeric characters for currency
+            } else {
+                input.value = input.value.replace(/[^0-9%]/g, ''); // Allow numeric and % characters
+            }
+            if (input.value.length > 5) {
+                input.value = input.value.slice(0, 5);
+            }
+        }
+
+        function formatCurrency(value) {
+            value = value.replace(/[^0-9]/g, ''); // Remove non-numeric characters
+            const number = parseFloat(value);
+            return 'Rp ' + new Intl.NumberFormat('id-ID', { maximumSignificantDigits: 5 }).format(number);
+        }
     </script>
 
 </x-app-layout>

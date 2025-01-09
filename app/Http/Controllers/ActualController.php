@@ -243,7 +243,8 @@ class ActualController extends Controller
             $actual = '0';
             $kpi_percentage = '0';
         } else {
-            $actual = $request->actual;
+            $cleanedActual = str_replace(['Rp', '.', ' '], '', $request->actual);
+            $actual = floatval($cleanedActual);
             $kpi_percentage = $request->achievement;
         }
 
@@ -332,7 +333,8 @@ class ActualController extends Controller
             $actual = '0';
             $kpi_percentage = '0';
         } else {
-            $actual = $request->actual;
+            $cleanedActual = str_replace(['Rp', '.', ' '], '', $request->actual);
+            $actual = floatval($cleanedActual);
             $kpi_percentage = $request->achievement;
         }
 

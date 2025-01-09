@@ -136,15 +136,43 @@
 
                 @if ($currentSemester == 1)
                 @foreach (range(1, 6) as $month)
-                    <td class="border-2 border-gray-400 text-[11px] tracking-wide px-2 py-0 text-center">
-                        {{ $isPercentage && $target->{'target_' . $month} !== null ? $target->{'target_' . $month} * 100 . '%' : ($isRp ? ($target->{'target_' . $month} !== null ? number_format($target->{'target_' . $month}) : '') : ($target->{'target_' . $month} !== null ? $target->{'target_' . $month} : '')) }}
-                    </td>
+                <td class="border-2 border-gray-400 text-[11px] tracking-wide px-2 py-0 text-center">
+                    @if ($isPercentage && $target->{'target_' . $month} !== null)
+                        {{ $target->{'target_' . $month} * 100 . '%' }}
+                    @elseif ($isRp)
+                        @if ($target->{'target_' . $month} !== null)
+                            Rp {{ number_format($target->{'target_' . $month}) }}
+                        @else
+                            <span></span>
+                        @endif
+                    @else
+                        @if ($target->{'target_' . $month} !== null)
+                            {{ $target->{'target_' . $month} }}
+                        @else
+                            <span></span>
+                        @endif
+                    @endif
+                </td>
                 @endforeach
                 @else
                 @foreach (range(7, 12) as $month)
-                    <td class="border-2 border-gray-400 text-[11px] tracking-wide px-2 py-0 text-center">
-                        {{ $isPercentage && $target->{'target_' . $month} !== null ? $target->{'target_' . $month} * 100 . '%' : ($isRp ? ($target->{'target_' . $month} !== null ? number_format($target->{'target_' . $month}) : '') : ($target->{'target_' . $month} !== null ? $target->{'target_' . $month} : '')) }}
-                    </td>
+                <td class="border-2 border-gray-400 text-[11px] tracking-wide px-2 py-0 text-center">
+                    @if ($isPercentage && $target->{'target_' . $month} !== null)
+                        {{ $target->{'target_' . $month} * 100 . '%' }}
+                    @elseif ($isRp)
+                        @if ($target->{'target_' . $month} !== null)
+                            Rp {{ number_format($target->{'target_' . $month}) }}
+                        @else
+                            <span></span>
+                        @endif
+                    @else
+                        @if ($target->{'target_' . $month} !== null)
+                            {{ $target->{'target_' . $month} }}
+                        @else
+                            <span></span>
+                        @endif
+                    @endif
+                </td>
                 @endforeach
                 @endif
                 </tr>

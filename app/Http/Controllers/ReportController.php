@@ -136,7 +136,7 @@ class ReportController extends Controller
             $actuals = DB::table('actuals')
                 ->leftJoin('employees', 'actuals.employee_id', '=', 'employees.id')
                 ->leftJoin('departments', 'employees.department_id', '=', 'departments.id')
-                ->select('actuals.date as date', 'actuals.employee_id as employee_id', 'actuals.kpi_item', 'actuals.kpi_code as kpi_code', 'actuals.kpi_weighting', 'actuals.kpi_percentage as achievement', 'employees.name as name', 'employees.email as email', 'departments.name as department', 'employees.occupation as occupation', 'employees.nik as nik', 'actuals.semester as semester', 'actuals.date as year', 'actuals.target', 'actuals.actual', 'actuals.kpi_percentage', 'actuals.record_file', 'actuals.id as actual_id', 'actuals.status as status')
+                ->select('actuals.date as date', 'actuals.employee_id as employee_id', 'actuals.kpi_item', 'actuals.kpi_code as kpi_code', 'actuals.kpi_weighting', 'actuals.kpi_percentage as achievement', 'employees.name as name', 'employees.email as email', 'departments.name as department', 'employees.occupation as occupation', 'employees.nik as nik', 'actuals.semester as semester', 'actuals.date as year', 'actuals.target', 'actuals.actual', 'actuals.kpi_percentage', 'actuals.record_file', 'actuals.id as actual_id', 'actuals.status as status', 'actuals.trend')
                 ->where('actuals.employee_id', $id)
                 ->where('actuals.semester', $semester)
                 ->where(DB::raw('YEAR(actuals.date)'), $year)
@@ -178,7 +178,9 @@ class ReportController extends Controller
                     return (float) $item->actual;
                 });
 
-                $totalPercentage = $totalTarget > 0 ? ($totalActual / $totalTarget) * 100 : 0;
+                $totalPercentage = $group->sum(function ($item) {
+                    return (float) $item->kpi_percentage;
+                });
 
 
                 $weight = floatval($group->first()->kpi_weighting); // Ambil bobot dari item pertama dalam grup
@@ -217,7 +219,7 @@ class ReportController extends Controller
 
             $actuals = DB::table('department_actuals')
                 ->leftJoin('departments', 'department_actuals.department_id', '=', 'departments.id')
-                ->select('department_actuals.date as date', 'department_actuals.department_id as department_id', 'department_actuals.kpi_item', 'department_actuals.kpi_code as kpi_code', 'department_actuals.kpi_weighting', 'department_actuals.kpi_percentage as achievement', 'department_actuals.semester as semester', DB::raw('YEAR(department_actuals.date) as year'), 'department_actuals.target', 'department_actuals.actual', 'department_actuals.kpi_percentage', 'department_actuals.record_file', 'department_actuals.id as department_actual_id', 'department_actuals.status as status', 'departments.name as department')
+                ->select('department_actuals.date as date', 'department_actuals.department_id as department_id', 'department_actuals.kpi_item', 'department_actuals.kpi_code as kpi_code', 'department_actuals.kpi_weighting', 'department_actuals.kpi_percentage as achievement', 'department_actuals.semester as semester', DB::raw('YEAR(department_actuals.date) as year'), 'department_actuals.target', 'department_actuals.actual', 'department_actuals.kpi_percentage', 'department_actuals.record_file', 'department_actuals.id as department_actual_id', 'department_actuals.status as status', 'departments.name as department', 'department_actuals.trend')
                 ->where('department_actuals.department_id', $id)
                 ->where('department_actuals.semester', $semester)
                 ->where(DB::raw('YEAR(department_actuals.date)'), $year)
@@ -252,13 +254,19 @@ class ReportController extends Controller
                 $totalTarget = $group->sum(function ($item) {
                     return (float) $item->target;
                 });
+
                 $totalActual = $group->sum(function ($item) {
                     return (float) $item->actual;
                 });
-                $totalPercentage = $totalTarget > 0 ? ($totalActual / $totalTarget) * 100 : 0;
+
+                $totalPercentage = $group->sum(function ($item) {
+                    return (float) $item->kpi_percentage;
+                });
 
 
                 $weight = floatval($group->first()->kpi_weighting); // Ambil bobot dari item pertama dalam grup
+
+
                 $totalAchievementWeight = $totalPercentage * $weight / 100;
 
                 return [
@@ -269,6 +277,7 @@ class ReportController extends Controller
                     'total_achievement_weight' => $totalAchievementWeight,
                 ];
             });
+
 
             return view('report.department-report', ['title' => 'Report', 'desc' => 'Summary KPI Dept', 'actuals' => $actuals, 'targets' => $targets, 'totals' => $totals, 'sumWeighting' => $sumWeighting,]);
         } else {
