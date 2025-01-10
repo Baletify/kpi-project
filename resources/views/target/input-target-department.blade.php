@@ -5,41 +5,44 @@
             $startYear = 2024; 
             $endYear = $currentYear + 2;
         @endphp
-        <div class="p-0">
-            <span class="font-bold text-2xl">Input Target & Upload Program</span>
-        </div>
-        <div class="flex justify-end">
-            <div class="relative mt-1 rounded-md">
-                <div class="mt-2 mb-1 mx-2">
-                    <select name="year" id="year" class="col-start-1 row-start-1 w-full appearance-none rounded-md py-1.5 pl-3 pr-7 text-base text-gray-500 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
-                        <option value="">-- Tahun --</option>
-                        @for ($year = $startYear; $year <= $endYear; $year++)
-                        <option value="{{ $year }}">{{ $year }}</option>
-                        @endfor
-                    </select>
+        <div class="flex justify-between">
+            <div class="p-0">
+                <span class="font-bold text-2xl">Input Target & Upload Program</span>
+            </div>
+            <div class="flex justify-end">
+                <div class="relative mt-1 rounded-md">
+                    <div class="mt-2 mb-1 mx-2">
+                        <select name="year" id="year" class="col-start-1 row-start-1 w-full appearance-none rounded-md py-1.5 pl-3 pr-7 text-base text-gray-500 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
+                            <option value="">-- Tahun --</option>
+                            @for ($year = $startYear; $year <= $endYear; $year++)
+                            <option value="{{ $year }}">{{ $year }}</option>
+                            @endfor
+                        </select>
+                    </div>
+                    <div class="absolute inset-y-0 right-0 flex items-center">
+                    </div>
+                  </div>
+                  <div class="relative mt-1 rounded-md">
+                    <div class="mt-2 mb-1 mx-2">
+                        <select name="semester" id="semester" class="col-start-1 row-start-1 w-full appearance-none rounded-md py-1.5 pl-3 pr-7 text-base text-gray-500 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
+                            <option value="">-- Semester --</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                        </select>
+                    </div>
+                    <div class="absolute inset-y-0 right-0 flex items-center">
+                    </div>
+                  </div>
+                  <div class="relative mt-1 rounded-md mb-1">
+                    <button class="p-2 bg-blue-600 my-2 rounded-md">
+                        <a id="input-target-link" href="{{ route('target.showDept', 'department=' . $departments->first()->department_id ?? '' ) }}" >
+                            <span class="text-white">Input Target Dept</span>
+                          </a>
+                    </button>
                 </div>
-                <div class="absolute inset-y-0 right-0 flex items-center">
-                </div>
-              </div>
-              <div class="relative mt-1 rounded-md">
-                <div class="mt-2 mb-1 mx-2">
-                    <select name="semester" id="semester" class="col-start-1 row-start-1 w-full appearance-none rounded-md py-1.5 pl-3 pr-7 text-base text-gray-500 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
-                        <option value="">-- Semester --</option>
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                    </select>
-                </div>
-                <div class="absolute inset-y-0 right-0 flex items-center">
-                </div>
-              </div>
-              <div class="relative mt-1 rounded-md mb-1">
-                <button class="p-2 bg-blue-600 my-2 rounded-md">
-                    <a id="input-target-link" href="{{ route('target.showDept', 'department=' . $departments->first()->department_id ?? '' ) }}" >
-                        <span class="text-white">Input Target Dept</span>
-                      </a>
-                </button>
             </div>
         </div>
+
         
         <table class="w-full table-auto">
             <tr>

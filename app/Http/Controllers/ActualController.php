@@ -206,6 +206,9 @@ class ActualController extends Controller
 
     public function storeDept(Request $request)
     {
+        $user = Auth::user();
+        $role = $user->role;
+
         $validator = Validator::make($request->all(), [
             'date' => 'required',
             'actual' => 'required',
@@ -259,9 +262,9 @@ class ActualController extends Controller
             ->whereIn('status', ['Checked', 'Approved'])
             ->first();
 
-        if ($existingActual) {
+        if ($existingActual && ($role == 'Inputer' || $role == '')) {
             flash()->error('This KPI item already checked or approved');
-            return redirect()->back()->withErrors(['status' => 'Cannot update or create record because the status is already Checked or Approved.']);
+            return redirect()->back()->withErrors(['status' => 'Cannot update or create record: Data sudah di check atau di approve.']);
         }
 
         $dataToUpdateOrCreate = [
@@ -293,6 +296,9 @@ class ActualController extends Controller
     public function store(Request $request)
     {
 
+        $user = Auth::user();
+        $role = $user->role;
+
         $validator = Validator::make($request->all(), [
             'date' => 'required',
             'actual' => 'required',
@@ -304,7 +310,6 @@ class ActualController extends Controller
                 ->withErrors($validator)
                 ->withInput();
         }
-
 
 
         $date = Carbon::createFromDate($request->year, $request->date, 1)->startOfMonth();
@@ -350,9 +355,9 @@ class ActualController extends Controller
             ->whereIn('status', ['Checked', 'Approved'])
             ->first();
 
-        if ($existingActual) {
+        if ($existingActual && ($role == 'Inputer' || $role == '')) {
             flash()->error('This KPI item already Checked or Approved');
-            return redirect()->back()->withErrors(['status' => 'Cannot update or create record because the status is already Checked or Approved.']);
+            return redirect()->back()->withErrors(['status' => 'Cannot update or create record: Data sudah di check atau di approve.']);
         }
 
         $dataToUpdateOrCreate = [
