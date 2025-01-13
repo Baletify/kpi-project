@@ -5,6 +5,7 @@
         $currentYear = Carbon\Carbon::now()->year;
         $startYear = 2024; 
         $endYear = $currentYear + 2;
+        $role = auth()->user()->role;
         @endphp
         <div class="flex justify-between">
             <div class="p-0">
@@ -34,13 +35,13 @@
                     <div class="absolute inset-y-0 right-0 flex items-center">
                     </div>
                   </div>
-                  @if (auth()->user()->role == 'Checker Div 1')
+                  @if ($role == 'Checker Div 1' || $role == 'Checker Div 2')
                   <div class=" mt-1 rounded-md">
                         <form action="{{ route('report.index') }}" method="GET">
                         <div class="mt-1 mb-1 mx-2">
                             <select name="department" id="department" class="col-start-1 row-start-1 w-full appearance-none rounded-md py-1.5 pl-3 pr-7 text-base text-gray-500 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
                                 <option value="">-- Departmen --</option>
-                                @foreach ($div1Dept as $item)  
+                                @foreach ($divDept as $item)  
                                 <option value="{{ $item->id }}">{{ $item->name }}</option>
                                 @endforeach
                             </select>
@@ -55,13 +56,13 @@
                         </button>
                     </form>
                     </div>
-                  @elseif (auth()->user()->role == 'Checker Div 2')
+                  @elseif (auth()->user()->role == 'FAD')
                   <div class="relative mt-1 rounded-md">
                         <form action="{{ route('report.index') }}" method="GET">
                         <div class="mt-1 mb-1 mx-2">
                             <select name="department" id="department" class="col-start-1 row-start-1 w-full appearance-none rounded-md py-1.5 pl-3 pr-7 text-base text-gray-500 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
                                 <option value="">-- Departmen --</option>
-                                @foreach ($div2Dept as $item)  
+                                @foreach ($divFAD as $item)  
                                 <option value="{{ $item->id }}">{{ $item->name }}</option>
                                 @endforeach
                             </select>
@@ -102,7 +103,7 @@
                           <form action="{{ route('report.index') }}" method="GET">
                           <div class="mt-1 mb-1 mx-2">
                               <select name="department" id="department" class="col-start-1 row-start-1 w-full appearance-none rounded-md py-1.5 pl-3 pr-7 text-base text-gray-500 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
-                                  <option value="">-- Departmen --</option>
+                                  <option value="">-- Departemen --</option>
                                   @foreach ($factory as $item)  
                                   <option value="{{ $item->id }}">{{ $item->name }}</option>
                                   @endforeach

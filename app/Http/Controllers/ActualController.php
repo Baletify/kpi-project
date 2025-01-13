@@ -101,7 +101,24 @@ class ActualController extends Controller
     {
         $department = $request->query('department');
         $employee = $request->query('employee');
-        $allDept = Department::all();
+        $user = Auth::user();
+        $role = $user->role;
+
+        if ($role == 'Checker Div 1' || $role == 'Checker Div 2') {
+            $dept = ['Sub Div A', 'Sub Div B', 'Sub Div C', 'Sub Div D', 'Sub Div E', 'Sub Div F'];
+            $allDept = DB::table('departments')->whereIn('name', $dept)->get();
+        } elseif ($role == 'FAD') {
+            $dept = ['Sub Div A', 'Sub Div B', 'Sub Div C', 'Sub Div D', 'Sub Div E', 'Sub Div F', 'FAD', 'FSD'];
+            $allDept = DB::table('departments')->whereIn('name', $dept)->get();
+        } elseif ($role == 'Checker WS') {
+            $dept = 'Workshop';
+            $allDept = DB::table('departments')->where('name', '=', $dept)->get();
+        } elseif ($role == 'Checker Factory') {
+            $dept = 'Factory';
+            $allDept = DB::table('departments')->where('name', '=', $dept)->get();
+        } else {
+            $allDept = Department::all();
+        }
 
         if ($department && $employee) {
             $departments = DB::table('departments')
