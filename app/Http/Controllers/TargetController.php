@@ -280,4 +280,12 @@ class TargetController extends Controller
 
         return redirect()->to('/target/input-target-kpi-department?department=' . $departmentID . '&year=' . $year)->with('success', 'Data updated successfully.');
     }
+
+    public function departmentTargetReport(Request $request)
+    {
+        $targets = DB::table('department_targets')->leftJoin('departments', 'departments.id', '=', 'department_targets.department_id')
+            ->leftJoin('target_units', 'target_unit.id', '=', 'department_targets.target_unit_id')
+            ->where('department_targets.date', '=', $request->year)->where('department_targets.item', '=', $request->item)
+            ->get();
+    }
 }

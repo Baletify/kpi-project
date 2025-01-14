@@ -50,7 +50,7 @@ class ActualController extends Controller
         // dd($actuals);
         return view('actual.input-actual-employee', [
             'title' => 'Input Data Realisasi',
-            'desc' => 'Employee Achievement',
+            'desc' => 'Monitoring KPI',
             'employee' => $employee,
             'targets' => $targets,
             'actuals' => $actuals,
@@ -88,7 +88,7 @@ class ActualController extends Controller
 
         return view('actual.input-actual-department-details', [
             'title' => 'Input Data Realisasi',
-            'desc' => 'Department Achievement',
+            'desc' => 'Monitoring KPI',
             'departments' => $department,
             'targets' => $targets,
             'actuals' => $actuals,
@@ -130,7 +130,7 @@ class ActualController extends Controller
 
             return view('actual.input-actual-department', [
                 'title' => 'Input Data Realisasi',
-                'desc' => 'Achievement',
+                'desc' => 'List Karyawan',
                 'departments' => $departments,
                 'allDept' => $allDept,
             ]);
@@ -148,7 +148,7 @@ class ActualController extends Controller
 
             return view('actual.input-actual-department', [
                 'title' => 'Input Data Realisasi',
-                'desc' => 'Achievement',
+                'desc' => 'List Karyawan',
                 'departments' => $departments,
                 'allDept' => $allDept,
             ]);
@@ -165,7 +165,7 @@ class ActualController extends Controller
 
             return view('actual.input-actual-department', [
                 'title' => 'Input Data Realisasi',
-                'desc' => 'Achievement',
+                'desc' => 'List Karyawan',
                 'departments' => $departments,
                 'allDept' => $allDept,
             ]);
