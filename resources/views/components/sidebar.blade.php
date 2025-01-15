@@ -110,6 +110,12 @@
                         <span class="ml-3">Summary Dept</span>
                     </a>
                 </li>
+                <li>
+                    <a href="{{ route('report.indexDeptTargetReport', 'year=' . $currentYear) }}" class="flex items-center py-2 px-6 text-gray-300 hover:bg-gray-700">
+                        <i class="ri-bar-chart-box-line text-2xl"></i>
+                        <span class="ml-3">KPI Dept Report</span>
+                    </a>
+                </li>
                 @endif
                 @if (auth()->user()->input_type == 'Group')
                 <div class="flex items-center pb-0 border-b border-b-gray-600"></div>

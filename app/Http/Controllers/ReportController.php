@@ -14,6 +14,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Response;
 
+use function Laravel\Prompts\select;
+
 class ReportController extends Controller
 {
 
@@ -672,5 +674,42 @@ class ReportController extends Controller
             ->toArray();
 
         return response()->json($pdfUrls);
+    }
+
+    public function indexDeptTargetReport(Request $request)
+    {
+        $year = $request->query('year');
+        $targets = DB::table('department_targets')->select('department_targets.indicator',)->whereYear('department_targets.date', '=', $year)
+            ->groupBy('department_targets.indicator')
+            // ->orderBy('indicator', 'desc')
+            ->get();
+
+        // dd($targets);
+
+        return view('report.list-kpi-department-report', ['title' => 'Report', 'desc' => 'Department Report', 'targets' => $targets]);
+    }
+
+    public function departmentTargetReport(Request $request)
+    {
+        $year = $request->query('year');
+        $item = $request->query('item');
+
+        $actuals = DB::table('department_actuals')->leftJoin('departments', 'departments.id', '=', 'department_actuals.department_id')
+            ->select('department_actuals.*', 'departments.name as department')
+            ->whereYear('department_actuals.date', '=', $year)
+            ->where('kpi_item', '=', $item)
+            ->get();
+
+        $targets = DB::table('department_targets')->leftJoin('departments', 'departments.id', '=', 'department_targets.department_id')
+            ->select('department_targets.*', 'departments.name as department')
+            ->whereYear('department_targets.date', '=', $year)
+            ->where('indicator', '=', $item)->get();
+
+        // dd($targets);
+
+
+        // dd($actuals);
+
+        return view('report.target-kpi-department-report', ['title' => 'Department Target Report', 'desc' => 'Department Target Report', 'actuals' => $actuals, 'targets' => $targets]);
     }
 }

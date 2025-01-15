@@ -43,6 +43,7 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/import-target-kpi-department/store', [TargetController::class, 'importDept'])->name('target.importDept');
         Route::put('/input-target-kpi/update', [TargetController::class, 'update'])->name('target.update');
         Route::put('/input-target-kpi-department/update', [TargetController::class, 'updateDept'])->name('target.updateDept');
+
         // Route::get('/input-target-kpi/{id}', [TargetController::class, 'show']);
     });
 
@@ -67,11 +68,13 @@ Route::middleware(['auth'])->group(function () {
     Route::prefix('report')->group(function () {
         Route::get('/list-employee-report', [ReportController::class, 'index'])->name('report.index');
         Route::get('list-department-report', [ReportController::class, 'indexDept'])->name('report.indexDept');
+        Route::get('/list-kpi-department-report', [ReportController::class, 'indexDeptTargetReport'])->name('report.indexDeptTargetReport');
         Route::get('/employee-report/{id}', [ReportController::class, 'show'])->name('report.show');
         Route::get('/summary-department-report', [ReportController::class, 'summaryDept'])->name('report.summaryDept');
         Route::get('/department-report/{id}', [ReportController::class, 'department'])->name('report.department');
         Route::get('/file-preview', [ReportController::class, 'showFile'])->name('report.showFile');
         Route::get('/file-preview-dept', [ReportController::class, 'showFileDept'])->name('report.showFileDept');
+        Route::get('/kpi-department-report', [ReportController::class, 'departmentTargetReport'])->name('report.departmentTargetReport');
     });
 
     Route::prefix('logs')->group(function () {
