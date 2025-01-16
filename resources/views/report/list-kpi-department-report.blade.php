@@ -12,6 +12,18 @@
         </div>
         <div class="flex justify-end items-center mb-2">
         </div>
+        <div class="relative mt-1 rounded-md">
+            <div class="mt-1 mb-1 mx-2">
+                <select name="year" id="year" class="col-start-1 row-start-1 w-full appearance-none rounded-md py-1.5 pl-3 pr-7 text-base text-gray-500 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
+                    <option value="">-- Tahun --</option>
+                    @for ($year = $startYear; $year <= $endYear; $year++)
+                    <option value="{{ $year }}">{{ $year }}</option>
+                    @endfor
+                </select>
+            </div>
+            <div class="absolute inset-y-0 right-0 flex items-center">
+            </div>
+          </div>
     </div>
 
         <div class="flex justify-center">
@@ -31,7 +43,7 @@
                 <td class="border-2 border-gray-400 text-[12px] tracking-wide px-2 py-0">{{ $target->indicator }}</td>
                 <td class="border-2 border-gray-400 text-[12px] tracking-wide px-2 py-0">
                     <div class="flex justify-center gap-2 text-[12px]">
-                        <a href="{{ route('report.departmentTargetReport', 'year=' . $currentYear . '&item=' . $target->indicator) }}">
+                        <a id="kpi-link-{{ $i }}" href="{{ route('report.departmentTargetReport', 'year=' . $currentYear . '&item=' . $target->indicator) }}">
                             <span class="hover:underline text-blue-600">Summary</span>
                         </a>
                 </div>
@@ -49,16 +61,11 @@
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const yearDropdown = document.getElementById('year');
-        const semesterDropdown = document.getElementById('semester');
         
         // Set the dropdown values from localStorage if they exist
         const savedYear = localStorage.getItem('selectedYear');
-        const savedSemester = localStorage.getItem('selectedSemester');
         if (savedYear) {
             yearDropdown.value = savedYear;
-        }
-        if (savedSemester) {
-            semesterDropdown.value = savedSemester;
         }
 
         // Save the dropdown values to localStorage on change
@@ -68,20 +75,13 @@
             updateLinks();
         });
 
-        semesterDropdown.addEventListener('change', function() {
-            const semester = this.value;
-            localStorage.setItem('selectedSemester', semester);
-            updateLinks();
-        });
 
         function updateLinks() {
             const year = yearDropdown.value;
-            const semester = semesterDropdown.value;
-            const links = document.querySelectorAll('a[id^="employee-link-"]');
+            const links = document.querySelectorAll('a[id^="kpi-link-"]');
             links.forEach(link => {
                 const url = new URL(link.href);
                 url.searchParams.set('year', year);
-                url.searchParams.set('semester', semester);
                 link.href = url.toString();
             });
         }

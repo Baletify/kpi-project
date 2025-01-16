@@ -325,7 +325,9 @@ class ReportController extends Controller
                     $totalActual = $group->sum(function ($item) {
                         return (float) $item->actual;
                     });
-                    $totalPercentage = $totalTarget > 0 ? ($totalActual / $totalTarget) * 100 : 0;
+                    $totalPercentage = $group->sum(function($item) {
+                        return (float) $item->kpi_percentage;
+                    });
 
                     $weight = floatval(str_replace('%', '', $group->first()->kpi_weighting)); // Ambil bobot dari item pertama dalam grup dan hilangkan simbol %
                     $totalAchievementWeight = $totalPercentage * $weight / 100;
@@ -406,6 +408,8 @@ class ReportController extends Controller
             $groupedData = $actuals->groupBy(['employee_id', 'semester']);
             $groupedDeptData = $actualsDept->groupBy(['department_id', 'semester']);
 
+            // dd($groupedDeptData);
+
             // Hitung total target dan actual untuk setiap kelompok
             $totals = $groupedData->map(function ($semesterGroups) {
                 return $semesterGroups->map(function ($group) {
@@ -415,7 +419,9 @@ class ReportController extends Controller
                     $totalActual = $group->sum(function ($item) {
                         return (float) $item->actual;
                     });
-                    $totalPercentage = $totalTarget > 0 ? ($totalActual / $totalTarget) * 100 : 0;
+                    $totalPercentage = $group->sum(function($item) {
+                        return (float) $item->kpi_percentage;
+                    });
 
                     $weight = floatval(str_replace('%', '', $group->first()->kpi_weighting)); // Ambil bobot dari item pertama dalam grup dan hilangkan simbol %
                     $totalAchievementWeight = $totalPercentage * $weight / 100;
@@ -472,6 +478,8 @@ class ReportController extends Controller
                 ];
             }
 
+            // dd($employeeTotals, $deptTotals);
+
             return view('report.summary-department-report', ['title' => 'Report', 'desc' => 'Department Report', 'employees' => $employees, 'employeeTotals' => $employeeTotals, 'allDept' => $allDept, 'allOccupation' => $allStatus]);
         } elseif ($yearToShow && $status) {
             $employees = DB::table('employees')->leftJoin('departments', 'departments.id', '=', 'employees.department_id')
@@ -501,7 +509,9 @@ class ReportController extends Controller
                     $totalActual = $group->sum(function ($item) {
                         return (float) $item->actual;
                     });
-                    $totalPercentage = $totalTarget > 0 ? ($totalActual / $totalTarget) * 100 : 0;
+                    $totalPercentage = $group->sum(function($item) {
+                        return (float) $item->kpi_percentage;
+                    });
 
                     $weight = floatval(str_replace('%', '', $group->first()->kpi_weighting)); // Ambil bobot dari item pertama dalam grup dan hilangkan simbol %
                     $totalAchievementWeight = $totalPercentage * $weight / 100;
@@ -585,7 +595,9 @@ class ReportController extends Controller
                     $totalActual = $group->sum(function ($item) {
                         return (float) $item->actual;
                     });
-                    $totalPercentage = $totalTarget > 0 ? ($totalActual / $totalTarget) * 100 : 0;
+                    $totalPercentage = $group->sum(function($item) {
+                        return (float) $item->kpi_percentage;
+                    });
 
                     $weight = floatval(str_replace('%', '', $group->first()->kpi_weighting)); // Ambil bobot dari item pertama dalam grup dan hilangkan simbol %
                     $totalAchievementWeight = $totalPercentage * $weight / 100;
@@ -686,7 +698,7 @@ class ReportController extends Controller
 
         // dd($targets);
 
-        return view('report.list-kpi-department-report', ['title' => 'Report', 'desc' => 'Department Report', 'targets' => $targets]);
+        return view('report.list-kpi-department-report', ['title' => 'Report', 'desc' => 'KPI Dept Report', 'targets' => $targets]);
     }
 
     public function departmentTargetReport(Request $request)

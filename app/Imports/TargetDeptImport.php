@@ -32,6 +32,10 @@ class TargetDeptImport implements ToCollection, WithHeadingRow, WithSkipDuplicat
     {
 
         $yearQuery = request()->input('year');
+        if (empty($yearQuery)) {
+            flash()->error('Please select a year');
+            return redirect()->back();
+        }
         $year = Carbon::parse($yearQuery . '-01-01')->startOfDay()->format('Y-m-d H:i:s');
         $department_id = request()->input('department_id');
 

@@ -229,7 +229,7 @@ class ActualController extends Controller
         $validator = Validator::make($request->all(), [
             'date' => 'required',
             'actual' => 'required',
-            'record_file' => 'required|mimes:jpeg,pdf',
+            'record_file' => 'mimes:jpeg,pdf',
 
         ]);
 
@@ -319,7 +319,7 @@ class ActualController extends Controller
         $validator = Validator::make($request->all(), [
             'date' => 'required',
             'actual' => 'required',
-            'record_file' => 'required|mimes:jpeg,pdf',
+            'record_file' => 'mimes:jpeg,pdf',
         ]);
         if ($validator->fails()) {
             flash()->error('Please fill all required field and upload a valid file format');

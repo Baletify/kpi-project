@@ -217,7 +217,7 @@ class TargetController extends Controller
         ];
 
         $data = [
-            'code' => $row['kode_kpi'],
+            // 'code' => $row['kode_kpi'],
             'indicator' => $row['kpi'],
             'calculation' => $row['cara_menghitung'],
             'supporting_document' => $row['data_pendukung_harus_di_isi'],
@@ -231,7 +231,7 @@ class TargetController extends Controller
 
         // dd($data);
 
-        $response = DepartmentTarget::updateOrCreate($searchConditions, $data);
+        DepartmentTarget::updateOrCreate($searchConditions, $data);
         // dd($response);
     }
 
@@ -280,5 +280,4 @@ class TargetController extends Controller
 
         return redirect()->to('/target/input-target-kpi-department?department=' . $departmentID . '&year=' . $year)->with('success', 'Data updated successfully.');
     }
-
 }

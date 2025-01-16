@@ -19,6 +19,7 @@
                 </div>
               <input type="file" name="file" id="file" class=" w-60 rounded-sm border-0 ml-7 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 mt-2 mb-3" placeholder="Departemen">
               <input type="hidden" name="department_id" id="department_id" value="{{ $departmentID }}">
+              <input type="hidden" name="year" value="{{ $year }}">
               <div class="mb-2 mt-0 flex justify-center">
                 <button type="submit" id="submitBtn" class="px-4 py-2 bg-blue-600 text-white rounded-md">Submit</button>
                 </div>
