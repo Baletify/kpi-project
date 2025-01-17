@@ -100,24 +100,18 @@
               @foreach ($employees as $index => $employee)
               @php
                   $i++;
-                  $semester1TotalWeight = $employeeTotals[$employee->employee_id]['semester_1'];
-                  $semester2TotalWeight = $employeeTotals[$employee->employee_id]['semester_2'];
-                  $semester1DeptTotalWeight = $employeeTotals[$employee->employee_id]['dept_semester_1'];
-                  $semester2DeptTotalWeight = $employeeTotals[$employee->employee_id]['dept_semester_2'];
-                  $totalWeight = $employeeTotals[$employee->employee_id]['total'];
-                  $totalDeptWeight = $employeeTotals[$employee->employee_id]['totalDept'];
-                  $totalAll = $totalWeight + $totalDeptWeight;
 
-                // Sum Values
-                $totalSemester1Weight += $semester1TotalWeight;
-                $totalSemester2Weight += $semester2TotalWeight;
-                $totalSemester1DeptWeight += $semester1DeptTotalWeight;
-                $totalSemester2DeptWeight += $semester2DeptTotalWeight;
-                $totalWeightSum += $totalWeight;
-                $totalDeptWeightSum += $totalDeptWeight;
-                $totalAllSum += $totalAll;
+                  $sumSemester1 = $sumGroupSemester1->first(function($item) use ($employee) {
+                    return $item->employee_id === $employee->employee_id;
+                  });
+
+                  $sumSemester2 = $sumGroupSemester2->first(function($item) use ($employee) {
+                    return $item->employee_id === $employee->employee_id;
+                  });
+
+                  $totalSumSemester = $sumSemester1 + $sumSemester2;
                   
-                  @endphp
+              @endphp
             <tr class="{{ $i % 2 === 0 ? 'bg-white' : 'bg-blue-100' }}">
                 <td class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-gray-600 py-0.5 px-2 text-center">{{ $startIndex + $index }}</td>
                 <td class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-gray-600 py-0.5 px-2">{{ $employee->dept }}</td>
@@ -126,41 +120,48 @@
                     {{ $employee->name }}
                 </td>
                 <td class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-gray-600 py-0.5 px-2" >{{ $employee->occupation }}</td>
-                @if ($semester1DeptTotalWeight > 0)
-                <td class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-gray-600 py-0.5 px-2 text-center">{{ number_format($semester1DeptTotalWeight, 2) }}%</td>
+                @if ($sumSemester1Dept > 0)
+                <td class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-gray-600 py-0.5 px-2 text-center">{{ number_format($sumSemester1Dept, 2) }}%</td>
                 @else
                 <td class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-gray-600 py-0.5 px-2 text-center"></td>
                 @endif
-                @if ($semester2DeptTotalWeight > 0)
-                <td class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-gray-600 py-0.5 px-2 text-center">{{ number_format($semester2DeptTotalWeight, 2) }}%</td>
+
+                @if ($sumSemester2Dept > 0)
+                <td class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-gray-600 py-0.5 px-2 text-center">{{ number_format($sumSemester2Dept, 2) }}%</td>
                 @else
                 <td class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-gray-600 py-0.5 px-2 text-center"></td>
                 @endif
-                @if ($totalDeptWeight > 0)
-                <td class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-gray-600 py-0.5 px-2 text-center">{{ number_format($totalDeptWeight, 2) }}%</td>
+                
+                {{-- @if ($totalDept > 0)
+                <td class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-gray-600 py-0.5 px-2 text-center">{{ number_format($total, 2) }}%</td>
                 @else
                 <td class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-gray-600 py-0.5 px-2 text-center"></td>
                 @endif
-                @if ($semester1TotalWeight > 0)
-                <td class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-gray-600 py-0.5 px-2 text-center">{{ number_format($semester1TotalWeight, 2) }}%</td>
+
+                @if ($sumSemester1 > 0)
+                <td class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-gray-600 py-0.5 px-2 text-center">{{ number_format($sumSemester1, 2) }}%</td>
                 @else
                 <td class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-gray-600 py-0.5 px-2 text-center"></td>
                 @endif
-                @if ($semester2TotalWeight > 0)
-                <td class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-gray-600 py-0.5 px-2 text-center">{{ number_format($semester2TotalWeight, 2) }}%</td>
+
+                @if ($sumSemester2 > 0)
+                <td class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-gray-600 py-0.5 px-2 text-center">{{ number_format($sumSemester2, 2) }}%</td>
                 @else
                 <td class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-gray-600 py-0.5 px-2 text-center"></td>
                 @endif
-                @if ($totalWeight > 0)
-                <td class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-gray-600 py-0.5 px-2 text-center">{{ number_format($totalWeight, 2) }}%</td>
+
+                @if ($totalSumSemester > 0)
+                <td class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-gray-600 py-0.5 px-2 text-center">{{ number_format($totalSumSemester, 2) }}%</td>
                 @else
                 <td class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-gray-600 py-0.5 px-2 text-center"></td>
                 @endif
+
                 <td class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-gray-600 py-0.5 px-2 text-center">{{ number_format($totalAll, 2) }}%</td>
-              </tr>
+              </tr> --}}
               @endforeach
+
               @if(request()->query('department'))
-              <tr class="bg-gray-200">
+              {{-- <tr class="bg-gray-200">
                 <td class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-gray-600 py-0.5 px-2 text-center"></td>
                 <td class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-gray-600 py-0.5 px-2 text-center" colspan="4">Total</td>
                 <td class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-gray-600 py-0.5 px-2 text-center">{{ number_format($totalSemester1DeptWeight, 2) }}%</td>
@@ -170,7 +171,7 @@
                 <td class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-gray-600 py-0.5 px-2 text-center">{{ number_format($totalSemester2Weight, 2) }}%</td>
                 <td class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-gray-600 py-0.5 px-2 text-center">{{ number_format($totalWeightSum, 2) }}%</td>
                 <td class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-gray-600 py-0.5 px-2 text-center">{{ number_format($totalAllSum, 2) }}%</td>
-            </tr>
+            </tr> --}}
             @endif
         </table>
     </div>
