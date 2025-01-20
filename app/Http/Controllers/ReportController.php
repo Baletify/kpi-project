@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Response;
+use Termwind\Components\Dd;
 
 use function Laravel\Prompts\select;
 
@@ -121,7 +122,24 @@ class ReportController extends Controller
     private function calculation($targetZero, $target, $actual, $trend)
     {
         $zeroStatus = $targetZero == 0 ? $zeroStatus = 'yes' : 'no';
-        if ($zeroStatus == 'yes') {
+        $oneStatus = $targetZero == 1 ? $oneStatus = 'yes' : 'no';
+
+        if ($oneStatus == 'yes') {
+            if ($actual == 0) {
+                $oneCalc = '0%';
+            } elseif ($actual == 1) {
+                $oneCalc = '100%';
+            } elseif ($actual == 2) {
+                $oneCalc = '105%%';
+            } else if ($actual == 3) {
+                $oneCalc = '110%';
+            } else if ($actual == 4) {
+                $oneCalc = '115%';
+            } else if ($actual >= 5) {
+                $oneCalc = '120%';
+            }
+            return $oneCalc;
+        } elseif ($zeroStatus == 'yes') {
             if ($actual == 0) {
                 $zeroCalc = '100%';
             } elseif ($actual == 1) {
@@ -336,38 +354,52 @@ class ReportController extends Controller
                 ->appends(['year' => $yearToShow, 'department' => $department, 'occupation' => $status]);
             // dd($employees);
 
-            $semester1Actuals = DB::table('actuals')->leftJoin('employees', 'employees.id', '=', 'actuals.employee_id')->leftJoin('departments', 'departments.id', '=', 'employees.department_id')
+            $employeeIds = $employees->pluck('employee_id');
+            $departmentIds = $employees->pluck('department_id');
+            // dd($employeeIds);
+
+            // Fetch actuals data for the paginated employees
+            $semester1Actuals = DB::table('actuals')
+                ->leftJoin('employees', 'employees.id', '=', 'actuals.employee_id')
+                ->leftJoin('departments', 'departments.id', '=', 'employees.department_id')
                 ->select('actuals.*', 'employees.*', 'departments.name as department_name', 'departments.id as department_id')
                 ->where('actuals.semester', '=', '1')
                 ->whereYear('actuals.date', '=', $yearToShow)
-                ->where('departments.id', '=', $department)
+                ->whereIn('departments.id',  $departmentIds)
+                ->whereIn('employees.id', $employeeIds)
                 ->get();
 
-            $semester2Actuals = DB::table('actuals')->leftJoin('employees', 'employees.id', '=', 'actuals.employee_id')->leftJoin('departments', 'departments.id', '=', 'employees.department_id')
+            $semester2Actuals = DB::table('actuals')
+                ->leftJoin('employees', 'employees.id', '=', 'actuals.employee_id')
+                ->leftJoin('departments', 'departments.id', '=', 'employees.department_id')
                 ->select('actuals.*', 'employees.*', 'departments.name as department_name', 'departments.id as department_id')
                 ->where('actuals.semester', '=', '2')
                 ->whereYear('actuals.date', '=', $yearToShow)
-                ->where('departments.id', '=', $department)
+                ->whereIn('departments.id', $departmentIds)
+                ->whereIn('employees.id', $employeeIds)
                 ->get();
+
+            // dd($semester1Actuals, $semester2Actuals);
+
 
             $semester1ActualsDept = DB::table('department_actuals')->leftJoin('departments', 'departments.id', '=', 'department_actuals.department_id')
                 ->select('department_actuals.*', 'departments.name as department_name', 'departments.id as department_id')
                 ->where('department_actuals.semester', '=', '1')
                 ->whereYear('department_actuals.date', '=', $yearToShow)
-                ->where('departments.id', '=', $department)
+                ->whereIn('departments.id', $departmentIds)
                 ->get();
 
             $semester2ActualsDept = DB::table('department_actuals')->leftJoin('departments', 'departments.id', '=', 'department_actuals.department_id')
                 ->select('department_actuals.*', 'departments.name as department_name', 'departments.id as department_id')
                 ->where('department_actuals.semester', '=', '2')
                 ->whereYear('department_actuals.date', '=', $yearToShow)
-                ->where('departments.id', '=', $department)
+                ->whereIn('departments.id', $departmentIds)
                 ->get();
 
             $actualsGroup1 = $semester1Actuals->groupBy(['employee_id', 'kpi_code']);
             $actualsGroup2 = $semester2Actuals->groupBy(['employee_id', 'kpi_code']);
-            $actualsDeptGroup1 = $semester1ActualsDept->groupBy('kpi_code');
-            $actualsDeptGroup2 = $semester2ActualsDept->groupBy('kpi_code');
+            $actualsDeptGroup1 = $semester1ActualsDept->groupBy(['department_id', 'kpi_code']);
+            $actualsDeptGroup2 = $semester2ActualsDept->groupBy(['department_id', 'kpi_code']);
 
             $semester1Group = $actualsGroup1->map(function ($group) {
                 return $group->map(function ($subGroup) {
@@ -426,123 +458,6 @@ class ReportController extends Controller
             });
 
             $semester1DeptGroup = $actualsDeptGroup1->map(function ($group) {
-                $totalTarget = $group->sum(function ($item) {
-                    return (float) $item->target;
-                });
-
-                $totalActual = $group->sum(function ($item) {
-                    return (float) $item->actual;
-                });
-
-                $firstItem = $group->first();
-                $percentageCalc = $this->calculation($totalTarget, $totalTarget, $totalActual, $firstItem->trend);
-
-                $convertedCalc = floatval(str_replace('%', '', $percentageCalc));
-
-                $weight = floatval($firstItem->kpi_weighting); // Ambil bobot dari item pertama dalam grup
-                $totalAchievementWeight = $convertedCalc * $weight / 100;
-
-                return [
-                    'total_target' => $totalTarget,
-                    'total_actual' => $totalActual,
-                    'weight' => $weight,
-                    'percentageCalc' => $convertedCalc,
-                    'total_achievement_weight' => $totalAchievementWeight,
-                ];
-            });
-
-            $semester2DeptGroup = $actualsDeptGroup2->map(function ($group) {
-                $totalTarget = $group->sum(function ($item) {
-                    return (float) $item->target;
-                });
-
-                $totalActual = $group->sum(function ($item) {
-                    return (float) $item->actual;
-                });
-
-                $firstItem = $group->first();
-                $percentageCalc = $this->calculation($totalTarget, $totalTarget, $totalActual, $firstItem->trend);
-
-                $convertedCalc = floatval(str_replace('%', '', $percentageCalc));
-
-                $weight = floatval($firstItem->kpi_weighting); // Ambil bobot dari item pertama dalam grup
-                $totalAchievementWeight = $convertedCalc * $weight / 100;
-
-                return [
-                    'total_target' => $totalTarget,
-                    'total_actual' => $totalActual,
-                    'weight' => $weight,
-                    'percentageCalc' => $convertedCalc,
-                    'total_achievement_weight' => $totalAchievementWeight,
-                ];
-            });
-
-            // dd($semester1Group, $semester2Group, $semester1DeptGroup, $semester2DeptGroup);
-
-            // Calculate the sum of total_achievement_weight for each semester group
-            $sumSemester1 = $semester1Group->flatten(1)->sum('total_achievement_weight');
-            $sumSemester2 = $semester2Group->flatten(1)->sum('total_achievement_weight');
-            $sumSemester1Dept = $semester1DeptGroup->sum('total_achievement_weight');
-            $sumSemester2Dept = $semester2DeptGroup->sum('total_achievement_weight');
-
-            // dd($employees, $semester1Group, $semester2Group, $semester1DeptGroup, $semester2DeptGroup, $sumSemester1, $sumSemester2, $sumSemester1Dept, $sumSemester2Dept);
-
-            return view('report.summary-department-report', [
-                'title' => 'Report',
-                'desc' => 'Department Report',
-                'allDept' => $allDept,
-                'allOccupation' => $allStatus,
-                'employees' => $employees,
-                'semester1Group' => $semester1Group,
-                'semester2Group' => $semester2Group,
-                'semester1DeptGroup' => $semester1DeptGroup,
-                'semester2DeptGroup' => $semester2DeptGroup,
-                'sumSemester1' => $sumSemester1,
-                'sumSemester2' => $sumSemester2,
-                'sumSemester1Dept' => $sumSemester1Dept,
-                'sumSemester2Dept' => $sumSemester2Dept,
-            ]);
-        } elseif ($yearToShow && $department) {
-            $employees = DB::table('employees')->leftJoin('departments', 'departments.id', '=', 'employees.department_id')->select('departments.name as dept', 'employees.name as name', 'employees.nik', 'employees.occupation', 'employees.id as employee_id', 'department_id')
-                ->where('departments.id', '=', $department)
-                ->paginate(18)
-                ->appends(['year' => $yearToShow, 'department' => $department, 'occupation' => $status]);
-            // dd($employees);
-
-            $semester1Actuals = DB::table('actuals')->leftJoin('employees', 'employees.id', '=', 'actuals.employee_id')->leftJoin('departments', 'departments.id', '=', 'employees.department_id')
-                ->select('actuals.*', 'employees.*', 'departments.name as department_name', 'departments.id as department_id')
-                ->where('actuals.semester', '=', '1')
-                ->whereYear('actuals.date', '=', $yearToShow)
-                ->where('departments.id', '=', $department)
-                ->get();
-
-            $semester2Actuals = DB::table('actuals')->leftJoin('employees', 'employees.id', '=', 'actuals.employee_id')->leftJoin('departments', 'departments.id', '=', 'employees.department_id')
-                ->select('actuals.*', 'employees.*', 'departments.name as department_name', 'departments.id as department_id')
-                ->where('actuals.semester', '=', '2')
-                ->whereYear('actuals.date', '=', $yearToShow)
-                ->where('departments.id', '=', $department)
-                ->get();
-
-            $semester1ActualsDept = DB::table('department_actuals')->leftJoin('departments', 'departments.id', '=', 'department_actuals.department_id')
-                ->select('department_actuals.*', 'departments.name as department_name', 'departments.id as department_id')
-                ->where('department_actuals.semester', '=', '1')
-                ->whereYear('department_actuals.date', '=', $yearToShow)
-                ->where('departments.id', '=', $department)
-                ->get();
-
-            $semester2ActualsDept = DB::table('department_actuals')->leftJoin('departments', 'departments.id', '=', 'department_actuals.department_id')
-                ->select('department_actuals.*', 'departments.name as department_name', 'departments.id as department_id')
-                ->where('department_actuals.semester', '=', '2')
-                ->whereYear('department_actuals.date', '=', $yearToShow)
-                ->where('departments.id', '=', $department)
-                ->get();
-
-            $actualsGroup1 = $semester1Actuals->groupBy(['employee_id', 'kpi_code']);
-            $actualsGroup2 = $semester2Actuals->groupBy(['employee_id', 'kpi_code']);
-            $actualsDeptGroup1 = $semester1ActualsDept->groupBy('kpi_code');
-            $actualsDeptGroup2 = $semester2ActualsDept->groupBy('kpi_code');
-
-            $semester1Group = $actualsGroup1->map(function ($group) {
                 return $group->map(function ($subGroup) {
                     $totalTarget = $subGroup->sum(function ($item) {
                         return (float) $item->target;
@@ -570,7 +485,7 @@ class ReportController extends Controller
                 });
             });
 
-            $semester2Group = $actualsGroup2->map(function ($group) {
+            $semester2DeptGroup = $actualsDeptGroup2->map(function ($group) {
                 return $group->map(function ($subGroup) {
                     $totalTarget = $subGroup->sum(function ($item) {
                         return (float) $item->target;
@@ -598,77 +513,36 @@ class ReportController extends Controller
                 });
             });
 
-            $semester1DeptGroup = $actualsDeptGroup1->map(function ($group) {
-                $totalTarget = $group->sum(function ($item) {
-                    return (float) $item->target;
-                });
-
-                $totalActual = $group->sum(function ($item) {
-                    return (float) $item->actual;
-                });
-
-                $firstItem = $group->first();
-                $percentageCalc = $this->calculation($totalTarget, $totalTarget, $totalActual, $firstItem->trend);
-
-                $convertedCalc = floatval(str_replace('%', '', $percentageCalc));
-
-                $weight = floatval($firstItem->kpi_weighting); // Ambil bobot dari item pertama dalam grup
-                $totalAchievementWeight = $convertedCalc * $weight / 100;
-
-                return [
-                    'total_target' => $totalTarget,
-                    'total_actual' => $totalActual,
-                    'weight' => $weight,
-                    'percentageCalc' => $convertedCalc,
-                    'total_achievement_weight' => $totalAchievementWeight,
-                ];
-            });
-
-            $semester2DeptGroup = $actualsDeptGroup2->map(function ($group) {
-                $totalTarget = $group->sum(function ($item) {
-                    return (float) $item->target;
-                });
-
-                $totalActual = $group->sum(function ($item) {
-                    return (float) $item->actual;
-                });
-
-                $firstItem = $group->first();
-                $percentageCalc = $this->calculation($totalTarget, $totalTarget, $totalActual, $firstItem->trend);
-
-                $convertedCalc = floatval(str_replace('%', '', $percentageCalc));
-
-                $weight = floatval($firstItem->kpi_weighting); // Ambil bobot dari item pertama dalam grup
-                $totalAchievementWeight = $convertedCalc * $weight / 100;
-
-                return [
-                    'total_target' => $totalTarget,
-                    'total_actual' => $totalActual,
-                    'weight' => $weight,
-                    'percentageCalc' => $convertedCalc,
-                    'total_achievement_weight' => $totalAchievementWeight,
-                ];
-            });
-
             // dd($semester1Group, $semester2Group, $semester1DeptGroup, $semester2DeptGroup);
 
             // Calculate the sum of total_achievement_weight for each semester group
-            $sumGroupSemester1 = $semester1Group->map(function ($group) {
-                return $group->sum('total_achievement_weight');
-            });
-            $sumGroupSemester2 = $semester2Group->map(function ($group) {
-                return $group->sum('total_achievement_weight');
+            $sumGroupSemester1 = $semester1Group->mapWithKeys(function ($group, $employeeId) {
+                return [$employeeId => $group->sum('total_achievement_weight')];
             });
 
-            $sumSemester1Dept = $semester1DeptGroup->sum('total_achievement_weight');
-            $sumSemester2Dept = $semester2DeptGroup->sum('total_achievement_weight');
+            $sumGroupSemester2 = $semester2Group->mapWithKeys(function ($group, $employeeId) {
+                return [$employeeId => $group->sum('total_achievement_weight')];
+            });
 
-            // dd($employees, $semester1Group, $semester2Group, $semester1DeptGroup, $semester2DeptGroup, $sumGroupSemester1, $sumGroupSemester2, $sumSemester1Dept, $sumSemester2Dept,);
+            $totalSumSemester = $sumGroupSemester1->map(function ($value, $key) use ($sumGroupSemester2) {
+                return ($value + ($sumGroupSemester2[$key] ?? 0)) * 0.7;
+            });
 
-            // $total = ($sumGroupSemester1 + $sumGroupSemester2) * 0.7;
-            // $totalDept = ($sumSemester1Dept + $sumSemester2Dept) * 0.3;
-            // $totalAll = $total + $totalDept;
 
+            $sumSemester1Dept = $semester1DeptGroup->mapWithKeys(function ($group, $departmentId) {
+                return [$departmentId => $group->sum('total_achievement_weight')];
+            });
+            $sumSemester2Dept = $semester2DeptGroup->mapWithKeys(function ($group, $departmentId) {
+                return [$departmentId => $group->sum('total_achievement_weight')];
+            });
+
+            $totalSumSemesterDept = $sumSemester1Dept->map(function ($value, $key) use ($sumSemester2Dept) {
+                return ($value + ($sumSemester2Dept[$key] ?? 0)) * 0.3;
+            });
+
+            // dd($sumSemester1Dept, $sumSemester2Dept, $totalSumSemester);
+
+            // dd($employees, $semester1Group, $semester2Group, $semester1DeptGroup, $semester2DeptGroup, $sumGroupSemester1, $sumGroupSemester2, $sumSemester1Dept, $sumSemester2Dept, $totalSumSemester, $totalSumSemesterDept);
 
             return view('report.summary-department-report', [
                 'title' => 'Report',
@@ -684,8 +558,223 @@ class ReportController extends Controller
                 'sumGroupSemester2' => $sumGroupSemester2,
                 'sumGroupSemester1Dept' => $sumSemester1Dept,
                 'sumGroupSemester2Dept' => $sumSemester2Dept,
-                // 'total' => $total,
-                // 'totalDept' => $totalDept,
+                'totalSumSemester' => $totalSumSemester,
+                'totalSumSemesterDept' => $totalSumSemesterDept,
+                // 'totalAll' => $totalAll,
+            ]);
+        } elseif ($yearToShow && $department) {
+            $employees = DB::table('employees')->leftJoin('departments', 'departments.id', '=', 'employees.department_id')->select('departments.name as dept', 'employees.name as name', 'employees.nik', 'employees.occupation', 'employees.id as employee_id', 'department_id')
+                ->where('departments.id', '=', $department)
+                ->paginate(18)
+                ->appends(['year' => $yearToShow, 'department' => $department, 'occupation' => $status]);
+            // dd($employees);
+
+            $employeeIds = $employees->pluck('employee_id');
+            $departmentIds = $employees->pluck('department_id');
+            // dd($employeeIds);
+
+            // Fetch actuals data for the paginated employees
+            $semester1Actuals = DB::table('actuals')
+                ->leftJoin('employees', 'employees.id', '=', 'actuals.employee_id')
+                ->leftJoin('departments', 'departments.id', '=', 'employees.department_id')
+                ->select('actuals.*', 'employees.*', 'departments.name as department_name', 'departments.id as department_id')
+                ->where('actuals.semester', '=', '1')
+                ->whereYear('actuals.date', '=', $yearToShow)
+                ->whereIn('departments.id',  $departmentIds)
+                ->whereIn('employees.id', $employeeIds)
+                ->get();
+
+            $semester2Actuals = DB::table('actuals')
+                ->leftJoin('employees', 'employees.id', '=', 'actuals.employee_id')
+                ->leftJoin('departments', 'departments.id', '=', 'employees.department_id')
+                ->select('actuals.*', 'employees.*', 'departments.name as department_name', 'departments.id as department_id')
+                ->where('actuals.semester', '=', '2')
+                ->whereYear('actuals.date', '=', $yearToShow)
+                ->whereIn('departments.id', $departmentIds)
+                ->whereIn('employees.id', $employeeIds)
+                ->get();
+
+            // dd($semester1Actuals, $semester2Actuals);
+
+
+            $semester1ActualsDept = DB::table('department_actuals')->leftJoin('departments', 'departments.id', '=', 'department_actuals.department_id')
+                ->select('department_actuals.*', 'departments.name as department_name', 'departments.id as department_id')
+                ->where('department_actuals.semester', '=', '1')
+                ->whereYear('department_actuals.date', '=', $yearToShow)
+                ->whereIn('departments.id', $departmentIds)
+                ->get();
+
+            $semester2ActualsDept = DB::table('department_actuals')->leftJoin('departments', 'departments.id', '=', 'department_actuals.department_id')
+                ->select('department_actuals.*', 'departments.name as department_name', 'departments.id as department_id')
+                ->where('department_actuals.semester', '=', '2')
+                ->whereYear('department_actuals.date', '=', $yearToShow)
+                ->whereIn('departments.id', $departmentIds)
+                ->get();
+
+            $actualsGroup1 = $semester1Actuals->groupBy(['employee_id', 'kpi_code']);
+            $actualsGroup2 = $semester2Actuals->groupBy(['employee_id', 'kpi_code']);
+            $actualsDeptGroup1 = $semester1ActualsDept->groupBy(['department_id', 'kpi_code']);
+            $actualsDeptGroup2 = $semester2ActualsDept->groupBy(['department_id', 'kpi_code']);
+
+            $semester1Group = $actualsGroup1->map(function ($group) {
+                return $group->map(function ($subGroup) {
+                    $totalTarget = $subGroup->sum(function ($item) {
+                        return (float) $item->target;
+                    });
+
+                    $totalActual = $subGroup->sum(function ($item) {
+                        return (float) $item->actual;
+                    });
+
+                    $firstItem = $subGroup->first();
+                    $percentageCalc = $this->calculation($totalTarget, $totalTarget, $totalActual, $firstItem->trend);
+
+                    $convertedCalc = floatval(str_replace('%', '', $percentageCalc));
+
+                    $weight = floatval($firstItem->kpi_weighting); // Ambil bobot dari item pertama dalam grup
+                    $totalAchievementWeight = $convertedCalc * $weight / 100;
+
+                    return [
+                        'total_target' => $totalTarget,
+                        'total_actual' => $totalActual,
+                        'weight' => $weight,
+                        'percentageCalc' => $convertedCalc,
+                        'total_achievement_weight' => $totalAchievementWeight,
+                    ];
+                });
+            });
+
+            $semester2Group = $actualsGroup2->map(function ($group) {
+                return $group->map(function ($subGroup) {
+                    $totalTarget = $subGroup->sum(function ($item) {
+                        return (float) $item->target;
+                    });
+
+                    $totalActual = $subGroup->sum(function ($item) {
+                        return (float) $item->actual;
+                    });
+
+                    $firstItem = $subGroup->first();
+                    $percentageCalc = $this->calculation($totalTarget, $totalTarget, $totalActual, $firstItem->trend);
+
+                    $convertedCalc = floatval(str_replace('%', '', $percentageCalc));
+
+                    $weight = floatval($firstItem->kpi_weighting); // Ambil bobot dari item pertama dalam grup
+                    $totalAchievementWeight = $convertedCalc * $weight / 100;
+
+                    return [
+                        'total_target' => $totalTarget,
+                        'total_actual' => $totalActual,
+                        'weight' => $weight,
+                        'percentageCalc' => $convertedCalc,
+                        'total_achievement_weight' => $totalAchievementWeight,
+                    ];
+                });
+            });
+
+            $semester1DeptGroup = $actualsDeptGroup1->map(function ($group) {
+                return $group->map(function ($subGroup) {
+                    $totalTarget = $subGroup->sum(function ($item) {
+                        return (float) $item->target;
+                    });
+
+                    $totalActual = $subGroup->sum(function ($item) {
+                        return (float) $item->actual;
+                    });
+
+                    $firstItem = $subGroup->first();
+                    $percentageCalc = $this->calculation($totalTarget, $totalTarget, $totalActual, $firstItem->trend);
+
+                    $convertedCalc = floatval(str_replace('%', '', $percentageCalc));
+
+                    $weight = floatval($firstItem->kpi_weighting); // Ambil bobot dari item pertama dalam grup
+                    $totalAchievementWeight = $convertedCalc * $weight / 100;
+
+                    return [
+                        'total_target' => $totalTarget,
+                        'total_actual' => $totalActual,
+                        'weight' => $weight,
+                        'percentageCalc' => $convertedCalc,
+                        'total_achievement_weight' => $totalAchievementWeight,
+                    ];
+                });
+            });
+
+            $semester2DeptGroup = $actualsDeptGroup2->map(function ($group) {
+                return $group->map(function ($subGroup) {
+                    $totalTarget = $subGroup->sum(function ($item) {
+                        return (float) $item->target;
+                    });
+
+                    $totalActual = $subGroup->sum(function ($item) {
+                        return (float) $item->actual;
+                    });
+
+                    $firstItem = $subGroup->first();
+                    $percentageCalc = $this->calculation($totalTarget, $totalTarget, $totalActual, $firstItem->trend);
+
+                    $convertedCalc = floatval(str_replace('%', '', $percentageCalc));
+
+                    $weight = floatval($firstItem->kpi_weighting); // Ambil bobot dari item pertama dalam grup
+                    $totalAchievementWeight = $convertedCalc * $weight / 100;
+
+                    return [
+                        'total_target' => $totalTarget,
+                        'total_actual' => $totalActual,
+                        'weight' => $weight,
+                        'percentageCalc' => $convertedCalc,
+                        'total_achievement_weight' => $totalAchievementWeight,
+                    ];
+                });
+            });
+
+            // dd($semester1Group, $semester2Group, $semester1DeptGroup, $semester2DeptGroup);
+
+            // Calculate the sum of total_achievement_weight for each semester group
+            $sumGroupSemester1 = $semester1Group->mapWithKeys(function ($group, $employeeId) {
+                return [$employeeId => $group->sum('total_achievement_weight')];
+            });
+
+            $sumGroupSemester2 = $semester2Group->mapWithKeys(function ($group, $employeeId) {
+                return [$employeeId => $group->sum('total_achievement_weight')];
+            });
+
+            $totalSumSemester = $sumGroupSemester1->map(function ($value, $key) use ($sumGroupSemester2) {
+                return ($value + ($sumGroupSemester2[$key] ?? 0)) * 0.7;
+            });
+
+
+            $sumSemester1Dept = $semester1DeptGroup->mapWithKeys(function ($group, $departmentId) {
+                return [$departmentId => $group->sum('total_achievement_weight')];
+            });
+            $sumSemester2Dept = $semester2DeptGroup->mapWithKeys(function ($group, $departmentId) {
+                return [$departmentId => $group->sum('total_achievement_weight')];
+            });
+
+            $totalSumSemesterDept = $sumSemester1Dept->map(function ($value, $key) use ($sumSemester2Dept) {
+                return ($value + ($sumSemester2Dept[$key] ?? 0)) * 0.3;
+            });
+
+            // dd($sumSemester1Dept, $sumSemester2Dept, $totalSumSemester);
+
+            // dd($employees, $semester1Group, $semester2Group, $semester1DeptGroup, $semester2DeptGroup, $sumGroupSemester1, $sumGroupSemester2, $sumSemester1Dept, $sumSemester2Dept, $totalSumSemester, $totalSumSemesterDept);
+
+            return view('report.summary-department-report', [
+                'title' => 'Report',
+                'desc' => 'Department Report',
+                'allDept' => $allDept,
+                'allOccupation' => $allStatus,
+                'employees' => $employees,
+                'semester1Group' => $semester1Group,
+                'semester2Group' => $semester2Group,
+                'semester1DeptGroup' => $semester1DeptGroup,
+                'semester2DeptGroup' => $semester2DeptGroup,
+                'sumGroupSemester1' => $sumGroupSemester1,
+                'sumGroupSemester2' => $sumGroupSemester2,
+                'sumGroupSemester1Dept' => $sumSemester1Dept,
+                'sumGroupSemester2Dept' => $sumSemester2Dept,
+                'totalSumSemester' => $totalSumSemester,
+                'totalSumSemesterDept' => $totalSumSemesterDept,
                 // 'totalAll' => $totalAll,
             ]);
         } elseif ($yearToShow && $status) {
@@ -695,38 +784,52 @@ class ReportController extends Controller
                 ->appends(['year' => $yearToShow, 'department' => $department, 'occupation' => $status]);
             // dd($employees);
 
-            $semester1Actuals = DB::table('actuals')->leftJoin('employees', 'employees.id', '=', 'actuals.employee_id')->leftJoin('departments', 'departments.id', '=', 'employees.department_id')
+            $employeeIds = $employees->pluck('employee_id');
+            $departmentIds = $employees->pluck('department_id');
+            // dd($employeeIds);
+
+            // Fetch actuals data for the paginated employees
+            $semester1Actuals = DB::table('actuals')
+                ->leftJoin('employees', 'employees.id', '=', 'actuals.employee_id')
+                ->leftJoin('departments', 'departments.id', '=', 'employees.department_id')
                 ->select('actuals.*', 'employees.*', 'departments.name as department_name', 'departments.id as department_id')
                 ->where('actuals.semester', '=', '1')
                 ->whereYear('actuals.date', '=', $yearToShow)
-                ->where('departments.id', '=', $department)
+                ->whereIn('departments.id',  $departmentIds)
+                ->whereIn('employees.id', $employeeIds)
                 ->get();
 
-            $semester2Actuals = DB::table('actuals')->leftJoin('employees', 'employees.id', '=', 'actuals.employee_id')->leftJoin('departments', 'departments.id', '=', 'employees.department_id')
+            $semester2Actuals = DB::table('actuals')
+                ->leftJoin('employees', 'employees.id', '=', 'actuals.employee_id')
+                ->leftJoin('departments', 'departments.id', '=', 'employees.department_id')
                 ->select('actuals.*', 'employees.*', 'departments.name as department_name', 'departments.id as department_id')
                 ->where('actuals.semester', '=', '2')
                 ->whereYear('actuals.date', '=', $yearToShow)
-                ->where('departments.id', '=', $department)
+                ->whereIn('departments.id', $departmentIds)
+                ->whereIn('employees.id', $employeeIds)
                 ->get();
+
+            // dd($semester1Actuals, $semester2Actuals);
+
 
             $semester1ActualsDept = DB::table('department_actuals')->leftJoin('departments', 'departments.id', '=', 'department_actuals.department_id')
                 ->select('department_actuals.*', 'departments.name as department_name', 'departments.id as department_id')
                 ->where('department_actuals.semester', '=', '1')
                 ->whereYear('department_actuals.date', '=', $yearToShow)
-                ->where('departments.id', '=', $department)
+                ->whereIn('departments.id', $departmentIds)
                 ->get();
 
             $semester2ActualsDept = DB::table('department_actuals')->leftJoin('departments', 'departments.id', '=', 'department_actuals.department_id')
                 ->select('department_actuals.*', 'departments.name as department_name', 'departments.id as department_id')
                 ->where('department_actuals.semester', '=', '2')
                 ->whereYear('department_actuals.date', '=', $yearToShow)
-                ->where('departments.id', '=', $department)
+                ->whereIn('departments.id', $departmentIds)
                 ->get();
 
             $actualsGroup1 = $semester1Actuals->groupBy(['employee_id', 'kpi_code']);
             $actualsGroup2 = $semester2Actuals->groupBy(['employee_id', 'kpi_code']);
-            $actualsDeptGroup1 = $semester1ActualsDept->groupBy('kpi_code');
-            $actualsDeptGroup2 = $semester2ActualsDept->groupBy('kpi_code');
+            $actualsDeptGroup1 = $semester1ActualsDept->groupBy(['department_id', 'kpi_code']);
+            $actualsDeptGroup2 = $semester2ActualsDept->groupBy(['department_id', 'kpi_code']);
 
             $semester1Group = $actualsGroup1->map(function ($group) {
                 return $group->map(function ($subGroup) {
@@ -785,121 +888,165 @@ class ReportController extends Controller
             });
 
             $semester1DeptGroup = $actualsDeptGroup1->map(function ($group) {
-                $totalTarget = $group->sum(function ($item) {
-                    return (float) $item->target;
+                return $group->map(function ($subGroup) {
+                    $totalTarget = $subGroup->sum(function ($item) {
+                        return (float) $item->target;
+                    });
+
+                    $totalActual = $subGroup->sum(function ($item) {
+                        return (float) $item->actual;
+                    });
+
+                    $firstItem = $subGroup->first();
+                    $percentageCalc = $this->calculation($totalTarget, $totalTarget, $totalActual, $firstItem->trend);
+
+                    $convertedCalc = floatval(str_replace('%', '', $percentageCalc));
+
+                    $weight = floatval($firstItem->kpi_weighting); // Ambil bobot dari item pertama dalam grup
+                    $totalAchievementWeight = $convertedCalc * $weight / 100;
+
+                    return [
+                        'total_target' => $totalTarget,
+                        'total_actual' => $totalActual,
+                        'weight' => $weight,
+                        'percentageCalc' => $convertedCalc,
+                        'total_achievement_weight' => $totalAchievementWeight,
+                    ];
                 });
-
-                $totalActual = $group->sum(function ($item) {
-                    return (float) $item->actual;
-                });
-
-                $firstItem = $group->first();
-                $percentageCalc = $this->calculation($totalTarget, $totalTarget, $totalActual, $firstItem->trend);
-
-                $convertedCalc = floatval(str_replace('%', '', $percentageCalc));
-
-                $weight = floatval($firstItem->kpi_weighting); // Ambil bobot dari item pertama dalam grup
-                $totalAchievementWeight = $convertedCalc * $weight / 100;
-
-                return [
-                    'total_target' => $totalTarget,
-                    'total_actual' => $totalActual,
-                    'weight' => $weight,
-                    'percentageCalc' => $convertedCalc,
-                    'total_achievement_weight' => $totalAchievementWeight,
-                ];
             });
 
             $semester2DeptGroup = $actualsDeptGroup2->map(function ($group) {
-                $totalTarget = $group->sum(function ($item) {
-                    return (float) $item->target;
+                return $group->map(function ($subGroup) {
+                    $totalTarget = $subGroup->sum(function ($item) {
+                        return (float) $item->target;
+                    });
+
+                    $totalActual = $subGroup->sum(function ($item) {
+                        return (float) $item->actual;
+                    });
+
+                    $firstItem = $subGroup->first();
+                    $percentageCalc = $this->calculation($totalTarget, $totalTarget, $totalActual, $firstItem->trend);
+
+                    $convertedCalc = floatval(str_replace('%', '', $percentageCalc));
+
+                    $weight = floatval($firstItem->kpi_weighting); // Ambil bobot dari item pertama dalam grup
+                    $totalAchievementWeight = $convertedCalc * $weight / 100;
+
+                    return [
+                        'total_target' => $totalTarget,
+                        'total_actual' => $totalActual,
+                        'weight' => $weight,
+                        'percentageCalc' => $convertedCalc,
+                        'total_achievement_weight' => $totalAchievementWeight,
+                    ];
                 });
-
-                $totalActual = $group->sum(function ($item) {
-                    return (float) $item->actual;
-                });
-
-                $firstItem = $group->first();
-                $percentageCalc = $this->calculation($totalTarget, $totalTarget, $totalActual, $firstItem->trend);
-
-                $convertedCalc = floatval(str_replace('%', '', $percentageCalc));
-
-                $weight = floatval($firstItem->kpi_weighting); // Ambil bobot dari item pertama dalam grup
-                $totalAchievementWeight = $convertedCalc * $weight / 100;
-
-                return [
-                    'total_target' => $totalTarget,
-                    'total_actual' => $totalActual,
-                    'weight' => $weight,
-                    'percentageCalc' => $convertedCalc,
-                    'total_achievement_weight' => $totalAchievementWeight,
-                ];
             });
 
             // dd($semester1Group, $semester2Group, $semester1DeptGroup, $semester2DeptGroup);
 
             // Calculate the sum of total_achievement_weight for each semester group
-            $sumSemester1 = $semester1Group->flatten(1)->sum('total_achievement_weight');
-            $sumSemester2 = $semester2Group->flatten(1)->sum('total_achievement_weight');
-            $sumSemester1Dept = $semester1DeptGroup->sum('total_achievement_weight');
-            $sumSemester2Dept = $semester2DeptGroup->sum('total_achievement_weight');
+            $sumGroupSemester1 = $semester1Group->mapWithKeys(function ($group, $employeeId) {
+                return [$employeeId => $group->sum('total_achievement_weight')];
+            });
 
-            // dd($employees, $semester1Group, $semester2Group, $semester1DeptGroup, $semester2DeptGroup, $sumSemester1, $sumSemester2, $sumSemester1Dept, $sumSemester2Dept);
+            $sumGroupSemester2 = $semester2Group->mapWithKeys(function ($group, $employeeId) {
+                return [$employeeId => $group->sum('total_achievement_weight')];
+            });
+
+            $totalSumSemester = $sumGroupSemester1->map(function ($value, $key) use ($sumGroupSemester2) {
+                return ($value + ($sumGroupSemester2[$key] ?? 0)) * 0.7;
+            });
+
+
+            $sumSemester1Dept = $semester1DeptGroup->mapWithKeys(function ($group, $departmentId) {
+                return [$departmentId => $group->sum('total_achievement_weight')];
+            });
+            $sumSemester2Dept = $semester2DeptGroup->mapWithKeys(function ($group, $departmentId) {
+                return [$departmentId => $group->sum('total_achievement_weight')];
+            });
+
+            $totalSumSemesterDept = $sumSemester1Dept->map(function ($value, $key) use ($sumSemester2Dept) {
+                return ($value + ($sumSemester2Dept[$key] ?? 0)) * 0.3;
+            });
+
+            // dd($sumSemester1Dept, $sumSemester2Dept, $totalSumSemester);
+
+            // dd($employees, $semester1Group, $semester2Group, $semester1DeptGroup, $semester2DeptGroup, $sumGroupSemester1, $sumGroupSemester2, $sumSemester1Dept, $sumSemester2Dept, $totalSumSemester, $totalSumSemesterDept);
 
             return view('report.summary-department-report', [
                 'title' => 'Report',
                 'desc' => 'Department Report',
                 'allDept' => $allDept,
                 'allOccupation' => $allStatus,
-                'semester1Group' => $semester1Group,
                 'employees' => $employees,
+                'semester1Group' => $semester1Group,
                 'semester2Group' => $semester2Group,
                 'semester1DeptGroup' => $semester1DeptGroup,
                 'semester2DeptGroup' => $semester2DeptGroup,
-                'sumSemester1' => $sumSemester1,
-                'sumSemester2' => $sumSemester2,
-                'sumSemester1Dept' => $sumSemester1Dept,
-                'sumSemester2Dept' => $sumSemester2Dept,
+                'sumGroupSemester1' => $sumGroupSemester1,
+                'sumGroupSemester2' => $sumGroupSemester2,
+                'sumGroupSemester1Dept' => $sumSemester1Dept,
+                'sumGroupSemester2Dept' => $sumSemester2Dept,
+                'totalSumSemester' => $totalSumSemester,
+                'totalSumSemesterDept' => $totalSumSemesterDept,
+                // 'totalAll' => $totalAll,
             ]);
         } elseif ($yearToShow) {
 
-            $employees = DB::table('employees')->leftJoin('departments', 'departments.id', '=', 'employees.department_id')->select('departments.name as dept', 'employees.name as name', 'employees.nik', 'employees.occupation', 'employees.id as employee_id', 'department_id')
+            $employees = DB::table('employees')
+                ->leftJoin('departments', 'departments.id', '=', 'employees.department_id')
+                ->select('departments.name as dept', 'employees.name as name', 'employees.nik', 'employees.occupation', 'employees.id as employee_id', 'department_id')
                 ->paginate(18)
                 ->appends(['year' => $yearToShow, 'department' => $department, 'occupation' => $status]);
-            // dd($employees);
 
-            $semester1Actuals = DB::table('actuals')->leftJoin('employees', 'employees.id', '=', 'actuals.employee_id')->leftJoin('departments', 'departments.id', '=', 'employees.department_id')
+            // Get the employee IDs for the current page
+            $employeeIds = $employees->pluck('employee_id');
+            $departmentIds = $employees->pluck('department_id');
+            // dd($employeeIds);
+
+            // Fetch actuals data for the paginated employees
+            $semester1Actuals = DB::table('actuals')
+                ->leftJoin('employees', 'employees.id', '=', 'actuals.employee_id')
+                ->leftJoin('departments', 'departments.id', '=', 'employees.department_id')
                 ->select('actuals.*', 'employees.*', 'departments.name as department_name', 'departments.id as department_id')
                 ->where('actuals.semester', '=', '1')
                 ->whereYear('actuals.date', '=', $yearToShow)
-                ->where('departments.id', '=', $department)
+                ->whereIn('departments.id',  $departmentIds)
+                ->whereIn('employees.id', $employeeIds)
                 ->get();
 
-            $semester2Actuals = DB::table('actuals')->leftJoin('employees', 'employees.id', '=', 'actuals.employee_id')->leftJoin('departments', 'departments.id', '=', 'employees.department_id')
+            $semester2Actuals = DB::table('actuals')
+                ->leftJoin('employees', 'employees.id', '=', 'actuals.employee_id')
+                ->leftJoin('departments', 'departments.id', '=', 'employees.department_id')
                 ->select('actuals.*', 'employees.*', 'departments.name as department_name', 'departments.id as department_id')
                 ->where('actuals.semester', '=', '2')
                 ->whereYear('actuals.date', '=', $yearToShow)
-                ->where('departments.id', '=', $department)
+                ->whereIn('departments.id', $departmentIds)
+                ->whereIn('employees.id', $employeeIds)
                 ->get();
+
+            // dd($semester1Actuals, $semester2Actuals);
+
 
             $semester1ActualsDept = DB::table('department_actuals')->leftJoin('departments', 'departments.id', '=', 'department_actuals.department_id')
                 ->select('department_actuals.*', 'departments.name as department_name', 'departments.id as department_id')
                 ->where('department_actuals.semester', '=', '1')
                 ->whereYear('department_actuals.date', '=', $yearToShow)
-                ->where('departments.id', '=', $department)
+                ->whereIn('departments.id', $departmentIds)
                 ->get();
 
             $semester2ActualsDept = DB::table('department_actuals')->leftJoin('departments', 'departments.id', '=', 'department_actuals.department_id')
                 ->select('department_actuals.*', 'departments.name as department_name', 'departments.id as department_id')
                 ->where('department_actuals.semester', '=', '2')
                 ->whereYear('department_actuals.date', '=', $yearToShow)
-                ->where('departments.id', '=', $department)
+                ->whereIn('departments.id', $departmentIds)
                 ->get();
 
             $actualsGroup1 = $semester1Actuals->groupBy(['employee_id', 'kpi_code']);
             $actualsGroup2 = $semester2Actuals->groupBy(['employee_id', 'kpi_code']);
-            $actualsDeptGroup1 = $semester1ActualsDept->groupBy('kpi_code');
-            $actualsDeptGroup2 = $semester2ActualsDept->groupBy('kpi_code');
+            $actualsDeptGroup1 = $semester1ActualsDept->groupBy(['department_id', 'kpi_code']);
+            $actualsDeptGroup2 = $semester2ActualsDept->groupBy(['department_id', 'kpi_code']);
 
             $semester1Group = $actualsGroup1->map(function ($group) {
                 return $group->map(function ($subGroup) {
@@ -958,66 +1105,91 @@ class ReportController extends Controller
             });
 
             $semester1DeptGroup = $actualsDeptGroup1->map(function ($group) {
-                $totalTarget = $group->sum(function ($item) {
-                    return (float) $item->target;
+                return $group->map(function ($subGroup) {
+                    $totalTarget = $subGroup->sum(function ($item) {
+                        return (float) $item->target;
+                    });
+
+                    $totalActual = $subGroup->sum(function ($item) {
+                        return (float) $item->actual;
+                    });
+
+                    $firstItem = $subGroup->first();
+                    $percentageCalc = $this->calculation($totalTarget, $totalTarget, $totalActual, $firstItem->trend);
+
+                    $convertedCalc = floatval(str_replace('%', '', $percentageCalc));
+
+                    $weight = floatval($firstItem->kpi_weighting); // Ambil bobot dari item pertama dalam grup
+                    $totalAchievementWeight = $convertedCalc * $weight / 100;
+
+                    return [
+                        'total_target' => $totalTarget,
+                        'total_actual' => $totalActual,
+                        'weight' => $weight,
+                        'percentageCalc' => $convertedCalc,
+                        'total_achievement_weight' => $totalAchievementWeight,
+                    ];
                 });
-
-                $totalActual = $group->sum(function ($item) {
-                    return (float) $item->actual;
-                });
-
-                $firstItem = $group->first();
-                $percentageCalc = $this->calculation($totalTarget, $totalTarget, $totalActual, $firstItem->trend);
-
-                $convertedCalc = floatval(str_replace('%', '', $percentageCalc));
-
-                $weight = floatval($firstItem->kpi_weighting); // Ambil bobot dari item pertama dalam grup
-                $totalAchievementWeight = $convertedCalc * $weight / 100;
-
-                return [
-                    'total_target' => $totalTarget,
-                    'total_actual' => $totalActual,
-                    'weight' => $weight,
-                    'percentageCalc' => $convertedCalc,
-                    'total_achievement_weight' => $totalAchievementWeight,
-                ];
             });
 
             $semester2DeptGroup = $actualsDeptGroup2->map(function ($group) {
-                $totalTarget = $group->sum(function ($item) {
-                    return (float) $item->target;
+                return $group->map(function ($subGroup) {
+                    $totalTarget = $subGroup->sum(function ($item) {
+                        return (float) $item->target;
+                    });
+
+                    $totalActual = $subGroup->sum(function ($item) {
+                        return (float) $item->actual;
+                    });
+
+                    $firstItem = $subGroup->first();
+                    $percentageCalc = $this->calculation($totalTarget, $totalTarget, $totalActual, $firstItem->trend);
+
+                    $convertedCalc = floatval(str_replace('%', '', $percentageCalc));
+
+                    $weight = floatval($firstItem->kpi_weighting); // Ambil bobot dari item pertama dalam grup
+                    $totalAchievementWeight = $convertedCalc * $weight / 100;
+
+                    return [
+                        'total_target' => $totalTarget,
+                        'total_actual' => $totalActual,
+                        'weight' => $weight,
+                        'percentageCalc' => $convertedCalc,
+                        'total_achievement_weight' => $totalAchievementWeight,
+                    ];
                 });
-
-                $totalActual = $group->sum(function ($item) {
-                    return (float) $item->actual;
-                });
-
-                $firstItem = $group->first();
-                $percentageCalc = $this->calculation($totalTarget, $totalTarget, $totalActual, $firstItem->trend);
-
-                $convertedCalc = floatval(str_replace('%', '', $percentageCalc));
-
-                $weight = floatval($firstItem->kpi_weighting); // Ambil bobot dari item pertama dalam grup
-                $totalAchievementWeight = $convertedCalc * $weight / 100;
-
-                return [
-                    'total_target' => $totalTarget,
-                    'total_actual' => $totalActual,
-                    'weight' => $weight,
-                    'percentageCalc' => $convertedCalc,
-                    'total_achievement_weight' => $totalAchievementWeight,
-                ];
             });
 
             // dd($semester1Group, $semester2Group, $semester1DeptGroup, $semester2DeptGroup);
 
             // Calculate the sum of total_achievement_weight for each semester group
-            $sumSemester1 = $semester1Group->flatten(1)->sum('total_achievement_weight');
-            $sumSemester2 = $semester2Group->flatten(1)->sum('total_achievement_weight');
-            $sumSemester1Dept = $semester1DeptGroup->sum('total_achievement_weight');
-            $sumSemester2Dept = $semester2DeptGroup->sum('total_achievement_weight');
+            $sumGroupSemester1 = $semester1Group->mapWithKeys(function ($group, $employeeId) {
+                return [$employeeId => $group->sum('total_achievement_weight')];
+            });
 
-            // dd($employees, $semester1Group, $semester2Group, $semester1DeptGroup, $semester2DeptGroup, $sumSemester1, $sumSemester2, $sumSemester1Dept, $sumSemester2Dept);
+            $sumGroupSemester2 = $semester2Group->mapWithKeys(function ($group, $employeeId) {
+                return [$employeeId => $group->sum('total_achievement_weight')];
+            });
+
+            $totalSumSemester = $sumGroupSemester1->map(function ($value, $key) use ($sumGroupSemester2) {
+                return ($value + ($sumGroupSemester2[$key] ?? 0)) * 0.7;
+            });
+
+
+            $sumSemester1Dept = $semester1DeptGroup->mapWithKeys(function ($group, $departmentId) {
+                return [$departmentId => $group->sum('total_achievement_weight')];
+            });
+            $sumSemester2Dept = $semester2DeptGroup->mapWithKeys(function ($group, $departmentId) {
+                return [$departmentId => $group->sum('total_achievement_weight')];
+            });
+
+            $totalSumSemesterDept = $sumSemester1Dept->map(function ($value, $key) use ($sumSemester2Dept) {
+                return ($value + ($sumSemester2Dept[$key] ?? 0)) * 0.3;
+            });
+
+            // dd($sumSemester1Dept, $sumSemester2Dept, $totalSumSemester);
+
+            // dd($employees, $semester1Group, $semester2Group, $semester1DeptGroup, $semester2DeptGroup, $sumGroupSemester1, $sumGroupSemester2, $sumSemester1Dept, $sumSemester2Dept, $totalSumSemester, $totalSumSemesterDept);
 
             return view('report.summary-department-report', [
                 'title' => 'Report',
@@ -1029,10 +1201,13 @@ class ReportController extends Controller
                 'semester2Group' => $semester2Group,
                 'semester1DeptGroup' => $semester1DeptGroup,
                 'semester2DeptGroup' => $semester2DeptGroup,
-                'sumSemester1' => $sumSemester1,
-                'sumSemester2' => $sumSemester2,
-                'sumSemester1Dept' => $sumSemester1Dept,
-                'sumSemester2Dept' => $sumSemester2Dept,
+                'sumGroupSemester1' => $sumGroupSemester1,
+                'sumGroupSemester2' => $sumGroupSemester2,
+                'sumGroupSemester1Dept' => $sumSemester1Dept,
+                'sumGroupSemester2Dept' => $sumSemester2Dept,
+                'totalSumSemester' => $totalSumSemester,
+                'totalSumSemesterDept' => $totalSumSemesterDept,
+                // 'totalAll' => $totalAll,
             ]);
         } else {
             return view('components/404-page');
