@@ -91,11 +91,9 @@
                 <th style="width: 22%;" class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-white py-0 px-4 bg-blue-700">Approved</th>
             </tr>
             @php
-            if ($department_id == 'All Dept')
+           
             $i = ($employees->currentPage() - 1) * $employees->perPage();
-            else {
-                $i = 0;
-            }
+            
             // dd($employees->toArray(), $employeesInput->toArray());
             @endphp
         @forelse ($employees as $employee)
@@ -126,7 +124,6 @@
         @endforelse
     </table>
 
-    @if (request()->query('department') == 'All Dept')
     {{-- Pagination --}}
     <div class="shadow-lg shadow-black/15 mb-2 mt-3">
         <div class="flex w-full items-center justify-between border-t border-gray-200 bg-white px-10 py-3 rounded-md">
@@ -162,7 +159,7 @@
                                 </svg>
                             </a>
                         @endif
-
+    
                         @foreach ($employees->getUrlRange(1, $employees->lastPage()) as $page => $url)
                             @if ($page == $employees->currentPage())
                                 <span aria-current="page" class="relative z-10 inline-flex items-center bg-indigo-600 px-4 py-2 text-sm font-semibold text-white focus:z-20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">{{ $page }}</span>
@@ -172,19 +169,19 @@
                                 <span class="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-700 ring-1 ring-inset ring-gray-300 cursor-default">...</span>
                             @endif
                         @endforeach
-
+    
                         @if ($employees->hasMorePages())
                             <a href="{{ $employees->nextPageUrl() }}" class="relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0">
                                 <span class="sr-only">Next</span>
                                 <svg class="w-5 h-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                                    <path fill-rule="evenodd" d="M8.22 5.22a.75.75 0 0 1 1.06 0l4.25 4.25a.75.75 0 0 1 0 1.06l-4.25-4.25a.75.75 0 0 1-1.06-1.06L11.94 10 8.22 6.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" />
+                                    <path fill-rule="evenodd" d="M8.22 5.22a.75.75 0 0 1 1.06 0l4.25 4.25a.75.75 0 0 1 0 1.06l-4.25 4.25a.75.75 0 0 1-1.06-1.06L11.94 10 8.22 6.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" />
                                 </svg>
                             </a>
                         @else
                             <span class="relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 cursor-default">
                                 <span class="sr-only">Next</span>
                                 <svg class="w-5 h-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                                    <path fill-rule="evenodd" d="M8.22 5.22a.75.75 0 0 1 1.06 0l4.25 4.25a.75.75 0 0 1 0 1.06l-4.25-4.25a.75.75 0 0 1-1.06-1.06L11.94 10 8.22 6.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" />
+                                    <path fill-rule="evenodd" d="M8.22 5.22a.75.75 0 0 1 1.06 0l4.25 4.25a.75.75 0 0 1 0 1.06l-4.25 4.25a.75.75 0 0 1-1.06-1.06L11.94 10 8.22 6.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" />
                                 </svg>
                             </span>
                         @endif
@@ -194,7 +191,6 @@
         </div>
     </div>
     {{-- end of pagination --}}
-    @endif
 </div>
 
 </x-app-layout>

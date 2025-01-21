@@ -128,7 +128,7 @@
                      <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="{{ $i % 2 === 0 ? 'FFF2F2F2' : 'FFFFFFFF' }}" class="border-2 bg-blue-100 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center"></td>
                  @endif
                     @php
-                        $totalWeightingAchievement = $totals[$target->code] ['total_achievement_weight'] ?? 0 ;
+                        $totalWeightingAchievement = $totals[$target->code]['total_achievement_weight'] ?? 0 ;
                         
 
                         $sumTotalWeightingAchievement += $totalWeightingAchievement;
@@ -225,13 +225,22 @@
                             </button>
                             <div id="{{ $backgroundId }}" class="fixed inset-0 bg-gray-800 bg-opacity-75 hidden exclude-from-export"></div>
                             <div id="{{ $modalId }}" class="modal fixed inset-0 justify-center hidden exclude-from-export" data-month="{{ $date->format('m') }}">
-                                <div class="flex justify-center mt-3">
-                                    <div class="bg-gray-50 rounded-lg shadow-lg p-3 w-1/2 max-h-screen overflow-y-hidden">
+                                <div class="flex justify-center">
+                                    <div class="bg-gray-50 rounded-lg shadow-lg px-4 py-2 w-1/2 max-h-[750px] overflow-y-auto">
+                                        <div class="flex justify-end">
+                                            <button id="close-modal-{{ $modalId }}" class="text-gray-500 hover:text-gray-700 text-2xl">&times;</button>
+                                        </div>
                                     <div class="flex flex-col">
                                         <h2 class="text-xl font-bold mb-0.5">Review Data Pendukung</h2>
                                         <span class="text-[12px] tracking-wide font-medium text-gray-600 mb-0.5">Bulan: {{ $monthName }}</span>
                                         <div class="">
                                             <span id="fileNumber-modal-{{ $actual->department_actual_id }}" class="text-[12px] tracking-wide font-medium text-gray-600 mb-1"></span>
+                                        </div>
+                                        <div class="p-0">
+                                            <span class="text-[12px] tracking-wide font-medium text-gray-600 mb-1">
+                                                Komentar:
+                                            </span>
+                                            <span id="comment-modal-{{ $actual->department_actual_id }}" class="text-[12px] tracking-wide font-medium text-gray-600 mb-1"></span>
                                         </div>
                                     </div>
                                     <div class="p-1 flex justify-between">
@@ -280,9 +289,9 @@
                                             @endif
                                         @endif
                                     
-                                    <div class="flex justify-end">
+                                    {{-- <div class="flex justify-end">
                                         <button id="close-modal-{{ $modalId }}" class="bg-red-500 text-white px-4 py-2 rounded mr-2 text-[12px] mt-0.5">Close</button>
-                                    </div>
+                                    </div> --}}
                                 </div>
                             </div>
                             </div>
@@ -383,6 +392,7 @@
         const prevButton = document.getElementById(`prevButton-${index}`);
         const nextButton = document.getElementById(`nextButton-${index}`);
         const fileNumberElement = document.getElementById(`fileNumber-modal-${index}`);
+        const commentElement = document.getElementById(`comment-modal-${index}`);
         const currentIndex = currentIndexes[index]; // Get currentIndex for this modal
         const pdfUrls = pdfData[index]; // Get pdfUrls for this modal
     
@@ -391,9 +401,13 @@
             const baseUrl = "{{ asset('record_files') }}";
             pdfObject.data = `${baseUrl}/${currentPdf.record_file}`;
             fileNumberElement.textContent = `${currentPdf.kpi_code} | ${currentPdf.kpi_item}`;
+            if (currentPdf.comment != null) {
+                commentElement.textContent = `${currentPdf.comment}`;
+            }
         } else {
             pdfObject.data = '';
             fileNumberElement.textContent = '';
+            commentElement.textContent = '';
         }
     
         // Remove existing event listeners

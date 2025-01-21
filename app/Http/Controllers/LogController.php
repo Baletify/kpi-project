@@ -1265,7 +1265,8 @@ class LogController extends Controller
 
             $employees = DB::table('employees')->leftJoin('departments', 'departments.id', '=', 'employees.department_id')
                 ->select('employees.*', 'departments.name as department')
-                ->where('employees.department_id',  '=', $department)->get();
+                ->where('employees.department_id',  '=', $department)->paginate(20)
+                ->appends(['department' => $department, 'month' => $month, 'year' => $year]);
 
 
             $employeesInput = DB::table('actuals')

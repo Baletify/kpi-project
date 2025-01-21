@@ -228,20 +228,20 @@ class ReportController extends Controller
                     return (float) $item->actual;
                 });
 
-                $totalPercentage = $group->sum(function ($item) {
-                    return (float) $item->kpi_percentage;
-                });
+                $firstItem = $group->first();
+                $percentageCalc = $this->calculation($totalTarget, $totalTarget, $totalActual, $firstItem->trend);
+
+                $convertedCalc = floatval(str_replace('%', '', $percentageCalc));
 
 
                 $weight = floatval($group->first()->kpi_weighting); // Ambil bobot dari item pertama dalam grup
+                $totalAchievementWeight = $convertedCalc * $weight / 100;
 
-
-                $totalAchievementWeight = $totalPercentage * $weight / 100;
 
                 return [
                     'total_target' => $totalTarget,
                     'total_actual' => $totalActual,
-                    'total_percentage' => $totalPercentage,
+                    'percentageCalc' => $convertedCalc,
                     'weight' => $weight,
                     'total_achievement_weight' => $totalAchievementWeight,
                 ];
@@ -1222,7 +1222,7 @@ class ReportController extends Controller
 
         $pdfUrls = Actual::whereMonth('date', $month)
             ->where('id', $actualId)
-            ->get(['id', 'record_file', 'kpi_code', 'kpi_item', 'status'])
+            ->get(['id', 'record_file', 'kpi_code', 'kpi_item', 'status', 'comment'])
             ->toArray();
 
         return response()->json($pdfUrls);
@@ -1235,7 +1235,7 @@ class ReportController extends Controller
 
         $pdfUrls = DepartmentActual::whereMonth('date', $month)
             ->where('id', $actualId)
-            ->get(['id', 'record_file', 'kpi_code', 'kpi_item', 'status'])
+            ->get(['id', 'record_file', 'kpi_code', 'kpi_item', 'status', 'comment'])
             ->toArray();
 
         return response()->json($pdfUrls);
@@ -1270,11 +1270,11 @@ class ReportController extends Controller
             ->whereYear('department_targets.date', '=', $year)
             ->where('indicator', '=', $item)->get();
 
-        // dd($targets);
+        // dd($targets, $actuals);
 
 
         // dd($actuals);
 
-        return view('report.target-kpi-department-report', ['title' => 'Department Target Report', 'desc' => 'Department Target Report', 'actuals' => $actuals, 'targets' => $targets]);
+        return view('report.target-kpi-department-report', ['title' => 'Department Target Report', 'desc' => 'Summary', 'actuals' => $actuals, 'targets' => $targets]);
     }
 }
