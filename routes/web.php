@@ -63,6 +63,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/input-actual-department-details', [ActualController::class, 'showDept'])->name('actual.showDept');
         Route::get('/input-actual-department-achievement/edit/{id}', [ActualController::class, 'editDept'])->name('actual.editDept');
         Route::post('/input-actual-department-achievement/store', [ActualController::class, 'storeDept'])->name('actual.storeDept');
+        Route::put('/input-actual-department-achievement/batchUpdateDept', [ActualController::class, 'batchUpdateActualDept'])->name('actual.batchUpdateActualDept');
     });
 
     Route::prefix('report')->group(function () {

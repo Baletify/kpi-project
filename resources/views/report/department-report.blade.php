@@ -2,6 +2,7 @@
     <div class="ml-64 mt-4 overflow-x-auto p-2 bg-gray-100 border border-gray-200 shadow-md shadow-black/10 rounded-md">
         @php
             $role = auth()->user()->role;
+            $user = auth()->user()->name;
         @endphp
         <div class="p-1">
             <span class="text-gray-600 font-bold text-lg">PT BRIDGESTONE KALIMANTAN PLANTATION</span>
@@ -17,28 +18,33 @@
                 <span id="departmentName" class="text-gray-600 font-bold text-xs text-center">Divisi: {{ $actuals->first()->department }}</span>
             </div>
         </div>
-        <div class="flex justify-end mr-1">
-            <div class="relative mt-0 rounded-md">
-                <form action="{{ route('report.department', $actuals->first()->department_id) }}" method="GET">
-                    <input type="hidden" name="year" id="year" value="{{ $actuals->first()->year }}">
-                <div class="mt-2 mx-2">
-                    <select name="semester" id="semester" class="col-start-1 row-start-1 w-full appearance-none rounded-md py-1.5 pl-3 pr-7 text-base text-gray-500 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
-                        <option value="">-- Semester --</option>
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                    </select>
-                </div>
-                <div class="absolute inset-y-0 right-0 flex items-center">
-                </div>
-              </div>
-              <div class="rounded-md">
-                <button class="py-2 px-2 bg-blue-600 my-2 rounded-md text-white">
-                    Filter
-                </button>
-            </div>
-            </form>
+        <div class="flex justify-between mr-1">
             <div class="mt-2 mx-2">
-                <button id="exportBtn" class="p-1.5 rounded-md text-white bg-green-500">Export</button>
+                <button id="open-batch-modal" class="p-1.5 rounded-md text-white bg-blue-900">Batch Approve</button>
+            </div>
+            <div class="flex justify-end">
+                <div class="relative mt-0 rounded-md">
+                    <form action="{{ route('report.department', $actuals->first()->department_id) }}" method="GET">
+                        <input type="hidden" name="year" id="year" value="{{ $actuals->first()->year }}">
+                    <div class="mt-2 mx-2">
+                        <select name="semester" id="semester" class="col-start-1 row-start-1 w-full appearance-none rounded-md py-1.5 pl-3 pr-7 text-base text-gray-500 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
+                            <option value="">-- Semester --</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                        </select>
+                    </div>
+                    <div class="absolute inset-y-0 right-0 flex items-center">
+                    </div>
+                  </div>
+                  <div class="rounded-md">
+                    <button class="py-1.5 px-2 bg-blue-600 my-2 rounded-md text-white">
+                        Filter
+                    </button>
+                </div>
+                </form>
+                <div class="mt-2 mx-2">
+                    <button id="exportBtn" class="p-1.5 rounded-md text-white bg-green-500">Export</button>
+                </div>
             </div>
         </div>
 
@@ -46,6 +52,9 @@
             <table id="exportTable" class="w-full table-auto">
                 <thead>
                     <tr >
+                        <th data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="FF0066FF" data-f-color="FFFFFFFF" style="width: 3%;" class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-white py-1 px-0.5 bg-blue-700" rowspan="2">
+                            <input id="select-all" type="checkbox" class="appearance-none w-4 h-4 border-2 border-gray-400 rounded-sm bg-white text-green-500">
+                        </th>
                         <th data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="FF0066FF" data-f-color="FFFFFFFF" style="width: 3%;" class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-white py-1 px-0.5 bg-blue-700" rowspan="2">No. KPI</th>
                         <th data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="FF0066FF" data-f-color="FFFFFFFF" style="width: 25%" class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-white py-1 px-0.5 bg-blue-700" rowspan="2" >KPI</th>
                         <th data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="FF0066FF" data-f-color="FFFFFFFF" style="width: 3%" class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-white py-1 px-0.5 bg-blue-700" rowspan="2" >Trend</th>
@@ -88,6 +97,9 @@
                         $i++;
                     @endphp
                     <tr class="{{ $i % 2 === 0 ? 'bg-blue-100' : 'bg-gray-50' }}">
+                        <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="{{ $i % 2 === 0 ? 'FFF2F2F2' : 'FFFFFFFF' }}" name="selected_targets[]" class="border-2 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-1 text-center" rowspan="4">
+                            <input id="selected-item-{{ $target->id }}" type="checkbox" class="selected-item appearance-none w-4 h-4 border-2 border-gray-400 rounded-sm bg-white text-green-500"  data-code="{{ $target->code }}">
+                        </td>
                         <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="{{ $i % 2 === 0 ? 'FFF2F2F2' : 'FFFFFFFF' }}" class="border-2 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-1 text-center" rowspan="4">{{ $target->code }}</td>
                         <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="{{ $i % 2 === 0 ? 'FFF2F2F2' : 'FFFFFFFF' }}" class="border-2 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-2" rowspan="4">{{ $target->indicator }}</td>
                         <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="{{ $i % 2 === 0 ? 'FFF2F2F2' : 'FFFFFFFF' }}" class="border-2 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-2 text-center" rowspan="4">{{ $target->period }}</td>
@@ -215,7 +227,11 @@
                             <button id="{{ $buttonId }}" class="hover:underline" data-month="{{ $date->format('m') }}" data-actual-id="{{ $actual->department_actual_id }}">
                                 @if ($actual->status == 'Approved')
                                 <span class="text-green-500">Yes</span>
-                                @elseif ($actual->status == 'Checked')
+                                @elseif ($actual->status == 'Checked 1')
+                                <span class="text-yellow-500">Check 1 OK</span>
+                                @elseif ($actual->status == 'Checked 2')
+                                <span class="text-yellow-500">Check 2 OK</span>
+                                @elseif ($actual->status == 'Mng Approve')
                                 <span class="text-blue-500">Review</span>
                                 @elseif ($actual->status == 'Filled')
                                 <span class="text-yellow-500">Check</span>
@@ -223,6 +239,7 @@
                                 <span class="text-yellow-500">Revisi</span>
                                 @endif
                             </button>
+                            {{-- MODAL --}}
                             <div id="{{ $backgroundId }}" class="fixed inset-0 bg-gray-800 bg-opacity-75 hidden exclude-from-export"></div>
                             <div id="{{ $modalId }}" class="modal fixed inset-0 justify-center hidden exclude-from-export" data-month="{{ $date->format('m') }}">
                                 <div class="flex justify-center">
@@ -252,11 +269,19 @@
                                     </div>
                                     <div id="checkbox-container-{{ $modalId }}" class="p-1 flex justify-center gap-3">
                                         <label class="text-[14px]">
-                                            <input type="checkbox" class="status-checkbox" data-actual-id="{{ $actual->department_actual_id }}" data-status="Checked" {{ $actual->status == 'Checked' || $actual->status == 'Approved' ? 'checked' : '' }} {{ $role == 'Checker Div 1' || $role == 'Checker Div 2' || $role == 'Checker WS' || $role == 'Checker Factory' || $role == 'Approver' ? '' : 'disabled' }}>
-                                            Check
+                                            <input type="checkbox" class="status-checkbox" data-actual-id="{{ $actual->department_actual_id }}" data-status="Checked 1" {{ $actual->status == 'Checked 1' || $actual->status == 'Checked 2' || $actual->status == 'Checked 3' || $actual->status == 'Approved' ? 'checked' : '' }} {{ $role == 'Check 1' || $role == 'Checker WS' || $role == 'Checker Factory' ? '' : 'disabled' }}>
+                                            Check 1
                                         </label>
                                         <label class="text-[14px]">
-                                            <input type="checkbox" class="status-checkbox" data-actual-id="{{ $actual->department_actual_id }}" data-status="Approved" {{ $actual->status == 'Approved' ? 'checked' : '' }} {{ $role == 'Approver' ? '' : 'disabled' }}>
+                                            <input type="checkbox" class="status-checkbox" data-actual-id="{{ $actual->department_actual_id }}" data-status="Checked 2" {{ $actual->status == 'Checked 2' || $actual->status == 'Checked 3' || $actual->status == 'Approved' ? 'checked' : '' }} {{ $role == 'Checker Div 1' || $role == 'Checker Div 2' && $actual->status == 'Checked 1' ? '' : 'disabled' }}>
+                                            Check 2
+                                        </label>
+                                        <label class="text-[14px]">
+                                            <input type="checkbox" class="status-checkbox" data-actual-id="{{ $actual->department_actual_id }}" data-status="Mng Approve" {{ $actual->status == 'Checked 2' || $actual->status == 'Approved' ? 'checked' : '' }} {{ $role == 'Mng Approver' && $actual->status == 'Checked 2' ? '' : 'disabled' }}>
+                                            Check 3
+                                        </label>
+                                        <label class="text-[14px]">
+                                            <input type="checkbox" class="status-checkbox" data-actual-id="{{ $actual->department_actual_id }}" data-status="Approved" {{ $actual->status == 'Approved' ? 'checked' : '' }} {{ $role == 'Approver' && $actual->status == 'Mng Approve' ? '' : 'disabled' }}>
                                             Approve
                                         </label>
                                     </div>
@@ -301,13 +326,14 @@
                         @else
                             <span></span>
                         @endif
+                        {{-- MODAL ENDS --}}
                     </td>
                     @endforeach
                     <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="{{ $i % 2 === 0 ? 'FFF2F2F2' : 'FFFFFFFF' }}" class="border-2 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center"></td>
                 </tr>
                 @endforeach
                 <tr>
-                    <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="FF0066FF"class="border-2 bg-blue-500 border-gray-400 text-[13px] tracking-wide font-medium text-white py-0 px-0.5 text-center" colspan="5">Total</td>
+                    <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="FF0066FF"class="border-2 bg-blue-500 border-gray-400 text-[13px] tracking-wide font-medium text-white py-0 px-0.5 text-center" colspan="6">Total</td>
                     <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="FF0066FF"class="border-2 bg-blue-500 border-gray-400 text-[13px] tracking-wide font-medium text-white py-0 px-0.5 text-center">{{ $sumWeighting }}%</td>
                     <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="FF0066FF"class="border-2 bg-blue-500 border-gray-400 text-[13px] tracking-wide font-medium text-white py-0 px-0.5 text-center" colspan="8"></td>
                     <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="FF0066FF"class="border-2 bg-blue-500 border-gray-400 text-[13px] tracking-wide font-medium text-white py-0 px-0.5 text-center" colspan="1">{{ number_format($sumTotalWeightingAchievement, 1) }}%</td>
@@ -317,6 +343,54 @@
             </table>
         </div>
     </div>
+    {{-- Modal --}}
+    <div id="batch-modal-bg" class="fixed inset-0 bg-gray-800 bg-opacity-75 hidden"></div>
+    <div id="batch-modal" class="fixed inset-0 justify-center hidden">
+        <div class="flex justify-center">
+            <div class="bg-gray-50 rounded-lg shadow-lg px-4 py-2 w-[500px] max-h-[750px] overflow-y-auto mt-52 items-center">
+                <div class="flex justify-end">
+                    <button id="close-batch-modal" class="text-gray-500 hover:text-gray-700 text-2xl">&times;</button>
+                </div>
+                <div class="mt-1">
+                    <div class="mt-0 py-3 px-0.5">
+                        <div class="">
+                            <span class="mb-0.5 font-semibold">Pilih Bulan</span>
+                        </div>
+                        <form id="batch-approve-form" action="{{ route('actual.batchUpdateActualDept', $actuals->first()->department_id) }}" method="POST" class="flex gap-x-3 p-0">
+                            @csrf
+                            @method('PUT')
+                            <input type="hidden" name="year" id="year" value="{{ request()->query('year') }}">
+                            <input type="hidden" name="selected_targets" id="selected_targets">
+                            <input type="hidden" name="target_codes" id="target_codes">
+                            <div class="my-2">
+                                <select name="month" id="month" class="col-start-1 row-start-1 w-60 appearance-none rounded-md py-1.5 pl-3 pr-7 text-base text-gray-500 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
+                                    <option value="">Bulan</option>
+                                    <option value="01">January</option>
+                                    <option value="02">February</option>
+                                    <option value="03">March</option>
+                                    <option value="04">April</option>
+                                    <option value="05">May</option>
+                                    <option value="06">June</option>
+                                    <option value="07">July</option>
+                                    <option value="08">August</option>
+                                    <option value="09">September</option>
+                                    <option value="10">October</option>
+                                    <option value="11">November</option>
+                                    <option value="12">December</option>
+                                </select>
+                            </div>
+                        <div class="">
+                            <button class="py-1.5 px-2 bg-blue-600 my-2 rounded-md text-white">
+                                Approve
+                            </button>
+                        </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{-- Modal Ends --}}
 </x-app-layout>
 
 
@@ -331,6 +405,7 @@
     let modalOrder = {}; // Dictionary to store the order of modals for each month
     
     // Collect modal data based on month
+    // Report Modal
     document.querySelectorAll('.modal').forEach(modal => {
         const month = modal.dataset.month;
         const actualId = modal.id.split('-').pop();
@@ -453,6 +528,9 @@
         });
     }
 
+    // report modal ends
+
+    // update status
     document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('.status-checkbox').forEach(function(checkbox) {
         if (checkbox.checked) {
@@ -486,7 +564,9 @@
         });
     });
 });
+    // update status end
 
+// export table
 let exportButton = document.getElementById("exportBtn");
     exportButton.addEventListener("click", e => {
         // Create a copy of the table
@@ -519,4 +599,63 @@ let exportButton = document.getElementById("exportBtn");
             }
         });
     });
+
+    document.getElementById('select-all').addEventListener('change', function() {
+    const checkboxes = document.querySelectorAll('.selected-item');
+    checkboxes.forEach(checkbox => {
+        checkbox.checked = this.checked;
+    });
+});
+
+document.getElementById('open-batch-modal').addEventListener('click', function() {
+    const selectedItems = [];
+    const targetCodes = [];
+    const checkboxes = document.querySelectorAll('.selected-item:checked');
+    checkboxes.forEach(checkbox => {
+        selectedItems.push(checkbox.value);
+        targetCodes.push(checkbox.getAttribute('data-code'));
+    });
+
+    console.log('Selected Target Codes:', targetCodes); // Log the selected target codes
+
+    const selectedTargetsInput = document.getElementById('selected_targets');
+    const targetCodesInput = document.getElementById('target_codes');
+
+    if (selectedTargetsInput && targetCodesInput) {
+        selectedTargetsInput.value = selectedItems.join(',');
+        targetCodesInput.value = targetCodes.join(',');
+    } else {
+        console.error('Hidden input fields not found');
+    }
+
+    document.getElementById('batch-modal').classList.remove('hidden');
+    document.getElementById('batch-modal-bg').classList.remove('hidden');
+});
+
+document.getElementById('close-batch-modal').addEventListener('click', function() {
+    document.getElementById('batch-modal').classList.add('hidden');
+    document.getElementById('batch-modal-bg').classList.add('hidden');
+});
+
+document.getElementById('batch-approve-form').addEventListener('submit', function(event) {
+    const selectedItems = [];
+    const targetCodes = [];
+    const checkboxes = document.querySelectorAll('.selected-item:checked');
+    checkboxes.forEach(checkbox => {
+        selectedItems.push(checkbox.value);
+        targetCodes.push(checkbox.getAttribute('data-code'));
+    });
+
+    console.log('Selected Target Codes on Submit:', targetCodes); // Log the selected target codes on form submit
+
+    const selectedTargetsInput = document.getElementById('selected_targets');
+    const targetCodesInput = document.getElementById('target_codes');
+
+    if (selectedTargetsInput && targetCodesInput) {
+        selectedTargetsInput.value = selectedItems.join(',');
+        targetCodesInput.value = targetCodes.join(',');
+    } else {
+        console.error('Hidden input fields not found');
+    }
+});
     </script>

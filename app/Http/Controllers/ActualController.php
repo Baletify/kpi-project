@@ -453,4 +453,24 @@ class ActualController extends Controller
         $actual->save();
         return response()->json(['message' => 'Status updated successfully']);
     }
+
+    public function batchUpdateActualDept(Request $request)
+    {
+        $selectedTargets = explode(',', $request->input('selected_targets', ''));
+        $targetCodes = explode(',', $request->input('target_codes', ''));
+        $month = $request->month;
+        $year = $request->year;
+
+
+        // Process the selected targets and their codes
+        foreach ($selectedTargets as $index => $targetId) {
+            $targetCode = $targetCodes[$index];
+
+            $actual = DB::table('department_actuals')->whereYear('department_actuals.date', '=', $year)
+                ->whereMonth('department_actuals.date', '=', $month)
+                ->where('kpi_code', '=', $targetCode)->update(['mng_approval' => 'yes']);
+        }
+
+        return redirect()->back()->with('success', 'Data Updated Successfully');
+    }
 }

@@ -43,7 +43,7 @@
             </div>
         </div>
     </div>
-    @if ($role != '' && $role != 'Inputer' )
+    @if ($role != '' && $role != 'Inputer' && $role != 'Check 1')
     <form action="{{ route('actual.department') }}" method="GET">
     <div class="flex justify-end">
             <div class="mt-2 mb-1 mx-2">
