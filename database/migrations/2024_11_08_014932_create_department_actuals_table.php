@@ -37,7 +37,8 @@ return new class extends Migration
             $table->dateTime('checked_at')->nullable();
             $table->string('approved_by')->nullable();
             $table->dateTime('approved_at')->nullable();
-            $table->string('mng_approval')->nullable();
+            $table->string('mng_approved_by')->nullable();
+            $table->string('mng_approved_at')->nullable();
             $table->foreignId('department_id')->nullable()->constrained()->onUpdate('cascade')->nullOnDelete();
             $table->timestamps();
         });

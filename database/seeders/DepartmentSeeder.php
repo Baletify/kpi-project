@@ -94,6 +94,14 @@ class DepartmentSeeder extends Seeder
                 'name' => 'Workshop',
                 'code' => 'WSD',
             ],
+            [
+                'name' => 'Div 1',
+                'code' => 'DIV1',
+            ],
+            [
+                'name' => 'Div 2',
+                'code' => 'DIV2',
+            ]
 
         ];
 

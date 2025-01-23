@@ -119,7 +119,7 @@
                           </button>
                       </form>
                       </div>
-                      @elseif (auth()->user()->role == 'Approver')
+                      @elseif (auth()->user()->role == 'Approver' || auth()->user()->role == 'Mng Approver')
                       <div class="relative mt-1 rounded-md">
                             <form action="{{ route('report.index') }}" method="GET">
                             <div class="mt-1 mb-1 mx-2">
@@ -140,7 +140,28 @@
                             </button>
                         </form>
                         </div>
-                    @endif    
+                        @elseif (auth()->user()->role == 'Checker 1')
+                        <div class="relative mt-1 rounded-md">
+                              <form action="{{ route('report.index') }}" method="GET">
+                              <div class="mt-1 mb-1 mx-2">
+                                  <select name="department" id="department" class="col-start-1 row-start-1 w-full appearance-none rounded-md py-1.5 pl-3 pr-7 text-base text-gray-500 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
+                                      <option value="">-- Departmen --</option>
+                                      @foreach ($checker1 as $item)  
+                                      <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                      @endforeach
+                                  </select>
+                              </div>
+                              <div class="absolute inset-y-0 right-0 flex items-center">
+                              </div>
+                          </div>
+                          <input type="hidden" name="role" id="role" value="{{ auth()->user()->role }}">
+                          <div class="mt-2 rounded-md mb-1">
+                              <button type="submit" class="p-2 bg-blue-600 my-2 rounded-md text-white">
+                                  Filter
+                              </button>
+                          </form>
+                          </div>
+                      @endif  
             </div>
         </div>
 

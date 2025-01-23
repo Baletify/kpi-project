@@ -68,7 +68,7 @@
         <div class="flex items-center pb-0 border-b border-b-gray-600"></div>
         @if ($role == 'Mng Approver' || $role == 'Approver')
             <ul x-show="open" x-transition:enter="transition ease-out duration-100" x-transition:enter-start="transform opacity-0 scale-95" x-transition:enter-end="transform opacity-100 scale-100" x-transition:leave="transition ease-in duration-75" x-transition:leave-start="transform opacity-100 scale-100" x-transition:leave-end="transform opacity-0 scale-95" class="mt-2 space-y-2">
-                @if ($role == 'Approver' || $role == 'Superadmin')
+                @if ($role == 'Approver' || $role == 'Mng Approver')
                 <li>
                     <a href="{{ route('log-check.index', 'year=' . $currentYear . '&semester=' . $semester)}}" class="flex items-center py-2 px-6 text-gray-300 hover:bg-gray-700">
                         <i class="ri-file-check-line text-2xl"></i>
@@ -82,7 +82,7 @@
                         <span class="ml-3">Log Input</span>
                     </a>
                 </li>
-                @if ($role == 'Approver' || $role == 'Superadmin')             
+                @if ($role == 'Approver' || $role == 'Mng Approver')             
                 <li>
                     <a href="{{ route('log-input.individual', 'department=' . $departmentID . '&month=' . $currentMonth . '&year=' . $currentYear) }}" class="flex items-center py-2 px-6 text-gray-300 hover:bg-gray-700">
                         <i class="ri-user-follow-fill text-2xl"></i>
@@ -102,7 +102,7 @@
 
             
             <ul class="mt-2 space-y-2">
-                @if (auth()->user()->role == 'Approver' || $role == 'Superadmin')
+                @if (auth()->user()->role == 'Approver' || $role == 'Mng Approver')
                 <div class="flex items-center pb-0 border-b border-b-gray-600"></div>
                 <li>
                     <a href="{{ route('report.summaryDept', 'year=' . $currentYear) }}" class="flex items-center py-2 px-6 text-gray-300 hover:bg-gray-700">
@@ -133,7 +133,7 @@
                     </a>
                 </li>
                 @endif
-                @if ( $role != 'Mng Approver' || $role != 'Approver')   
+                @if ( $role != 'Mng Approver' && $role != 'Approver')   
                 <li>
                     <a href="{{ route('report.department', $departmentID . '?semester=&year='. $currentYear) }}" class="flex items-center py-2 px-6 text-gray-300 hover:bg-gray-700" id="department-link">
                         <i class="ri-file-list-3-fill text-2xl"></i>

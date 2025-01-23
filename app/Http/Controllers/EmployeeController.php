@@ -142,6 +142,8 @@ class EmployeeController extends Controller
         $name = $request->query('name');
         $year = $request->query('year');
         $semester = $request->query('semester');
+        $user = Auth::user();
+        $departmentID = $user->department_id;
 
         $user = Auth::user();
         $role = $user->role;
@@ -158,6 +160,7 @@ class EmployeeController extends Controller
         $divd = DB::table('departments')->where('name', '=', 'Sub Div D')->get();
         $dive = DB::table('departments')->where('name', '=', 'Sub Div E')->get();
         $divf = DB::table('departments')->where('name', '=', 'Sub Div F')->get();
+        $checker1 = DB::table('departments')->where('id', '=', $departmentID)->get();
         $allDept = Department::all();
 
         if ($role == 'Checker Div 1') {
@@ -168,7 +171,7 @@ class EmployeeController extends Controller
             $deptList = $ws;
         } else if ($role == 'Checker Factory') {
             $deptList = $factory;
-        } else if ($role == 'Approver' || $role == 'Superadmin') {
+        } else if ($role == 'Approver' || $role == 'Mng Approver') {
             $deptList = $allDept;
         } elseif ($role == 'Inputer' && $email == 'fsd@bskp.co.id') {
             $deptList = $fsd;
@@ -184,6 +187,8 @@ class EmployeeController extends Controller
             $deptList = $dive;
         } elseif ($role == 'Inputer' && $email == 'sub.divisi.f@bskp.co.id') {
             $deptList = $divf;
+        } elseif ($role == 'Checker 1') {
+            $deptList = $checker1;
         } else {
             $deptList = collect();
         }

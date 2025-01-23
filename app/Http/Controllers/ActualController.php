@@ -407,8 +407,8 @@ class ActualController extends Controller
     public function updateActual(Request $request)
     {
         $actual = Actual::find($request->actual_id);
-        $checked_by = Auth::user()->name;
-        $approved_by = Auth::user()->name;
+        $user = Auth::user()->name;
+
 
         if (!$actual) {
             return abort(404, 'Actual not found');
@@ -416,12 +416,18 @@ class ActualController extends Controller
         if ($request->filled('status')) {
             $actual->status = $request->status;
 
-            if ($request->status == 'Checked') {
+            if ($request->status == 'Checked 1') {
+                $actual->asst_mng_checked_at = now();
+                $actual->asst_mng_checked_by = $user;
+            } else if ($request->status == 'Checked 2') {
                 $actual->checked_at = now();
-                $actual->checked_by = $checked_by;
+                $actual->checked_by = $user;
+            } elseif ($request->status == 'Mng Approve') {
+                $actual->mng_approved_at = now();
+                $actual->mng_approved_by = $user;
             } elseif ($request->status == 'Approved') {
                 $actual->approved_at = now();
-                $actual->approved_by = $approved_by;
+                $actual->approved_by = $user;
             };
         }
 
@@ -432,8 +438,8 @@ class ActualController extends Controller
     public function updateActualDept(Request $request)
     {
         $actual = DepartmentActual::find($request->actual_id);
-        $checked_by = Auth::user()->name;
-        $approved_by = Auth::user()->name;
+        $user = Auth::user()->name;
+
 
         if (!$actual) {
             return abort(404, 'Actual not found');
@@ -441,17 +447,111 @@ class ActualController extends Controller
         if ($request->filled('status')) {
             $actual->status = $request->status;
 
-            if ($request->status == 'Checked') {
+            if ($request->status == 'Checked 1') {
+                $actual->asst_mng_checked_at = now();
+                $actual->asst_mng_checked_by = $user;
+            } else if ($request->status == 'Checked 2') {
                 $actual->checked_at = now();
-                $actual->checked_by = $checked_by;
+                $actual->checked_by = $user;
+            } elseif ($request->status == 'Mng Approve') {
+                $actual->mng_approved_at = now();
+                $actual->mng_approved_by = $user;
             } elseif ($request->status == 'Approved') {
                 $actual->approved_at = now();
-                $actual->approved_by = $approved_by;
+                $actual->approved_by = $user;
             };
         }
 
         $actual->save();
         return response()->json(['message' => 'Status updated successfully']);
+    }
+
+    public function batchUpdateActual(Request $request)
+    {
+        $selectedTargets = explode(',', $request->input('selected_targets', ''));
+        $targetCodes = explode(',', $request->input('target_codes', ''));
+        $month = $request->month;
+        $year = $request->year;
+        $user = Auth::user();
+        $name = $user->name;
+        $role = $user->role;
+        $status = '';
+
+
+        if ($role == 'Checker 1') {
+            $status = 'Checked 1';
+            foreach ($selectedTargets as $index => $targetId) {
+                $targetCode = $targetCodes[$index];
+
+                DB::table('actuals')->whereYear('actuals.date', '=', $year)
+                    ->whereMonth('actuals.date', '=', $month)
+                    ->where('kpi_code', '=', $targetCode)
+                    ->where('status', '=', 'Filled')
+                    ->update(
+                        [
+                            'status' => $status,
+                            'asst_mng_checked_by' => $name,
+                            'asst_mng_checked_at' => now(),
+                        ]
+                    );
+            }
+        } elseif ($role == 'Checker Div 1' || 'Checker Div 2') {
+            $status == 'Checked 2';
+            foreach ($selectedTargets as $index => $targetId) {
+                $targetCode = $targetCodes[$index];
+
+                DB::table('actuals')->whereYear('actuals.date', '=', $year)
+                    ->whereMonth('actuals.date', '=', $month)
+                    ->where('kpi_code', '=', $targetCode)
+                    ->where('status', '=', 'Checked 1')
+                    ->update(
+                        [
+                            'status' => $status,
+                            'checked_by' => $name,
+                            'checked_at' => now(),
+                        ]
+                    );
+            }
+        } elseif ($role == 'Mng Approver') {
+            $status == 'Mng Approve';
+            foreach ($selectedTargets as $index => $targetId) {
+                $targetCode = $targetCodes[$index];
+
+                DB::table('actuals')->whereYear('actuals.date', '=', $year)
+                    ->whereMonth('actuals.date', '=', $month)
+                    ->where('kpi_code', '=', $targetCode)
+                    ->whereIn('status', ['Checked 1', 'Checked 2'])
+                    ->update(
+                        [
+                            'status' => $status,
+                            'asst_mng_checked_by' => $name,
+                            'asst_mng_checked_at' => now(),
+                        ]
+                    );
+            }
+        } else if ($role == 'Approver') {
+            $status == 'Approved';
+            foreach ($selectedTargets as $index => $targetId) {
+                $targetCode = $targetCodes[$index];
+
+                DB::table('actuals')->whereYear('actuals.date', '=', $year)
+                    ->whereMonth('actuals.date', '=', $month)
+                    ->where('kpi_code', '=', $targetCode)
+                    ->where('status', '=', 'Mng Approve')
+                    ->update(
+                        [
+                            'status' => $status,
+                            'asst_mng_checked_by' => $name,
+                            'asst_mng_checked_at' => now(),
+                        ]
+                    );
+            }
+        }
+
+
+
+
+        return redirect()->back()->with('success', 'Data Updated Successfully');
     }
 
     public function batchUpdateActualDept(Request $request)
@@ -460,16 +560,84 @@ class ActualController extends Controller
         $targetCodes = explode(',', $request->input('target_codes', ''));
         $month = $request->month;
         $year = $request->year;
+        $user = Auth::user();
+        $name = $user->name;
+        $role = $user->role;
+        $status = '';
 
 
-        // Process the selected targets and their codes
-        foreach ($selectedTargets as $index => $targetId) {
-            $targetCode = $targetCodes[$index];
+        if ($role == 'Checker 1') {
+            $status = 'Checked 1';
+            foreach ($selectedTargets as $index => $targetId) {
+                $targetCode = $targetCodes[$index];
 
-            $actual = DB::table('department_actuals')->whereYear('department_actuals.date', '=', $year)
-                ->whereMonth('department_actuals.date', '=', $month)
-                ->where('kpi_code', '=', $targetCode)->update(['mng_approval' => 'yes']);
+                DB::table('department_actuals')->whereYear('department_actuals.date', '=', $year)
+                    ->whereMonth('department_actuals.date', '=', $month)
+                    ->where('kpi_code', '=', $targetCode)
+                    ->where('status', '=', 'Filled')
+                    ->update(
+                        [
+                            'status' => $status,
+                            'asst_mng_checked_by' => $name,
+                            'asst_mng_checked_at' => now(),
+                        ]
+                    );
+            }
+        } elseif ($role == 'Checker Div 1' || 'Checker Div 2') {
+            $status == 'Checked 2';
+            foreach ($selectedTargets as $index => $targetId) {
+                $targetCode = $targetCodes[$index];
+
+                DB::table('department_actuals')->whereYear('department_actuals.date', '=', $year)
+                    ->whereMonth('department_actuals.date', '=', $month)
+                    ->where('kpi_code', '=', $targetCode)
+                    ->where('status', '=', 'Checked 1')
+                    ->update(
+                        [
+                            'status' => $status,
+                            'checked_by' => $name,
+                            'checked_at' => now(),
+                        ]
+                    );
+            }
+        } elseif ($role == 'Mng Approver') {
+            $status == 'Mng Approve';
+            foreach ($selectedTargets as $index => $targetId) {
+                $targetCode = $targetCodes[$index];
+
+                DB::table('department_actuals')->whereYear('department_actuals.date', '=', $year)
+                    ->whereMonth('department_actuals.date', '=', $month)
+                    ->where('kpi_code', '=', $targetCode)
+                    ->whereIn('status', ['Checked 1', 'Checked 2'])
+                    ->update(
+                        [
+                            'status' => $status,
+                            'asst_mng_checked_by' => $name,
+                            'asst_mng_checked_at' => now(),
+                        ]
+                    );
+            }
+        } else if ($role == 'Approver') {
+            $status == 'Approved';
+            foreach ($selectedTargets as $index => $targetId) {
+                $targetCode = $targetCodes[$index];
+
+                DB::table('department_actuals')->whereYear('department_actuals.date', '=', $year)
+                    ->whereMonth('department_actuals.date', '=', $month)
+                    ->where('kpi_code', '=', $targetCode)
+                    ->where('status', '=', 'Mng Approve')
+                    ->update(
+                        [
+                            'status' => $status,
+                            'asst_mng_checked_by' => $name,
+                            'asst_mng_checked_at' => now(),
+                        ]
+                    );
+            }
         }
+
+
+
 
         return redirect()->back()->with('success', 'Data Updated Successfully');
     }

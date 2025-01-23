@@ -52,8 +52,8 @@
             <table id="exportTable" class="w-full table-auto">
                 <thead>
                     <tr >
-                        <th data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="FF0066FF" data-f-color="FFFFFFFF" style="width: 3%;" class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-white py-1 px-0.5 bg-blue-700" rowspan="2">
-                            <input id="select-all" type="checkbox" class="appearance-none w-4 h-4 border-2 border-gray-400 rounded-sm bg-white text-green-500">
+                        <th data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="FF0066FF" data-f-color="FFFFFFFF" style="width: 3%;" class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-white py-1 px-0.5 bg-blue-700 exclude-from-export" rowspan="2">
+                            <input id="select-all" type="checkbox" class="appearance-none w-4 h-4 border-2 border-gray-400 rounded-sm bg-white text-green-500" {{ $role == 'Inputer' || $role == '' ? 'disabled' : '' }}>
                         </th>
                         <th data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="FF0066FF" data-f-color="FFFFFFFF" style="width: 3%;" class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-white py-1 px-0.5 bg-blue-700" rowspan="2">No. KPI</th>
                         <th data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="FF0066FF" data-f-color="FFFFFFFF" style="width: 25%" class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-white py-1 px-0.5 bg-blue-700" rowspan="2" >KPI</th>
@@ -97,8 +97,8 @@
                         $i++;
                     @endphp
                     <tr class="{{ $i % 2 === 0 ? 'bg-blue-100' : 'bg-gray-50' }}">
-                        <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="{{ $i % 2 === 0 ? 'FFF2F2F2' : 'FFFFFFFF' }}" name="selected_targets[]" class="border-2 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-1 text-center" rowspan="4">
-                            <input id="selected-item-{{ $target->id }}" type="checkbox" class="selected-item appearance-none w-4 h-4 border-2 border-gray-400 rounded-sm bg-white text-green-500"  data-code="{{ $target->code }}">
+                        <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="{{ $i % 2 === 0 ? 'FFF2F2F2' : 'FFFFFFFF' }}" name="selected_targets[]" class="border-2 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-1 text-center exclude-from-export" rowspan="4">
+                            <input id="selected-item-{{ $target->id }}" type="checkbox" class="selected-item appearance-none w-4 h-4 border-2 border-gray-400 rounded-sm bg-white text-green-500"  data-code="{{ $target->code }}" {{ $role == 'Inputer' || $role == '' ? 'disabled' : '' }}>
                         </td>
                         <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="{{ $i % 2 === 0 ? 'FFF2F2F2' : 'FFFFFFFF' }}" class="border-2 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-1 text-center" rowspan="4">{{ $target->code }}</td>
                         <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="{{ $i % 2 === 0 ? 'FFF2F2F2' : 'FFFFFFFF' }}" class="border-2 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-2" rowspan="4">{{ $target->indicator }}</td>
@@ -228,9 +228,9 @@
                                 @if ($actual->status == 'Approved')
                                 <span class="text-green-500">Yes</span>
                                 @elseif ($actual->status == 'Checked 1')
-                                <span class="text-yellow-500">Check 1 OK</span>
+                                <span class="text-yellow-500">Check 1</span>
                                 @elseif ($actual->status == 'Checked 2')
-                                <span class="text-yellow-500">Check 2 OK</span>
+                                <span class="text-yellow-500">Check 2</span>
                                 @elseif ($actual->status == 'Mng Approve')
                                 <span class="text-blue-500">Review</span>
                                 @elseif ($actual->status == 'Filled')
@@ -269,7 +269,7 @@
                                     </div>
                                     <div id="checkbox-container-{{ $modalId }}" class="p-1 flex justify-center gap-3">
                                         <label class="text-[14px]">
-                                            <input type="checkbox" class="status-checkbox" data-actual-id="{{ $actual->department_actual_id }}" data-status="Checked 1" {{ $actual->status == 'Checked 1' || $actual->status == 'Checked 2' || $actual->status == 'Checked 3' || $actual->status == 'Approved' ? 'checked' : '' }} {{ $role == 'Check 1' || $role == 'Checker WS' || $role == 'Checker Factory' ? '' : 'disabled' }}>
+                                            <input type="checkbox" class="status-checkbox" data-actual-id="{{ $actual->department_actual_id }}" data-status="Checked 1" {{ $actual->status == 'Checked 1' || $actual->status == 'Checked 2' || $actual->status == 'Checked 3' || $actual->status == 'Approved' ? 'checked' : '' }} {{ $role == 'Checker 1' || $role == 'Checker WS' || $role == 'Checker Factory' ? '' : 'disabled' }}>
                                             Check 1
                                         </label>
                                         <label class="text-[14px]">
@@ -277,7 +277,7 @@
                                             Check 2
                                         </label>
                                         <label class="text-[14px]">
-                                            <input type="checkbox" class="status-checkbox" data-actual-id="{{ $actual->department_actual_id }}" data-status="Mng Approve" {{ $actual->status == 'Checked 2' || $actual->status == 'Approved' ? 'checked' : '' }} {{ $role == 'Mng Approver' && $actual->status == 'Checked 2' ? '' : 'disabled' }}>
+                                            <input type="checkbox" class="status-checkbox" data-actual-id="{{ $actual->department_actual_id }}" data-status="Mng Approve" {{ $actual->status == 'Checked 2' || $actual->status == 'Approved' ? 'checked' : '' }} {{ $role == 'Mng Approver'  ? '' : 'disabled' }}>
                                             Check 3
                                         </label>
                                         <label class="text-[14px]">
@@ -333,10 +333,10 @@
                 </tr>
                 @endforeach
                 <tr>
-                    <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="FF0066FF"class="border-2 bg-blue-500 border-gray-400 text-[13px] tracking-wide font-medium text-white py-0 px-0.5 text-center" colspan="6">Total</td>
-                    <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="FF0066FF"class="border-2 bg-blue-500 border-gray-400 text-[13px] tracking-wide font-medium text-white py-0 px-0.5 text-center">{{ $sumWeighting }}%</td>
-                    <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="FF0066FF"class="border-2 bg-blue-500 border-gray-400 text-[13px] tracking-wide font-medium text-white py-0 px-0.5 text-center" colspan="8"></td>
-                    <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="FF0066FF"class="border-2 bg-blue-500 border-gray-400 text-[13px] tracking-wide font-medium text-white py-0 px-0.5 text-center" colspan="1">{{ number_format($sumTotalWeightingAchievement, 1) }}%</td>
+                    <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="FF0066FF" data-f-color="FFFFFFFF" class="border-2 bg-blue-500 border-gray-400 text-[13px] tracking-wide font-medium text-white py-0 px-0.5 text-center" id="changeColSpan" colspan="6">Total</td>
+                    <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="FF0066FF" data-f-color="FFFFFFFF" class="border-2 bg-blue-500 border-gray-400 text-[13px] tracking-wide font-medium text-white py-0 px-0.5 text-center">{{ $sumWeighting }}%</td>
+                    <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="FF0066FF" data-f-color="FFFFFFFF" class="border-2 bg-blue-500 border-gray-400 text-[13px] tracking-wide font-medium text-white py-0 px-0.5 text-center" colspan="8"></td>
+                    <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="FF0066FF" data-f-color="FFFFFFFF" class="border-2 bg-blue-500 border-gray-400 text-[13px] tracking-wide font-medium text-white py-0 px-0.5 text-center" colspan="1">{{ number_format($sumTotalWeightingAchievement, 1) }}%</td>
 
                 </tr>
                 </tbody>
@@ -579,6 +579,11 @@ let exportButton = document.getElementById("exportBtn");
             element.remove();
         });
 
+        const totalCell = tableCopy.querySelector('#changeColSpan');
+        if (totalCell) {
+            totalCell.setAttribute('colspan', '5');
+        }
+
         tableCopy.querySelectorAll('td').forEach(cell => {
             if (cell.textContent.trim() === 'No') {
                 cell.setAttribute('data-f-color', 'FFFF0000'); // Red
@@ -586,7 +591,7 @@ let exportButton = document.getElementById("exportBtn");
                 cell.setAttribute('data-f-color', 'FF00CC00'); // Green
             } else if (cell.textContent.trim() === 'Review') {
                 cell.setAttribute('data-f-color', 'FF3399FF'); // Blue
-            } else if (cell.textContent.trim() === 'Check') {
+            } else if (cell.textContent.trim() === 'Check 2') {
                 cell.setAttribute('data-f-color', 'FFFF9900'); // Orange
             }
         });
@@ -600,6 +605,7 @@ let exportButton = document.getElementById("exportBtn");
         });
     });
 
+    // Export table ends
     document.getElementById('select-all').addEventListener('change', function() {
     const checkboxes = document.querySelectorAll('.selected-item');
     checkboxes.forEach(checkbox => {
