@@ -162,7 +162,7 @@
                 @endphp
                     <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="{{ $i % 2 === 0 ? 'FFF2F2F2' : 'FFFFFFFF' }}" class="border-2 bg-blue-100 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center">
                     @if ($target->unit == 'Rp')
-                    {{ $actual ? 'Rp. ' . substr(number_format($actual->target, 0, ',', '.'), 0, 7) : ''}}
+                    {{ $actual ? substr(number_format($actual->target, 0, ',', '.'), 0, 7) : ''}}
                     @else
                         {{ $actual ? $actual->target : '' }} 
                     @endif
@@ -177,7 +177,7 @@
                         @if ($target->unit === '%')
                             {{ $totalTarget }}%
                         @elseif ($target->unit === 'Rp')
-                        Rp. {{ substr(number_format($totalTarget, 0, ',', '.'), 0, 7) }}
+                        {{ substr(number_format($totalTarget, 0, ',', '.'), 0, 7) }}
                         @else
                         {{ $totalTarget }}
                         @endif
@@ -208,7 +208,7 @@
                     
                     <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="{{ $i % 2 === 0 ? 'FFF2F2F2' : 'FFFFFFFF' }}" class="border-2 bg-gray-50 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center">
                     @if ($target->unit == 'Rp')
-                    {{ $actual ? 'Rp. ' . substr(number_format($actual->actual, 0, ',', '.'), 0, 7) : ''}}
+                    {{ $actual ? substr(number_format($actual->actual, 0, ',', '.'), 0, 7) : ''}}
                     @else
                     {{ $actual ? $actual->actual : ''}}
                     @endif
@@ -223,7 +223,7 @@
                         @if ($target->unit === '%')
                         {{ $totalActual }}%
                         @elseif ($target->unit === 'Rp')
-                        Rp. {{ substr(number_format($totalActual, 0, ',', '.'), 0, 7) }}
+                        {{ substr(number_format($totalActual, 0, ',', '.'), 0, 7) }}
                         @else
                         {{ $totalActual }}
                         @endif
@@ -285,6 +285,7 @@
                                 @elseif ($actual->status == 'Revisi')
                                 <span class="text-orange-600">Revisi</span>
                                 @endif
+                            </button>
                             {{-- MODAL --}}
                             <div id="{{ $backgroundId }}" class="fixed inset-0 bg-gray-800 bg-opacity-75 hidden exclude-from-export"></div>
                             <div id="{{ $modalId }}" class="modal fixed inset-0 justify-center hidden exclude-from-export" data-month="{{ $date->format('m') }}">
@@ -315,19 +316,19 @@
                                     </div>
                                     <div id="checkbox-container-{{ $modalId }}" class="p-1 flex justify-center gap-3">
                                         <label class="text-[14px]">
-                                            <input type="checkbox" class="status-checkbox" data-actual-id="{{ $actual->department_actual_id }}" data-status="Checked 1" {{ $actual->status == 'Checked 1' || $actual->status == 'Checked 2' || $actual->status == 'Checked 3' || $actual->status == 'Approved' ? 'checked' : '' }} {{ $role == 'Checker 1' || $role == 'Checker WS' || $role == 'Checker Factory' ? '' : 'disabled' }}>
+                                            <input type="checkbox" class="status-checkbox" data-actual-id="{{ $actual->actual_id }}" data-status="Checked 1" {{ $actual->status == 'Checked 1' || $actual->status == 'Checked 2' || $actual->status == 'Checked 3' || $actual->status == 'Approved' ? 'checked' : '' }} {{ $role == 'Checker 1' || $role == 'Checker WS' || $role == 'Checker Factory' ? '' : 'disabled' }}>
                                             Check 1
                                         </label>
                                         <label class="text-[14px]">
-                                            <input type="checkbox" class="status-checkbox" data-actual-id="{{ $actual->department_actual_id }}" data-status="Checked 2" {{ $actual->status == 'Checked 2' || $actual->status == 'Checked 3' || $actual->status == 'Approved' ? 'checked' : '' }} {{ $role == 'Checker Div 1' || $role == 'Checker Div 2' && $actual->status == 'Checked 1' ? '' : 'disabled' }}>
+                                            <input type="checkbox" class="status-checkbox" data-actual-id="{{ $actual->actual_id }}" data-status="Checked 2" {{ $actual->status == 'Checked 2' || $actual->status == 'Checked 3' || $actual->status == 'Approved' ? 'checked' : '' }} {{ $role == 'Checker Div 1' || $role == 'Checker Div 2' && $actual->status == 'Checked 1' ? '' : 'disabled' }}>
                                             Check 2
                                         </label>
                                         <label class="text-[14px]">
-                                            <input type="checkbox" class="status-checkbox" data-actual-id="{{ $actual->department_actual_id }}" data-status="Mng Approve" {{ $actual->status == 'Checked 2' || $actual->status == 'Approved' ? 'checked' : '' }} {{ $role == 'Mng Approver'  ? '' : 'disabled' }}>
+                                            <input type="checkbox" class="status-checkbox" data-actual-id="{{ $actual->actual_id }}" data-status="Mng Approve" {{ $actual->status == 'Checked 2' || $actual->status == 'Approved' ? 'checked' : '' }} {{ $role == 'Mng Approver'  ? '' : 'disabled' }}>
                                             Check 3
                                         </label>
                                         <label class="text-[14px]">
-                                            <input type="checkbox" class="status-checkbox" data-actual-id="{{ $actual->department_actual_id }}" data-status="Approved" {{ $actual->status == 'Approved' ? 'checked' : '' }} {{ $role == 'Approver' ? '' : 'disabled' }}>
+                                            <input type="checkbox" class="status-checkbox" data-actual-id="{{ $actual->actual_id }}" data-status="Approved" {{ $actual->status == 'Approved' ? 'checked' : '' }} {{ $role == 'Approver' ? '' : 'disabled' }}>
                                             Approve
                                         </label>
                                     </div>

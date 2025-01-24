@@ -81,23 +81,23 @@
             $i++
             @endphp
             <tr class="{{ $i % 2 === 0 ? 'bg-white' : 'bg-blue-100'}}">
-
-                <td class="border-2 border-gray-400 text-[11px] tracking-wide px-2 py-0">{{ $target->code }}</td>
-                <td class="border-2 border-gray-400 text-[11px] tracking-wide px-2 py-0">{{ $target->indicator }}</td>
-                <td class="border-2 border-gray-400 text-[11px] tracking-wide px-2 py-0">{{ $target->calculation }}</td>
-                <td class="border-2 border-gray-400 text-[11px] tracking-wide px-2 py-0">
-                    {{ $target->supporting_document}}
+                <td class="border-2 border-gray-400 text-[10px] tracking-wide px-2 py-0">{{ $target->code }}</td>
+                <td class="border-2 border-gray-400 text-[10px] tracking-wide px-2 py-0">{{ $target->indicator }}</td>
+                <td class="border-2 border-gray-400 text-[10px] tracking-wide px-2 py-0 text-justify">{{ $target->calculation }}</td>
+                <td class="border-2 border-gray-400 text-[10px] tracking-wide px-2 py-0">
+                    {{ $target->supporting_document }}
                 </td>
-                <td class="border-2 border-gray-400 text-[11px] tracking-wide px-2 py-0">
-                    {{ $target->trend}}
+                <td class="border-2 border-gray-400 text-[10px] tracking-wide px-2 py-0">
+                    {{ $target->trend }}
                 </td>
-                <td class="border-2 border-gray-400 text-[11px] tracking-wide px-2 py-0 text-center">{{ $target->period }}</td>
-                <td class="border-2 border-gray-400 text-[11px] tracking-wide px-2 py-0">{{ $target->unit }}</td>
-                <td class="border-2 border-gray-400 text-[11px] tracking-wide px-2 py-0 text-center">{{ $target->weighting }}</td>
+                <td class="border-2 border-gray-400 text-[10px] tracking-wide px-2 py-0 text-center">{{ $target->period }}</td>
+                <td class="border-2 border-gray-400 text-[10px] tracking-wide px-2 py-0">{{ $target->unit }}</td>
+                <td class="border-2 border-gray-400 text-[10px] tracking-wide px-2 py-0 text-center">{{ $target->weighting }}</td>
 
                 @php
                 $isPercentage = $target->unit === '%';
                 $isRp = $target->unit === 'Rp';
+                $isKg = $target->unit === 'Kg';
                 $targetColumn = 'target_' . $month
                 @endphp
 
@@ -106,19 +106,24 @@
                 @php
                 $targetColumn = 'target_' . $month;
                 @endphp
-               <td class="border-2 border-gray-400 text-[11px] tracking-wide px-2 py-0 text-center">
-                @if ($target->{$targetColumn} !== null)
+                <td class="border-2 border-gray-400 text-[11px] tracking-wide px-2 py-0 text-center">
+                    @if ($target->{$targetColumn} !== null)
                     @php
-                        $floatValue = floatval($target->{$targetColumn});
-                        $formattedValue = number_format($floatValue);
-                        $limitedValue = strlen($formattedValue) > 7 ? substr($formattedValue, 0, 7) : $formattedValue;
+                    $floatValue = floatval($target->{$targetColumn});
+                    $formattedValue = number_format($floatValue);
+                    $limitedValue = strlen($formattedValue) > 7 ? substr($formattedValue, 0, 7) : $formattedValue;
                     @endphp
                     @if ($isPercentage)
-                        {{ $limitedValue . '%' }}
+                    @php
+                    $percentageValue = $floatValue * 100;
+                    @endphp
+                        {{ $percentageValue . '%' }}
                     @elseif ($isRp)
-                        Rp {{ $limitedValue }}
+                        {{ number_format($floatValue) }}
+                    @elseif ($isKg)
+                    {{ $formattedValue }}
                     @else
-                        {{ $limitedValue }}
+                        {{ $floatValue }}
                     @endif
                 @else
                     <span></span>
@@ -127,23 +132,31 @@
                 @endforeach
                 @else
                 @foreach (range(7, 12) as $month)
+                @php
+                $targetColumn = 'target_' . $month;
+                @endphp
                 <td class="border-2 border-gray-400 text-[11px] tracking-wide px-2 py-0 text-center">
                     @if ($target->{$targetColumn} !== null)
-                        @php
-                            $floatValue = floatval($target->{$targetColumn});
-                            $formattedValue = number_format($floatValue, 2);
-                            $limitedValue = strlen($formattedValue) > 7 ? substr($formattedValue, 0, 7) : $formattedValue;
-                        @endphp
-                        @if ($isPercentage)
-                            {{ $limitedValue . '%' }}
-                        @elseif ($isRp)
-                            Rp {{ $limitedValue }}
-                        @else
-                            {{ $limitedValue }}
-                        @endif
+                    @php
+                    $floatValue = floatval($target->{$targetColumn});
+                    $formattedValue = number_format($floatValue);
+                    $limitedValue = strlen($formattedValue) > 7 ? substr($formattedValue, 0, 7) : $formattedValue;
+                    @endphp
+                    @if ($isPercentage)
+                    @php
+                    $percentageValue = $floatValue * 100;
+                    @endphp
+                        {{ $percentageValue . '%' }}
+                    @elseif ($isRp)
+                        {{ number_format($floatValue) }}
+                    @elseif ($isKg)
+                    {{ $formattedValue }}
                     @else
-                        <span></span>
+                        {{ $floatValue }}
                     @endif
+                @else
+                    <span></span>
+                @endif
                 </td>
                 @endforeach
                 @endif
