@@ -11,10 +11,11 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Log;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Session;
+use Maatwebsite\Excel\Concerns\WithCalculatedFormulas;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithSkipDuplicates;
 
-class TargetDeptImport implements ToCollection, WithHeadingRow, WithSkipDuplicates
+class TargetDeptImport implements ToCollection, WithHeadingRow, WithSkipDuplicates, WithCalculatedFormulas
 {
     protected $controller;
 
@@ -36,6 +37,9 @@ class TargetDeptImport implements ToCollection, WithHeadingRow, WithSkipDuplicat
             flash()->error('Please select a year');
             return redirect()->back();
         }
+        $cleanValue = function ($value) {
+            return str_replace([',', '.'], '', $value);
+        };
         $year = Carbon::parse($yearQuery . '-01-01')->startOfDay()->format('Y-m-d H:i:s');
         $department_id = request()->input('department_id');
 
@@ -47,18 +51,18 @@ class TargetDeptImport implements ToCollection, WithHeadingRow, WithSkipDuplicat
             }
             // dd($row);
             $data = [
-                'target_1' => $row['jan'],
-                'target_2' => $row['feb'],
-                'target_3' => $row['mar'],
-                'target_4' => $row['apr'],
-                'target_5' => $row['mei'],
-                'target_6' => $row['jun'],
-                'target_7' => $row['jul'],
-                'target_8' => $row['agu'],
-                'target_9' => $row['sep'],
-                'target_10' => $row['okt'],
-                'target_11' => $row['nov'],
-                'target_12' => $row['des'],
+                'target_1' => $cleanValue($row['jan']),
+                'target_2' => $cleanValue($row['feb']),
+                'target_3' => $cleanValue($row['mar']),
+                'target_4' => $cleanValue($row['apr']),
+                'target_5' => $cleanValue($row['may']),
+                'target_6' => $cleanValue($row['jun']),
+                'target_7' => $cleanValue($row['jul']),
+                'target_8' => $cleanValue($row['aug']),
+                'target_9' => $cleanValue($row['sep']),
+                'target_10' => $cleanValue($row['oct']),
+                'target_11' => $cleanValue($row['nov']),
+                'target_12' => $cleanValue($row['dec']),
             ];
 
             $targetUnit = TargetUnit::Create($data);

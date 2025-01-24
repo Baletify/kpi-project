@@ -20,7 +20,9 @@
         </div>
         <div class="flex justify-between mr-1">
             <div class="mt-2 mx-2">
+                @if ($role != 'Inputer' && $role != '')
                 <button id="open-batch-modal" class="p-1.5 rounded-md text-white bg-blue-900">Batch Approve</button>
+                @endif
             </div>
             <div class="flex justify-end">
                 <div class="relative mt-0 rounded-md">
@@ -228,15 +230,15 @@
                                 @if ($actual->status == 'Approved')
                                 <span class="text-green-500">Yes</span>
                                 @elseif ($actual->status == 'Checked 1')
-                                <span class="text-yellow-500">Check 1</span>
+                                <span class="text-orange-300">Check 1</span>
                                 @elseif ($actual->status == 'Checked 2')
-                                <span class="text-yellow-500">Check 2</span>
+                                <span class="text-lime-800">Check 2</span>
                                 @elseif ($actual->status == 'Mng Approve')
                                 <span class="text-blue-500">Review</span>
                                 @elseif ($actual->status == 'Filled')
                                 <span class="text-yellow-500">Check</span>
                                 @elseif ($actual->status == 'Revisi')
-                                <span class="text-yellow-500">Revisi</span>
+                                <span class="text-orange-600">Revisi</span>
                                 @endif
                             </button>
                             {{-- MODAL --}}
@@ -281,7 +283,7 @@
                                             Check 3
                                         </label>
                                         <label class="text-[14px]">
-                                            <input type="checkbox" class="status-checkbox" data-actual-id="{{ $actual->department_actual_id }}" data-status="Approved" {{ $actual->status == 'Approved' ? 'checked' : '' }} {{ $role == 'Approver' && $actual->status == 'Mng Approve' ? '' : 'disabled' }}>
+                                            <input type="checkbox" class="status-checkbox" data-actual-id="{{ $actual->department_actual_id }}" data-status="Approved" {{ $actual->status == 'Approved' ? 'checked' : '' }} {{ $role == 'Approver' ? '' : 'disabled' }}>
                                             Approve
                                         </label>
                                     </div>
@@ -358,7 +360,7 @@
                         </div>
                         <form id="batch-approve-form" action="{{ route('actual.batchUpdateActualDept', $actuals->first()->department_id) }}" method="POST" class="flex gap-x-3 p-0">
                             @csrf
-                            @method('PUT')
+                            @method('PUT')  
                             <input type="hidden" name="year" id="year" value="{{ request()->query('year') }}">
                             <input type="hidden" name="selected_targets" id="selected_targets">
                             <input type="hidden" name="target_codes" id="target_codes">

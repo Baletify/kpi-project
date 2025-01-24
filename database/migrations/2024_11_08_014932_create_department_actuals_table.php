@@ -33,6 +33,8 @@ return new class extends Migration
             $table->string('detail')->nullable();
             $table->string('input_by')->nullable();
             $table->dateTime('input_at')->nullable();
+            $table->string('asst_mng_checked_by')->nullable();
+            $table->dateTime('asst_mng_checked_at')->nullable();
             $table->string('checked_by')->nullable();
             $table->dateTime('checked_at')->nullable();
             $table->string('approved_by')->nullable();

@@ -4,7 +4,7 @@
         $departmentID = request()->query('department');
         $year = request()->query('year');
         $semester = request()->query('semester');
-        $employeeID = auth()->user()->id;
+        $employeeID = request()->query('employee');
         
         @endphp
         <form id="importForm" action="{{ route('target.import') }}" method="POST" enctype="multipart/form-data">

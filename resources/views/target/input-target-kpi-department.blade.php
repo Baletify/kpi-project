@@ -98,50 +98,56 @@
                 @php
                 $isPercentage = $target->unit === '%';
                 $isRp = $target->unit === 'Rp';
+                $targetColumn = 'target_' . $month
                 @endphp
 
-            @if ($currentSemester == 1)
-            @foreach (range(1, 6) as $month)
-            <td class="border-2 border-gray-400 text-[11px] tracking-wide px-2 py-0 text-center">
-                @if ($isPercentage && $target->{'target_' . $month} !== null)
-                    {{ $target->{'target_' . $month} * 100 . '%' }}
-                @elseif ($isRp)
-                    @if ($target->{'target_' . $month} !== null)
-                        Rp {{ number_format($target->{'target_' . $month}) }}
+                @if ($currentSemester == 1)
+                @foreach (range(1, 6) as $month)
+                @php
+                $targetColumn = 'target_' . $month;
+                @endphp
+               <td class="border-2 border-gray-400 text-[11px] tracking-wide px-2 py-0 text-center">
+                @if ($target->{$targetColumn} !== null)
+                    @php
+                        $floatValue = floatval($target->{$targetColumn});
+                        $formattedValue = number_format($floatValue);
+                        $limitedValue = strlen($formattedValue) > 7 ? substr($formattedValue, 0, 7) : $formattedValue;
+                    @endphp
+                    @if ($isPercentage)
+                        {{ $limitedValue . '%' }}
+                    @elseif ($isRp)
+                        Rp {{ $limitedValue }}
                     @else
-                        <span></span>
+                        {{ $limitedValue }}
                     @endif
                 @else
-                    @if ($target->{'target_' . $month} !== null)
-                        {{ $target->{'target_' . $month} }}
-                    @else
-                        <span></span>
-                    @endif
+                    <span></span>
                 @endif
-            </td>
-            @endforeach
-            @else
-            @foreach (range(7, 12) as $month)
-            <td class="border-2 border-gray-400 text-[11px] tracking-wide px-2 py-0 text-center">
-                @if ($isPercentage && $target->{'target_' . $month} !== null)
-                    {{ $target->{'target_' . $month} * 100 . '%' }}
-                @elseif ($isRp)
-                    @if ($target->{'target_' . $month} !== null)
-                        Rp {{ number_format($target->{'target_' . $month}) }}
-                    @else
-                        <span></span>
-                    @endif
+                </td>
+                @endforeach
                 @else
-                    @if ($target->{'target_' . $month} !== null)
-                        {{ $target->{'target_' . $month} }}
+                @foreach (range(7, 12) as $month)
+                <td class="border-2 border-gray-400 text-[11px] tracking-wide px-2 py-0 text-center">
+                    @if ($target->{$targetColumn} !== null)
+                        @php
+                            $floatValue = floatval($target->{$targetColumn});
+                            $formattedValue = number_format($floatValue, 2);
+                            $limitedValue = strlen($formattedValue) > 7 ? substr($formattedValue, 0, 7) : $formattedValue;
+                        @endphp
+                        @if ($isPercentage)
+                            {{ $limitedValue . '%' }}
+                        @elseif ($isRp)
+                            Rp {{ $limitedValue }}
+                        @else
+                            {{ $limitedValue }}
+                        @endif
                     @else
                         <span></span>
                     @endif
+                </td>
+                @endforeach
                 @endif
-            </td>
-            @endforeach
-            @endif
-            </tr>
+                </tr>
             @empty
             <tr>
                 <td colspan="16" class="border-2 border-gray-400 tracking-wide  py-0 px-2 text-center">Data Tidak ditemukan</td>

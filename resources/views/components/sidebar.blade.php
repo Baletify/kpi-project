@@ -66,7 +66,6 @@
             </a>
         </li> --}}
         <div class="flex items-center pb-0 border-b border-b-gray-600"></div>
-        @if ($role == 'Mng Approver' || $role == 'Approver')
             <ul x-show="open" x-transition:enter="transition ease-out duration-100" x-transition:enter-start="transform opacity-0 scale-95" x-transition:enter-end="transform opacity-100 scale-100" x-transition:leave="transition ease-in duration-75" x-transition:leave-start="transform opacity-100 scale-100" x-transition:leave-end="transform opacity-0 scale-95" class="mt-2 space-y-2">
                 @if ($role == 'Approver' || $role == 'Mng Approver')
                 <li>
@@ -76,12 +75,14 @@
                     </a>
                 </li>
                 @endif
+                @if ($role != '' && $role != 'Checker 1')
                 <li>
                     <a href="{{ route('log-input.indexInput', 'department=' . $departmentID . '&month=' . $currentMonth . '&year=' . $currentYear) }}" class="flex items-center py-2 px-6 text-gray-300 hover:bg-gray-700">
                         <i class="ri-history-line text-2xl"></i>
                         <span class="ml-3">Log Input</span>
                     </a>
                 </li>
+                @endif
                 @if ($role == 'Approver' || $role == 'Mng Approver')             
                 <li>
                     <a href="{{ route('log-input.individual', 'department=' . $departmentID . '&month=' . $currentMonth . '&year=' . $currentYear) }}" class="flex items-center py-2 px-6 text-gray-300 hover:bg-gray-700">
@@ -91,7 +92,6 @@
                 </li>  
                 @endif           
             </ul>
-        @endif
             {{-- <div x-data="{ open: false }" class="items-center">
                 <button @click="open = !open" class="flex items-center w-full justify-between text-gray-200 px-4 py-2 hover:bg-gray-700 ">
                     <i class="ri-pie-chart-line text-2xl"></i>
@@ -117,8 +117,8 @@
                     </a>
                 </li>
                 @endif
-                @if (auth()->user()->input_type == 'Group')
                 <div class="flex items-center pb-0 border-b border-b-gray-600"></div>
+                @if (auth()->user()->input_type == 'Group')
                 <li>
                     <a href="{{ route('report.index', 'department=' . $departmentID) }}" class="flex items-center py-2 px-6 text-gray-300 hover:bg-gray-700">
                         <i class="ri-contacts-book-2-line text-2xl"></i>

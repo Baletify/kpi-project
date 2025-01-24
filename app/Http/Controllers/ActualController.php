@@ -478,7 +478,7 @@ class ActualController extends Controller
         $status = '';
 
 
-        if ($role == 'Checker 1') {
+        if ($role == 'Checker 1' || $role == 'Checker Factory' || $role == 'Checker WS') {
             $status = 'Checked 1';
             foreach ($selectedTargets as $index => $targetId) {
                 $targetCode = $targetCodes[$index];
@@ -495,8 +495,8 @@ class ActualController extends Controller
                         ]
                     );
             }
-        } elseif ($role == 'Checker Div 1' || 'Checker Div 2') {
-            $status == 'Checked 2';
+        } elseif ($role == 'Checker Div 1' || $role == 'Checker Div 2') {
+            $status = 'Checked 2';
             foreach ($selectedTargets as $index => $targetId) {
                 $targetCode = $targetCodes[$index];
 
@@ -513,36 +513,34 @@ class ActualController extends Controller
                     );
             }
         } elseif ($role == 'Mng Approver') {
-            $status == 'Mng Approve';
+            $status = 'Mng Approve';
             foreach ($selectedTargets as $index => $targetId) {
                 $targetCode = $targetCodes[$index];
 
                 DB::table('actuals')->whereYear('actuals.date', '=', $year)
                     ->whereMonth('actuals.date', '=', $month)
                     ->where('kpi_code', '=', $targetCode)
-                    ->whereIn('status', ['Checked 1', 'Checked 2'])
                     ->update(
                         [
                             'status' => $status,
-                            'asst_mng_checked_by' => $name,
-                            'asst_mng_checked_at' => now(),
+                            'mng_approved_by' => $name,
+                            'mng_approved_at' => now(),
                         ]
                     );
             }
         } else if ($role == 'Approver') {
-            $status == 'Approved';
+            $status = 'Approved';
             foreach ($selectedTargets as $index => $targetId) {
                 $targetCode = $targetCodes[$index];
 
                 DB::table('actuals')->whereYear('actuals.date', '=', $year)
                     ->whereMonth('actuals.date', '=', $month)
                     ->where('kpi_code', '=', $targetCode)
-                    ->where('status', '=', 'Mng Approve')
                     ->update(
                         [
                             'status' => $status,
-                            'asst_mng_checked_by' => $name,
-                            'asst_mng_checked_at' => now(),
+                            'approved_by' => $name,
+                            'approved_at' => now(),
                         ]
                     );
             }
@@ -566,7 +564,7 @@ class ActualController extends Controller
         $status = '';
 
 
-        if ($role == 'Checker 1') {
+        if ($role == 'Checker 1' || $role == 'Checker Factory' || $role == 'Checker WS') {
             $status = 'Checked 1';
             foreach ($selectedTargets as $index => $targetId) {
                 $targetCode = $targetCodes[$index];
@@ -583,8 +581,8 @@ class ActualController extends Controller
                         ]
                     );
             }
-        } elseif ($role == 'Checker Div 1' || 'Checker Div 2') {
-            $status == 'Checked 2';
+        } elseif ($role == 'Checker Div 1' || $role == 'Checker Div 2') {
+            $status = 'Checked 2';
             foreach ($selectedTargets as $index => $targetId) {
                 $targetCode = $targetCodes[$index];
 
@@ -601,36 +599,34 @@ class ActualController extends Controller
                     );
             }
         } elseif ($role == 'Mng Approver') {
-            $status == 'Mng Approve';
+            $status = 'Mng Approve';
             foreach ($selectedTargets as $index => $targetId) {
                 $targetCode = $targetCodes[$index];
 
                 DB::table('department_actuals')->whereYear('department_actuals.date', '=', $year)
                     ->whereMonth('department_actuals.date', '=', $month)
                     ->where('kpi_code', '=', $targetCode)
-                    ->whereIn('status', ['Checked 1', 'Checked 2'])
                     ->update(
                         [
                             'status' => $status,
-                            'asst_mng_checked_by' => $name,
-                            'asst_mng_checked_at' => now(),
+                            'mng_approved_by' => $name,
+                            'mng_approved_at' => now(),
                         ]
                     );
             }
         } else if ($role == 'Approver') {
-            $status == 'Approved';
+            $status = 'Approved';
             foreach ($selectedTargets as $index => $targetId) {
                 $targetCode = $targetCodes[$index];
 
                 DB::table('department_actuals')->whereYear('department_actuals.date', '=', $year)
                     ->whereMonth('department_actuals.date', '=', $month)
                     ->where('kpi_code', '=', $targetCode)
-                    ->where('status', '=', 'Mng Approve')
                     ->update(
                         [
                             'status' => $status,
-                            'asst_mng_checked_by' => $name,
-                            'asst_mng_checked_at' => now(),
+                            'approved_by' => $name,
+                            'approved_at' => now(),
                         ]
                     );
             }
