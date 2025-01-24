@@ -98,7 +98,31 @@
                 $isPercentage = $target->unit === '%';
                 $isRp = $target->unit === 'Rp';
                 $isKg = $target->unit === 'Kg';
-                $targetColumn = 'target_' . $month
+                $targetColumn = 'target_' . $month;
+                // Helper function to format values based on the number of digits before the decimal point
+                $formatKgValue = function ($value) {
+                    // Convert the value to a string
+                    $valueStr = (string) $value;
+
+                    // Find the position of the decimal point
+                    $decimalPos = strpos($valueStr, '.');
+
+                    // If there is no decimal point, return the value as is
+                    if ($decimalPos === false) {
+                        return number_format($value);
+                    }
+
+                    // Get the number of digits before the decimal point
+                    $digitsBeforeDecimal = $decimalPos;
+
+                    // If there are more than 3 digits before the decimal point, return the value as is
+                    if ($digitsBeforeDecimal > 3) {
+                        return number_format($value);
+                    }
+
+                    // Otherwise, format the value with 1 decimal place
+                    return number_format($value, 1);
+                }
                 @endphp
 
                 @if ($currentSemester == 1)
@@ -110,8 +134,7 @@
                     @if ($target->{$targetColumn} !== null)
                     @php
                     $floatValue = floatval($target->{$targetColumn});
-                    $formattedValue = number_format($floatValue);
-                    $limitedValue = strlen($formattedValue) > 7 ? substr($formattedValue, 0, 7) : $formattedValue;
+                    $formattedValue = $formatKgValue($floatValue);
                     @endphp
                     @if ($isPercentage)
                     @php
@@ -139,8 +162,7 @@
                     @if ($target->{$targetColumn} !== null)
                     @php
                     $floatValue = floatval($target->{$targetColumn});
-                    $formattedValue = number_format($floatValue);
-                    $limitedValue = strlen($formattedValue) > 7 ? substr($formattedValue, 0, 7) : $formattedValue;
+                    $formattedValue = $formatKgValue($floatValue);
                     @endphp
                     @if ($isPercentage)
                     @php
