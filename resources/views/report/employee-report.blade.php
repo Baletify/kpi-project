@@ -162,7 +162,9 @@
                 @endphp
                     <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="{{ $i % 2 === 0 ? 'FFF2F2F2' : 'FFFFFFFF' }}" class="border-2 bg-blue-100 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center">
                     @if ($target->unit == 'Rp')
-                    {{ $actual ? substr(number_format($actual->target, 0, ',', '.'), 0, 7) : ''}}
+                    {{ $actual ? substr(number_format($actual->target, 0, '.', ','), 0, 7) : ''}}
+                    @elseif ($target->unit == 'Kg')
+                    {{ $actual ? substr(number_format($actual->target, 0, '.', ','), 0, 7) : ''}}
                     @else
                         {{ $actual ? $actual->target : '' }} 
                     @endif
@@ -177,7 +179,9 @@
                         @if ($target->unit === '%')
                             {{ $totalTarget }}%
                         @elseif ($target->unit === 'Rp')
-                        {{ substr(number_format($totalTarget, 0, ',', '.'), 0, 7) }}
+                        {{ substr(number_format($totalTarget, 0, '.', ','), 0, 7) }}
+                        @elseif ($target->unit === 'Kg')
+                        {{ substr(number_format($totalTarget, 0, '.', ','), 0, 7) }}
                         @else
                         {{ $totalTarget }}
                         @endif
@@ -208,7 +212,9 @@
                     
                     <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="{{ $i % 2 === 0 ? 'FFF2F2F2' : 'FFFFFFFF' }}" class="border-2 bg-gray-50 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center">
                     @if ($target->unit == 'Rp')
-                    {{ $actual ? substr(number_format($actual->actual, 0, ',', '.'), 0, 7) : ''}}
+                    {{ $actual ? substr(number_format($actual->actual, 0, '.', ','), 0, 7) : ''}}
+                    @elseif ($target->unit == 'Kg')
+                    {{ $actual ? substr(number_format($actual->target, 0, '.', ','), 0, 7) : ''}}
                     @else
                     {{ $actual ? $actual->actual : ''}}
                     @endif
@@ -223,7 +229,9 @@
                         @if ($target->unit === '%')
                         {{ $totalActual }}%
                         @elseif ($target->unit === 'Rp')
-                        {{ substr(number_format($totalActual, 0, ',', '.'), 0, 7) }}
+                        {{ substr(number_format($totalActual, 0, '.', ','), 0, 7) }}
+                        @elseif ($target->unit === 'Kg')
+                        {{ substr(number_format($totalActual, 0, '.', ','), 0, 7) }}
                         @else
                         {{ $totalActual }}
                         @endif
@@ -338,7 +346,8 @@
                                     @endphp
                                         @if ($role != 'Inputer' && $role != '')
                                             @if ($actual->status !== 'Approved')
-                                            <form action="">
+                                            <form action="{{ route('email.sendEmail') }}" method="POST">
+                                                @csrf
                                                 <div class="p-1 flex justify-start">
                                                     <span class="text-semibold mb-1 text-[12px]">Berikan Komentar      
                                                     </span>
@@ -355,7 +364,12 @@
                                                         </button>
                                                         
                                                     </div>
-                                                    
+                                                    @php
+
+                                                    @endphp
+                                                    <input type="hidden" name="email" id="email" value="{{ $actuals->first()->email }}">
+                                                    <input type="hidden" name="kpi_code" id="kpi_code" value="{{ $target->code }}">
+                                                    <input type="hidden" name="kpi_item" id="kpi_item" value="{{ $target->indicator }}">
                                                 </div>
                                             </form>
                                             @endif

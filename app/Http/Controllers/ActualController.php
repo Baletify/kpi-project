@@ -258,12 +258,15 @@ class ActualController extends Controller
         $input_by = Auth::user()->name;
 
         $actual = '';
+        $target = '';
         $kpi_percentage = '';
         if ($request->record_file == null) {
             $actual = '0';
             $kpi_percentage = '0';
         } else {
-            $cleanedActual = str_replace(['Rp', '.', ' '], '', $request->actual);
+            $cleanedActual = str_replace(',', '', $request->actual);
+            $cleanedTarget = str_replace(',', '', $request->target);
+            $target = floatval($cleanedTarget);
             $actual = floatval($cleanedActual);
             $kpi_percentage = $request->achievement;
         }
@@ -288,7 +291,7 @@ class ActualController extends Controller
             'kpi_item' => $request->kpi_item,
             'kpi_unit' => $request->kpi_unit,
             'review_period' => $request->review_period,
-            'target' => $request->target ?? 0,
+            'target' => $target ?? 0,
             'actual' => $actual ?? 0,
             'kpi_percentage' => $kpi_percentage ?? 0,
             'kpi_calculation' => $request->kpi_calculation,
@@ -348,14 +351,16 @@ class ActualController extends Controller
         } else {
             $semester = '1';
         }
-
         $actual = '';
+        $target = '';
         $kpi_percentage = '';
         if ($request->record_file == null) {
             $actual = '0';
             $kpi_percentage = '0';
         } else {
-            $cleanedActual = str_replace(['Rp', '.', ' '], '', $request->actual);
+            $cleanedActual = str_replace(',', '', $request->actual);
+            $cleanedTarget = str_replace(',', '', $request->target);
+            $target = floatval($cleanedTarget);
             $actual = floatval($cleanedActual);
             $kpi_percentage = $request->achievement;
         }
@@ -381,7 +386,7 @@ class ActualController extends Controller
             'kpi_item' => $request->kpi_item,
             'kpi_unit' => $request->kpi_unit,
             'review_period' => $request->review_period,
-            'target' => $request->target ?? 0,
+            'target' => $target ?? 0,
             'actual' => $actual ?? 0,
             'kpi_percentage' => $kpi_percentage ?? 0,
             'kpi_calculation' => $request->kpi_calculation,

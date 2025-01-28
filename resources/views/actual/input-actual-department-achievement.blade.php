@@ -211,8 +211,8 @@
             const zeroValue = selectedOption.getAttribute('data-zero');
             const unitValue = selectedOption.getAttribute('data-unit');
     
-            let target = parseFloat(targetField.value.replace(/,/g, ''));
-            let actual = parseFloat(actualField.value.replace(/,/g, '').replace(/[^0-9.]/g, ''));
+            let target = parseFloat(targetField.value.replace(/,/g, '').replace(/[^0-9.%]/g, ''));
+            let actual = parseFloat(actualField.value.replace(/,/g, '').replace(/[^0-9.%]/g, ''));
             
     
             if (zeroValue === 'yes' && unitValue == 'Freq') {
@@ -449,7 +449,7 @@
         function formatCurrency(value) {
             value = value.replace(/[^0-9]/g, ''); // Remove non-numeric characters
             const number = parseFloat(value);
-            return number.toLocaleString('en-US', { maximumFractionDigits: 2 });
+            return number.toLocaleString('en-US', { maximumFractionDigits: 2, minimumFractionDigits: 0 });
         }
         </script>
   

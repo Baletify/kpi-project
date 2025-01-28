@@ -110,110 +110,120 @@
                         <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="{{ $i % 2 === 0 ? 'FFF2F2F2' : 'FFFFFFFF' }}" class="border-2 text-center border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-2" rowspan="4">
                             {{ $target->weighting }}
                         </td>
-                        <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="{{ $i % 2 === 0 ? 'FFF2F2F2' : 'FFFFFFFF' }}" class="border-2 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-2 text-center bg-blue-100">Target</td>
-                        @foreach ($months as $month => $monthName)
-                @php
-                    $actual = $actuals->first(function($item) use ($target, $month) {
-                        return \Carbon\Carbon::parse($item->date)->format('m') == $month && $item->kpi_code == $target->code;
-                    });
-                @endphp
-                <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="{{ $i % 2 === 0 ? 'FFF2F2F2' : 'FFFFFFFF' }}" class="border-2 bg-blue-100 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center">@if ($target->unit == 'Rp')
-                    {{ $actual ? 'Rp. ' . substr(number_format($actual->target, 0, ',', '.'), 0, 7) : ''}}
-                    @else
-                        {{ $actual ? $actual->target : '' }} </td>
-                    @endif
-                </td>
-            @endforeach
-                    
-                    @php
-                        $totalTarget = $totals[$target->code]['total_target'] ?? 0;
-                    @endphp
-                @if ($totalTarget >= 0)
-                     <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="{{ $i % 2 === 0 ? 'FFF2F2F2' : 'FFFFFFFF' }}" class="border-2 bg-blue-100 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center">
-                    @if ($target->unit === '%')
-                        {{ $totalTarget }}%
-                    @elseif ($target->unit === 'Rp')
-                        Rp. {{ substr(number_format($totalTarget, 0, ',', '.'), 0, 7) }}
-                    @else
-                        {{ $totalTarget }}
-                    @endif
-                     </td>
-                 @else
-                     <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="{{ $i % 2 === 0 ? 'FFF2F2F2' : 'FFFFFFFF' }}" class="border-2 bg-blue-100 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center"></td>
-                 @endif
-                    @php
-                        $totalWeightingAchievement = $totals[$target->code]['total_achievement_weight'] ?? 0 ;
-                        
-
-                        $sumTotalWeightingAchievement += $totalWeightingAchievement;
-                    @endphp
-                     @if ($totalWeightingAchievement >= 0)
-                     <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="{{ $i % 2 === 0 ? 'FFF2F2F2' : 'FFFFFFFF' }}" class="border-2 bg-blue-100 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center" rowspan="4">{{ number_format($totalWeightingAchievement, 1) }}%</td>
-                    @else
-                     <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="{{ $i % 2 === 0 ? 'FFF2F2F2' : 'FFFFFFFF' }}" class="border-2 bg-blue-100 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center" rowspan="4"></td>
-                    @endif
-                    </tr>
-                    <tr class="bg-gray-50">
-                        <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="{{ $i % 2 === 0 ? 'FFF2F2F2' : 'FFFFFFFF' }}" class="border-2 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-2 text-center">Actual</td>
+                        <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="{{ $i % 2 === 0 ? 'FFF2F2F2' : 'FFFFFFFF' }}" class="border-2 bg-blue-100  border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center">Target</td>
                         @foreach ($months as $month => $monthName)
                     @php
                         $actual = $actuals->first(function($item) use ($target, $month) {
                             return \Carbon\Carbon::parse($item->date)->format('m') == $month && $item->kpi_code == $target->code;
                         });
                     @endphp
-                    <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="{{ $i % 2 === 0 ? 'FFF2F2F2' : 'FFFFFFFF' }}" class="border-2 bg-gray-50 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center">
-                    @if ($target->unit == 'Rp')
-                        {{ $actual ? 'Rp. ' . substr(number_format($actual->actual, 0, ',', '.'), 0, 7) : ''}}
-                    @else
-                        {{ $actual ? $actual->actual : ''}}
-                    @endif
-                    </td>
-                    @endforeach
-
-                    @php
-                         $totalActual = $totals[$target->code]['total_actual'] ?? 0;
-                    @endphp
-                    @if ($totalTarget >= 0)
-                     <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="{{ $i % 2 === 0 ? 'FFF2F2F2' : 'FFFFFFFF' }}" class="border-2 bg-gray-50 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center">
-                        @if ($target->unit === '%')
-                        {{ $totalActual }}%
-                        @elseif ($target->unit === 'Rp')
-                        Rp. {{ substr(number_format($totalActual, 0, ',', '.'), 0, 7) }}
+                        <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="{{ $i % 2 === 0 ? 'FFF2F2F2' : 'FFFFFFFF' }}" class="border-2 bg-blue-100 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center">
+                        @if ($target->unit == 'Rp')
+                        {{ $actual ? substr(number_format($actual->target, 0, '.', ','), 0, 7) : ''}}
+                        @elseif ($target->unit == 'Kg')
+                        {{ $actual ? substr(number_format($actual->target, 0, '.', ','), 0, 7) : ''}}
                         @else
-                        {{ $totalActual }}
+                            {{ $actual ? $actual->target : '' }} 
                         @endif
-                     </td>
-                 @else
-                     <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="{{ $i % 2 === 0 ? 'FFF2F2F2' : 'FFFFFFFF' }}" class="border-2 bg-gray-50 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center"></td>
-                 @endif
-                    </tr>
-                    <tr class="bg-blue-100">
-                        <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="{{ $i % 2 === 0 ? 'FFF2F2F2' : 'FFFFFFFF' }}" class="border-2 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-2 text-center">%</td>
-                        @foreach ($months as $month => $monthName)
-                    @php
-                        $actual = $actuals->first(function($item) use ($target, $month) {
-                            return \Carbon\Carbon::parse($item->date)->format('m') == $month && $item->kpi_code == $target->code;
-                        });
-                    @endphp
-                    <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="{{ $i % 2 === 0 ? 'FFF2F2F2' : 'FFFFFFFF' }}" class="border-2 bg-blue-100 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center">{{ $actual ? $actual->kpi_percentage : '' }}</td>
-                    @endforeach
-                    @php
-                         $totalPercentage = $totals[$target->code]['percentageCalc'] ?? 0;
-                    @endphp
+                        </td>
+                        @endforeach
+                        
+                        @php
+                            $totalTarget = $totals[$target->code]['total_target'] ?? 0;
+                        @endphp
                     @if ($totalTarget >= 0)
-                     <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="{{ $i % 2 === 0 ? 'FFF2F2F2' : 'FFFFFFFF' }}" class="border-2 bg-blue-100 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center">{{ number_format($totalPercentage) }}%</td>
-                 @else
-                     <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="{{ $i % 2 === 0 ? 'FFF2F2F2' : 'FFFFFFFF' }}" class="border-2 bg-blue-100 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center"></td>
-                 @endif
+                         <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="{{ $i % 2 === 0 ? 'FFF2F2F2' : 'FFFFFFFF' }}" class="border-2 bg-blue-100 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center">
+                            @if ($target->unit === '%')
+                                {{ $totalTarget }}%
+                            @elseif ($target->unit === 'Rp')
+                            {{ substr(number_format($totalTarget, 0, '.', ','), 0, 7) }}
+                            @elseif ($target->unit === 'Kg')
+                            {{ substr(number_format($totalTarget, 0, '.', ','), 0, 7) }}
+                            @else
+                            {{ $totalTarget }}
+                            @endif
+                         </td>
+                     @else
+                         <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="{{ $i % 2 === 0 ? 'FFF2F2F2' : 'FFFFFFFF' }}" class="border-2 bg-blue-100 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center"></td>
+                     @endif
+                        @php
+                            $totalWeightingAchievement = $totals[$target->code]['total_achievement_weight'] ?? 0;
+                            $sumTotalWeightingAchievement += $totalWeightingAchievement;
+                        @endphp
+    
+    
+                         @if ($totalWeightingAchievement >= 0)
+                         <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="{{ $i % 2 === 0 ? 'FFF2F2F2' : 'FFFFFFFF' }}" class="border-2 bg-blue-100 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center" rowspan="4">{{ number_format($totalWeightingAchievement, 1) }}%</td>
+                        @else
+                         <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="{{ $i % 2 === 0 ? 'FFF2F2F2' : 'FFFFFFFF' }}" class="border-2 bg-blue-100 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center" rowspan="4"></td>
+                        @endif
                     </tr>
-                    <tr class="bg-gray-50">
-                        <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="{{ $i % 2 === 0 ? 'FFF2F2F2' : 'FFFFFFFF' }}" class="border-2 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-2 text-center">Rekaman</td>
+                    <tr>
+                        <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="{{ $i % 2 === 0 ? 'FFF2F2F2' : 'FFFFFFFF' }}" class="border-2 bg-gray-50 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center">Actual</td>
                         @foreach ($months as $month => $monthName)
-                    @php
-                        $actual = $actuals->first(function($item) use ($target, $month) {
-                            return \Carbon\Carbon::parse($item->date)->format('m') == $month && $item->kpi_code == $target->code;
-                        });
-                    @endphp
+                        @php
+                            $actual = $actuals->first(function($item) use ($target, $month) {
+                                return \Carbon\Carbon::parse($item->date)->format('m') == $month && $item->kpi_code == $target->code;
+                            });
+                        @endphp
+                        
+                        <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="{{ $i % 2 === 0 ? 'FFF2F2F2' : 'FFFFFFFF' }}" class="border-2 bg-gray-50 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center">
+                        @if ($target->unit == 'Rp')
+                        {{ $actual ? substr(number_format($actual->actual, 0, '.', ','), 0, 7) : ''}}
+                        @elseif ($target->unit == 'Kg')
+                        {{ $actual ? substr(number_format($actual->target, 0, '.', ','), 0, 7) : ''}}
+                        @else
+                        {{ $actual ? $actual->actual : ''}}
+                        @endif
+                        </td>
+                        @endforeach
+    
+                        @php
+                             $totalActual = $totals[$target->code]['total_actual'] ?? 0;
+                        @endphp
+                        @if ($totalTarget >= 0)
+                         <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="{{ $i % 2 === 0 ? 'FFF2F2F2' : 'FFFFFFFF' }}" class="border-2 bg-gray-50 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center">
+                            @if ($target->unit === '%')
+                            {{ $totalActual }}%
+                            @elseif ($target->unit === 'Rp')
+                            {{ substr(number_format($totalActual, 0, '.', ','), 0, 7) }}
+                            @elseif ($target->unit === 'Kg')
+                            {{ substr(number_format($totalActual, 0, '.', ','), 0, 7) }}
+                            @else
+                            {{ $totalActual }}
+                            @endif
+                         </td>
+                     @else
+                         <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="{{ $i % 2 === 0 ? 'FFF2F2F2' : 'FFFFFFFF' }}" class="border-2 bg-gray-50 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center"></td>
+                     @endif
+                    </tr>
+                    <tr>
+                        <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="{{ $i % 2 === 0 ? 'FFF2F2F2' : 'FFFFFFFF' }}" class="border-2 bg-blue-100 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center">%</td>
+                        @foreach ($months as $month => $monthName)
+                        @php
+                            $actual = $actuals->first(function($item) use ($target, $month) {
+                                return \Carbon\Carbon::parse($item->date)->format('m') == $month && $item->kpi_code == $target->code;
+                            });
+                        @endphp
+                        <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="{{ $i % 2 === 0 ? 'FFF2F2F2' : 'FFFFFFFF' }}" class="border-2 bg-blue-100 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center">{{ $actual ? $actual->kpi_percentage : '' }}</td>
+                        @endforeach
+                        @php
+                             $totalPercentage = $totals[$target->code]['percentageCalc'] ?? 0;
+                        @endphp
+                        @if ($totalTarget >= 0)
+                         <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="{{ $i % 2 === 0 ? 'FFF2F2F2' : 'FFFFFFFF' }}" class="border-2 bg-blue-100 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center">{{ number_format($totalPercentage) }}%</td>
+                     @else
+                         <td class="border-2 bg-blue-100 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center"></td>
+                     @endif
+                    </tr>
+                    <tr>
+                        <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="{{ $i % 2 === 0 ? 'FFF2F2F2' : 'FFFFFFFF' }}" class="border-2 bg-gray-50 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center">Rekaman</td>
+                        @foreach ($months as $month => $monthName)
+                        @php
+                            $actual = $actuals->first(function($item) use ($target, $month) {
+                                return \Carbon\Carbon::parse($item->date)->format('m') == $month && $item->kpi_code == $target->code;
+                            });
+                        @endphp
                     <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="{{ $i % 2 === 0 ? 'FFF2F2F2' : 'FFFFFFFF' }}" class="border-2 bg-gray-50 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center hover:underline">
                         @if ($actual)
                             @if ($actual->record_file)
@@ -293,7 +303,8 @@
                                     @endphp
                                         @if ($role != 'Inputer' && $role != '')
                                             @if ($actual->status !== 'Approved')
-                                            <form action="">
+                                            <form action="{{ route('email.sendEmail') }}" method="POST">
+                                                @csrf
                                                 <div class="p-1 flex justify-start">
                                                     <span class="text-semibold mb-1 text-[12px]">Berikan Komentar      
                                                     </span>
@@ -310,8 +321,9 @@
                                                         </button>
                                                         
                                                     </div>
-                                                    
                                                 </div>
+                                                <input type="hidden" name="kpi_code" id="kpi_code" value="{{ $target->code }}">
+                                                <input type="hidden" name="kpi_item" id="kpi_item" value="{{ $target->indicator }}">
                                             </form>
                                             @endif
                                         @endif

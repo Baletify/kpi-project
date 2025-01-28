@@ -30,7 +30,6 @@ class PostMail extends Mailable
     {
         return new Envelope(
             subject: $this->details['title'],
-            from: $this->details['from'],
         );
     }
 
