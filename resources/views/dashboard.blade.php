@@ -132,7 +132,50 @@
                   </div>  
                       
             </div>
-            <div class="p-1 bg-gray-100 mt-2 grid lg:grid-cols-1 border-gray-200 rounded-md gap-4">
+            <div class="mb-2 bg-gray-200 rounded-md min-h-[200px] mr-1">
+                <div class="flex justify-between">
+                    <div class="p-2">
+                        <span class="p-4 font-bold text-xl">Standar KPI & Panduan Aplikasi KPI</span>
+                    </div>
+                    @if (auth()->user()->role == 'Superadmin' ||  auth()->user()->role == 'Approver' )
+                    <div class="p-2">
+                        <a href="/kpi-requirement/create-requirement">
+                            <button class="bg-blue-500 rounded-md text-white p-1 font-medium">Upload</button>
+                        </a>
+                    </div>
+                    @endif
+                </div>
+                <div class="flex justify-center mt-2">
+                    <button id="viewDocumentBtn" class="text-white bg-blue-500 p-2 rounded-md">View Standar KPI</button>
+                </div>
+                <div class="flex justify-center mt-4">
+                    <button id="viewTutorialBtn" class="text-white bg-blue-500 p-2 rounded-md">Panduan Aplikasi KPI</button>
+                </div>
+            </div>
+            
+            <div class="mb-2  bg-gray-200 rounded-md min-h-[200px]">
+                <div class="px-2 py-1">
+                    <span class="p-4 font-bold text-xl">Daftar Karyawan</span>
+                </div>
+                <div class="py-2 px-2 overflow-y-auto max-h-[240px]">
+                    <table class="table-auto w-full">
+                        <thead>
+                        <tr>
+                            <th style="width: 3%;" class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-white py-1 px-4 bg-blue-700">No.</th>
+                            <th style="width: 45%;" class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-white py-1 px-4 bg-blue-700">Nama</th>
+                            <th style="width: 20%;" class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-white py-1 px-4 bg-blue-700">Posisi</th>
+                            <th style="width: 15%;" class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-white py-1 px-4 bg-blue-700">Dept</th> 
+                        </tr>
+                    </thead>
+                    
+                    <tbody id="employeeTableBody">
+
+                    </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="p-0 my-1 bg-gray-100 mt-2 grid lg:grid-cols-1 border-gray-200 rounded-md gap-4">
                 <div class="bg-gray-200 rounded-md">
                     <div class="px-2 py-2 flex justify-between">
                         <div class="">
@@ -173,48 +216,7 @@
                 </div>
                 
             </div>
-            <div class="mb-2  bg-gray-200 rounded-md min-h-[200px]">
-                <div class="px-2 py-1">
-                    <span class="p-4 font-bold text-xl">Daftar Karyawan</span>
-                </div>
-                <div class="py-2 px-2 overflow-y-auto max-h-[240px]">
-                    <table class="table-auto w-full">
-                        <thead>
-                        <tr>
-                            <th style="width: 3%;" class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-white py-1 px-4 bg-blue-700">No.</th>
-                            <th style="width: 45%;" class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-white py-1 px-4 bg-blue-700">Nama</th>
-                            <th style="width: 20%;" class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-white py-1 px-4 bg-blue-700">Posisi</th>
-                            <th style="width: 15%;" class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-white py-1 px-4 bg-blue-700">Dept</th> 
-                        </tr>
-                    </thead>
-                    
-                    <tbody id="employeeTableBody">
-
-                    </tbody>
-                    </table>
-                </div>
-            </div>
             
-            <div class="mb-2 bg-gray-200 rounded-md min-h-[200px] mr-1">
-                <div class="flex justify-between">
-                    <div class="p-2">
-                        <span class="p-4 font-bold text-xl">Standar KPI & Panduan Aplikasi KPI</span>
-                    </div>
-                    @if (auth()->user()->role == 'Superadmin' ||  auth()->user()->role == 'Approver' )
-                    <div class="p-2">
-                        <a href="/kpi-requirement/create-requirement">
-                            <button class="bg-blue-500 rounded-md text-white p-1 font-medium">Upload</button>
-                        </a>
-                    </div>
-                    @endif
-                </div>
-                <div class="flex justify-center mt-2">
-                    <button id="viewDocumentBtn" class="text-white bg-blue-500 p-2 rounded-md">View Standar KPI</button>
-                </div>
-                <div class="flex justify-center mt-4">
-                    <button id="viewTutorialBtn" class="text-white bg-blue-500 p-2 rounded-md">Panduan Aplikasi KPI</button>
-                </div>
-            </div>
             <!-- Modal -->
             <div id="documentModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center hidden">
             <div class="bg-white rounded-lg p-4 w-1/2">
