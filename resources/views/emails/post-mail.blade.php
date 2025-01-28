@@ -38,6 +38,11 @@
             <td>:</td>
             <td>{{ $details['comment'] }}</td>
         </tr>
+        <tr>
+            <td>Revised by</td>
+            <td>:</td>
+            <td>{{ $details['revised_by'] }}</td>
+        </tr>
     </table>
 </body>
 </html>

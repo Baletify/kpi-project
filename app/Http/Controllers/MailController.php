@@ -11,7 +11,9 @@ class MailController extends Controller
 {
     public function sendEmail(Request $request)
     {
+        $from = Auth::user()->name;
         $details = [
+            'revised_by' => $from,
             'email' => $request->email,
             'title' => 'Revisi Data Pendukung KPI',
             'msg' => 'Dengan Hormat saya sampaikan bahwa terjadi kesalahan pada data pendukung KPI yang telah diinputkan. Berikut ini adalah data yang perlu direvisi:',
