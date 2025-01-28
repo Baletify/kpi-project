@@ -37,13 +37,38 @@
                     '11' => 'November',
                     '12' => 'December',
                 ];
+
+                $formatKgValue = function ($value) {
+                    // Convert the value to a string
+                    $valueStr = (string) $value;
+
+                    // Find the position of the decimal point
+                    $decimalPos = strpos($valueStr, '.');
+
+                    // If there is no decimal point, return the value as is
+                    if ($decimalPos === false) {
+                        return number_format($value);
+                    }
+
+                    // Get the number of digits before the decimal point
+                    $digitsBeforeDecimal = $decimalPos;
+
+                    // If there are more than 3 digits before the decimal point, return the value as is
+                    if ($digitsBeforeDecimal > 3) {
+                        return number_format($value);
+                    }
+
+                    // Otherwise, format the value with 1 decimal place
+                    return number_format($value, 1);
+                }
                 @endphp
                 <option value="">-- Pilih Bulan --</option>
                 @foreach ($months as $monthNumber => $monthName)
                 @php
-                    $targetColumn = 'target_unit_' . ltrim($monthNumber, '0');
+                   $targetColumn = 'target_unit_' . ltrim($monthNumber, '0');
+                   $targetValue = $formatKgValue($target->$targetColumn);                
                 @endphp
-                <option value="{{ $monthNumber }}" data-target="{{ $target->{$targetColumn} ?? '' }}" data-unit="{{ $target->unit }}" data-rp="{{ $target->unit == 'Rp' ? 'yes' : 'no' }}" data-zero="{{ $target->{$targetColumn} == 0 ? 'yes' : 'no' }}">
+                <option value="{{ $monthNumber }}" data-target="{{ $targetValue ?? '' }}" data-unit="{{ $target->unit }}" data-rp="{{ $target->unit == 'Rp' ? 'yes' : 'no' }}" data-kg="{{ $target->unit == 'Kg' ? 'yes' : 'no' }}" data-zero="{{ $target->{$targetColumn} == 0 ? 'yes' : 'no' }}">
                     {{ $monthName }}
                 </option>
                 @endforeach
@@ -186,10 +211,8 @@
             const zeroValue = selectedOption.getAttribute('data-zero');
             const unitValue = selectedOption.getAttribute('data-unit');
     
-            let target = parseFloat(targetField.value.replace('%', ''));
-            let actual = parseFloat(actualField.value);
-
-            console.log(zeroValue);
+            let target = parseFloat(targetField.value.replace(/,/g, ''));
+            let actual = parseFloat(actualField.value.replace(/,/g, '').replace(/[^0-9.]/g, ''));
             
     
             if (zeroValue === 'yes' && unitValue == 'Freq') {
@@ -416,17 +439,17 @@
             if (isCurrency) {
                 input.value = input.value.replace(/[^0-9]/g, ''); // Remove non-numeric characters for currency
             } else {
-                input.value = input.value.replace(/[^0-9%]/g, ''); // Allow numeric and % characters
+                input.value = input.value.replace(/[^0-9%.]/g, ''); // Allow numeric and % characters
             }
             if (input.value.length > 5) {
-                input.value = input.value.slice(0, 5);
+                input.value = input.value.slice(0, 7);
             }
         }
 
         function formatCurrency(value) {
             value = value.replace(/[^0-9]/g, ''); // Remove non-numeric characters
             const number = parseFloat(value);
-            return 'Rp ' + new Intl.NumberFormat('id-ID', { maximumSignificantDigits: 5 }).format(number);
+            return number.toLocaleString('en-US', { maximumFractionDigits: 2 });
         }
         </script>
   
