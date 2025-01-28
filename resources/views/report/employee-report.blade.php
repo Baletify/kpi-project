@@ -277,7 +277,7 @@
                                 @elseif ($actual->status == 'Checked 1')
                                 <span class="text-orange-300">Check 1</span>
                                 @elseif ($actual->status == 'Checked 2')
-                                <span class="text-lime-800">Check 2</span>
+                                <span class="text-indigo-700">Check 2</span>
                                 @elseif ($actual->status == 'Mng Approve')
                                 <span class="text-blue-500">Review</span>
                                 @elseif ($actual->status == 'Filled')
@@ -316,15 +316,15 @@
                                     </div>
                                     <div id="checkbox-container-{{ $modalId }}" class="p-1 flex justify-center gap-3">
                                         <label class="text-[14px]">
-                                            <input type="checkbox" class="status-checkbox" data-actual-id="{{ $actual->actual_id }}" data-status="Checked 1" {{ $actual->status == 'Checked 1' || $actual->status == 'Checked 2' || $actual->status == 'Checked 3' || $actual->status == 'Approved' ? 'checked' : '' }} {{ $role == 'Checker 1' || $role == 'Checker WS' || $role == 'Checker Factory' ? '' : 'disabled' }}>
+                                            <input type="checkbox" class="status-checkbox" data-actual-id="{{ $actual->actual_id }}" data-status="Checked 1" {{ $actual->status == 'Checked 1' || $actual->status == 'Checked 2' || $actual->status == 'Mng Approve' || $actual->status == 'Approved' ? 'checked' : '' }} {{ $role == 'Checker 1' || $role == 'Checker WS' || $role == 'Checker Factory' ? '' : 'disabled' }}>
                                             Check 1
                                         </label>
                                         <label class="text-[14px]">
-                                            <input type="checkbox" class="status-checkbox" data-actual-id="{{ $actual->actual_id }}" data-status="Checked 2" {{ $actual->status == 'Checked 2' || $actual->status == 'Checked 3' || $actual->status == 'Approved' ? 'checked' : '' }} {{ $role == 'Checker Div 1' || $role == 'Checker Div 2' && $actual->status == 'Checked 1' ? '' : 'disabled' }}>
+                                            <input type="checkbox" class="status-checkbox" data-actual-id="{{ $actual->actual_id }}" data-status="Checked 2" {{ $actual->status == 'Checked 2' || $actual->status == 'Mng Approve' || $actual->status == 'Approved' ? 'checked' : '' }} {{ $role == 'Checker Div 1' || $role == 'Checker Div 2' && $actual->status == 'Checked 1' ? '' : 'disabled' }}>
                                             Check 2
                                         </label>
                                         <label class="text-[14px]">
-                                            <input type="checkbox" class="status-checkbox" data-actual-id="{{ $actual->actual_id }}" data-status="Mng Approve" {{ $actual->status == 'Checked 2' || $actual->status == 'Approved' ? 'checked' : '' }} {{ $role == 'Mng Approver'  ? '' : 'disabled' }}>
+                                            <input type="checkbox" class="status-checkbox" data-actual-id="{{ $actual->actual_id }}" data-status="Mng Approve" {{$actual->status == 'Mng Approve' || $actual->status == 'Approved' ? 'checked' : '' }} {{ $role == 'Mng Approver'  ? '' : 'disabled' }}>
                                             Check 3
                                         </label>
                                         <label class="text-[14px]">
