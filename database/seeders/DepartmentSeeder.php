@@ -31,7 +31,7 @@ class DepartmentSeeder extends Seeder
                 'code' => 'GA',
             ],
             [
-                'name' => 'Acc & Finance',
+                'name' => 'Accounting',
                 'code' => 'ACC',
             ],
             [
@@ -101,7 +101,11 @@ class DepartmentSeeder extends Seeder
             [
                 'name' => 'Div 2',
                 'code' => 'DIV2',
-            ]
+            ],
+            [
+                'name' => 'Finance',
+                'code' => 'FIN',
+            ],
 
         ];
 

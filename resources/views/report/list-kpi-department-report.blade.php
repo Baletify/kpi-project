@@ -8,7 +8,7 @@
         @endphp
         <div class="flex justify-between">
         <div class="p-0">
-            <span class="font-bold text-2xl">Summary KPI Departemen</span>
+            <span class="font-bold text-2xl">Summary KPI All Department</span>
         </div>
         <div class="flex justify-end items-center mb-2">
         </div>

@@ -1255,7 +1255,7 @@ class ReportController extends Controller
 
         // dd($targets);
 
-        return view('report.list-kpi-department-report', ['title' => 'Report', 'desc' => 'KPI Dept Report', 'targets' => $targets]);
+        return view('report.list-kpi-department-report', ['title' => 'Report', 'desc' => 'Summary KPI All Department', 'targets' => $targets]);
     }
 
     public function departmentTargetReport(Request $request)
@@ -1279,6 +1279,6 @@ class ReportController extends Controller
 
         // dd($actuals);
 
-        return view('report.target-kpi-department-report', ['title' => 'Department Target Report', 'desc' => 'Summary', 'actuals' => $actuals, 'targets' => $targets]);
+        return view('report.target-kpi-department-report', ['title' => 'Summary KPI', 'desc' => 'All Department', 'actuals' => $actuals, 'targets' => $targets]);
     }
 }

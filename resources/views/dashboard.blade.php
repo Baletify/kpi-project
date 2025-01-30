@@ -132,7 +132,7 @@
                   </div>  
                       
             </div>
-            <div class="mb-2 bg-gray-200 rounded-md min-h-[200px] mr-1">
+            <div class="mt-2 bg-gray-200 rounded-md min-h-[200px] mx-2">
                 <div class="flex justify-between">
                     <div class="p-2">
                         <span class="p-4 font-bold text-xl">Standar KPI & Panduan Aplikasi KPI</span>
@@ -175,8 +175,7 @@
                 </div>
             </div>
 
-            <div class="p-0 my-1 bg-gray-100 mt-2 grid lg:grid-cols-1 border-gray-200 rounded-md gap-4">
-                <div class="bg-gray-200 rounded-md">
+                <div class="mb-2  bg-gray-200 rounded-md min-h-[200px] mx-2">
                     <div class="px-2 py-2 flex justify-between">
                         <div class="">
                             <p class="p-0.5 font-bold text-xl">Notifikasi:</p>
@@ -212,10 +211,27 @@
                                 <p class="text-sm text-gray-700">{{ $notification->content ?? '' }}</p>
                             </div>
                         </li>
+                        <li>
+                            <div class="flex justify-between items-center p-2">
+                                <div class="flex gap-x-4">
+                                    <div class="flex gap-x-2">
+                                        <div class="">
+                                            <p class="text-base font-bold text-gray-900">Approval Request: </p>
+                                        </div>
+                                        <div class="">
+                                            <a href="#">
+                                                <p x-data="{ openList: false }" class="text-base font-semibold text-blue-500 underline" @click="openList = !open"> {{ $approveList }} Requests.</p>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div x-show-list="openList" class="flex bg-blue-500" x-transition>
+                                    test
+                                </div>
+                            </div>
+                        </li>
                     </ul>
                 </div>
-                
-            </div>
             
             <!-- Modal -->
             <div id="documentModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center hidden">
