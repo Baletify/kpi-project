@@ -222,30 +222,30 @@
                             </div>
                         </li>
                         <li>
-                            <table class="w-3/4">
+                            <table class="w-full">
+                            <tr>
+                                <td style="width: 55%">
+                                    <p class="text-base font-bold text-gray-900">Approval Request For KPI Dept</p>
+                                </td>
+                                <td style="width: 4%">
+                                    <p class="text-base font-bold text-gray-900">:</p>
+                                </td>
+                                <td style="width: 41%" class="">
+                                    <button id="viewApprovalDeptList" type="button">
+                                        <p class="text-base font-semibold text-blue-500 underline"> {{ $approveListDept }} Items</p>
+                                    </button>
+                                </td>
+                            </tr>
                             <tr class="">
                                 <td style="width: 36%">
-                                    <p class="text-base font-bold text-gray-900">Approval Request</p>
+                                    <p class="text-base font-bold text-gray-900">Approval Request For KPI Individual</p>
                                 </td>
                                 <td style="width: 4%">
                                     <p class="text-base font-bold text-gray-900">:</p>
                                 </td>
                                 <td style="width: 52%" class="">
                                     <button id="viewApprovalList" type="button">
-                                        <p class="text-base font-semibold text-blue-500 underline"> {{ $approveList }} Requests.</p>
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td style="width: 36%">
-                                    <p class="text-base font-bold text-gray-900">Dept Approval Request</p>
-                                </td>
-                                <td style="width: 4%">
-                                    <p class="text-base font-bold text-gray-900">:</p>
-                                </td>
-                                <td style="width: 52%" class="">
-                                    <button id="viewApprovalDeptList" type="button">
-                                        <p class="text-base font-semibold text-blue-500 underline"> {{ $approveListDept }} Requests.</p>
+                                        <p class="text-base font-semibold text-blue-500 underline"> {{ $approveList }} Items</p>
                                     </button>
                                 </td>
                             </tr>
