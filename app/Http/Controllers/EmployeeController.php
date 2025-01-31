@@ -156,6 +156,29 @@ class EmployeeController extends Controller
                 ->whereYear('department_actuals.created_at', '=', $year)
                 ->whereIn('departments.name', $hrdDept)
                 ->count();
+
+            $approveListGroup = DB::table('actuals')
+                ->join('employees', 'actuals.employee_id', '=', 'employees.id')
+                ->join('departments', 'employees.department_id', '=', 'departments.id')
+                ->select('departments.name as department', DB::raw('count(*) as total'), 'departments.id as department_id')
+                ->where('approved_by', '=', null)
+                ->whereMonth('actuals.created_at', '=', $month)
+                ->whereYear('actuals.created_at', '=', $year)
+                ->whereIn('departments.name', $hrdDept)
+                ->groupBy('departments.name', 'departments.id')
+                ->get();
+
+            $approveListDeptGroup = DB::table('department_actuals')
+                ->join('departments', 'department_actuals.department_id', '=', 'departments.id')
+                ->select('departments.name as department', DB::raw('count(*) as total'), 'departments.id as department_id')
+                ->where('approved_by', '=', null)
+                ->whereMonth('department_actuals.created_at', '=', $month)
+                ->whereYear('department_actuals.created_at', '=', $year)
+                ->whereIn('departments.name', $hrdDept)
+                ->groupBy('departments.name', 'departments.id')
+                ->get();
+
+            // dd($approveListGroup, $approveListDeptGroup);
         } elseif ($role == 'Checker 1' || $role == 'Checker Factory' || $role == 'Checker WS') {
             $approveList = DB::table('actuals')
                 ->join('employees', 'actuals.employee_id', '=', 'employees.id')
@@ -175,6 +198,28 @@ class EmployeeController extends Controller
                 ->whereYear('department_actuals.created_at', '=', $year)
                 ->where('departments.id', '=', $departmentID)
                 ->count();
+
+            $approveListGroup = DB::table('actuals')
+                ->join('employees', 'actuals.employee_id', '=', 'employees.id')
+                ->join('departments', 'employees.department_id', '=', 'departments.id')
+                ->select('departments.name as department', DB::raw('count(*) as total'), 'departments.id as department_id')
+                ->where('asst_mng_checked_by', '=', null)
+                ->whereMonth('actuals.created_at', '=', $month)
+                ->whereYear('actuals.created_at', '=', $year)
+                ->where('departments.id', '=', $departmentID)
+                ->groupBy('departments.name', 'departments.id')
+                ->get();
+
+            $approveListDeptGroup = DB::table('department_actuals')
+                ->join('departments', 'department_actuals.department_id', '=', 'departments.id')
+                ->select('departments.name as department', DB::raw('count(*) as total'), 'departments.id as department_id')
+                ->where('asst_mng_checked_by', '=', null)
+                ->whereMonth('department_actuals.created_at', '=', $month)
+                ->whereYear('department_actuals.created_at', '=', $year)
+                ->where('departments.id', '=', $departmentID)
+                ->groupBy('departments.name', 'departments.id')
+                ->get();
+            //
         } elseif ($role == 'Checker Div 1') {
             $approveList = DB::table('actuals')
                 ->join('employees', 'actuals.employee_id', '=', 'employees.id')
@@ -194,6 +239,27 @@ class EmployeeController extends Controller
                 ->whereYear('department_actuals.created_at', '=', $year)
                 ->whereIn('departments.name', $div1ClerkDept)
                 ->count();
+
+            $approveListGroup = DB::table('actuals')
+                ->join('employees', 'actuals.employee_id', '=', 'employees.id')
+                ->join('departments', 'employees.department_id', '=', 'departments.id')
+                ->select('departments.name as department', DB::raw('count(*) as total'), 'departments.id as department_id')
+                ->where('checked_by', '=', null)
+                ->whereMonth('actuals.created_at', '=', $month)
+                ->whereYear('actuals.created_at', '=', $year)
+                ->whereIn('departments.name', $div1ClerkDept)
+                ->groupBy('departments.name', 'departments.id')
+                ->get();
+
+            $approveListDeptGroup = DB::table('department_actuals')
+                ->join('departments', 'department_actuals.department_id', '=', 'departments.id')
+                ->select('departments.name as department', DB::raw('count(*) as total'), 'departments.id as department_id')
+                ->where('checked_by', '=', null)
+                ->whereMonth('department_actuals.created_at', '=', $month)
+                ->whereYear('department_actuals.created_at', '=', $year)
+                ->whereIn('departments.name', $div1ClerkDept)
+                ->groupBy('departments.name', 'departments.id')
+                ->get();
         } elseif ($role == 'Checker Div 2') {
             $approveList = DB::table('actuals')
                 ->join('employees', 'actuals.employee_id', '=', 'employees.id')
@@ -213,6 +279,27 @@ class EmployeeController extends Controller
                 ->whereYear('department_actuals.created_at', '=', $year)
                 ->whereIn('departments.name', $div2ClerkDept)
                 ->count();
+
+            $approveListGroup = DB::table('actuals')
+                ->join('employees', 'actuals.employee_id', '=', 'employees.id')
+                ->join('departments', 'employees.department_id', '=', 'departments.id')
+                ->select('departments.name as department', DB::raw('count(*) as total'), 'departments.id as department_id')
+                ->where('checked_by', '=', null)
+                ->whereMonth('actuals.created_at', '=', $month)
+                ->whereYear('actuals.created_at', '=', $year)
+                ->whereIn('departments.name', $div2ClerkDept)
+                ->groupBy('departments.name', 'departments.id')
+                ->get();
+
+            $approveListDeptGroup = DB::table('department_actuals')
+                ->join('departments', 'department_actuals.department_id', '=', 'departments.id')
+                ->select('departments.name as department', DB::raw('count(*) as total'), 'departments.id as department_id')
+                ->where('checked_by', '=', null)
+                ->whereMonth('department_actuals.created_at', '=', $month)
+                ->whereYear('department_actuals.created_at', '=', $year)
+                ->whereIn('departments.name', $div2ClerkDept)
+                ->groupBy('departments.name', 'departments.id')
+                ->get();
         } elseif ($email == 'johari@bskp.co.id') {
             $approveList = DB::table('actuals')
                 ->join('employees', 'actuals.employee_id', '=', 'employees.id')
@@ -232,6 +319,27 @@ class EmployeeController extends Controller
                 ->whereYear('department_actuals.created_at', '=', $year)
                 ->whereIn('departments.name', $gaMngDept)
                 ->count();
+
+            $approveListGroup = DB::table('actuals')
+                ->join('employees', 'actuals.employee_id', '=', 'employees.id')
+                ->join('departments', 'employees.department_id', '=', 'departments.id')
+                ->select('departments.name as department', DB::raw('count(*) as total'), 'departments.id as department_id')
+                ->where('mng_approved_by', '=', null)
+                ->whereMonth('actuals.created_at', '=', $month)
+                ->whereYear('actuals.created_at', '=', $year)
+                ->whereIn('departments.name', $gaMngDept)
+                ->groupBy('departments.name', 'departments.id')
+                ->get();
+
+            $approveListDeptGroup = DB::table('department_actuals')
+                ->join('departments', 'department_actuals.department_id', '=', 'departments.id')
+                ->select('departments.name as department', DB::raw('count(*) as total'), 'departments.id as department_id')
+                ->where('mng_approved_by', '=', null)
+                ->whereMonth('department_actuals.created_at', '=', $month)
+                ->whereYear('department_actuals.created_at', '=', $year)
+                ->whereIn('departments.name', $gaMngDept)
+                ->groupBy('departments.name', 'departments.id')
+                ->get();
         } elseif ($email == 'surya-sp@bskp.co.id') {
             $approveList = DB::table('actuals')
                 ->join('employees', 'actuals.employee_id', '=', 'employees.id')
@@ -251,6 +359,27 @@ class EmployeeController extends Controller
                 ->whereYear('department_actuals.created_at', '=', $year)
                 ->whereIn('departments.name', $dirDept)
                 ->count();
+
+            $approveListGroup = DB::table('actuals')
+                ->join('employees', 'actuals.employee_id', '=', 'employees.id')
+                ->join('departments', 'employees.department_id', '=', 'departments.id')
+                ->select('departments.name as department', DB::raw('count(*) as total'), 'departments.id as department_id')
+                ->where('mng_approved_by', '=', null)
+                ->whereMonth('actuals.created_at', '=', $month)
+                ->whereYear('actuals.created_at', '=', $year)
+                ->whereIn('departments.name', $dirDept)
+                ->groupBy('departments.name', 'departments.id')
+                ->get();
+
+            $approveListDeptGroup = DB::table('department_actuals')
+                ->join('departments', 'department_actuals.department_id', '=', 'departments.id')
+                ->select('departments.name as department', DB::raw('count(*) as total'), 'departments.id as department_id')
+                ->where('mng_approved_by', '=', null)
+                ->whereMonth('department_actuals.created_at', '=', $month)
+                ->whereYear('department_actuals.created_at', '=', $year)
+                ->whereIn('departments.name', $dirDept)
+                ->groupBy('departments.name', 'departments.id')
+                ->get();
         } elseif ($email == 'hendi@bskp.co.id') {
             $approveList = DB::table('actuals')
                 ->join('employees', 'actuals.employee_id', '=', 'employees.id')
@@ -270,6 +399,27 @@ class EmployeeController extends Controller
                 ->whereYear('department_actuals.created_at', '=', $year)
                 ->whereIn('departments.name', $accMngDept)
                 ->count();
+
+            $approveListGroup = DB::table('actuals')
+                ->join('employees', 'actuals.employee_id', '=', 'employees.id')
+                ->join('departments', 'employees.department_id', '=', 'departments.id')
+                ->select('departments.name as department', DB::raw('count(*) as total'), 'departments.id as department_id')
+                ->where('mng_approved_by', '=', null)
+                ->whereMonth('actuals.created_at', '=', $month)
+                ->whereYear('actuals.created_at', '=', $year)
+                ->whereIn('departments.name', $accMngDept)
+                ->groupBy('departments.name', 'departments.id')
+                ->get();
+
+            $approveListDeptGroup = DB::table('department_actuals')
+                ->join('departments', 'department_actuals.department_id', '=', 'departments.id')
+                ->select('departments.name as department', DB::raw('count(*) as total'), 'departments.id as department_id')
+                ->where('mng_approved_by', '=', null)
+                ->whereMonth('department_actuals.created_at', '=', $month)
+                ->whereYear('department_actuals.created_at', '=', $year)
+                ->whereIn('departments.name', $accMngDept)
+                ->groupBy('departments.name', 'departments.id')
+                ->get();
         } elseif ($email == 'siswantoko@bskp.co.id') {
             $approveList = DB::table('actuals')
                 ->join('employees', 'actuals.employee_id', '=', 'employees.id')
@@ -289,6 +439,27 @@ class EmployeeController extends Controller
                 ->whereYear('department_actuals.created_at', '=', $year)
                 ->whereIn('departments.name', $div1MngDept)
                 ->count();
+
+            $approveListGroup = DB::table('actuals')
+                ->join('employees', 'actuals.employee_id', '=', 'employees.id')
+                ->join('departments', 'employees.department_id', '=', 'departments.id')
+                ->select('departments.name as department', DB::raw('count(*) as total'), 'departments.id as department_id')
+                ->where('mng_approved_by', '=', null)
+                ->whereMonth('actuals.created_at', '=', $month)
+                ->whereYear('actuals.created_at', '=', $year)
+                ->whereIn('departments.name', $div1MngDept)
+                ->groupBy('departments.name', 'departments.id')
+                ->get();
+
+            $approveListDeptGroup = DB::table('department_actuals')
+                ->join('departments', 'department_actuals.department_id', '=', 'departments.id')
+                ->select('departments.name as department', DB::raw('count(*) as total'), 'departments.id as department_id')
+                ->where('mng_approved_by', '=', null)
+                ->whereMonth('department_actuals.created_at', '=', $month)
+                ->whereYear('department_actuals.created_at', '=', $year)
+                ->whereIn('departments.name', $div1MngDept)
+                ->groupBy('departments.name', 'departments.id')
+                ->get();
         } elseif ($email == 'tabrani@bskp.co.id') {
             $approveList = DB::table('actuals')
                 ->join('employees', 'actuals.employee_id', '=', 'employees.id')
@@ -308,9 +479,32 @@ class EmployeeController extends Controller
                 ->whereYear('department_actuals.created_at', '=', $year)
                 ->whereIn('departments.name', $div2MngDept)
                 ->count();
+
+            $approveListGroup = DB::table('actuals')
+                ->join('employees', 'actuals.employee_id', '=', 'employees.id')
+                ->join('departments', 'employees.department_id', '=', 'departments.id')
+                ->select('departments.name as department', DB::raw('count(*) as total'), 'departments.id as department_id')
+                ->where('mng_approved_by', '=', null)
+                ->whereMonth('actuals.created_at', '=', $month)
+                ->whereYear('actuals.created_at', '=', $year)
+                ->whereIn('departments.name', $div2MngDept)
+                ->groupBy('departments.name', 'departments.id')
+                ->get();
+
+            $approveListDeptGroup = DB::table('department_actuals')
+                ->join('departments', 'department_actuals.department_id', '=', 'departments.id')
+                ->select('departments.name as department', DB::raw('count(*) as total'), 'departments.id as department_id')
+                ->where('mng_approved_by', '=', null)
+                ->whereMonth('department_actuals.created_at', '=', $month)
+                ->whereYear('department_actuals.created_at', '=', $year)
+                ->whereIn('departments.name', $div2MngDept)
+                ->groupBy('departments.name', 'departments.id')
+                ->get();
         } else {
             $approveList = 0;
             $approveListDept = 0;
+            $approveListGroup = [];
+            $approveListDeptGroup = [];
         }
 
         // dd($approveListDept);
@@ -334,6 +528,10 @@ class EmployeeController extends Controller
             'actualAsstManager' => $actualAsstManager,
             'actualMonthly' => $actualMonthly,
             'approveList' => $approveList,
+            'approveListDept' => $approveListDept,
+            'approveListGroup' => $approveListGroup,
+            'approveListDeptGroup' => $approveListDeptGroup,
+
         ]);
     }
 

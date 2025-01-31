@@ -423,6 +423,7 @@
                             <input type="hidden" name="year" id="year" value="{{ request()->query('year') }}">
                             <input type="hidden" name="selected_targets" id="selected_targets">
                             <input type="hidden" name="target_codes" id="target_codes">
+                            <input type="hidden" name="nik" id="nik" value="{{ $actuals->first()->nik }}">
                             <div class="my-2">
                                 <select name="month" id="month" class="col-start-1 row-start-1 w-60 appearance-none rounded-md py-1.5 pl-3 pr-7 text-base text-gray-500 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
                                     <option value="">Bulan</option>

@@ -109,6 +109,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('generate-pdf-check', [GeneratePdfController::class, 'generatePdfCheck'])->name('generatePdfCheck');
 
     Route::post('/email/send', [MailController::class, 'sendEmail'])->name('email.sendEmail');
+    Route::post('/email-dept/send', [MailController::class, 'sendEmailDept'])->name('email.sendEmailDept');
 });
 
 

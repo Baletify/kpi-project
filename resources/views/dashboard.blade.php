@@ -4,6 +4,16 @@
             $currentYear = Carbon\Carbon::now()->year;
             $startYear = 2024; 
             $endYear = $currentYear + 2;
+            $role = auth()->user()->role;
+
+            $currentMonth = Carbon\Carbon::now()->month;
+            if ($currentMonth > 7) {
+                $currentSemester = '2';
+            } else {
+                $currentSemester = '1';
+            }
+
+
         @endphp
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             <div class="bg-gradient-to-bl from-[#3572EF] to-[#050C9C] rounded-md border border-gray-200 p-6 mt-2 shadow-md shadow-black/15">
@@ -212,23 +222,58 @@
                             </div>
                         </li>
                         <li>
-                            <div class="flex justify-between items-center p-2">
-                                <div class="flex gap-x-4">
+                            <table class="w-3/4">
+                            <tr class="">
+                                <td style="width: 36%">
+                                    <p class="text-base font-bold text-gray-900">Approval Request</p>
+                                </td>
+                                <td style="width: 4%">
+                                    <p class="text-base font-bold text-gray-900">:</p>
+                                </td>
+                                <td style="width: 52%" class="">
+                                    <button id="viewApprovalList" type="button">
+                                        <p class="text-base font-semibold text-blue-500 underline"> {{ $approveList }} Requests.</p>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="width: 36%">
+                                    <p class="text-base font-bold text-gray-900">Dept Approval Request</p>
+                                </td>
+                                <td style="width: 4%">
+                                    <p class="text-base font-bold text-gray-900">:</p>
+                                </td>
+                                <td style="width: 52%" class="">
+                                    <button id="viewApprovalDeptList" type="button">
+                                        <p class="text-base font-semibold text-blue-500 underline"> {{ $approveListDept }} Requests.</p>
+                                    </button>
+                                </td>
+                            </tr>
+                            </table>
+                            {{-- <div class="flex justify-between items-center p-2">
+                                <div class="flex flex-col gap-x-4">
                                     <div class="flex gap-x-2">
                                         <div class="">
                                             <p class="text-base font-bold text-gray-900">Approval Request: </p>
                                         </div>
                                         <div class="">
                                             <a href="#">
-                                                <p x-data="{ openList: false }" class="text-base font-semibold text-blue-500 underline" @click="openList = !open"> {{ $approveList }} Requests.</p>
+                                                <p class="text-base font-semibold text-blue-500 underline"> {{ $approveList }} Requests.</p>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="flex gap-x-2">
+                                        <div class="">
+                                            <p class="text-base font-bold text-gray-900">Dept Approval Request: </p>
+                                        </div>
+                                        <div class="">
+                                            <a href="#">
+                                                <p class="text-base font-semibold text-blue-500 underline"> {{ $approveList }} Requests.</p>
                                             </a>
                                         </div>
                                     </div>
                                 </div>
-                                <div x-show-list="openList" class="flex bg-blue-500" x-transition>
-                                    test
-                                </div>
-                            </div>
+                            </div> --}}
                         </li>
                     </ul>
                 </div>
@@ -257,6 +302,87 @@
                 </div>
             </div>
         </div> 
+
+
+         <div id="approvalModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center hidden">
+            <div class="bg-white rounded-lg p-4 w-[700px]">
+                <div class="flex justify-between items-center">
+                    <h2 class="text-xl font-bold">List Approval Employee</h2>
+                    <button id="closeApprovalModal" class="text-gray-500 hover:text-gray-700">&times;</button>
+                </div>
+                <div class="mt-4">
+                    <table class="w-full">
+                        <tr>
+                            <th style="width: 3%;" class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-white py-1 px-4 bg-blue-700">No.</th>
+                            <th style="width: 70%;" class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-white py-1 px-4 bg-blue-700">Dept</th>
+                            <th style="width: 27%;" class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-white py-1 px-4 bg-blue-700">Number of Requests</th>
+                        </tr>
+                        @php
+                        $i = 0;
+                        @endphp
+                        @foreach ($approveListGroup as $item)
+                        @php
+                        $i++;
+                        @endphp
+                        <tr>
+                            <td class="border-2 border-gray-400 tracking-wide px-2 py-0 text-center">
+                                {{ $i }}
+                            </td>
+                            <td class="border-2 border-gray-400 tracking-wide px-2 py-0">
+                                <a href="{{ route('report.index') . '?department=' . $item->department_id . '&role=' . $role }}" class="hover:underline hover:text-blue-500">
+                                    {{ $item->department }}
+                                </a>
+                            </td>
+                            <td class="border-2 border-gray-400 tracking-wide px-2 py-0 text-center">
+                                {{ $item->total }}
+                            </td>
+                        </tr>
+                        @endforeach
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div id="approvalDeptModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center hidden">
+            <div class="bg-white rounded-lg p-4 w-1/2">
+                <div class="flex justify-between items-center">
+                    <h2 class="text-xl font-bold">List Approval Dept</h2>
+                    <button id="closeApprovalDeptModal" class="text-gray-500 hover:text-gray-700">&times;</button>
+                </div>
+                <div class="mt-4">
+                    <table class="w-full">
+                        <tr>
+                            <th style="width: 3%;" class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-white py-1 px-4 bg-blue-700">No.</th>
+                            <th style="width: 70%;" class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-white py-1 px-4 bg-blue-700">Dept</th>
+                            <th style="width: 27%;" class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-white py-1 px-4 bg-blue-700">Number of Requests</th>
+                        </tr>
+                        @php
+                        $i = 0;
+                        @endphp
+                        @foreach ($approveListDeptGroup as $item)
+                        @php
+                        $i++;
+                        @endphp
+                        <tr>
+                            <td class="border-2 border-gray-400 tracking-wide px-2 py-0 text-center">
+                                {{ $i }}
+                            </td>
+                            <td class="border-2 border-gray-400 tracking-wide px-2 py-0">
+                                <a href="{{ route('report.department', $item->department_id) . '?semester=' . $currentSemester . '&year=' . $currentYear }}" class="hover:underline hover:text-blue-500">
+                                    {{ $item->department }}
+                                </a>
+                            </td>
+                            <td class="border-2 border-gray-400 tracking-wide px-2 py-0 text-center">
+                                {{ $item->total }}
+                            </td>
+                        </tr>
+                        @endforeach
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- End Modal -->
 
         </div>
         
@@ -348,8 +474,10 @@
   semesterElement.addEventListener('change', fetchData);
 });
 
+    // Pdf object view standar dan panduan KPI
     document.getElementById('viewDocumentBtn').addEventListener('click', function() {
         document.getElementById('documentModal').classList.remove('hidden');
+
     });
 
     document.getElementById('viewTutorialBtn').addEventListener('click', function() {
@@ -413,6 +541,24 @@
                 .catch(error => console.error('Error fetching PDF URL:', error));
         });
 
+        // Approval List
 
+        document.getElementById('viewApprovalList').addEventListener('click', function() {
+            document.getElementById('approvalModal').classList.remove('hidden');
+
+        });
+
+        document.getElementById('viewApprovalDeptList').addEventListener('click', function() {
+            document.getElementById('approvalDeptModal').classList.remove('hidden');
+        });
+
+        document.getElementById('closeApprovalModal').addEventListener('click', function() {
+            document.getElementById('approvalModal').classList.add('hidden');
+        });
+
+        document.getElementById('closeApprovalDeptModal').addEventListener('click', function() {
+            document.getElementById('approvalDeptModal').classList.add('hidden');
+        });
+        
     </script>
 </x-app-layout>

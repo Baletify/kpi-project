@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Carbon\Carbon;
 use App\Models\Actual;
 use App\Models\Employee;
+use App\Mail\ApproveMail;
 use App\Models\Department;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
@@ -12,6 +13,7 @@ use App\Models\ActualDepartment;
 use App\Models\DepartmentActual;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 
 class ActualController extends Controller
@@ -481,7 +483,22 @@ class ActualController extends Controller
         $name = $user->name;
         $role = $user->role;
         $status = '';
+        $from = $user->email;
+        $nik = $request->nik;
 
+        $sendTo = DB::table('employees')
+            ->where('nik', $nik)
+            ->select('employees.email')
+            ->first();
+
+        $details = [
+            'approved_by' => $from,
+            'email' => $sendTo,
+            'title' => 'Notifikasi Persetujuan KPI',
+            'msg' => 'Dengan Hormat saya sampaikan bahwa KPI anda telah disetujui. Terima kasih atas kerjasamanya',
+        ];
+
+        // dd($details);
 
         if ($role == 'Checker 1' || $role == 'Checker Factory' || $role == 'Checker WS') {
             $status = 'Checked 1';
@@ -549,10 +566,11 @@ class ActualController extends Controller
                         ]
                     );
             }
+        } else {
+            return back()->with('error', 'An Error Occured');
         }
 
-
-
+        Mail::to($details['email'])->send(new ApproveMail($details));
 
         return redirect()->back()->with('success', 'Data Updated Successfully');
     }
@@ -564,9 +582,28 @@ class ActualController extends Controller
         $month = $request->month;
         $year = $request->year;
         $user = Auth::user();
+        $from = $user->email;
         $name = $user->name;
         $role = $user->role;
         $status = '';
+        $departmentID = $request->department_id;
+
+
+        $sendTo = DB::table('employees')
+            ->join('departments', 'employees.department_id', '=', 'departments.id')
+            ->where('employees.department_id', $departmentID)
+            ->where('employees.occupation', '=', 'Asst Mng')
+            ->select('employees.email')
+            ->first();
+
+        $details = [
+            'approved_by' => $from,
+            'email' => $sendTo,
+            'title' => 'Notifikasi Persetujuan KPI',
+            'msg' => 'Dengan Hormat saya sampaikan bahwa KPI Departemen anda telah disetujui. Terima kasih atas kerjasamanya',
+        ];
+
+        // dd($details);
 
 
         if ($role == 'Checker 1' || $role == 'Checker Factory' || $role == 'Checker WS') {
@@ -635,9 +672,11 @@ class ActualController extends Controller
                         ]
                     );
             }
+        } else {
+            return back()->with('error', 'An Error Occured');
         }
 
-
+        Mail::to($details['email'])->send(new ApproveMail($details));
 
 
         return redirect()->back()->with('success', 'Data Updated Successfully');

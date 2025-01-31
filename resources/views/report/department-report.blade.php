@@ -303,7 +303,7 @@
                                     @endphp
                                         @if ($role != 'Inputer' && $role != '')
                                             @if ($actual->status !== 'Approved')
-                                            <form action="{{ route('email.sendEmail') }}" method="POST">
+                                            <form action="{{ route('email.sendEmailDept') }}" method="POST">
                                                 @csrf
                                                 <div class="p-1 flex justify-start">
                                                     <span class="text-semibold mb-1 text-[12px]">Berikan Komentar      
@@ -324,6 +324,7 @@
                                                 </div>
                                                 <input type="hidden" name="kpi_code" id="kpi_code" value="{{ $target->code }}">
                                                 <input type="hidden" name="kpi_item" id="kpi_item" value="{{ $target->indicator }}">
+                                                <input type="hidden" name="department_id" id="department_id" value="{{ $target->department_id }}">
                                             </form>
                                             @endif
                                         @endif
@@ -376,6 +377,7 @@
                             <input type="hidden" name="year" id="year" value="{{ request()->query('year') }}">
                             <input type="hidden" name="selected_targets" id="selected_targets">
                             <input type="hidden" name="target_codes" id="target_codes">
+                            <input type="hidden" name="department_id" id="department_id" value="{{ $actuals->first()->department_id }}">
                             <div class="my-2">
                                 <select name="month" id="month" class="col-start-1 row-start-1 w-60 appearance-none rounded-md py-1.5 pl-3 pr-7 text-base text-gray-500 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
                                     <option value="">Bulan</option>
