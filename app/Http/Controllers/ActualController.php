@@ -385,6 +385,7 @@ class ActualController extends Controller
             flash()->error('This KPI item already Checked or Approved');
             return redirect()->back()->withErrors(['status' => 'Cannot update or create record: Data sudah di check atau di approve.']);
         }
+        
 
         $dataToUpdateOrCreate = [
             'kpi_item' => $request->kpi_item,
