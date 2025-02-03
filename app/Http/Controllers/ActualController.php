@@ -243,6 +243,7 @@ class ActualController extends Controller
         }
         $date = Carbon::createFromDate($request->year, $request->date, 1)->startOfMonth();
 
+
         if ($request->hasFile('record_file')) {
             $recordFile = $request->file('record_file');
             $recordFileName = Str::random(40) . '.' . $recordFile->getClientOriginalExtension();
@@ -282,9 +283,10 @@ class ActualController extends Controller
 
         $existingActual = DepartmentActual::where($searchConditions)
             ->whereIn('status', ['Checked', 'Approved'])
-            ->first();
+            ->get();
+        // dd($existingActual);
 
-        if ($existingActual && ($role == 'Inputer' || $role == '')) {
+        if ($existingActual && ($role != 'Approver')) {
             flash()->error('This KPI item already checked or approved');
             return redirect()->back()->withErrors(['status' => 'Cannot update or create record: Data sudah di check atau di approve.']);
         }
@@ -379,7 +381,7 @@ class ActualController extends Controller
             ->whereIn('status', ['Checked', 'Approved'])
             ->first();
 
-        if ($existingActual && ($role == 'Inputer' || $role == '')) {
+        if ($existingActual && ($role != 'Approver')) {
             flash()->error('This KPI item already Checked or Approved');
             return redirect()->back()->withErrors(['status' => 'Cannot update or create record: Data sudah di check atau di approve.']);
         }

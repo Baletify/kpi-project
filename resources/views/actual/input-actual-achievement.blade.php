@@ -1,6 +1,7 @@
 <x-app-layout :title="$title" :desc="$desc">
     @php
         $dateNow = \Carbon\Carbon::now()->format('d');
+        $role = auth()->user()->role;
     @endphp
   <form id="achievementForm" action="{{ url('actual/input-actual-achievement/store') }}" method="POST" enctype="multipart/form-data">
     @csrf
@@ -209,8 +210,20 @@
         <div class="relative mt-1 rounded-md">
           <div class="w-full rounded-md border-0 py-1.5 pl-4 pr-20 text-gray-900  sm:text-sm sm:leading-6 mt-2 flex gap-x-6">
             <div class="mb-2 mt-2">
-              {{-- <button type="submit" id="submitBtn" class="px-4 py-2 {{ $dateNow > 12 ? 'bg-blue-300' : 'bg-blue-600' }} text-white rounded-md" {{ $dateNow > 12 ? 'disabled' : '' }}>Submit</button> --}}
-              <button type="submit" id="submitBtn" class="px-4 py-2 bg-blue-600 text-white rounded-md">Submit</button>
+                @if ($dateNow > 15 && $role == 'Inputer')
+                <button type="submit" id="submitBtn" class="px-4 py-2 bg-blue-300 text-white rounded-md" disabled >Submit</button>
+                @elseif ($dateNow > 15 && $role == '')
+                <button type="submit" id="submitBtn" class="px-4 py-2 bg-blue-300 text-white rounded-md" disabled >Submit</button>
+                @elseif ($dateNow > 20 && $role == 'Checker Div 1')
+                <button type="submit" id="submitBtn" class="px-4 py-2 bg-blue-300 text-white rounded-md" disabled >Submit</button>
+                @elseif ($dateNow > 20 && $role == 'Checker Div 2')
+                <button type="submit" id="submitBtn" class="px-4 py-2 bg-blue-300 text-white rounded-md" disabled >Submit</button>
+                @elseif ($dateNow > 25 && $role == 'Approver')
+                <button type="submit" id="submitBtn" class="px-4 py-2 bg-blue-300 text-white rounded-md" disabled >Submit</button>
+                @else 
+                <button type="submit" id="submitBtn" class="px-4 py-2 bg-blue-600 text-white rounded-md">Submit</button>
+                @endif
+              {{-- <button type="submit" id="submitBtn" class="px-4 py-2 text-white rounded-md">Submit</button> --}}
             </div>
             <div class="mb-2 mt-2">
               <button type="submit" id="previewBtn" class="bg-green-500 text-white py-2 px-4 rounded-md">Preview</button>

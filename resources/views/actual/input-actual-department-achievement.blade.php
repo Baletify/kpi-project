@@ -1,4 +1,8 @@
 <x-app-layout :title="$title" :desc="$desc">
+    @php
+        $dateNow = \Carbon\Carbon::now()->format('d');
+        $role = auth()->user()->role;
+    @endphp
     <form id="achievementForm" action="{{ route('actual.storeDept') }}" method="POST" enctype="multipart/form-data">
       @csrf
     <div class="ml-64 mt-4 overflow-y-auto p-2 bg-gray-100 border border-gray-200 shadow-md shadow-black/10 rounded-md">
@@ -162,8 +166,21 @@
               <div class="relative mt-1 rounded-md">
                 <div class="w-full rounded-md border-0 py-1.5 pl-0 pr-20 text-gray-900  sm:text-sm sm:leading-6 mt-2 flex gap-x-6">
                   <div class="mb-2 mt-2">
-                    {{-- <button type="submit" id="submitBtn" class="px-4 py-2 {{ $dateNow > 12 ? 'bg-blue-300' : 'bg-blue-600' }} text-white rounded-md" {{ $dateNow > 12 ? 'disabled' : '' }}>Submit</button> --}}
+                    @if ($dateNow > 15 && $role == 'Inputer')
+                    <button type="submit" id="submitBtn" class="px-4 py-2 bg-blue-300 text-white rounded-md" disabled >Submit</button>
+                    @elseif ($dateNow > 15 && $role == '')
+                    <button type="submit" id="submitBtn" class="px-4 py-2 bg-blue-300 text-white rounded-md" disabled >Submit</button>
+                    @elseif ($dateNow > 20 && $role == 'Checker Div 1')
+                    <button type="submit" id="submitBtn" class="px-4 py-2 bg-blue-300 text-white rounded-md" disabled >Submit</button>
+                    @elseif ($dateNow > 20 && $role == 'Checker Div 2')
+                    <button type="submit" id="submitBtn" class="px-4 py-2 bg-blue-300 text-white rounded-md" disabled >Submit</button>
+                    @elseif ($dateNow > 25 && $role == 'Approver')
+                    <button type="submit" id="submitBtn" class="px-4 py-2 bg-blue-300 text-white rounded-md" disabled >Submit</button>
+                    @else 
                     <button type="submit" id="submitBtn" class="px-4 py-2 bg-blue-600 text-white rounded-md">Submit</button>
+                    @endif
+                    {{-- <button type="submit" id="submitBtn" class="px-4 py-2 {{ $dateNow > 12 ? 'bg-blue-300' : 'bg-blue-600' }} text-white rounded-md" {{ $dateNow > 12 ? 'disabled' : '' }}>Submit</button> --}}
+                    {{-- <button type="submit" id="submitBtn" class="px-4 py-2 bg-blue-600 text-white rounded-md">Submit</button> --}}
                   </div>
                 <div class="absolute inset-y-0 right-0 flex items-center">
                 </div>
