@@ -22,7 +22,7 @@
 </style>
 <body>
 
-    <p>Email ini merupakan email otomatis yang berasal dari Aplikasi KPI</p>
+    <p style="font-weight: bold">Email ini merupakan email otomatis yang berasal dari Aplikasi KPI</p>
     <div class="">
         <p>{{ $details['greetings'] }}</p>
     </br>
