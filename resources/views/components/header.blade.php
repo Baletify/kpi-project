@@ -11,6 +11,14 @@
             <li class="text-white mr-2 text-xl"> {{ $desc }} </li>
         </ul>
         <ul class="ml-auto flex items-center">
+            <div class="mr-6 flex justify-between">
+                <div class="">
+                    <i class="ri-user-3-fill text-white"></i>
+                </div>
+                <div class="mx-2">
+                    <span class="text-white font-semibold">{{ auth()->user()->name }}</span>
+                </div>
+            </div>
             <div class="p-0">
                 <form method="POST" action="{{ route('auth.logout') }}" onsubmit="clearLocalStorage()">
                     @csrf

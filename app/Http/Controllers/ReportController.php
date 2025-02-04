@@ -39,6 +39,7 @@ class ReportController extends Controller
             $fsd = DB::table('departments')->where('name', '=', 'FSD')->get();
             $allDept = Department::all();
             $checker1 = DB::table('departments')->where('id', '=', $authDeptID)->get();
+            $accFin = DB::table('departments')->whereIn('name', ['Accounting', 'Finance'])->get();
 
             $departments = DB::table('departments')
                 ->leftJoin('employees', 'employees.department_id', '=', 'departments.id')
@@ -46,7 +47,7 @@ class ReportController extends Controller
                 ->where('departments.id', $department)
                 ->get();
 
-            return view('report.list-employee-report', ['title' => 'Report', 'desc' => 'Employee List', 'departments' => $departments, 'divDept' => $divDept, 'divFAD' => $divFAD, 'allDept' => $allDept, 'ws' => $ws, 'factory' => $factory, 'fsd' => $fsd, 'checker1' => $checker1]);
+            return view('report.list-employee-report', ['title' => 'Report', 'desc' => 'Employee List', 'departments' => $departments, 'divDept' => $divDept, 'divFAD' => $divFAD, 'allDept' => $allDept, 'ws' => $ws, 'factory' => $factory, 'fsd' => $fsd, 'checker1' => $checker1, 'accFin' => $accFin]);
         } else if ($department) {
             $departmentID = Auth::user()->department_id;
             if ($department != $departmentID) {
@@ -59,6 +60,7 @@ class ReportController extends Controller
             $fsd = DB::table('departments')->where('name', '=', 'FSD')->get();
             $allDept = Department::all();
             $checker1 = DB::table('departments')->where('id', '=', $authDeptID)->get();
+            $accFin = DB::table('departments')->whereIn('name', ['Accounting', 'Finance'])->get();
 
             $departments = DB::table('departments')
                 ->leftJoin('employees', 'employees.department_id', '=', 'departments.id')
@@ -66,7 +68,7 @@ class ReportController extends Controller
                 ->where('departments.id', $department)
                 ->get();
 
-            return view('report.list-employee-report', ['title' => 'Report', 'desc' => 'Employee List', 'departments' => $departments, 'divDept' => $divDept, 'divFAD' => $divFAD, 'allDept' => $allDept, 'ws' => $ws, 'factory' => $factory, 'fsd' => $fsd, 'checker1' => $checker1]);
+            return view('report.list-employee-report', ['title' => 'Report', 'desc' => 'Employee List', 'departments' => $departments, 'divDept' => $divDept, 'divFAD' => $divFAD, 'allDept' => $allDept, 'ws' => $ws, 'factory' => $factory, 'fsd' => $fsd, 'checker1' => $checker1, 'accFin' => $accFin]);
         } elseif ($employee) {
             $userID = Auth::user()->id;
             if ($employee != $userID) {
@@ -79,6 +81,7 @@ class ReportController extends Controller
             $fsd = DB::table('departments')->where('name', '=', 'FSD')->get();
             $allDept = Department::all();
             $checker1 = DB::table('departments')->where('id', '=', $authDeptID)->get();
+            $accFin = DB::table('departments')->whereIn('name', ['Accounting', 'Finance'])->get();
 
             $departments = DB::table('departments')
                 ->leftJoin('employees', 'employees.department_id', '=', 'departments.id')
@@ -86,7 +89,7 @@ class ReportController extends Controller
                 ->where('employees.id', $employee)
                 ->get();
 
-            return view('report.list-employee-report', ['title' => 'Report', 'desc' => 'Employee List', 'departments' => $departments, 'divDept' => $divDept, 'divFAD' => $divFAD, 'allDept' => $allDept, 'ws' => $ws, 'factory' => $factory, 'fsd' => $fsd, 'checker1' => $checker1]);
+            return view('report.list-employee-report', ['title' => 'Report', 'desc' => 'Employee List', 'departments' => $departments, 'divDept' => $divDept, 'divFAD' => $divFAD, 'allDept' => $allDept, 'ws' => $ws, 'factory' => $factory, 'fsd' => $fsd, 'checker1' => $checker1, 'accFin' => $accFin]);
         } else {
             return view('components/404-page');
         }
@@ -96,11 +99,13 @@ class ReportController extends Controller
     {
         $user = Auth::user();
         $role = $user->role;
+        $email = $user->email;
 
         $divDept = DB::table('departments')->whereIn('name', ['Sub Div A', 'Sub Div B', 'Sub Div C', 'Sub Div D', 'Sub Div E', 'Sub Div F'])->get();
         $divFAD = DB::table('departments')->whereIn('name', ['Sub Div A', 'Sub Div B', 'Sub Div C', 'Sub Div D', 'Sub Div E', 'Sub Div F', 'FAD', 'FSD'])->get();
         $ws = DB::table('departments')->where('name', '=', 'Workshop')->get();
         $factory = DB::table('departments')->where('name', '=', 'Factory')->get();
+        $accFin = DB::table('departments')->whereIn('name', ['Accounting', 'Finance'])->get();
         $allDept = Department::all();
 
         if ($role == 'Inputer' || $role == '') {
@@ -108,11 +113,14 @@ class ReportController extends Controller
         } else if ($role == 'Checker Div 1' || $role == 'Checker Div 2') {
             $deptList = $divDept;
             return view('report.list-department-report', ['title' => 'Report', 'desc' => 'Department List', 'deptList' => $deptList]);
-        } else if ($role == 'FAD') {
+        } else if ($role == 'FAD' || $email == 'tabrani@bskp.co.id' || $email == 'siswantoko@bskp.co.id') {
             $deptList = $divFAD;
             return view('report.list-department-report', ['title' => 'Report', 'desc' => 'Department List', 'deptList' => $deptList]);
         } else if ($role == 'Checker WS') {
             $deptList = $ws;
+            return view('report.list-department-report', ['title' => 'Report', 'desc' => 'Department List', 'deptList' => $deptList]);
+        } else if ($email == 'hendi@bskp.co.id') {
+            $deptList = $accFin;
             return view('report.list-department-report', ['title' => 'Report', 'desc' => 'Department List', 'deptList' => $deptList]);
         } else if ($role == 'Checker Factory') {
             $deptList = $factory;

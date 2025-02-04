@@ -105,6 +105,7 @@ class ActualController extends Controller
         $employee = $request->query('employee');
         $user = Auth::user();
         $role = $user->role;
+        $email = $user->email;
 
         if ($role == 'Checker Div 1' || $role == 'Checker Div 2') {
             $dept = ['Sub Div A', 'Sub Div B', 'Sub Div C', 'Sub Div D', 'Sub Div E', 'Sub Div F'];
@@ -118,6 +119,12 @@ class ActualController extends Controller
         } elseif ($role == 'Checker Factory') {
             $dept = 'Factory';
             $allDept = DB::table('departments')->where('name', '=', $dept)->get();
+        } elseif ($email == 'tabrani@bskp.co.id' || $email == 'siswantoko@bskp.co.id') {
+            $dept = ['Sub Div A', 'Sub Div B', 'Sub Div C', 'Sub Div D', 'Sub Div E', 'Sub Div F', 'FAD', 'FSD'];
+            $allDept = DB::table('departments')->whereIn('name', $dept)->get();
+        } elseif ($email == 'hendi@bskp.co.id') {
+            $dept = ['Accounting', 'Finance'];
+            $allDept = DB::table('departments')->whereIn('name', $dept)->get();
         } else {
             $allDept = Department::all();
         }
@@ -281,9 +288,8 @@ class ActualController extends Controller
             'department_id' => $request->department_id,
         ];
 
-        $existingActual = DepartmentActual::where($searchConditions)
-            ->whereIn('status', ['Checked', 'Approved'])
-            ->get();
+        $existingActual = DB::table('department_actuals')->where($searchConditions)
+            ->whereIn('status', ['Checked', 'Approved'])->first();
         // dd($existingActual);
 
         if ($existingActual && ($role != 'Approver')) {
@@ -377,15 +383,15 @@ class ActualController extends Controller
             'employee_id' => $request->employee_id,
         ];
 
-        $existingActual = Actual::where($searchConditions)
-            ->whereIn('status', ['Checked', 'Approved'])
-            ->first();
+        $existingActual = DB::table('actuals')->where($searchConditions)
+            ->whereIn('status', ['Checked', 'Approved'])->first();
+        // dd($existingActual);
 
         if ($existingActual && ($role != 'Approver')) {
             flash()->error('This KPI item already Checked or Approved');
             return redirect()->back()->withErrors(['status' => 'Cannot update or create record: Data sudah di check atau di approve.']);
         }
-        
+
 
         $dataToUpdateOrCreate = [
             'kpi_item' => $request->kpi_item,
