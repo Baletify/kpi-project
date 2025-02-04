@@ -46,6 +46,7 @@ class MailController extends Controller
         $details = [
             'revised_by' => $from,
             'email' => $sendTo,
+            'title' => 'Revisi Data Pendukung KPI',
             'greetings' => 'Dengan Hormat,',
             'msg' => 'Berdasarkan pengecekan yang kami lakukan terdapat perhitungan KPI dan data pendukung yang tidak sesuai, untuk itu segara hubungi personnel yang terkait dan segara siapkan data KPI dan data pendukung yang sesuai. Berikut ini adalah data yang perlu direvisi:',
             'kpi_code' => $request->kpi_code,
