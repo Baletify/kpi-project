@@ -110,6 +110,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::post('/email/send', [MailController::class, 'sendEmail'])->name('email.sendEmail');
     Route::post('/email-dept/send', [MailController::class, 'sendEmailDept'])->name('email.sendEmailDept');
+    Route::get('/master-input', [EmployeeController::class, 'IndexMasterInput'])->name('masterInput');
 });
 
 

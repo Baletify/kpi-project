@@ -631,4 +631,37 @@ class EmployeeController extends Controller
             return response()->json([]);
         }
     }
+
+    public function indexMasterInput()
+    {
+        $departments = DB::table('departments')->get();
+        $gaMngDept = DB::table('departments')->whereIn('name', ['HR Legal', 'IT', 'QA/QM', 'GA', 'Safety', 'Enviro'])->select('id', 'name')->get();
+        $accMngDept = DB::table('departments')->whereIn('name', ['Accounting', 'Finance'])->select('id', 'name')->get();
+        $dirDept = DB::table('departments')->whereIn('name', ['SPID', 'FAD', 'FSD', 'Factory', 'Workshop', 'Security'])->select('id', 'name')->get();
+        $div1MngDept = DB::table('departments')->whereIn('name', ['Sub Div A', 'Sub Div B', 'Sub Div C', 'Div 1'])->select('id', 'name')->get();
+        $div2MngDept = DB::table('departments')->whereIn('name', ['Sub Div D', 'Sub Div E', 'Sub Div F', 'Div 2'])->select('id', 'name')->get();
+        $individuals = DB::table('departments')->whereIn('name', ['HR Legal', 'IT', 'QA/QM', 'GA', 'Safety', 'Enviro', 'BSKP', 'SPID', 'Accounting', 'FAD', 'Div 1', 'Div 2', 'Finance'])->select('name')->select('id', 'name')->get();
+        $dirMng = DB::table('employees')->whereIn('occupation', ['Mng', 'Dir'])->select('department_id', 'name')->get();
+        // dd($dirMng); 
+
+        // dd($individual);
+
+
+        return view(
+            'master-input',
+            [
+                'title' => 'Master Input',
+                'desc' => 'Setting Master Input',
+                'departments' => $departments,
+                'gaMngDept' => $gaMngDept,
+                'accMngDept' => $accMngDept,
+                'dirDept' => $dirDept,
+                'div1MngDept' => $div1MngDept,
+                'div2MngDept' => $div2MngDept,
+                'individuals' => $individuals,
+                'dirMng' => $dirMng,
+
+            ]
+        );
+    }
 }

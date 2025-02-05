@@ -21,6 +21,8 @@
     }
 </style>
 <body>
+    <p style="font-weight: bold">Email ini merupakan email otomatis yang berasal dari Aplikasi KPI</p>
+</br>
     <p>{{ $details['msg'] }}</p>
     <table>
         <tr>

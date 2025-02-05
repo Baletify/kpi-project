@@ -1,4 +1,14 @@
 <header class="w-full bg-gray-50">
+    <div class="py-0.5 bg-gradient-to-bl from-[#3572EF] to-[#090f79] flex justify-center items-center shadow-md shadow-black/5">
+        <div class="flex flex-col justify-center items-center">
+            <div class="ml-64">
+                <p class="font-bold text-white text-xl">APLIKASI KPI (Key Performa Indicator)</p>
+            </div>
+            <div class="ml-64">
+                <p class="font-semibold text-white text-lg">PT BRIDGESTONE KALIMANTAN PLANTATION</p>
+            </div>
+        </div>
+    </div>
     <div class="py-6 px-6 bg-gradient-to-bl from-[#3572EF] to-[#050C9C] flex items-center shadow-md shadow-black/5">
         {{-- <button class="text-lg text-gray-600">
             <i class="ri-menu-line text-lg"></i>
