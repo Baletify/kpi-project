@@ -48,13 +48,18 @@ class ActionPlanController extends Controller
             $recordFile->move(public_path('action_plan_files'), $recordFileName);
         }
 
-        ActionPlan::create(
-            [
-                'employee_id' => $request->employee_id,
-                'file_name' => $request->file_name,
-                'file' => $recordFileName
-            ]
-        );
+        $employeeID = $request->employee_id;
+
+        $searchCondition = [
+            'employee_id' => $employeeID,
+        ];
+
+        $updateCondition = [
+            'file_name' => $request->file_name,
+            'file' => $recordFileName
+        ];
+
+        ActionPlan::updateOrCreate($searchCondition, $updateCondition);
 
         if (Auth::user()->input_type == 'Group') {
             return redirect()->route('target.department', ['department' => $request->department_id]);

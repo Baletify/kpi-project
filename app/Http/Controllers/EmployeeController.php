@@ -664,4 +664,47 @@ class EmployeeController extends Controller
             ]
         );
     }
+
+    public function updateMasterInput(Request $request)
+    {
+        $departmentID = $request->department_id;
+        $departmentName = $request->department_name;
+        $columnName = $request->column;
+        $oldEmail = $request->old_email;
+        $newEmail = $request->new_email;
+
+
+        if ($departmentName == 'Sub Div A' || $departmentName == 'Sub Div B' || $departmentName == 'Sub Div C') {
+            $newRole = 'Checker Div 1';
+        } elseif ($departmentName == 'Sub Div D' || $departmentName == 'Sub Div E' || $departmentName == 'Sub Div F') {
+            $newRole = 'Checker Div 2';
+        } else {
+            $newRole = $request->new_role;
+        }
+
+
+
+        // dd($departmentID, $columnName, $oldEmail, $newEmail, $newRole, $departmentName);
+
+        $rowsAffectedDept = DB::table('departments')->where('id', '=', $departmentID)
+            ->update([
+                $columnName => $newEmail
+            ]);
+
+        $rowsAffectedOldEmployee = DB::table('employees')->where('email', '=', $oldEmail)
+            ->update([
+                'role' => ''
+            ]);
+        // dd($rowsAffectedOldEmployee);
+        $rowsAffectedNewEmployee = DB::table('employees')->where('email', '=', $newEmail)->update([
+            'role' => $newRole
+        ]);
+
+
+        if ($rowsAffectedDept > 0 && $rowsAffectedOldEmployee > 0) {
+            return back()->with('success', 'Data updated succesfully');
+        } else {
+            return back()->with('error', 'Error Occured');
+        }
+    }
 }
