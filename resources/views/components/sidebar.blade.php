@@ -14,7 +14,7 @@
     @endphp
     <ul class="mt-4">
         <li>
-            <a href="{{ route('dashboard') }}" class="flex items-center py-1.5 px-6 text-gray-300 hover:bg-gray-700">
+            <a href="{{ route('dashboard') }}?department=&name=&year=&semester=" class="flex items-center py-1.5 px-6 text-gray-300 hover:bg-gray-700">
                 <i class="ri-dashboard-2-line text-2xl"></i>
                 <span class="ml-3">Dashboard</span>
             </a>

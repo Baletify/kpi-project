@@ -24,75 +24,93 @@ class ReportController extends Controller
     {
         $department = $request->query('department');
         $employee = $request->query('employee');
-        $role = $request->role;
-        $authDeptID = Auth::user()->department_id;
+        $user = Auth::user();
+        $role = $user->role;
+        $authDeptID = $user->department_id;
+        $email = $user->email;
+        $status = $request->status;
 
-        if ($department && $role) {
-            if ($role == '') {
-                abort(403, 'Unauthorized');
-            }
 
-            $divDept = DB::table('departments')->whereIn('name', ['Sub Div A', 'Sub Div B', 'Sub Div C', 'Sub Div D', 'Sub Div E', 'Sub Div F'])->get();
-            $divFAD = DB::table('departments')->whereIn('name', ['Sub Div A', 'Sub Div B', 'Sub Div C', 'Sub Div D', 'Sub Div E', 'Sub Div F', 'FAD', 'FSD'])->get();
-            $ws = DB::table('departments')->where('name', '=', 'Workshop')->get();
-            $factory = DB::table('departments')->where('name', '=', 'Factory')->get();
-            $fsd = DB::table('departments')->where('name', '=', 'FSD')->get();
-            $allDept = Department::all();
-            $checker1 = DB::table('departments')->where('id', '=', $authDeptID)->get();
-            $accFin = DB::table('departments')->whereIn('name', ['Accounting', 'Finance'])->get();
+        $divDept = DB::table('departments')->whereIn('name', ['Sub Div A', 'Sub Div B', 'Sub Div C', 'Sub Div D', 'Sub Div E', 'Sub Div F'])->get();
+        $divFAD = DB::table('departments')->whereIn('name', ['Sub Div A', 'Sub Div B', 'Sub Div C', 'Sub Div D', 'Sub Div E', 'Sub Div F', 'FAD', 'FSD'])->get();
+        $ws = DB::table('departments')->where('name', '=', 'Workshop')->get();
+        $factory = DB::table('departments')->where('name', '=', 'Factory')->get();
+        $fsd = DB::table('departments')->where('name', '=', 'FSD')->get();
+        $allDept = Department::all();
+        $checker1 = DB::table('departments')->where('id', '=', $authDeptID)->get();
+        $accFin = DB::table('departments')->whereIn('name', ['Accounting', 'Finance'])->get();
+        $deptList = [];
 
+        $listStatus = DB::table('employees')->select('status')
+            ->distinct()->get();
+
+        if ($department == 'all' && $status) {
+            $departments = DB::table('departments')
+                ->leftJoin('employees', 'employees.department_id', '=', 'departments.id')
+                ->select('employees.id as employee_id', 'employees.nik as nik', 'employees.name as employee', 'employees.occupation as occupation', 'departments.name as department', 'departments.id as department_id')
+                ->where('employees.status', '=', $status)
+                ->paginate(20)
+                ->appends(['department' => $department, 'status' => $status]);
+        } elseif ($department && $status) {
             $departments = DB::table('departments')
                 ->leftJoin('employees', 'employees.department_id', '=', 'departments.id')
                 ->select('employees.id as employee_id', 'employees.nik as nik', 'employees.name as employee', 'employees.occupation as occupation', 'departments.name as department', 'departments.id as department_id')
                 ->where('departments.id', $department)
-                ->get();
-
-            return view('report.list-employee-report', ['title' => 'Report', 'desc' => 'Employee List', 'departments' => $departments, 'divDept' => $divDept, 'divFAD' => $divFAD, 'allDept' => $allDept, 'ws' => $ws, 'factory' => $factory, 'fsd' => $fsd, 'checker1' => $checker1, 'accFin' => $accFin]);
-        } else if ($department) {
-            $departmentID = Auth::user()->department_id;
-            if ($department != $departmentID) {
-                abort(403, 'Unauthorized');
-            }
-            $divDept = DB::table('departments')->whereIn('name', ['Sub Div A', 'Sub Div B', 'Sub Div C', 'Sub Div D', 'Sub Div E', 'Sub Div F'])->get();
-            $divFAD = DB::table('departments')->whereIn('name', ['Sub Div A', 'Sub Div B', 'Sub Div C', 'Sub Div D', 'Sub Div E', 'Sub Div F', 'FAD', 'FSD'])->get();
-            $ws = DB::table('departments')->where('name', '=', 'Workshop')->get();
-            $factory = DB::table('departments')->where('name', '=', 'Factory')->get();
-            $fsd = DB::table('departments')->where('name', '=', 'FSD')->get();
-            $allDept = Department::all();
-            $checker1 = DB::table('departments')->where('id', '=', $authDeptID)->get();
-            $accFin = DB::table('departments')->whereIn('name', ['Accounting', 'Finance'])->get();
-
+                ->where('employees.status', '=', $status)
+                ->paginate(20)
+                ->appends(['department' => $department, 'status' => $status]);
+        } elseif ($status) {
+            $departments = DB::table('departments')
+                ->leftJoin('employees', 'employees.department_id', '=', 'departments.id')
+                ->select('employees.id as employee_id', 'employees.nik as nik', 'employees.name as employee', 'employees.occupation as occupation', 'departments.name as department', 'departments.id as department_id')
+                ->where('employees.status', '=', $status)
+                ->paginate(20)
+                ->appends(['department' => $department, 'status' => $status]);
+        } elseif ($department == 'all') {
+            $departments = DB::table('departments')
+                ->leftJoin('employees', 'employees.department_id', '=', 'departments.id')
+                ->select('employees.id as employee_id', 'employees.nik as nik', 'employees.name as employee', 'employees.occupation as occupation', 'departments.name as department', 'departments.id as department_id')
+                ->paginate(20)
+                ->appends(['department' => $department, 'status' => $status]);
+        } elseif ($department) {
             $departments = DB::table('departments')
                 ->leftJoin('employees', 'employees.department_id', '=', 'departments.id')
                 ->select('employees.id as employee_id', 'employees.nik as nik', 'employees.name as employee', 'employees.occupation as occupation', 'departments.name as department', 'departments.id as department_id')
                 ->where('departments.id', $department)
-                ->get();
-
-            return view('report.list-employee-report', ['title' => 'Report', 'desc' => 'Employee List', 'departments' => $departments, 'divDept' => $divDept, 'divFAD' => $divFAD, 'allDept' => $allDept, 'ws' => $ws, 'factory' => $factory, 'fsd' => $fsd, 'checker1' => $checker1, 'accFin' => $accFin]);
+                ->paginate(20)
+                ->appends(['department' => $department, 'status' => $status]);
         } elseif ($employee) {
-            $userID = Auth::user()->id;
-            if ($employee != $userID) {
-                abort(403, 'Unauthorized');
-            }
-            $divDept = DB::table('departments')->whereIn('name', ['Sub Div A', 'Sub Div B', 'Sub Div C', 'Sub Div D', 'Sub Div E', 'Sub Div F'])->get();
-            $divFAD = DB::table('departments')->whereIn('name', ['Sub Div A', 'Sub Div B', 'Sub Div C', 'Sub Div D', 'Sub Div E', 'Sub Div F', 'FAD', 'FSD'])->get();
-            $ws = DB::table('departments')->where('name', '=', 'Workshop')->get();
-            $factory = DB::table('departments')->where('name', '=', 'Factory')->get();
-            $fsd = DB::table('departments')->where('name', '=', 'FSD')->get();
-            $allDept = Department::all();
-            $checker1 = DB::table('departments')->where('id', '=', $authDeptID)->get();
-            $accFin = DB::table('departments')->whereIn('name', ['Accounting', 'Finance'])->get();
-
             $departments = DB::table('departments')
                 ->leftJoin('employees', 'employees.department_id', '=', 'departments.id')
                 ->select('employees.id as employee_id', 'employees.nik as nik', 'employees.name as employee', 'employees.occupation as occupation', 'departments.name as department', 'departments.id as department_id')
                 ->where('employees.id', $employee)
-                ->get();
-
-            return view('report.list-employee-report', ['title' => 'Report', 'desc' => 'Employee List', 'departments' => $departments, 'divDept' => $divDept, 'divFAD' => $divFAD, 'allDept' => $allDept, 'ws' => $ws, 'factory' => $factory, 'fsd' => $fsd, 'checker1' => $checker1, 'accFin' => $accFin]);
-        } else {
-            return view('components/404-page');
+                ->paginate(20)
+                ->appends(['department' => $department, 'status' => $status]);
         }
+
+        // dd($employee, $department);
+
+        if ($employee || $department || $status) {
+            if ($role == 'Checker Div 1' || $role == 'Checker Div 2') {
+                $deptList = $divDept;
+            } elseif ($role == 'FAD' || $email == 'tabrani@bskp.co.id' || $email == 'siswantoko@bskp.co.id') {
+                $deptList = $divFAD;
+            } elseif ($role == 'Checker WS') {
+                $deptList = $ws;
+            } elseif ($authDeptID == 12) {
+                $deptList = $fsd;
+            } elseif ($role == 'Checker 1') {
+                $deptList = $checker1;
+            } elseif ($email == 'hendi@bskp.co.id') {
+                $deptList = $accFin;
+            } elseif ($role == 'Checker Factory') {
+                $deptList = $factory;
+            } elseif ($role == 'Approver' || $role == 'Mng Approver') {
+                $deptList = $allDept;
+            }
+        }
+
+        return view('report.list-employee-report', ['title' => 'Report', 'desc' => 'Department List', 'deptList' => $deptList, 'departments' => $departments, 'listStatus' => $listStatus,]);
     }
 
     public function indexDept()
@@ -183,9 +201,9 @@ class ReportController extends Controller
         $year = $request->query('year');
         $employee = Employee::find($id);
 
-        if (!$employee) {
-            abort(404, 'Employee not found');
-        }
+        // if (!$employee) {
+        //     abort(404, 'Employee not found');
+        // }
 
         if ($semester && $year) {
 
@@ -222,7 +240,7 @@ class ReportController extends Controller
 
 
             if ($actuals->isEmpty()) {
-                abort(404, 'No actuals found for the given year and semester');
+                return view('components/404-page-report');
             }
 
 
@@ -289,7 +307,7 @@ class ReportController extends Controller
 
 
             if ($actuals->isEmpty()) {
-                abort(404, 'No actuals found for the given year and semester');
+                return view('components/404-page-report');
             }
             // sum bobot
             $targetWeightingSum = DB::table('department_targets')
@@ -346,7 +364,7 @@ class ReportController extends Controller
 
             return view('report.department-report', ['title' => 'Report', 'desc' => 'Summary KPI Dept', 'actuals' => $actuals, 'targets' => $targets, 'totals' => $totals, 'sumWeighting' => $sumWeighting,]);
         } else {
-            return abort(404, 'Not Found');
+            return view('components/404-page');
         }
     }
 

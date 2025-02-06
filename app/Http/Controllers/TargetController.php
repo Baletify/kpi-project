@@ -53,7 +53,7 @@ class TargetController extends Controller
             return view('target.input-target-kpi', ['title' => 'Input KPI Target', 'desc' => 'Employees', 'employee' => $employee, 'targets' => $targets]);
         } else {
 
-            abort(404, 'No actuals found for the given year and semester');
+            return view('components/404-page');
         }
     }
 
@@ -68,7 +68,7 @@ class TargetController extends Controller
                 ->first();
 
             if (!$dept) {
-                abort(404, 'Department not found');
+                return view('components/404-page');
             }
 
             $targetDept = DB::table('department_targets')->leftJoin('departments', 'departments.id', '=', 'department_targets.department_id')

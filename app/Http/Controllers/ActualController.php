@@ -427,7 +427,7 @@ class ActualController extends Controller
 
 
         if (!$actual) {
-            return abort(404, 'Actual not found');
+            return view('components/404-page');
         }
         if ($request->filled('status')) {
             $actual->status = $request->status;
@@ -458,7 +458,7 @@ class ActualController extends Controller
 
 
         if (!$actual) {
-            return abort(404, 'Actual not found');
+            return view('components/404-page');
         }
         if ($request->filled('status')) {
             $actual->status = $request->status;

@@ -34,8 +34,8 @@
             @endphp
             <div class="mt-3">
                 <a href="{{ route('target.showImportDept', 'semester=' . $currentSemester . '&department=' . $department . '&year=' . $year) }}" class="p-1 mx-2 bg-blue-500 py-2 items-center rounded-md">
-                    <i class="ri-import-line text-2xl text-white"></i>
-                    <span class="font-medium text-white">Import</span>
+                    <i class="ri-file-excel-2-line text-2xl text-white"></i>
+                    <span class="font-medium text-white">Excel</span>
                 </a>
             </div>
         </div>
