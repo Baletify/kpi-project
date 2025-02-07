@@ -82,13 +82,14 @@
                 </div>
               </div>
         </div>
-        <table class="w-full">
+        <div class="flex justify-center">
+        <table class="w-[1000px]">
             <tr>
                 <th style="width: 3%;" class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-white py-1 px-4 bg-blue-700">No.</th>
                 <th class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-white py-1 px-4 bg-blue-700">NIK</th>
-                <th class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-white py-1 px-4 bg-blue-700">Nama</th>
-                <th class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-white py-1 px-4 bg-blue-700">Department</th>
-                <th class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-white py-1 px-4 bg-blue-700">Jabatan</th>
+                <th style="width: 28%" class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-white py-1 px-4 bg-blue-700">Nama</th>
+                <th style="width: 14%" class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-white py-1 px-4 bg-blue-700">Department</th>
+                <th style="width: 20%" class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-white py-1 px-4 bg-blue-700">Jabatan</th>
                 <th class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-white py-1 px-4 bg-blue-700">Aksi</th>
             </tr>
 
@@ -131,6 +132,7 @@
             </tr>
             @endforelse
         </table>
+        </div>
         {{-- Pagination --}}
         @if ($departmentQuery == 'all' || $statusQuery != 'Manager')
         <div class="shadow-lg shadow-black/15 mb-2 mt-3">

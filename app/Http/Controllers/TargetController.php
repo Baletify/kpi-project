@@ -51,20 +51,20 @@ class TargetController extends Controller
                     ->where('employees.status', '=', $status)
                     ->whereIn('departments.name', ['Sub Div A', 'Sub Div B', 'Sub Div C', 'Sub Div D', 'Sub Div E', 'Sub Div F', 'FAD', 'FSD', 'Div 1', 'Div 2'])
                     ->select('employees.id as employee_id', 'employees.name as employee', 'employees.nik as nik', 'employees.occupation as occupation', 'departments.name as department', 'departments.id as department_id', 'action_plans.file as file', 'action_plans.id as action_plan_id')
-                    ->paginate(20)->appends(['status' => $status, 'department' => $departmentID, 'employee' => $employeeID]);
+                    ->paginate(10)->appends(['status' => $status, 'department' => $departmentID, 'employee' => $employeeID]);
             } elseif ($email == 'hendi@bskp.co.id') {
                 $departments = DB::table('departments')->leftJoin('employees', 'employees.department_id', '=', 'departments.id')
                     ->leftJoin('action_plans', 'action_plans.employee_id', '=', 'employees.id')
                     ->where('employees.status', '=', $status)
                     ->whereIn('departments.name', ['Accounting', 'Finance'])
                     ->select('employees.id as employee_id', 'employees.name as employee', 'employees.nik as nik', 'employees.occupation as occupation', 'departments.name as department', 'departments.id as department_id', 'action_plans.file as file', 'action_plans.id as action_plan_id')
-                    ->paginate(20)->appends(['status' => $status, 'department' => $departmentID, 'employee' => $employeeID]);
+                    ->paginate(10)->appends(['status' => $status, 'department' => $departmentID, 'employee' => $employeeID]);
             } else {
                 $departments = DB::table('departments')->leftJoin('employees', 'employees.department_id', '=', 'departments.id')
                     ->leftJoin('action_plans', 'action_plans.employee_id', '=', 'employees.id')
                     ->where('employees.status', '=', $status)
                     ->select('employees.id as employee_id', 'employees.name as employee', 'employees.nik as nik', 'employees.occupation as occupation', 'departments.name as department', 'departments.id as department_id', 'action_plans.file as file', 'action_plans.id as action_plan_id')
-                    ->paginate(20)->appends(['status' => $status, 'department' => $departmentID, 'employee' => $employeeID]);
+                    ->paginate(10)->appends(['status' => $status, 'department' => $departmentID, 'employee' => $employeeID]);
             }
         } elseif ($departmentID && $status) {
             if ($email == 'siswantoko@bskp.co.id' || $email == 'tabrani@bskp.co.id' || $role == 'FAD') {
@@ -73,21 +73,21 @@ class TargetController extends Controller
                     ->where('employees.status', '=', $status)
                     ->where('departments.id', $departmentID)
                     ->select('employees.id as employee_id', 'employees.name as employee', 'employees.nik as nik', 'employees.occupation as occupation', 'departments.name as department', 'departments.id as department_id', 'action_plans.file as file', 'action_plans.id as action_plan_id')
-                    ->paginate(20)->appends(['status' => $status, 'department' => $departmentID, 'employee' => $employeeID]);
+                    ->paginate(10)->appends(['status' => $status, 'department' => $departmentID, 'employee' => $employeeID]);
             } elseif ($email == 'hendi@bskp.co.id') {
                 $departments = DB::table('departments')->leftJoin('employees', 'employees.department_id', '=', 'departments.id')
                     ->leftJoin('action_plans', 'action_plans.employee_id', '=', 'employees.id')
                     ->where('employees.status', '=', $status)
                     ->where('departments.id', $departmentID)
                     ->select('employees.id as employee_id', 'employees.name as employee', 'employees.nik as nik', 'employees.occupation as occupation', 'departments.name as department', 'departments.id as department_id', 'action_plans.file as file', 'action_plans.id as action_plan_id')
-                    ->paginate(20)->appends(['status' => $status, 'department' => $departmentID, 'employee' => $employeeID]);
+                    ->paginate(10)->appends(['status' => $status, 'department' => $departmentID, 'employee' => $employeeID]);
             } else {
                 $departments = DB::table('departments')->leftJoin('employees', 'employees.department_id', '=', 'departments.id')
                     ->leftJoin('action_plans', 'action_plans.employee_id', '=', 'employees.id')
                     ->where('employees.status', '=', $status)
                     ->where('departments.id', $departmentID)
                     ->select('employees.id as employee_id', 'employees.name as employee', 'employees.nik as nik', 'employees.occupation as occupation', 'departments.name as department', 'departments.id as department_id', 'action_plans.file as file', 'action_plans.id as action_plan_id')
-                    ->paginate(20)->appends(['status' => $status, 'department' => $departmentID, 'employee' => $employeeID]);
+                    ->paginate(10)->appends(['status' => $status, 'department' => $departmentID, 'employee' => $employeeID]);
             }
         } elseif ($departmentID == 'all') {
             if ($email == 'siswantoko@bskp.co.id' || $email == 'tabrani@bskp.co.id' || $role == 'FAD') {
@@ -95,18 +95,18 @@ class TargetController extends Controller
                     ->leftJoin('action_plans', 'action_plans.employee_id', '=', 'employees.id')
                     ->whereIn('departments.name', ['Sub Div A', 'Sub Div B', 'Sub Div C', 'Sub Div D', 'Sub Div E', 'Sub Div F', 'FAD', 'FSD', 'Div 1', 'Div 2'])
                     ->select('employees.id as employee_id', 'employees.name as employee', 'employees.nik as nik', 'employees.occupation as occupation', 'departments.name as department', 'departments.id as department_id', 'action_plans.file as file', 'action_plans.id as action_plan_id')
-                    ->paginate(20)->appends(['status' => $status, 'department' => $departmentID, 'employee' => $employeeID]);
+                    ->paginate(10)->appends(['status' => $status, 'department' => $departmentID, 'employee' => $employeeID]);
             } elseif ($email == 'hendi@bskp.co.id') {
                 $departments = DB::table('departments')->leftJoin('employees', 'employees.department_id', '=', 'departments.id')
                     ->leftJoin('action_plans', 'action_plans.employee_id', '=', 'employees.id')
                     ->whereIn('departments.name', ['Accounting', 'Finance'])
                     ->select('employees.id as employee_id', 'employees.name as employee', 'employees.nik as nik', 'employees.occupation as occupation', 'departments.name as department', 'departments.id as department_id', 'action_plans.file as file', 'action_plans.id as action_plan_id')
-                    ->paginate(20)->appends(['status' => $status, 'department' => $departmentID, 'employee' => $employeeID]);
+                    ->paginate(10)->appends(['status' => $status, 'department' => $departmentID, 'employee' => $employeeID]);
             } else {
                 $departments = DB::table('departments')->leftJoin('employees', 'employees.department_id', '=', 'departments.id')
                     ->leftJoin('action_plans', 'action_plans.employee_id', '=', 'employees.id')
                     ->select('employees.id as employee_id', 'employees.name as employee', 'employees.nik as nik', 'employees.occupation as occupation', 'departments.name as department', 'departments.id as department_id', 'action_plans.file as file', 'action_plans.id as action_plan_id')
-                    ->paginate(20)->appends(['status' => $status, 'department' => $departmentID, 'employee' => $employeeID]);
+                    ->paginate(10)->appends(['status' => $status, 'department' => $departmentID, 'employee' => $employeeID]);
             }
 
             // dd($departments);
@@ -116,33 +116,33 @@ class TargetController extends Controller
                 ->leftJoin('action_plans', 'action_plans.employee_id', '=', 'employees.id')
                 ->where('departments.id', $departmentID)
                 ->select('employees.id as employee_id', 'employees.name as employee', 'employees.nik as nik', 'employees.occupation as occupation', 'departments.name as department', 'departments.id as department_id', 'action_plans.file as file', 'action_plans.id as action_plan_id')
-                ->paginate(20)->appends(['status' => $status, 'department' => $departmentID, 'employee' => $employeeID]);
+                ->paginate(10)->appends(['status' => $status, 'department' => $departmentID, 'employee' => $employeeID]);
         } elseif ($status) {
             if ($email == 'siswantoko@bskp.co.id' || $email == 'tabrani@bskp.co.id' || $role == 'FAD') {
                 $departments = DB::table('departments')->leftJoin('employees', 'employees.department_id', '=', 'departments.id')
                     ->leftJoin('action_plans', 'action_plans.employee_id', '=', 'employees.id')->where('employees.status', '=', $status)
                     ->whereIn('departments.name', ['Sub Div A', 'Sub Div B', 'Sub Div C', 'Sub Div D', 'Sub Div E', 'Sub Div F', 'FAD', 'FSD', 'Div 1', 'Div 2'])
                     ->select('employees.id as employee_id', 'employees.name as employee', 'employees.nik as nik', 'employees.occupation as occupation', 'departments.name as department', 'departments.id as department_id', 'action_plans.file as file', 'action_plans.id as action_plan_id')
-                    ->paginate(20)->appends(['status' => $status, 'department' => $departmentID, 'employee' => $employeeID]);
+                    ->paginate(10)->appends(['status' => $status, 'department' => $departmentID, 'employee' => $employeeID]);
             } elseif ($email == 'hendi@bskp.co.id') {
                 $departments = DB::table('departments')->leftJoin('employees', 'employees.department_id', '=', 'departments.id')
                     ->leftJoin('action_plans', 'action_plans.employee_id', '=', 'employees.id')->where('employees.status', '=', $status)
                     ->whereIn('departments.name', ['Accounting', 'Finance'])
                     ->select('employees.id as employee_id', 'employees.name as employee', 'employees.nik as nik', 'employees.occupation as occupation', 'departments.name as department', 'departments.id as department_id', 'action_plans.file as file', 'action_plans.id as action_plan_id')
-                    ->paginate(20)->appends(['status' => $status, 'department' => $departmentID, 'employee' => $employeeID]);
+                    ->paginate(10)->appends(['status' => $status, 'department' => $departmentID, 'employee' => $employeeID]);
             } else {
                 $departments = DB::table('departments')->leftJoin('employees', 'employees.department_id', '=', 'departments.id')
                     ->leftJoin('action_plans', 'action_plans.employee_id', '=', 'employees.id')->where('employees.status', '=', $status)
                     ->select('employees.id as employee_id', 'employees.name as employee', 'employees.nik as nik', 'employees.occupation as occupation', 'departments.name as department', 'departments.id as department_id', 'action_plans.file as file', 'action_plans.id as action_plan_id')
                     ->where('status', $status)
-                    ->paginate(20)->appends(['status' => $status, 'department' => $departmentID, 'employee' => $employeeID]);
+                    ->paginate(10)->appends(['status' => $status, 'department' => $departmentID, 'employee' => $employeeID]);
             }
         } elseif ($employeeID) {
             $departments = DB::table('employees')->where('employees.id', $employeeID)
                 ->leftJoin('departments', 'departments.id', '=', 'employees.department_id')
                 ->leftJoin('action_plans', 'action_plans.employee_id', '=', 'employees.id')
                 ->select('employees.id as employee_id', 'employees.name as employee', 'employees.nik as nik', 'employees.occupation as occupation', 'departments.name as department', 'departments.id as department_id', 'action_plans.file as file', 'action_plans.id as action_plan_id')
-                ->paginate(20)->appends(['status' => $status, 'department' => $departmentID, 'employee' => $employeeID]);
+                ->paginate(10)->appends(['status' => $status, 'department' => $departmentID, 'employee' => $employeeID]);
         } else {
             return view('components/404-page');
         }

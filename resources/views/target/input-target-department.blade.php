@@ -96,16 +96,16 @@
             </div>
         </div>
 
-        
-        <table class="w-full table-auto">
+        <div class="flex justify-center">
+        <table class="w-[1250px] table-fixed">
             <tr>
-                <th style="width: 3%;" class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-white py-1 px-4 bg-blue-700">No.</th>
-                <th class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-white py-1 px-4 bg-blue-700">NIK</th>
-                <th class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-white py-1 px-4 bg-blue-700">Nama</th>
-                <th class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-white py-1 px-4 bg-blue-700">Department</th>
-                <th class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-white py-1 px-4 bg-blue-700">Jabatan</th>
-                <th class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-white py-1 px-4 bg-blue-700">Input Target Individu</th>
-                <th class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-white py-1 px-4 bg-blue-700">Upload Program</th>
+                <th style="width: 4%;" class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-white py-1 px-4 bg-blue-700">No.</th>
+                <th style="width: 9%" class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-white py-1 px-4 bg-blue-700">NIK</th>
+                <th style="width: 22%" class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-white py-1 px-4 bg-blue-700">Nama</th>
+                <th style="width: 14%" class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-white py-1 px-4 bg-blue-700">Department</th>
+                <th style="width: 8%" class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-white py-1 px-4 bg-blue-700">Jabatan</th>
+                <th style="width: 20%" class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-white py-1 px-4 bg-blue-700">Input Target Individu</th>
+                <th style="width: 8%" class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-white py-1 px-4 bg-blue-700">Upload Program</th>
             </tr>
             @php
                 $i = 0;
@@ -122,13 +122,13 @@
                 <td class="border-2 border-gray-400 tracking-wide text-[12px] px-2 py-0">{{ $department->department }}</td>
                 <td class="border-2 border-gray-400 tracking-wide text-[12px] px-2 py-0">{{ $department->occupation }}</td>
                 <td class="border-2 border-gray-400 tracking-wide text-[12px] px-2 py-0">
-                    <div class="flex justify-center gap-2">
-                        <button class="bg-blue-500 px-2 py-0.5 rounded-sm my-1">
+                    <div class="flex justify-center gap-3 my-0.5">
+                        <button class="bg-blue-500 px-2 py-0 rounded-sm my-1">
                             <a id="employee-link-{{ $department->employee_id }}" href="{{ route('target.show', 'employee=' . $department->employee_id) }}">
                               <span class="text-white hover:underline">Lihat Target</span>
                             </a>
                         </button>
-                        <button class="bg-green-600 px-2 py-0.5 rounded-sm my-1">
+                        <button class="bg-green-600 px-1.5 py-0 rounded-sm my-1">
                             <a id="employee-link-{{ $department->employee_id }}" href="{{ route('target.showImport') }}?employee={{ $department->employee_id }}">
                               <span class="text-white hover:underline">Upload Excel</span>
                             </a>
@@ -157,74 +157,75 @@
             </tr>
             @endforelse
         </table>
-        {{-- Pagination --}}
-        <div class="shadow-lg shadow-black/15 mb-2 mt-3">
-            <div class="flex w-full items-center justify-between border-t border-gray-200 bg-white px-10 py-3 rounded-md">
-                <div class="flex flex-1 justify-between sm:hidden">
-                    {{ $departments->links() }}
+    </div>
+    </div>
+    {{-- Pagination --}}
+    <div class="shadow-lg shadow-black/15 mb-2 mt-3 ml-64">
+        <div class="flex w-full items-center justify-between border-t border-gray-200 bg-white px-10 py-3 rounded-md">
+            <div class="flex flex-1 justify-between sm:hidden">
+                {{ $departments->links() }}
+            </div>
+            <div class="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
+                <div>
+                    <p class="text-sm text-gray-700">
+                        Showing
+                        <span class="font-medium">{{ $departments->firstItem() }}</span>
+                        to
+                        <span class="font-medium">{{ $departments->lastItem() }}</span>
+                        of
+                        <span class="font-medium">{{ $departments->total() }}</span>
+                        results
+                    </p>
                 </div>
-                <div class="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
-                    <div>
-                        <p class="text-sm text-gray-700">
-                            Showing
-                            <span class="font-medium">{{ $departments->firstItem() }}</span>
-                            to
-                            <span class="font-medium">{{ $departments->lastItem() }}</span>
-                            of
-                            <span class="font-medium">{{ $departments->total() }}</span>
-                            results
-                        </p>
-                    </div>
-                    <div>
-                        <nav class="isolate inline-flex -space-x-px rounded-md shadow-sm" aria-label="Pagination">
-                            @if ($departments->onFirstPage())
-                                <span class="relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 cursor-default">
-                                    <span class="sr-only">Previous</span>
-                                    <svg class="w-5 h-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                                        <path fill-rule="evenodd" d="M11.78 5.22a.75.75 0 0 1 0 1.06L8.06 10l3.72 3.72a.75.75 0 1 1-1.06 1.06l-4.25-4.25a.75.75 0 0 1 0-1.06l4.25-4.25a.75.75 0 0 1 1.06 0Z" clip-rule="evenodd" />
-                                    </svg>
-                                </span>
-                            @else
-                                <a href="{{ $departments->previousPageUrl() }}" class="relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0">
-                                    <span class="sr-only">Previous</span>
-                                    <svg class="w-5 h-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                                        <path fill-rule="evenodd" d="M11.78 5.22a.75.75 0 0 1 0 1.06L8.06 10l3.72 3.72a.75.75 0 1 1-1.06 1.06l-4.25-4.25a.75.75 0 0 1 0-1.06l4.25-4.25a.75.75 0 0 1 1.06 0Z" clip-rule="evenodd" />
-                                    </svg>
-                                </a>
+                <div>
+                    <nav class="isolate inline-flex -space-x-px rounded-md shadow-sm" aria-label="Pagination">
+                        @if ($departments->onFirstPage())
+                            <span class="relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 cursor-default">
+                                <span class="sr-only">Previous</span>
+                                <svg class="w-5 h-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                    <path fill-rule="evenodd" d="M11.78 5.22a.75.75 0 0 1 0 1.06L8.06 10l3.72 3.72a.75.75 0 1 1-1.06 1.06l-4.25-4.25a.75.75 0 0 1 0-1.06l4.25-4.25a.75.75 0 0 1 1.06 0Z" clip-rule="evenodd" />
+                                </svg>
+                            </span>
+                        @else
+                            <a href="{{ $departments->previousPageUrl() }}" class="relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0">
+                                <span class="sr-only">Previous</span>
+                                <svg class="w-5 h-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                    <path fill-rule="evenodd" d="M11.78 5.22a.75.75 0 0 1 0 1.06L8.06 10l3.72 3.72a.75.75 0 1 1-1.06 1.06l-4.25-4.25a.75.75 0 0 1 0-1.06l4.25-4.25a.75.75 0 0 1 1.06 0Z" clip-rule="evenodd" />
+                                </svg>
+                            </a>
+                        @endif
+    
+                        @foreach ($departments->getUrlRange(1, $departments->lastPage()) as $page => $url)
+                            @if ($page == $departments->currentPage())
+                                <span aria-current="page" class="relative z-10 inline-flex items-center bg-indigo-600 px-4 py-2 text-sm font-semibold text-white focus:z-20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">{{ $page }}</span>
+                            @elseif ($page == 1 || $page == $departments->lastPage() || ($page >= $departments->currentPage() - 1 && $page <= $departments->currentPage() + 1))
+                                <a href="{{ $url }}" class="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0">{{ $page }}</a>
+                            @elseif ($page == $departments->currentPage() - 2 || $page == $departments->currentPage() + 2)
+                                <span class="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-700 ring-1 ring-inset ring-gray-300 cursor-default">...</span>
                             @endif
-        
-                            @foreach ($departments->getUrlRange(1, $departments->lastPage()) as $page => $url)
-                                @if ($page == $departments->currentPage())
-                                    <span aria-current="page" class="relative z-10 inline-flex items-center bg-indigo-600 px-4 py-2 text-sm font-semibold text-white focus:z-20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">{{ $page }}</span>
-                                @elseif ($page == 1 || $page == $departments->lastPage() || ($page >= $departments->currentPage() - 1 && $page <= $departments->currentPage() + 1))
-                                    <a href="{{ $url }}" class="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0">{{ $page }}</a>
-                                @elseif ($page == $departments->currentPage() - 2 || $page == $departments->currentPage() + 2)
-                                    <span class="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-700 ring-1 ring-inset ring-gray-300 cursor-default">...</span>
-                                @endif
-                            @endforeach
-        
-                            @if ($departments->hasMorePages())
-                                <a href="{{ $departments->nextPageUrl() }}" class="relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0">
-                                    <span class="sr-only">Next</span>
-                                    <svg class="w-5 h-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                                        <path fill-rule="evenodd" d="M8.22 5.22a.75.75 0 0 1 1.06 0l4.25 4.25a.75.75 0 0 1 0 1.06l-4.25 4.25a.75.75 0 0 1-1.06-1.06L11.94 10 8.22 6.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" />
-                                    </svg>
-                                </a>
-                            @else
-                                <span class="relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 cursor-default">
-                                    <span class="sr-only">Next</span>
-                                    <svg class="w-5 h-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                                        <path fill-rule="evenodd" d="M8.22 5.22a.75.75 0 0 1 1.06 0l4.25 4.25a.75.75 0 0 1 0 1.06l-4.25 4.25a.75.75 0 0 1-1.06-1.06L11.94 10 8.22 6.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" />
-                                    </svg>
-                                </span>
-                            @endif
-                        </nav>
-                    </div>
+                        @endforeach
+    
+                        @if ($departments->hasMorePages())
+                            <a href="{{ $departments->nextPageUrl() }}" class="relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0">
+                                <span class="sr-only">Next</span>
+                                <svg class="w-5 h-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                    <path fill-rule="evenodd" d="M8.22 5.22a.75.75 0 0 1 1.06 0l4.25 4.25a.75.75 0 0 1 0 1.06l-4.25 4.25a.75.75 0 0 1-1.06-1.06L11.94 10 8.22 6.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" />
+                                </svg>
+                            </a>
+                        @else
+                            <span class="relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 cursor-default">
+                                <span class="sr-only">Next</span>
+                                <svg class="w-5 h-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                    <path fill-rule="evenodd" d="M8.22 5.22a.75.75 0 0 1 1.06 0l4.25 4.25a.75.75 0 0 1 0 1.06l-4.25 4.25a.75.75 0 0 1-1.06-1.06L11.94 10 8.22 6.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" />
+                                </svg>
+                            </span>
+                        @endif
+                    </nav>
                 </div>
             </div>
         </div>
-        {{-- end of pagination --}}
     </div>
+    {{-- end of pagination --}}
 </x-app-layout>
 
 
