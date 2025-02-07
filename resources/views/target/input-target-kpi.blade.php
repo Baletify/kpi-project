@@ -6,6 +6,7 @@
                     $employeeQuery = request()->query('employee');
                     $yearQuery = request()->query('year');
                     $semesterQuery = request()->query('semester');
+                    $departmentQuery = request()->query('department')
                 @endphp
             </div>
         </div>
@@ -71,7 +72,13 @@
                     </a>
                 </div>
             </div>
-
+        </div>
+        <div class="flex justify-start">
+            <div class="p-0">
+                <button type="button" class="bg-blue-500 px-2 py-1 text-white rounded-md mb-2">
+                    <a href="{{ route('target.department') }}?department={{ $departmentQuery }}">Back</a>
+                </button>
+            </div>
         </div>
         <table class="w-full table-auto">
             <tr>

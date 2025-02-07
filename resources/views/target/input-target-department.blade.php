@@ -124,7 +124,7 @@
                 <td class="border-2 border-gray-400 tracking-wide text-[12px] px-2 py-0">
                     <div class="flex justify-center gap-3 my-0.5">
                         <button class="bg-blue-500 px-2 py-0 rounded-sm my-1">
-                            <a id="employee-link-{{ $department->employee_id }}" href="{{ route('target.show', 'employee=' . $department->employee_id) }}">
+                            <a id="employee-link-{{ $department->employee_id }}" href="{{ route('target.show', 'employee=' . $department->employee_id) }}&department={{ $department->department_id }}">
                               <span class="text-white hover:underline">Lihat Target</span>
                             </a>
                         </button>

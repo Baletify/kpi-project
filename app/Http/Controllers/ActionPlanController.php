@@ -60,11 +60,12 @@ class ActionPlanController extends Controller
         ];
 
         ActionPlan::updateOrCreate($searchCondition, $updateCondition);
-
+        flash()->success('Action Plan has been added');
         if (Auth::user()->input_type == 'Group') {
-            return redirect()->route('target.department', ['department' => $request->department_id]);
+            return redirect()->route('target.department', ['department' => $request->department_id])->with('success', 'Action Plan has been added');
         } else {
-            return redirect()->route('target.department', ['employee' => $request->employee_id]);
+            return redirect()->route('target.department', ['employee' => $request->employee_id])
+                ->with('success', 'Action Plan has been added');
         }
     }
 
@@ -118,6 +119,8 @@ class ActionPlanController extends Controller
                 'file' => $recordFileName
             ]
         );
+
+        flash()->success('Action Plan has been added');
 
         if (Auth::user()->input_type == 'Group') {
             return redirect()->route('target.department', ['department' => $request->department_id]);

@@ -1,6 +1,6 @@
 <x-app-layout :title="$title" :desc="$desc">
     <div class="ml-64 mt-4 overflow-x-auto p-2 bg-gray-100 border border-gray-200 shadow-md shadow-black/10 rounded-md">
-        <form action="{{ route('action-plan.storeFile') }}" method="POST" enctype="multipart/form-data">
+        <form id="actionPlanForm" action="{{ route('action-plan.storeFile') }}" method="POST" enctype="multipart/form-data">
             @csrf
         <div class="grid grid-cols-2 gap-x-3">
             <div class="grid grid-cols-2 gap-x-3">
@@ -61,6 +61,9 @@
     </div>
 
     <script>
+            document.getElementById('actionPlanForm').addEventListener('submit', function() {
+            document.getElementById('submitBtn').disabled = true;
+        });
         document.getElementById('action_plan_file').addEventListener('change', function(event) {
             var file = event.target.files[0];
             var preview = document.getElementById('preview');
