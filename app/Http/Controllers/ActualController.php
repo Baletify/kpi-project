@@ -120,7 +120,7 @@ class ActualController extends Controller
             $dept = 'Factory';
             $allDept = DB::table('departments')->where('name', '=', $dept)->get();
         } elseif ($email == 'tabrani@bskp.co.id' || $email == 'siswantoko@bskp.co.id') {
-            $dept = ['Sub Div A', 'Sub Div B', 'Sub Div C', 'Sub Div D', 'Sub Div E', 'Sub Div F', 'FAD', 'FSD'];
+            $dept = ['Sub Div A', 'Sub Div B', 'Sub Div C', 'Sub Div D', 'Sub Div E', 'Sub Div F', 'FAD', 'FSD', 'Div 1', 'Div 2'];
             $allDept = DB::table('departments')->whereIn('name', $dept)->get();
         } elseif ($email == 'hendi@bskp.co.id') {
             $dept = ['Accounting', 'Finance'];

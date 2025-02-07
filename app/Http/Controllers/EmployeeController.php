@@ -28,6 +28,8 @@ class EmployeeController extends Controller
 
         $div1Dept = DB::table('departments')->whereIn('name', ['Sub Div A', 'Sub Div B', 'Sub Div C', 'FAD',])->get();
         $div2Dept = DB::table('departments')->whereIn('name', ['Sub Div D', 'Sub Div E', 'Sub Div F', 'FAD'])->get();
+        $fad = DB::table('departments')->whereIn('name', ['Sub Div A', 'Sub Div B', 'Sub Div C', 'Sub Div D', 'Sub Div E', 'Sub Div F', 'FAD', 'FSD', 'Div 1', 'Div 2'])->get();
+        $accDept = $div2Dept = DB::table('departments')->whereIn('name', ['Accounting', 'Finance'])->get();
         $ws = DB::table('departments')->where('name', '=', 'Workshop')->get();
         $fsd = DB::table('departments')->where('name', '=', 'FSD')->get();
         $factory = DB::table('departments')->where('name', '=', 'Factory')->get();
@@ -49,6 +51,10 @@ class EmployeeController extends Controller
             $deptList = $ws;
         } else if ($role == 'Checker Factory') {
             $deptList = $factory;
+        } else if ($role == 'FAD' || $email == 'siswantoko@bskp.co.id' || $email == 'tabrani@bskp.co.id') {
+            $deptList = $fad;
+        } else if ($email == 'hendi@bskp.co.id') {
+            $deptList = $accDept;
         } else if ($role == 'Approver' || $role == 'Mng Approver') {
             $deptList = $allDept;
         } elseif ($role == 'Inputer' && $email == 'fsd@bskp.co.id') {
@@ -551,6 +557,8 @@ class EmployeeController extends Controller
         $div1Dept = DB::table('departments')->whereIn('name', ['Sub Div A', 'Sub Div B', 'Sub Div C', 'FAD',])->get();
         $div2Dept = DB::table('departments')->whereIn('name', ['Sub Div D', 'Sub Div E', 'Sub Div F', 'FAD'])->get();
         $ws = DB::table('departments')->where('name', '=', 'Workshop')->get();
+        $fad = DB::table('departments')->whereIn('name', ['Sub Div A', 'Sub Div B', 'Sub Div C', 'Sub Div D', 'Sub Div E', 'Sub Div F', 'FAD', 'FSD', 'Div 1', 'Div 2'])->get();
+        $accDept = $div2Dept = DB::table('departments')->whereIn('name', ['Accounting', 'Finance'])->get();
         $fsd = DB::table('departments')->where('name', '=', 'FSD')->get();
         $factory = DB::table('departments')->where('name', '=', 'Factory')->get();
         $diva = DB::table('departments')->where('name', '=', 'Sub Div A')->get();
@@ -570,6 +578,10 @@ class EmployeeController extends Controller
             $deptList = $ws;
         } else if ($role == 'Checker Factory') {
             $deptList = $factory;
+        } else if ($role == 'FAD' || $email == 'siswantoko@bskp.co.id' || $email == 'tabrani@bskp.co.id') {
+            $deptList = $fad;
+        } else if ($email == 'hendi@bskp.co.id') {
+            $deptList = $accDept;
         } else if ($role == 'Approver' || $role == 'Mng Approver') {
             $deptList = $allDept;
         } elseif ($role == 'Inputer' && $email == 'fsd@bskp.co.id') {

@@ -32,7 +32,7 @@ class ReportController extends Controller
 
 
         $divDept = DB::table('departments')->whereIn('name', ['Sub Div A', 'Sub Div B', 'Sub Div C', 'Sub Div D', 'Sub Div E', 'Sub Div F'])->get();
-        $divFAD = DB::table('departments')->whereIn('name', ['Sub Div A', 'Sub Div B', 'Sub Div C', 'Sub Div D', 'Sub Div E', 'Sub Div F', 'FAD', 'FSD'])->get();
+        $divFAD = DB::table('departments')->whereIn('name', ['Sub Div A', 'Sub Div B', 'Sub Div C', 'Sub Div D', 'Sub Div E', 'Sub Div F', 'FAD', 'FSD', 'Div 1', 'Div 2'])->get();
         $ws = DB::table('departments')->where('name', '=', 'Workshop')->get();
         $factory = DB::table('departments')->where('name', '=', 'Factory')->get();
         $fsd = DB::table('departments')->where('name', '=', 'FSD')->get();
@@ -120,7 +120,7 @@ class ReportController extends Controller
         $email = $user->email;
 
         $divDept = DB::table('departments')->whereIn('name', ['Sub Div A', 'Sub Div B', 'Sub Div C', 'Sub Div D', 'Sub Div E', 'Sub Div F'])->get();
-        $divFAD = DB::table('departments')->whereIn('name', ['Sub Div A', 'Sub Div B', 'Sub Div C', 'Sub Div D', 'Sub Div E', 'Sub Div F', 'FAD', 'FSD'])->get();
+        $divFAD = DB::table('departments')->whereIn('name', ['Sub Div A', 'Sub Div B', 'Sub Div C', 'Sub Div D', 'Sub Div E', 'Sub Div F', 'FAD', 'FSD', 'Div 1', 'Div 2'])->get();
         $ws = DB::table('departments')->where('name', '=', 'Workshop')->get();
         $factory = DB::table('departments')->where('name', '=', 'Factory')->get();
         $accFin = DB::table('departments')->whereIn('name', ['Accounting', 'Finance'])->get();
@@ -280,7 +280,7 @@ class ReportController extends Controller
             return view('report.employee-report', ['title' => 'Report', 'desc' => 'Employee Report', 'employee' => $employee, 'actuals' => $actuals, 'targets' => $targets, 'totals' => $totals, 'sumWeighting' => $sumWeighting,]);
         } else {
 
-            return view('components/404-page');
+            return view('components/404-page-report');
         }
     }
 
@@ -364,7 +364,7 @@ class ReportController extends Controller
 
             return view('report.department-report', ['title' => 'Report', 'desc' => 'Summary KPI Dept', 'actuals' => $actuals, 'targets' => $targets, 'totals' => $totals, 'sumWeighting' => $sumWeighting,]);
         } else {
-            return view('components/404-page');
+            return view('components/404-page-report');
         }
     }
 

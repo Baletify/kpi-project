@@ -303,29 +303,7 @@
                 } else if (target === 4) { // Target == 4
 
                     if (actual === target - 3) {
-                        achievementField.value = '115%';
-                    } else if (actual === target - 2) {
                         achievementField.value = '110%';
-                    } else if (actual === target - 1) {
-                      achievementField.value = '105%';
-                    } else if (actual === target) {
-                        achievementField.value = '100%';
-                    } else if (actual === target + 1) {
-                        achievementField.value = '90%';
-                    } else if (actual === target + 2) {
-                        achievementField.value = '80%';
-                    } else if (actual === target + 3) {
-                        achievementField.value = '70%';
-                    } else if (actual === target + 4) {
-                        achievementField.value = '60%';
-                    }
-                    else {
-                        achievementField.value = '0%';
-                    }
-                } else if (target === 4) { // Target == 4
-
-                    if (actual === target - 3) {
-                        achievementField.value = '115%';
                     } else if (actual === target - 2) {
                         achievementField.value = '110%';
                     } else if (actual === target - 1) {
@@ -347,9 +325,9 @@
                 } else if (target === 5) { // Target == 5
 
                     if (actual === target - 4) {
-                        achievementField.value = '120%';
+                        achievementField.value = '110%';
                     } else if (actual === target - 3) {
-                        achievementField.value = '115%';
+                        achievementField.value = '110%';
                     } else if (actual === target - 2) {
                         achievementField.value = '110%';
                     } else if (actual === target - 1) {
@@ -373,11 +351,11 @@
                 } else if (target === 6) { // Target == 6
 
                     if (actual === target - 5) {
-                        achievementField.value = '125%';
+                        achievementField.value = '110%';
                     } else if (actual === target - 4) {
-                        achievementField.value = '120%';
+                        achievementField.value = '110%';
                     } else if (actual === target - 3) {
-                        achievementField.value = '115%';
+                        achievementField.value = '110%';
                     } else if (actual === target - 2) {
                         achievementField.value = '110%';
                     } else if (actual === target - 1) {

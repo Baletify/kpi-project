@@ -37,8 +37,13 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/input-target-department', [TargetController::class, 'department'])->name('target.department');
         Route::get('/input-target-kpi-department/edit/{id}', [TargetController::class, 'editDept'])->name('target.editDept');
         Route::get('/input-target-kpi-department', [TargetController::class, 'showDept'])->name('target.showDept');
+
+        Route::get('/input-target-department-all', [TargetController::class, 'deptList'])->name('target.departmentAll');
+
         Route::get('/import-target-kpi-employee', [TargetController::class, 'showImport'])->name('target.showImport');
         Route::get('/import-target-kpi-department', [TargetController::class, 'showImportDept'])->name('target.showImportDept');
+
+
         Route::post('/import-target-kpi-employee/store', [TargetController::class, 'import'])->name('target.import');
         Route::post('/import-target-kpi-department/store', [TargetController::class, 'importDept'])->name('target.importDept');
         Route::put('/input-target-kpi/update', [TargetController::class, 'update'])->name('target.update');

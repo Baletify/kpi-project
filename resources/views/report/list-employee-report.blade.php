@@ -13,7 +13,7 @@
             <div class="p-0">
                 <span class="font-bold text-2xl">Summary KPI Employees</span>
             </div>
-            @if ($role == 'Approver' || $email == 'johari@bskp.co.id' || $email == 'surya-sp@bskp.co.id')
+            @if ($role == 'Approver' || $role == 'Mng Approver')
             <div class="flex flex-col">
                 <div class="flex justify-end">
                     <div class="relative mt-1 rounded-md">
