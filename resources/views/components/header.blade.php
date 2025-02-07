@@ -1,5 +1,5 @@
 <header class="w-full bg-gray-50">
-    <div class="py-0.5 bg-gradient-to-bl from-[#3572EF] to-[#090f79] flex justify-center items-center shadow-md shadow-black/5">
+    <div class="py-0.5 bg-gradient-to-bl from-[#3572EF] to-[#090F79] flex justify-center items-center shadow-md shadow-black/5">
         <div class="flex flex-col justify-center items-center">
             <div class="ml-64">
                 <p class="font-bold text-white text-xl">APLIKASI KPI (Key Performa Indicator)</p>
