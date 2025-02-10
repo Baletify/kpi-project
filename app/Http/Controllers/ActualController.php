@@ -271,6 +271,7 @@ class ActualController extends Controller
         $target = '';
         $kpi_percentage = '';
         if ($request->record_file == null) {
+            $target = '0';
             $actual = '0';
             $kpi_percentage = '0';
         } else {
@@ -365,6 +366,7 @@ class ActualController extends Controller
         $target = '';
         $kpi_percentage = '';
         if ($request->record_file == null) {
+            $target = '0';
             $actual = '0';
             $kpi_percentage = '0';
         } else {

@@ -28,6 +28,7 @@
                 <div class="mx-2">
                     <span class="text-white font-semibold">{{ auth()->user()->name }}</span>
                 </div>
+                <div class=" border-solid border-r-2 text-white"></div>
             </div>
             <div class="p-0">
                 <form method="POST" action="{{ route('auth.logout') }}" onsubmit="clearLocalStorage()">
