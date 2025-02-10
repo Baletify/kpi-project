@@ -53,7 +53,7 @@
             $year = request()->query('year');
             @endphp
 
-            @forelse ($deptList as $department)
+            @forelse ($departments as $department)
             @php
             $i++
             @endphp
@@ -77,7 +77,7 @@
                     </div>
                 </div>
                 </td>
-                <td class="border-2 border-gray-400 text-[12px] tracking-wide px-2 py-0 text-center">
+                <td class="border-2 text-[12px] border-gray-400 tracking-wide px-2 text-center">
                     @if(!$department->file)
                     <a id="input-target-link" href="{{ route('dept-action-plan.addDeptFile', $department->id) }}?year={{ $year }}&semester={{ $currentSemester }}">
                         <i class="ri-add-line bg-green-600 text-white text-sm p-0.5 rounded-sm"></i>

@@ -9,7 +9,7 @@
         @endphp
         <div class="flex justify-between">
             <div class="p-0">
-                <span class="font-bold text-2xl">Input Target & Upload Program</span>
+                <span class="font-bold text-2xl">Input Target Employee & Upload Program</span>
             </div>
             <div class="flex justify-end">
                 <div class="flex flex-col">
@@ -84,7 +84,7 @@
                                     <span class="text-white">List Target Department</span>
                                   </a>
                                   @else
-                                  <a id="input-target-link" href="{{ route('target.showDept', 'department=' . $departments->first()->department_id ?? '' ) }}" >
+                                  <a id="input-target-link" href="{{ route('target.showDeptOne', 'department=' . $departments->first()->department_id ?? '' ) }}" >
                                       <span class="text-white">Input Target Dept</span>
                                     </a>
                                 @endif
@@ -104,7 +104,7 @@
                 <th style="width: 22%" class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-white py-1 px-4 bg-blue-700">Nama</th>
                 <th style="width: 14%" class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-white py-1 px-4 bg-blue-700">Department</th>
                 <th style="width: 8%" class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-white py-1 px-4 bg-blue-700">Jabatan</th>
-                <th style="width: 20%" class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-white py-1 px-4 bg-blue-700">Input Target Individu</th>
+                <th style="width: 20%" class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-white py-1 px-4 bg-blue-700">Opsi</th>
                 <th style="width: 8%" class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-white py-1 px-4 bg-blue-700">Upload Program</th>
             </tr>
             @php

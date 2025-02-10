@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Employee;
 use App\Models\ActionPlan;
+use App\Models\ActionPlanDept;
+use App\Models\DeptActionPlan;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -40,6 +42,16 @@ class ActionPlanController extends Controller
         return view('action-plan.input-action-plan', ['title' => 'Action Plan', 'desc' => 'Input Action Plan', 'employee' => $employee]);
     }
 
+    public function addDeptFile($id)
+    {
+        $department = DB::table('departments')
+            ->where('departments.id', $id)
+            ->select('departments.*')
+            ->first();
+
+        return view('action-plan.input-action-plan-dept', ['title' => 'Action Plan', 'desc' => 'Input Action Plan', 'department' => $department]);
+    }
+
     public function storeFile(Request $request)
     {
         if ($request->hasFile('action_plan_file')) {
@@ -59,14 +71,46 @@ class ActionPlanController extends Controller
             'file' => $recordFileName
         ];
 
-        ActionPlan::updateOrCreate($searchCondition, $updateCondition);
-        flash()->success('Action Plan has been added');
+        $response = ActionPlan::updateOrCreate($searchCondition, $updateCondition);
+
+
         if (Auth::user()->input_type == 'Group') {
             return redirect()->route('target.department', ['department' => $request->department_id])->with('success', 'Action Plan has been added');
         } else {
             return redirect()->route('target.department', ['employee' => $request->employee_id])
                 ->with('success', 'Action Plan has been added');
         }
+    }
+
+    public function storeFileDept(Request $request)
+    {
+        $year = $request->year;
+        $semester = $request->semester;
+        // dd($request->all());
+
+        if ($request->hasFile('action_plan_file')) {
+            $recordFile = $request->file('action_plan_file');
+            $recordFileName = Str::random(40) . '.' . $recordFile->getClientOriginalExtension();
+            $recordFile->move(public_path('action_plan_files'), $recordFileName);
+        }
+
+        $departmentID = $request->department_id;
+        // dd($departmentID);
+
+        $searchCondition = [
+            'department_id' => $departmentID,
+        ];
+
+        $updateCondition = [
+            'file_name' => $request->file_name,
+            'file' => $recordFileName
+        ];
+
+        $response = DeptActionPlan::updateOrCreate($searchCondition, $updateCondition);
+
+        flash()->success('Action Plan has been added');
+
+        return redirect()->route('target.showDeptOne', ['department' => $request->department_id, 'year' => $year, 'semester' => $semester]);
     }
 
     public function showFile($filename)
@@ -86,6 +130,8 @@ class ActionPlanController extends Controller
         return $response;
     }
 
+
+
     public function editFile($id)
     {
         $employee = DB::table('employees')
@@ -97,6 +143,17 @@ class ActionPlanController extends Controller
 
 
         return view('action-plan.edit-action-plan', ['title' => 'Action Plan', 'desc' => 'Edit Action Plan', 'employee' => $employee]);
+    }
+    public function editDeptFile($id)
+    {
+
+        $department = DB::table('departments')
+            ->where('departments.id', $id)
+            ->select('departments.*')
+            ->first();
+        // dd($department);
+
+        return view('action-plan.input-action-plan-dept', ['title' => 'Action Plan', 'desc' => 'Input Action Plan', 'department' => $department]);
     }
 
     public function updateFile(Request $request)
@@ -127,5 +184,35 @@ class ActionPlanController extends Controller
         } else {
             return redirect()->route('target.department', ['employee' => $request->employee_id]);
         }
+    }
+
+    public function updateDeptFile(Request $request)
+    {
+        $year = $request->year;
+        $semester = $request->semester;
+        dd($request->all());
+
+        if ($request->hasFile('action_plan_file')) {
+            $recordFile = $request->file('action_plan_file');
+            $recordFileName = Str::random(40) . '.' . $recordFile->getClientOriginalExtension();
+            $recordFile->move(public_path('action_plan_files'), $recordFileName);
+        }
+
+        $departmentID = $request->department_id;
+
+        $searchCondition = [
+            'department_id' => $departmentID,
+        ];
+
+        $updateCondition = [
+            'file_name' => $request->file_name,
+            'file' => $recordFileName
+        ];
+
+        $response = DeptActionPlan::updateOrCreate($searchCondition, $updateCondition);
+
+        flash()->success('Action Plan has been added');
+
+        return redirect()->route('target.showDeptOne', ['department' => $departmentID, 'year' => $year, 'semester' => $semester]);
     }
 }

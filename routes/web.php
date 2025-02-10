@@ -39,6 +39,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/input-target-kpi-department', [TargetController::class, 'showDept'])->name('target.showDept');
 
         Route::get('/input-target-department-all', [TargetController::class, 'deptList'])->name('target.departmentAll');
+        Route::get('/input-target-department-one', [TargetController::class, 'showDeptOne'])->name('target.showDeptOne');
 
         Route::get('/import-target-kpi-employee', [TargetController::class, 'showImport'])->name('target.showImport');
         Route::get('/import-target-kpi-department', [TargetController::class, 'showImportDept'])->name('target.showImportDept');
@@ -93,10 +94,14 @@ Route::middleware(['auth'])->group(function () {
     Route::prefix('action-plan')->group(function () {
         Route::get('/action-plans', [ActionPlanController::class, 'show'])->name('action-plan.show');
         Route::get('/input-action-plan/{id}', [ActionPlanController::class, 'addEmployeeFile'])->name('action-plan.addEmployeeFile');
+        Route::get('/input-action-plan-dept/{id}', [ActionPlanController::class, 'addDeptFile'])->name('dept-action-plan.addDeptFile');
         Route::post('/input-action-plan/store', [ActionPlanController::class, 'storeFile'])->name('action-plan.storeFile');
+        Route::post('/input-action-plan/store-dept', [ActionPlanController::class, 'storeFileDept'])->name('dept-action-plan.storeFileDept');
         Route::get('/file-preview/{id}', [ActionPlanController::class, 'showFile'])->name('action-plan.showFile');
         Route::get('/input-action-plan/edit/{id}', [ActionPlanController::class, 'editFile'])->name('action-plan.editFile');
+        Route::get('/input-action-plan/edit-dept/{id}', [ActionPlanController::class, 'editDeptFile'])->name('dept-action-plan.editDeptFile');
         Route::put('/input-action-plan/update/{id}', [ActionPlanController::class, 'updateFile'])->name('action-plan.updateFile');
+        Route::put('/input-action-plan/update-dept', [ActionPlanController::class, 'updateDeptFile'])->name('dept-action-plan.updateDeptFile');
     });
     Route::prefix('kpi-requirement')->group(function () {
         Route::get('/view-requirement', [RequirementController::class, 'index'])->name('requirement.index');

@@ -26,6 +26,7 @@
                 <button class="p-2 bg-blue-600 my-2 rounded-md text-white">
                     Filter
                 </button>
+            </form>
             </div>
             @php
                 $currentSemester = request()->query('semester');
