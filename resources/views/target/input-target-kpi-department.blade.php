@@ -141,7 +141,7 @@
                     $percentageValue = $floatValue * 100;
                     @endphp
                         {{ $percentageValue . '%' }}
-                    @elseif ($isRp)
+                    @elseif ($isRp || $target->unit === 'Rp.')
                         {{ number_format($floatValue) }}
                     @elseif ($isKg)
                     {{ $formattedValue }}
@@ -169,7 +169,7 @@
                     $percentageValue = $floatValue * 100;
                     @endphp
                         {{ $percentageValue . '%' }}
-                    @elseif ($isRp)
+                    @elseif ($isRp || $target->unit === 'Rp.')
                         {{ number_format($floatValue) }}
                     @elseif ($isKg)
                     {{ $formattedValue }}

@@ -44,6 +44,15 @@
             </div>
             <div class="p-1">
             </div>
+        </div>
+        <div class="flex justify-between">
+                <div class="flex items-center">
+                    <div class="p-0">
+                        <button type="button" class="bg-blue-500 px-2 py-1 text-white rounded-md">
+                            <a href="{{ route('target.department') }}?department={{ $departmentQuery }}">Back</a>
+                        </button>
+                    </div>
+                </div>
             <div class="flex justify-end items-center">
                 <div class="relative mt-0 rounded-md">
                     <form action="{{ route('target.show') }}" method="GET">
@@ -65,19 +74,12 @@
                     </button>
                 </div>
                 </form>
-                <div class="">
+                <div class="p-0">
                     <a href="{{ route('target.showImport', 'semester=' . $semesterQuery . '&employee=' . $employeeQuery . '&year=' . $yearQuery) }}" class="p-1 mx-2 bg-green-600 py-2 items-center rounded-md">
                     <i class="ri-file-excel-2-line text-2xl text-white"></i>
                     <span class="font-medium text-white">Upload Excel</span>
                     </a>
                 </div>
-            </div>
-        </div>
-        <div class="flex justify-start">
-            <div class="p-0">
-                <button type="button" class="bg-blue-500 px-2 py-1 text-white rounded-md mb-2">
-                    <a href="{{ route('target.department') }}?department={{ $departmentQuery }}">Back</a>
-                </button>
             </div>
         </div>
         <table class="w-full table-auto">
@@ -182,7 +184,7 @@
                     $percentageValue = $floatValue * 100;
                     @endphp
                         {{ $percentageValue . '%' }}
-                    @elseif ($isRp)
+                    @elseif ($isRp || $target->unit === 'Rp.')
                         {{ number_format($floatValue) }}
                     @elseif ($isKg)
                     {{ $formattedValue }}
@@ -210,7 +212,7 @@
                     $percentageValue = $floatValue * 100;
                     @endphp
                         {{ $percentageValue . '%' }}
-                    @elseif ($isRp)
+                    @elseif ($isRp || $target->unit === 'Rp.')
                         {{ number_format($floatValue) }}
                     @elseif ($isKg)
                     {{ $formattedValue }}
