@@ -5,7 +5,19 @@
             $startYear = 2024; 
             $endYear = $currentYear + 2;
             $role = auth()->user()->role;
-            $departmentQuery = request()->query('department')
+            $departmentQuery = request()->query('department');
+            $employeeQuery = request()->query('employee');
+
+            if ($departmentQuery == 'all') {
+                $all = 'true';
+            } elseif ($departmentQuery) {
+                $all = 'dept';
+            } elseif ($employeeQuery) {
+                $all = 'employee';
+            } else {
+                $all = 'true';
+            }
+
         @endphp
         <div class="flex justify-between">
             <div class="p-0">
@@ -80,11 +92,11 @@
                           <div class="relative mt-1 rounded-md mb-1">
                             <button class="p-2 bg-blue-600 my-2 rounded-md">
                                 @if ($departmentQuery == 'all')
-                                <a id="input-target-link" href="{{ route('target.departmentAll') }}?year=&semester=" >
+                                <a id="input-target-link" href="{{ route('target.departmentAll') }}?year=&semester=&all={{ $all }}" >
                                     <span class="text-white">List Target Department</span>
                                   </a>
                                   @else
-                                  <a id="input-target-link" href="{{ route('target.showDeptOne', 'department=' . $departments->first()->department_id ?? '' ) }}" >
+                                  <a id="input-target-link" href="{{ route('target.showDeptOne', 'department=' . $departments->first()->department_id ?? '' ) }}&all={{ $all }}" >
                                       <span class="text-white">Input Target Dept</span>
                                     </a>
                                 @endif
@@ -124,12 +136,12 @@
                 <td class="border-2 border-gray-400 tracking-wide text-[12px] px-2 py-0">
                     <div class="flex justify-center gap-3 my-0.5">
                         <button class="bg-blue-500 px-2 py-0 rounded-sm my-1">
-                            <a id="employee-link-{{ $department->employee_id }}" href="{{ route('target.show', 'employee=' . $department->employee_id) }}&department={{ $department->department_id }}">
+                            <a id="employee-link-{{ $department->employee_id }}" href="{{ route('target.show', 'employee=' . $department->employee_id) }}&department={{ $department->department_id }}&all={{ $all }}">
                               <span class="text-white hover:underline">Lihat Target</span>
                             </a>
                         </button>
                         <button class="bg-green-600 px-1.5 py-0 rounded-sm my-1">
-                            <a id="employee-link-{{ $department->employee_id }}" href="{{ route('target.showImport') }}?employee={{ $department->employee_id }}">
+                            <a id="employee-link-{{ $department->employee_id }}" href="{{ route('target.showImport') }}?employee={{ $department->employee_id }}&all={{ $all }}">
                               <span class="text-white hover:underline">Upload Excel</span>
                             </a>
                         </button>

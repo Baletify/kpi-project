@@ -3,44 +3,61 @@
         @php
             $yearQuery = request()->query('year');
             $departmentQuery = request()->query('department');
+            $semesterQuery = request()->query('semester');
+            $allStatus = request()->query('all');
         @endphp
         <div class="p-0">
             <span class="font-bold text-2xl">Target KPI Departemen {{ $departments->name }} Tahun {{ $yearQuery }}</span>
         </div>
-        <div class="flex justify-end">
-            <div class="relative mt-0 rounded-md">
-                <form action="{{ route('target.showDept') }}" method="GET">
-                    <input type="hidden" name="department" id="department" value="{{ $departmentQuery }}">
-                    <input type="hidden" name="year" id="year" value="{{ $yearQuery }}">
-                <div class="mt-3 mx-2">
-                    <select name="semester" id="semester" class="col-start-1 row-start-1 w-full appearance-none rounded-md py-1.5 pl-3 pr-7 text-base text-gray-500 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
-                        <option value="">-- Semester --</option>
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                    </select>
+        <div class="flex justify-between">
+            <div class="flex items-center">
+                <div class="p-0">
+                    @if ($allStatus == 'employee' || $allStatus == 'dept')
+                    <button type="button" class="bg-blue-500 px-2 py-1 text-white rounded-md">
+                        <a href="{{ route('target.showDeptOne') }}?department={{ $departmentQuery }}&year={{ $yearQuery }}&semester={{ $semesterQuery }}&all=employee">Back</a>
+                    </button>
+                    @else
+                    <button type="button" class="bg-blue-500 px-2 py-1 text-white rounded-md">
+                        <a href="{{ route('target.departmentAll') }}?department=All&year={{ $yearQuery }}&semester={{ $semesterQuery }}&all=true">Back</a>
+                    </button>
+                    @endif
                 </div>
-                <div class="absolute inset-y-0 right-0 flex items-center">
-                </div>
-              </div>
-              <div class="mt-1 rounded-md mb-1">
-                <button class="p-2 bg-blue-600 my-2 rounded-md text-white">
-                    Filter
-                </button>
-            </form>
             </div>
-            @php
-                $currentSemester = request()->query('semester');
-                $department = request()->query('department');
-                $year = request()->query('year');
-            @endphp
-            <div class="mt-3">
-                <a href="{{ route('target.showImportDept', 'semester=' . $currentSemester . '&department=' . $department . '&year=' . $year) }}" class="p-1 mx-2 bg-green-600 py-2 items-center rounded-md">
-                    <i class="ri-file-excel-2-line text-2xl text-white"></i>
-                    <span class="font-medium text-white">Upload Excel</span>
-                </a>
+            <div class="flex justify-end">
+                <div class="relative mt-0 rounded-md">
+                    <form action="{{ route('target.showDept') }}" method="GET">
+                        <input type="hidden" name="department" id="department" value="{{ $departmentQuery }}">
+                        <input type="hidden" name="year" id="year" value="{{ $yearQuery }}">
+                    <div class="mt-3 mx-2">
+                        <select name="semester" id="semester" class="col-start-1 row-start-1 w-full appearance-none rounded-md py-1.5 pl-3 pr-7 text-base text-gray-500 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
+                            <option value="">-- Semester --</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                        </select>
+                    </div>
+                    <div class="absolute inset-y-0 right-0 flex items-center">
+                    </div>
+                  </div>
+                  <div class="mt-1 rounded-md mb-1">
+                    <button class="p-2 bg-blue-600 my-2 rounded-md text-white">
+                        Filter
+                    </button>
+                </form>
+                </div>
+                @php
+                    $currentSemester = request()->query('semester');
+                    $department = request()->query('department');
+                    $year = request()->query('year');
+                @endphp
+                <div class="mt-3">
+                    <a href="{{ route('target.showImportDept', 'semester=' . $currentSemester . '&department=' . $department . '&year=' . $year) }}&all={{ $allStatus }}" class="p-1 mx-2 bg-green-600 py-2 items-center rounded-md">
+                        <i class="ri-file-excel-2-line text-2xl text-white"></i>
+                        <span class="font-medium text-white">Upload Excel</span>
+                    </a>
+                </div>
             </div>
         </div>
-        <table class="w-full table-auto">
+            <table class="w-full table-auto">
             <tr>
                 <th style="width: 4%" class="border-2 border-gray-400 text-[13px] tracking-wide font-medium text-white py-1 bg-blue-700">Kode KPI</th>
                 <th class="border-2 border-gray-400 text-[13px] tracking-wide font-medium text-white py-1 bg-blue-700" style="width: 13%">KPI</th>

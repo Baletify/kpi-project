@@ -4,7 +4,8 @@
         $departmentID = request()->query('department');
         $year = request()->query('year');
         $semester = request()->query('semester');
-        $employeeID = auth()->user()->id
+        $employeeID = auth()->user()->id;
+        $allStatus = request()->query('all');
         @endphp
         <form id="importForm" action="{{ route('target.importDept') }}" method="POST" enctype="multipart/form-data">
             @csrf
@@ -31,7 +32,7 @@
 
         <div class="flex justify-center">
             <button type="button" class="px-4 py-2 bg-blue-600 text-white rounded-md">
-                <a href="{{ route('target.showDept', 'department=' . $departmentID) . '&year=' . $year . '&semester=' . $semester }}">Back</a>
+                <a href="{{ route('target.showDept', 'department=' . $departmentID) . '&year=' . $year . '&semester=' . $semester }}&all={{ $allStatus }}">Back</a>
             </button>
             
         </div>

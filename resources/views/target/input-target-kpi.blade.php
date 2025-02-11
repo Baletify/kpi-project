@@ -6,7 +6,15 @@
                     $employeeQuery = request()->query('employee');
                     $yearQuery = request()->query('year');
                     $semesterQuery = request()->query('semester');
-                    $departmentQuery = request()->query('department')
+                    $departmentQuery = request()->query('department');
+                    $allStatus = request()->query('all');
+                    if ($allStatus == 'dept') {
+                        $all = 'dept';
+                    } elseif ($allStatus == 'employee') {
+                        $all = 'employee';
+                    } elseif($allStatus == 'true') {
+                        $all = 'true';
+            }
                 @endphp
             </div>
         </div>
@@ -48,9 +56,19 @@
         <div class="flex justify-between">
                 <div class="flex items-center">
                     <div class="p-0">
+                        @if ($all == 'employee')
                         <button type="button" class="bg-blue-500 px-2 py-1 text-white rounded-md">
-                            <a href="{{ route('target.department') }}?department={{ $departmentQuery }}">Back</a>
+                            <a href="{{ route('target.department') }}?employee={{ $employeeQuery }}&all=employee">Back</a>
                         </button>
+                        @elseif ($all == 'dept')
+                        <button type="button" class="bg-blue-500 px-2 py-1 text-white rounded-md">
+                            <a href="{{ route('target.department') }}?department={{ $departmentQuery }}&all=dept">Back</a>
+                        </button>
+                        @else
+                        <button type="button" class="bg-blue-500 px-2 py-1 text-white rounded-md">
+                            <a href="{{ route('target.department') }}?department=all&all=true">Back</a>
+                        </button>
+                        @endif
                     </div>
                 </div>
             <div class="flex justify-end items-center">
@@ -75,7 +93,7 @@
                 </div>
                 </form>
                 <div class="p-0">
-                    <a href="{{ route('target.showImport', 'semester=' . $semesterQuery . '&employee=' . $employeeQuery . '&year=' . $yearQuery) }}" class="p-1 mx-2 bg-green-600 py-2 items-center rounded-md">
+                    <a href="{{ route('target.showImport', 'semester=' . $semesterQuery . '&employee=' . $employeeQuery . '&year=' . $yearQuery) }}&all={{ $all }}" class="p-1 mx-2 bg-green-600 py-2 items-center rounded-md">
                     <i class="ri-file-excel-2-line text-2xl text-white"></i>
                     <span class="font-medium text-white">Upload Excel</span>
                     </a>

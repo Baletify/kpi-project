@@ -51,6 +51,7 @@
             $currentSemester = request()->query('semester');
             $department = request()->query('department');
             $year = request()->query('year');
+            $allStatus = request()->query('all');
             @endphp
 
             @forelse ($deptList as $department)
@@ -65,12 +66,12 @@
                     <div class="flex justify-center gap-2 text-[12px]">
                         <div class="flex justify-center gap-3 my-0.5">
                             <button class="bg-blue-500 px-2 py-0 rounded-sm my-1">
-                                <a id="input-target-link" href="{{ route('target.showDept', 'department=' . $department->id ?? '' ) }}&semester=&year=" >
+                                <a id="input-target-link" href="{{ route('target.showDept', 'department=' . $department->id ?? '' ) }}&semester=&year=&all={{ $allStatus }}" >
                                     <span class="text-white">Lihat Target</span>
                                   </a>
                             </button>
                             <button class="bg-green-600 px-1.5 py-0 rounded-sm my-1">
-                                <a id="input-target-link" href="{{ route('target.showImportDept') }}?department={{ $department->id ?? '' }}&year={{ $year }}&semester={{ $currentSemester }}">
+                                <a id="input-target-link" href="{{ route('target.showImportDept') }}?department={{ $department->id ?? '' }}&year={{ $year }}&semester={{ $currentSemester }}&all={{ $allStatus }}">
                                   <span class="text-white hover:underline">Upload Excel</span>
                                 </a>
                             </button>
