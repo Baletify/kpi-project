@@ -109,7 +109,7 @@
         </div>
 
         <div class="flex justify-center">
-        <table class="w-[1250px] table-fixed">
+        <table class="w-[1400px] table-fixed">
             <tr>
                 <th style="width: 4%;" class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-white py-1 px-4 bg-blue-700">No.</th>
                 <th style="width: 9%" class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-white py-1 px-4 bg-blue-700">NIK</th>
@@ -135,12 +135,12 @@
                 <td class="border-2 border-gray-400 tracking-wide text-[12px] px-2 py-0">{{ $department->occupation }}</td>
                 <td class="border-2 border-gray-400 tracking-wide text-[12px] px-2 py-0">
                     <div class="flex justify-center gap-3 my-0.5">
-                        <button class="bg-blue-500 px-2 py-0 rounded-sm my-1">
-                            <a id="employee-link-{{ $department->employee_id }}" href="{{ route('target.show', 'employee=' . $department->employee_id) }}&department={{ $department->department_id }}&all={{ $all }}">
+                        <button class="bg-blue-500 px-2 rounded-sm my-1">
+                            <a id="employee-link-{{ $department->employee_id }}" href="{{ route('target.show', 'employee=' . $department->employee_id) }}&department={{ $department->department_id }}&all={{ $all }}&status=">
                               <span class="text-white hover:underline">Lihat Target</span>
                             </a>
                         </button>
-                        <button class="bg-green-600 px-1.5 py-0 rounded-sm my-1">
+                        <button class="bg-green-600 px-1.5 rounded-sm my-1">
                             <a id="employee-link-{{ $department->employee_id }}" href="{{ route('target.showImport') }}?employee={{ $department->employee_id }}&all={{ $all }}">
                               <span class="text-white hover:underline">Upload Excel</span>
                             </a>

@@ -63,7 +63,7 @@
                     }
 
                     // Otherwise, format the value with 1 decimal place
-                    return number_format($value, 1);
+                    return $value;
                 }
             @endphp
             <option value="">-- Pilih Bulan --</option>
@@ -437,7 +437,7 @@
             var targetField = document.getElementById('target');
 
             if (unitValue === '%') {
-                targetValue = targetValue * 100;
+                targetValue = (targetValue * 100).toFixed(1); // Round to 2 decimal places
                 targetField.value = targetValue + '%';
             } else {
                 targetField.value = targetValue;

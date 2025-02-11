@@ -6,6 +6,9 @@
         $startYear = 2024; 
         $endYear = $currentYear + 2;
         $allStatus = request()->query('all');
+        $departmentQuery = request()->query('department');
+        $employeeQuery = request()->query('employee');
+        $statusQuery = request()->query('status');
 
         if ($allStatus == 'true') {
             $all = 'true';
@@ -42,6 +45,11 @@
                 </div>
               </div>
         </div>
+    </div>
+    <div class="p-0">
+        <button type="button" class="bg-blue-500 px-2 py-1 text-white rounded-md">
+            <a href="{{ route('target.department') }}?department={{ $departmentQuery }}">Back</a>
+        </button>
     </div>
 
         <div class="flex justify-center">

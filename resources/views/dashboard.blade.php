@@ -192,11 +192,11 @@
                         </div>
                         <div class="flex justify-between gap-x-3">
                             @if (auth()->user()->role == 'Superadmin' || auth()->user()->role == 'Approver' )   
-                            <a href="/notifications/create">
+                            <a href="{{ route('notification.create') }}">
                                 <i class="ri-add-line bg-green-600 text-white text-base p-0.5 rounded-sm"></i>
                             </a>
                             @endif
-                            <a href="/notifications/all">
+                            <a href="{{ route('notification.index') }}">
                                 <p class="text-blue-500 hover:underline">See All</p>
                             </a>
                         </div>
