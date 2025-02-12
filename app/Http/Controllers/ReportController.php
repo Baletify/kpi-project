@@ -151,8 +151,8 @@ class ReportController extends Controller
 
     private function calculation($targetZero, $target, $actual, $trend)
     {
-        $zeroStatus = $targetZero == 0 ? $zeroStatus = 'yes' : 'no';
-        $oneStatus = $targetZero == 1 ? $oneStatus = 'yes' : 'no';
+        $zeroStatus = $targetZero == 0 ? 'yes' : 'no';
+        $oneStatus = $targetZero == 1 ? 'yes' : 'no';
 
         if ($oneStatus == 'yes') {
             if ($actual == 0) {
@@ -184,8 +184,10 @@ class ReportController extends Controller
                 $zeroCalc = '0%';
             }
             return $zeroCalc;
-        } elseif ($trend == 'Negatif') {
-            $negativeVal = $target / $actual * 100;
+        }
+
+        if ($trend == 'Negatif') {
+            $negativeVal = ($target || $actual != 0) ? $actual / $target * 100 : 0;
             return $negativeVal;
         } elseif ($trend == 'Positif') {
             $positiveVal = $actual / $target * 100;

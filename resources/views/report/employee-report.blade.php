@@ -161,7 +161,9 @@
                     });
                 @endphp
                     <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="{{ $i % 2 === 0 ? 'FFF2F2F2' : 'FFFFFFFF' }}" class="border-2 bg-blue-100 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center">
-                    @if ($target->unit == 'Rp')
+                    @if ($target->unit === '%')
+                        {{ $actual ? $actual->target . '%' : '' }}
+                    @elseif ($target->unit == 'Rp')
                     {{ $actual ? substr(number_format($actual->target, 0, '.', ','), 0, 7) : ''}}
                     @elseif ($target->unit == 'Kg')
                     {{ $actual ? substr(number_format($actual->target, 0, '.', ','), 0, 7) : ''}}
@@ -211,7 +213,9 @@
                     @endphp
                     
                     <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="{{ $i % 2 === 0 ? 'FFF2F2F2' : 'FFFFFFFF' }}" class="border-2 bg-gray-50 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center">
-                    @if ($target->unit == 'Rp')
+                    @if ($target->unit === '%')
+                        {{ $actual ? $actual->actual . '%' : '' }}
+                    @elseif ($target->unit == 'Rp')
                     {{ $actual ? substr(number_format($actual->actual, 0, '.', ','), 0, 7) : ''}}
                     @elseif ($target->unit == 'Kg')
                     {{ $actual ? substr(number_format($actual->target, 0, '.', ','), 0, 7) : ''}}
