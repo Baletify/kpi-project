@@ -216,6 +216,7 @@ class TargetController extends Controller
         $employeeID = $request->query('employee');
         $year = $request->query('year');
         $semester = $request->query('semester');
+        $allStatus = $request->query('all');
 
 
         if ($employeeID && $year && $semester) {
@@ -231,7 +232,7 @@ class TargetController extends Controller
 
             // dd($targets);
 
-            return view('target.input-target-kpi', ['title' => 'Input KPI Target', 'desc' => 'Employees', 'employee' => $employee, 'targets' => $targets]);
+            return view('target.input-target-kpi', ['title' => 'Input KPI Target', 'desc' => 'Employees', 'employee' => $employee, 'targets' => $targets, 'all' => $allStatus]);
         } else {
 
             return view('components/404-page');
@@ -244,7 +245,7 @@ class TargetController extends Controller
         $year = $request->query('year');
         $semester = $request->query('semester');
 
-        if ($departmentID && $year) {
+        if ($departmentID && $year && $semester) {
             $dept = DB::table('departments')->where('departments.id', '=', $departmentID)
                 ->first();
 

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Carbon\Carbon;
 use App\Models\Actual;
 use App\Models\Employee;
+use Barryvdh\DomPDF\PDF;
 use App\Mail\ApproveMail;
 use App\Models\Department;
 use Illuminate\Support\Str;
@@ -14,7 +15,9 @@ use App\Models\DepartmentActual;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
+use Intervention\Image\Laravel\Facades\Image;
 
 class ActualController extends Controller
 {
@@ -347,8 +350,26 @@ class ActualController extends Controller
 
         if ($request->hasFile('record_file')) {
             $recordFile = $request->file('record_file');
-            $recordFileName = Str::random(40) . '.' . $recordFile->getClientOriginalExtension();
-            $recordFile->move(public_path('record_files'), $recordFileName);;
+            $extension = $recordFile->getClientOriginalExtension();
+
+            if ($extension == 'jpeg' || $extension == 'jpg') {
+                $image = $recordFile;
+                $imageName = Str::random(40) . '.pdf';
+
+                // Convert image to base64
+                $imageBase64 = base64_encode(file_get_contents($image));
+
+                // Generate PDF with the image
+                $pdf = app('dompdf.wrapper');
+                $res = $pdf->loadView('pdf.image', ['imageData' => $imageBase64]);
+
+                // Save the PDF
+                $pdf->save(public_path('record_files/' . $imageName));
+                $recordFileName = $imageName; // Store the PDF file name
+            } else {
+                $recordFileName = Str::random(40) . '.' . $recordFile->getClientOriginalExtension();
+                $recordFile->move(public_path('record_files'), $recordFileName);
+            }
         }
 
         $currentMonth = now()->month;

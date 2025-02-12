@@ -83,7 +83,7 @@
               </div>
         </div>
         <div class="flex justify-center">
-        <table class=" sm:w-full md:w-3/4 lg:w-[1200px]">
+        <table class=" sm:w-full md:w-3/4 lg:w-[1400px]">
             <tr>
                 <th style="width: 3%;" class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-white py-1 px-4 bg-blue-700">No.</th>
                 <th class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-white py-1 px-4 bg-blue-700">NIK</th>

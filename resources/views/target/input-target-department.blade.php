@@ -31,7 +31,7 @@
                             <form action="{{ route('target.department') }}" method="GET">
                             <div class="mt-1 mb-1 mx-2">
                                 <select name="department" id="department" class="col-start-1 row-start-1 w-full appearance-none rounded-md py-1.5 pl-3 pr-7 text-base text-gray-500 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
-                                    <option value="">-- Departmen --</option>
+                                    <option value="">-- Departemen --</option>
                                     @if ($role == 'Approver' || $role == 'Mng Approver')
                                     <option value="all">All Dept</option>
                                     @endif
@@ -109,7 +109,7 @@
         </div>
 
         <div class="flex justify-center">
-        <table class="w-[1400px] table-fixed">
+        <table class="w-[1500px] table-fixed">
             <tr>
                 <th style="width: 4%;" class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-white py-1 px-4 bg-blue-700">No.</th>
                 <th style="width: 9%" class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-white py-1 px-4 bg-blue-700">NIK</th>

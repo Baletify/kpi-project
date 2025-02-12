@@ -7,6 +7,7 @@
                     $yearQuery = request()->query('year');
                     $semesterQuery = request()->query('semester');
                     $departmentQuery = request()->query('department');
+                    $statusQuery = request()->query('status');
                     $allStatus = request()->query('all');
                     if ($allStatus == 'dept') {
                         $all = 'dept';
@@ -15,6 +16,8 @@
                     } elseif($allStatus == 'true') {
                         $all = 'true';
             }
+
+            // dd($yearQuery, $departmentQuery, $semesterQuery, $allStatus, $employeeQuery, $statusQuery);
                 @endphp
             </div>
         </div>
@@ -76,6 +79,8 @@
                     <form action="{{ route('target.show') }}" method="GET">
                         <input type="hidden" name="employee" id="employee" value="{{ $employeeQuery }}">
                         <input type="hidden" name="year" id="year" value="{{ $yearQuery }}">
+                        <input type="hidden" name="all" id="all" value="{{ $allStatus }}">
+                        <input type="hidden" name="department" id="department" value="{{ $departmentQuery }}">
                     <div class="mt-2 mb-2 mx-2">
                         <select name="semester" id="semester" class="col-start-1 row-start-1 w-full appearance-none rounded-md py-1.5 pl-3 pr-7 text-base text-gray-500 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
                             <option value="">-- Semester --</option>

@@ -5,6 +5,9 @@
             $departmentQuery = request()->query('department');
             $semesterQuery = request()->query('semester');
             $allStatus = request()->query('all');
+            $statusQuery = request()->query('status');
+
+            // dd($yearQuery, $departmentQuery, $semesterQuery, $allStatus, $employeeQuery, $statusQuery);
         @endphp
         <div class="p-0">
             <span class="font-bold text-2xl">Target KPI Departemen {{ $departments->name }} Tahun {{ $yearQuery }}</span>
@@ -28,6 +31,8 @@
                     <form action="{{ route('target.showDept') }}" method="GET">
                         <input type="hidden" name="department" id="department" value="{{ $departmentQuery }}">
                         <input type="hidden" name="year" id="year" value="{{ $yearQuery }}">
+                        <input type="hidden" name="all" id="all" value="{{ $allStatus }}">
+
                     <div class="mt-3 mx-2">
                         <select name="semester" id="semester" class="col-start-1 row-start-1 w-full appearance-none rounded-md py-1.5 pl-3 pr-7 text-base text-gray-500 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
                             <option value="">-- Semester --</option>
