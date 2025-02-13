@@ -171,20 +171,20 @@ class LogController extends Controller
         } elseif ($role == 'Checker Div 2') {
             $allDept = DB::table('departments')->whereIn('name', ['Sub Div D', 'Sub Div E', 'Sub Div F'])->get();
             $departmentNames = ['Sub Div D', 'Sub Div E', 'Sub Div F'];
-        } elseif ($role == 'Approver' || $role == 'Mng Approver' && $department == 'All Dept') {
+        } elseif ($role == 'Approver' || ($role == 'Mng Approver' && $department == 'All Dept')) {
             $allDept = Department::all();
             $departmentName = DB::table('departments')->pluck('name')->toArray();
             if ($departmentName) {
                 $departmentNames = $departmentName;
             }
-        } elseif ($role == 'Approver' || 'Mng Approver') {
+        } elseif ($role == 'Approver' || $role == 'Mng Approver') {
             $allDept = Department::all();
             $departmentName = DB::table('departments')->where('id', '=', $department)->value('name');
             if ($departmentName) {
                 $departmentNames = [$departmentName];
             }
         } elseif ($role == 'Inputer') {
-            $allDept = DB::table('departments')->where('id', '=', $authDept)->get();
+            $allDept = [];
             $departmentName = DB::table('departments')->where('id', '=', $authDept)->value('name');
             if ($departmentName) {
                 $departmentNames = [$departmentName];

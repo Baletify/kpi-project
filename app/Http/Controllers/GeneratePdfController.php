@@ -15,6 +15,7 @@ class GeneratePdfController extends Controller
     {
         $nik = Auth::user()->nik;
         $email = Auth::user()->email;
+        $employeeID = Auth::user()->id;
 
         $userNames = DB::table('employees')->where('email', '=', $email)->pluck('name')->toArray();
 
@@ -23,11 +24,8 @@ class GeneratePdfController extends Controller
         // dd($userNameString);
         $departmentID = Auth::user()->department_id;
 
-        $employee = DB::table('employees')->select('id')->where('nik', '=', $nik)->first();
 
-        $actual = DB::table('actuals')->select('input_at')->where('employee_id', '=', $employee->id)->orderBy('input_at', 'desc')->first();
-
-
+        $actual = DB::table('actuals')->leftJoin('employees', 'employees.id', '=', 'actuals.employee_id')->leftJoin('departments', 'departments.id', '=', 'employees.department_id')->select('input_at')->where('departments.id', '=', $departmentID)->orderBy('input_at', 'desc')->first();
 
         $actualDept = DB::table('department_actuals')->select('input_at')->where('department_id', '=', $departmentID)->orderBy('input_at', 'desc')->first();
 
@@ -36,6 +34,7 @@ class GeneratePdfController extends Controller
         $newestTimestamp = $actualTimestamp > $actualDeptTimestamp ? $actualTimestamp : $actualDeptTimestamp;
 
         $last_input = date('d M Y H:i:s', $newestTimestamp);
+
         $tteNumber = date('His', $newestTimestamp) . '/' . date('m', $newestTimestamp) . '/' . date('Y', $newestTimestamp);
 
 
@@ -74,11 +73,10 @@ class GeneratePdfController extends Controller
         // dd($userNameString);
         $departmentID = Auth::user()->department_id;
 
-        $employee = DB::table('employees')->select('id')->where('nik', '=', $nik)->first();
 
-        $actual = DB::table('actuals')->select('input_at')->where('employee_id', '=', $employee->id)->orderBy('input_at', 'desc')->first();
+        $actual = DB::table('actuals')->leftJoin('employees', 'employees.id', '=', 'actuals.employee_id')->leftJoin('departments', 'departments.id', '=', 'employees.department_id')->select('input_at')->where('departments.id', '=', $departmentID)->orderBy('checked_at', 'desc')->first();
 
-        $actualDept = DB::table('department_actuals')->select('input_at')->where('department_id', '=', $departmentID)->orderBy('input_at', 'desc')->first();
+        $actualDept = DB::table('department_actuals')->select('input_at')->where('department_id', '=', $departmentID)->orderBy('checked_at', 'desc')->first();
 
         $actualTimestamp = $actual ? strtotime($actual->input_at) : 0;
         $actualDeptTimestamp = $actualDept ? strtotime($actualDept->input_at) : 0;

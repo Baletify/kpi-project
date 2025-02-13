@@ -63,7 +63,7 @@
                     }
 
                     // Otherwise, format the value with 1 decimal place
-                    return $value;
+                    return number_format($value, 1);
                 }
             @endphp
             <option value="">-- Pilih Bulan --</option>

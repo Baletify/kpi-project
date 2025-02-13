@@ -5,7 +5,7 @@
         $currentYear = Carbon\Carbon::now()->year;
         $startYear = 2024; 
         $endYear = $currentYear + 2;
-        $department_id = request()->query('department');
+        $department_id = auth()->user()->department_id;
         $role = auth()->user()->role;
         $currentMonth = Carbon\Carbon::now()->month;
         $monthQuery = request()->query('month');
@@ -28,7 +28,6 @@
                     <span class=" font-bold text-gray-600 text-2xl">LOG INPUT KPI</span>
                 </div>
                 <div class="px-1">
-    
                     <span class=" font-semibold text-gray-600 text-base">Periode {{ $monthName }} {{ $yearQuery }}</span>
                 </div>
             </div>
@@ -77,6 +76,7 @@
                      <div class="my-2">
                          <button type="submit" class="rounded-md bg-blue-500 text-white p-2">Filter</button>
                      </div>
+                     {{-- <input type="hidden" name="department_id" id="" value="{{ $department_id }}"> --}}
                  </div>
                  </form>
             </div>

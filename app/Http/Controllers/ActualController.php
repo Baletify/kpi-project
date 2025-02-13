@@ -256,8 +256,27 @@ class ActualController extends Controller
 
         if ($request->hasFile('record_file')) {
             $recordFile = $request->file('record_file');
-            $recordFileName = Str::random(40) . '.' . $recordFile->getClientOriginalExtension();
-            $recordFile->move(public_path('record_files'), $recordFileName);;
+            $extension = $recordFile->getClientOriginalExtension();
+
+            if ($extension == 'jpeg' || $extension == 'jpg') {
+                $image = $recordFile;
+                $imageName = Str::random(40) . '.pdf';
+
+                // Convert image to base64
+                $imageBase64 = "data:image/jpg;base64," . base64_encode(file_get_contents($image));
+                // dd($imageBase64, $imageName, $image);
+
+                // Generate PDF with the image
+                $pdf = app('dompdf.wrapper');
+                $res = $pdf->loadView('pdf.image', ['imageData' => $imageBase64]);
+
+                // Save the PDF
+                $pdf->save(public_path('record_files/' . $imageName));
+                $recordFileName = $imageName; // Store the PDF file name
+            } else {
+                $recordFileName = Str::random(40) . '.' . $recordFile->getClientOriginalExtension();
+                $recordFile->move(public_path('record_files'), $recordFileName);
+            }
         }
 
         $semester = '';
@@ -357,7 +376,8 @@ class ActualController extends Controller
                 $imageName = Str::random(40) . '.pdf';
 
                 // Convert image to base64
-                $imageBase64 = base64_encode(file_get_contents($image));
+                $imageBase64 = "data:image/jpg;base64," . base64_encode(file_get_contents($image));
+                // dd($imageBase64, $imageName, $image);
 
                 // Generate PDF with the image
                 $pdf = app('dompdf.wrapper');
@@ -371,10 +391,6 @@ class ActualController extends Controller
                 $recordFile->move(public_path('record_files'), $recordFileName);
             }
         }
-
-        $currentMonth = now()->month;
-        $currentYear = now()->year;
-        $yearToShow = ($currentMonth == 1) ? $currentYear - 1 : $currentYear;
 
         $semester = '';
 

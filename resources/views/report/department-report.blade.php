@@ -257,9 +257,9 @@
                             </button>
                             {{-- MODAL --}}
                             <div id="{{ $backgroundId }}" class="fixed inset-0 bg-gray-800 bg-opacity-75 hidden exclude-from-export"></div>
-                            <div id="{{ $modalId }}" class="modal fixed inset-0 ml-64 hidden exclude-from-export" data-month="{{ $date->format('m') }}">
+                            <div id="{{ $modalId }}" class="modal fixed inset-0 justify-center hidden exclude-from-export" data-month="{{ $date->format('m') }}">
                                 <div class="flex justify-center">
-                                    <div class="bg-gray-50 rounded-lg shadow-lg px-4 py-2 w-full max-h-[750px] overflow-y-auto">
+                                    <div class="bg-gray-50 rounded-lg shadow-lg px-4 py-2 w-1/2 max-h-[750px] overflow-y-auto">
                                         <div class="flex justify-end">
                                             <button id="close-modal-{{ $modalId }}" class="text-gray-500 hover:text-gray-700 text-2xl">&times;</button>
                                         </div>
