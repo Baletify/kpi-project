@@ -149,7 +149,7 @@
                     </div>
                     @if (auth()->user()->role == 'Superadmin' ||  auth()->user()->role == 'Approver' )
                     <div class="p-2">
-                        <a href="/kpi-requirement/create-requirement">
+                        <a href="{{ route('requirement.create') }}">
                             <button class="bg-blue-500 rounded-md text-white p-1 font-medium">Upload</button>
                         </a>
                     </div>
