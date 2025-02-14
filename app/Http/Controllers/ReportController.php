@@ -187,15 +187,13 @@ class ReportController extends Controller
         }
 
         if ($trend == 'Negatif') {
-            $negativeVal = ($target || $actual != 0) ? $actual / $target * 100 : 0;
-            return $negativeVal;
+            $percentageValue = ($target || $actual != 0) ? $target / $actual * 100 : 0;
         } elseif ($trend == 'Positif') {
-            $positiveVal = $actual / $target * 100;
-            return $positiveVal;
+            $percentageValue = $actual / $target * 100;
         } else {
-            $positiveVal = $actual / $target * 100;
-            return $positiveVal;
+            $percentageValue = $actual / $target * 100;
         }
+        return $percentageValue;
     }
     public function show($id, Request $request)
     {
@@ -261,10 +259,10 @@ class ReportController extends Controller
                 });
 
                 $firstItem = $group->first();
-                $percentageCalc = $this->calculation($totalTarget, $totalTarget, $totalActual, $firstItem->trend);
+                $trendItem = $firstItem->trend;
+                $percentageCalc = $this->calculation($totalTarget, $totalTarget, $totalActual, $trendItem);
 
                 $convertedCalc = floatval(str_replace('%', '', $percentageCalc));
-
 
                 $weight = floatval($group->first()->kpi_weighting); // Ambil bobot dari item pertama dalam grup
                 $totalAchievementWeight = $convertedCalc * $weight / 100;

@@ -508,7 +508,7 @@
     });
 
         document.getElementById('viewDocumentBtn').addEventListener('click', function() {
-            fetch('/kpi-requirement/view-requirement?status=Standard')
+            fetch(`{{ route('requirement.index') }}?status=Standard`)
                 .then(response => response.json())
                 .then(data => {
                     if (data.length > 0) {
@@ -526,7 +526,7 @@
         
 
         document.getElementById('viewTutorialBtn').addEventListener('click', function() {
-            fetch('/kpi-requirement/view-requirement?status=Tutorial')
+            fetch(`{{ route('requirement.index') }}?status=Tutorial`)
                 .then(response => response.json())
                 .then(data => {
                     if (data.length > 0) {

@@ -13,7 +13,7 @@
             <div class="p-0">
                 <span class="font-bold text-2xl">Summary KPI Employees</span>
             </div>
-            @if ($role == 'Approver' || $role == 'Mng Approver')
+            @if ($role != 'Inputer' || $role != '')
             <div class="flex flex-col">
                 <div class="flex justify-end">
                     <div class="relative mt-1 rounded-md">
@@ -32,6 +32,7 @@
                         <div class="absolute inset-y-0 right-0 flex items-center">
                         </div>
                     </div>
+                    @if ($role == 'Approver' || $role == 'Mng Approver')
                     <div class="relative mt-1 rounded-md">
                         <form action="{{ route('report.index') }}" method="GET">
                         <div class="mt-1 mb-1 mx-2">
@@ -46,6 +47,7 @@
                         <div class="absolute inset-y-0 right-0 flex items-center">
                         </div>
                     </div>
+                    @endif
                     <div class="mt-0 rounded-md mb-1">
                         <button type="submit" class="p-2 bg-blue-600 my-2 rounded-md text-white">
                             Filter

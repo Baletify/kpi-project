@@ -141,7 +141,7 @@
                             </a>
                         </button>
                         <button class="bg-green-600 px-1.5 rounded-sm my-1">
-                            <a id="employee-link-{{ $department->employee_id }}" href="{{ route('target.showImport') }}?employee={{ $department->employee_id }}&all={{ $all }}">
+                            <a id="employee-link-{{ $department->employee_id }}" href="{{ route('target.showImport') }}?employee={{ $department->employee_id }}&all={{ $all }}&department={{ $department->department_id }}">
                               <span class="text-white hover:underline">Upload Excel</span>
                             </a>
                         </button>

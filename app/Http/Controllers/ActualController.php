@@ -50,7 +50,6 @@ class ActualController extends Controller
 
         $targetUnits2 = DB::table('target_units')->leftJoin('targets', 'targets.target_unit_id', '=', 'target_units.id')->select('target_7', 'target_8', 'target_9', 'target_10', 'target_11', 'target_12',  'targets.id as target_id', 'targets.date as month')->where('employee_id', '=', $employeeID)->whereYear('targets.date', '=', $year)->get();
 
-        // dd($actuals);
 
         // dd($actuals);
         return view('actual.input-actual-employee', [
@@ -199,7 +198,8 @@ class ActualController extends Controller
             ->select('targets.id', 'targets.employee_id', 'targets.code', 'targets.indicator', 'targets.calculation', 'targets.period', 'targets.unit', 'targets.supporting_document', 'targets.weighting', 'targets.detail', 'targets.trend', 'target_units.id as target_unit_id', 'employees.nik as nik', 'employees.occupation as occupation', 'employees.name as employee', 'departments.name as department', 'target_1 as target_unit_1', 'target_2 as target_unit_2', 'target_3 as target_unit_3', 'target_4 as target_unit_4', 'target_5 as target_unit_5', 'target_6 as target_unit_6', 'target_7 as target_unit_7', 'target_8 as target_unit_8', 'target_9 as target_unit_9', 'target_10 as target_unit_10', 'target_11 as target_unit_11', 'target_12 as target_unit_12')
             ->get();
 
-        // dd($targets->toBase());
+
+        // dd($targets);
 
         // dd($targets->toSql());
         return view('actual.input-actual-achievement', [

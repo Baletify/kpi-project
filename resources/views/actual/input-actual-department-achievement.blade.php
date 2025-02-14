@@ -22,65 +22,88 @@
           <div class="absolute inset-y-0 right-0 flex items-center">
           </div>
         </div>
-          <div class="relative mt-1 rounded-md">
-            <span class="pl-3 font-semibold">Bulan</span>
-            <span class="text-red-500">*</span> 
-            <select name="date" id="date" class="col-start-1 row-start-1 w-full appearance-none rounded-md py-1.5 pl-3 pr-7 text-base text-gray-500 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
-                @php
-                $months = [
-                    '01' => 'January',
-                    '02' => 'February',
-                    '03' => 'March',
-                    '04' => 'April',
-                    '05' => 'May',
-                    '06' => 'June',
-                    '07' => 'July',
-                    '08' => 'August',
-                    '09' => 'September',
-                    '10' => 'October',
-                    '11' => 'November',
-                    '12' => 'December',
-                ];
+        @php
+        $months = [
+            '01' => 'January',
+            '02' => 'February',
+            '03' => 'March',
+            '04' => 'April',
+            '05' => 'May',
+            '06' => 'June',
+            '07' => 'July',
+            '08' => 'August',
+            '09' => 'September',
+            '10' => 'October',
+            '11' => 'November',
+            '12' => 'December',
+        ];
 
-                $formatKgValue = function ($value) {
-                    // Convert the value to a string
-                    $valueStr = (string) $value;
+        $formatKgValue = function ($value) {
+                // Convert the value to a string
+                $valueStr = (string) $value;
 
-                    // Find the position of the decimal point
-                    $decimalPos = strpos($valueStr, '.');
+                // Find the position of the decimal point
+                $decimalPos = strpos($valueStr, '.');
 
-                    // If there is no decimal point, return the value as is
-                    if ($decimalPos === false) {
-                        return number_format($value);
-                    }
-
-                    // Get the number of digits before the decimal point
-                    $digitsBeforeDecimal = $decimalPos;
-
-                    // If there are more than 3 digits before the decimal point, return the value as is
-                    if ($digitsBeforeDecimal > 3) {
-                        return number_format($value);
-                    }
-
-                    // Otherwise, format the value with 1 decimal place
-                    return number_format($value, 1);
+                // If there is no decimal point, return the value as is
+                if ($decimalPos === false) {
+                    return number_format($value);
                 }
-                @endphp
+
+                // Get the number of digits before the decimal point
+                $digitsBeforeDecimal = $decimalPos;
+
+                // If there are more than 3 digits before the decimal point, return the value as is
+                if ($digitsBeforeDecimal > 3) {
+                    return number_format($value);
+                }
+
+                // Otherwise, format the value with 1 decimal place
+                return number_format($value, 2);
+            }
+        @endphp
+        <div class="relative mt-1 rounded-md">
+            <span class="text-red-500">*</span> 
+              <span class="font-semibold">Bulan Pelaksanaan</span>
+              <select name="date" id="date" class="col-start-1 row-start-1 w-full appearance-none rounded-md py-1.5 pl-3 pr-7 text-base text-gray-500 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
                 <option value="">-- Pilih Bulan --</option>
                 @foreach ($months as $monthNumber => $monthName)
                 @php
-                   $targetColumn = 'target_unit_' . ltrim($monthNumber, '0');
-                   $targetValue = $formatKgValue($target->$targetColumn);                
+                    $targetColumn = 'target_unit_' . ltrim($monthNumber, '0');
+                    $targetValue = $formatKgValue($target->$targetColumn);                
                 @endphp
-                <option value="{{ $monthNumber }}" data-target="{{ $targetValue ?? '' }}" data-unit="{{ $target->unit }}" data-rp="{{ $target->unit == 'Rp' ? 'yes' : 'no' }}" data-kg="{{ $target->unit == 'Kg' ? 'yes' : 'no' }}" data-zero="{{ $target->{$targetColumn} == 0 ? 'yes' : 'no' }}">
+                <option value="{{ $monthNumber }}" data-target="{{ $targetValue ?? '' }}" data-unit="{{ $target->unit }}" data-rp="{{ $target->unit == 'Rp' ? 'yes' : 'no' }}" data-kg="{{ $target->unit == 'Kg' ? 'yes' : 'no' }}" data-zero="{{ $target->{$targetColumn} == 0 ? 'yes' : 'no' }}" data-is-null="{{ $target->{$targetColumn} == null ? 'yes' : 'no' }}">
                     {{ $monthName }}
                 </option>
                 @endforeach
             </select>
-          <div class="absolute inset-y-0 right-0 flex items-center">
+            @php
+            // dd($targetValue);
+            @endphp
+            <div class="absolute inset-y-0 right-0 flex items-center">
+            </div>
+          </div>
+        <div id="div-month-target" class="relative mt-1 rounded-md col-start-4 hidden">
+            <span class="text-red-500">*</span> 
+              <span class="font-semibold">Bulan Target</span>
+              <select name="date-target" id="date-target" class="col-start-1 row-start-1 w-full appearance-none rounded-md py-1.5 pl-3 pr-7 text-base text-gray-500 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
+                <option value="">-- Pilih Bulan --</option>
+                @foreach ($months as $monthNumber => $monthName)
+                @php
+                    $targetColumn = 'target_unit_' . ltrim($monthNumber, '0');
+                    $targetValue = $formatKgValue($target->$targetColumn); 
+                @endphp
+                <option value="{{ $monthNumber }}" data-target="{{ $targetValue ?? '' }}" data-unit="{{ $target->unit }}" data-rp="{{ $target->unit == 'Rp' ? 'yes' : 'no' }}" data-kg="{{ $target->unit == 'Kg' ? 'yes' : 'no' }}" data-zero="{{ $target->{$targetColumn} == 0 ? 'yes' : 'no' }}" data-is-null="{{ $target->{$targetColumn} == null ? 'yes' : 'no' }}">
+                    {{ $monthName }}
+                </option>
+                @endforeach
+            </select>
+            <div class="absolute inset-y-0 right-0 flex items-center">
+            </div>
           </div>
         </div>
-        </div>
+
+        
         
         {{-- <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-2">
           
@@ -214,19 +237,72 @@
       
       <script>
   
-        document.getElementById('submitBtn').addEventListener('click', function(event) {
-        event.preventDefault();
-        document.getElementById('achievementForm').action = "{{ route('actual.storeDept') }}";
-        document.getElementById('achievementForm').submit();
-      });
-      function calculateAchievement() {
+  // determine the target value based on the selected field
+        document.getElementById('date').addEventListener('change', function () {
+            var selectedOption = this.options[this.selectedIndex];
+            var dataIsNull = selectedOption.getAttribute('data-is-null');
+            var divMonthTarget = document.getElementById('div-month-target');
+
+            if (dataIsNull === 'yes') {
+                divMonthTarget.classList.remove('hidden');
+            } else {
+                divMonthTarget.classList.add('hidden');
+            }
+
+            updateTargetField();
+            calculateAchievement();
+        });
+
+        document.getElementById('date-target').addEventListener('change', function () {
+            updateTargetField();
+            calculateAchievement();
+        });
+
+        function updateTargetField() {
+            const dateField = document.getElementById('date');
+            const selectedOption = dateField.options[dateField.selectedIndex];
+            const dataIsNull = selectedOption.getAttribute('data-is-null');
+            let dateFieldToUse;
+
+            if (dataIsNull === 'yes') {
+                dateFieldToUse = document.getElementById('date-target');
+            } else {
+                dateFieldToUse = document.getElementById('date');
+            }
+
+            const selectedOptionToUse = dateFieldToUse.options[dateFieldToUse.selectedIndex];
+            const targetValue = selectedOptionToUse.getAttribute('data-target');
+            const unitValue = selectedOptionToUse.getAttribute('data-unit');
+            const targetField = document.getElementById('target');
+
+            if (unitValue === '%') {
+                targetField.value = (targetValue * 100).toFixed(2) + '%'; // Round to 1 decimal place
+            } else {
+                targetField.value = targetValue;
+            }
+        }
+    
+        function calculateAchievement() {
             const targetField = document.getElementById('target');
             const actualField = document.getElementById('actual');
             const achievementField = document.getElementById('achievement');
+
+            // determine the target value based on the selected field (date or date-target)
             const dateField = document.getElementById('date');
             const selectedOption = dateField.options[dateField.selectedIndex];
-            const zeroValue = selectedOption.getAttribute('data-zero');
-            const unitValue = selectedOption.getAttribute('data-unit');
+            const dataIsNull = selectedOption.getAttribute('data-is-null');
+            let dateFieldToUse;
+            if (dataIsNull == 'no') {
+                dateFieldToUse = document.getElementById('date');
+            } else {
+                dateFieldToUse = document.getElementById('date-target');
+            }
+
+            const selectedOptionToUse = dateFieldToUse.options[dateFieldToUse.selectedIndex];
+
+            const zeroValue = selectedOptionToUse.getAttribute('data-zero');
+            const unitValue = selectedOptionToUse.getAttribute('data-unit');
+            const kgValue = selectedOptionToUse.getAttribute('data-kg');
     
             let target = parseFloat(targetField.value.replace(/,/g, '').replace(/[^0-9.%]/g, ''));
             let actual = parseFloat(actualField.value.replace(/,/g, '').replace(/[^0-9.%]/g, ''));
@@ -397,20 +473,52 @@
             }
         }
     
-        document.getElementById('date').addEventListener('change', function() {
+        document.getElementById('date').addEventListener('change', function () {
             var selectedOption = this.options[this.selectedIndex];
-            var targetValue = selectedOption.getAttribute('data-target');
-            var unitValue = selectedOption.getAttribute('data-unit');
-            var targetField = document.getElementById('target');
+            var dataIsNull = selectedOption.getAttribute('data-is-null');
+            var divMonthTarget = document.getElementById('div-month-target');
 
-            if (unitValue === '%') {
-                targetValue = targetValue * 100;
-                targetField.value = targetValue + '%';
+            if (dataIsNull == 'yes') {
+                divMonthTarget.classList.remove('hidden');
             } else {
-                targetField.value = targetValue;
+                divMonthTarget.classList.add('hidden');
             }
 
-            calculateAchievement();
+            if (dataIsNull == 'no') {
+                document.getElementById('date').addEventListener('change', function() {
+                    var selectedOption = this.options[this.selectedIndex];
+                    var targetValue = selectedOption.getAttribute('data-target');
+                    var unitValue = selectedOption.getAttribute('data-unit');
+                    var targetField = document.getElementById('target');
+                    var dataNull = selectedOption.getAttribute('data-is-null');
+
+                    if (unitValue === '%') {
+                        targetValue = (targetValue * 100).toFixed(2); // Round to 2 decimal places
+                        targetField.value = targetValue + '%';
+                    } else {
+                        targetField.value = targetValue;
+                    }
+
+                    calculateAchievement();
+                });
+            } else {
+                document.getElementById('date-target').addEventListener('change', function() {
+                    var selectedOption = this.options[this.selectedIndex];
+                    var targetValue = selectedOption.getAttribute('data-target');
+                    var unitValue = selectedOption.getAttribute('data-unit');
+                    var targetField = document.getElementById('target');
+                    var dataNull = selectedOption.getAttribute('data-is-null');
+
+                    if (unitValue === '%') {
+                        targetValue = (targetValue * 100).toFixed(2); // Round to 2 decimal places
+                        targetField.value = targetValue + '%';
+                    } else {
+                        targetField.value = targetValue;
+                    }
+
+                    calculateAchievement();
+                });
+            }
         });
 
         var actualInput = document.getElementById('actual');
