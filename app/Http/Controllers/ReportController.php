@@ -149,10 +149,11 @@ class ReportController extends Controller
         }
     }
 
-    private function calculation($targetZero, $target, $actual, $trend)
+    private function calculation($targetZero, $target, $actual, $trend, $recordFile)
     {
-        $zeroStatus = $targetZero == 0 ? 'yes' : 'no';
-        $oneStatus = $targetZero == 1 ? 'yes' : 'no';
+        $recordFileCheck = ($recordFile != null) ? 'yes' : 'no';
+        $zeroStatus = ($targetZero == 0) ? 'yes' : 'no';
+        $oneStatus = ($targetZero == 1) ? 'yes' : 'no';
 
         if ($oneStatus == 'yes') {
             if ($actual == 0) {
@@ -187,11 +188,13 @@ class ReportController extends Controller
         }
 
         if ($trend == 'Negatif') {
-            $percentageValue = ($target || $actual != 0) ? $target / $actual * 100 : 0;
+            $percentageValue = ($target || $actual != 0) ? ($target / $actual) * 100 : 0;
         } elseif ($trend == 'Positif') {
-            $percentageValue = $actual / $target * 100;
+            $percentageValue = ($target || $actual != 0) ? $actual / $target * 100 : 0;
         } else {
-            $percentageValue = $actual / $target * 100;
+            $percentageValue = 0;
+            $oneCalc = 0;
+            $zeroCalc = 0;
         }
         return $percentageValue;
     }
@@ -260,13 +263,13 @@ class ReportController extends Controller
 
                 $firstItem = $group->first();
                 $trendItem = $firstItem->trend;
-                $percentageCalc = $this->calculation($totalTarget, $totalTarget, $totalActual, $trendItem);
+                $recordFileItem = $firstItem->record_file;
+                $percentageCalc = $this->calculation($totalTarget, $totalTarget, $totalActual, $trendItem, $recordFileItem);
 
                 $convertedCalc = floatval(str_replace('%', '', $percentageCalc));
 
                 $weight = floatval($group->first()->kpi_weighting); // Ambil bobot dari item pertama dalam grup
                 $totalAchievementWeight = $convertedCalc * $weight / 100;
-
 
                 return [
                     'total_target' => $totalTarget,
@@ -276,6 +279,8 @@ class ReportController extends Controller
                     'total_achievement_weight' => $totalAchievementWeight,
                 ];
             });
+
+            // dd($totals);
 
             return view('report.employee-report', ['title' => 'Report', 'desc' => 'Employee Report', 'employee' => $employee, 'actuals' => $actuals, 'targets' => $targets, 'totals' => $totals, 'sumWeighting' => $sumWeighting,]);
         } else {
@@ -341,7 +346,10 @@ class ReportController extends Controller
                 });
 
                 $firstItem = $group->first();
-                $percentageCalc = $this->calculation($totalTarget, $totalTarget, $totalActual, $firstItem->trend);
+                $trendItem = $firstItem->trend;
+                $recordFileItem = $firstItem->record_file;
+                $percentageCalc = $this->calculation($totalTarget, $totalTarget, $totalActual, $trendItem, $recordFileItem);
+
 
                 $convertedCalc = floatval(str_replace('%', '', $percentageCalc));
 
@@ -442,7 +450,10 @@ class ReportController extends Controller
                     });
 
                     $firstItem = $subGroup->first();
-                    $percentageCalc = $this->calculation($totalTarget, $totalTarget, $totalActual, $firstItem->trend);
+                    $trendItem = $firstItem->trend;
+                    $recordFileItem = $firstItem->record_file;
+                    $percentageCalc = $this->calculation($totalTarget, $totalTarget, $totalActual, $trendItem, $recordFileItem);
+
 
                     $convertedCalc = floatval(str_replace('%', '', $percentageCalc));
 
@@ -470,7 +481,9 @@ class ReportController extends Controller
                     });
 
                     $firstItem = $subGroup->first();
-                    $percentageCalc = $this->calculation($totalTarget, $totalTarget, $totalActual, $firstItem->trend);
+                    $trendItem = $firstItem->trend;
+                    $recordFileItem = $firstItem->record_file;
+                    $percentageCalc = $this->calculation($totalTarget, $totalTarget, $totalActual, $trendItem, $recordFileItem);
 
                     $convertedCalc = floatval(str_replace('%', '', $percentageCalc));
 
@@ -498,7 +511,9 @@ class ReportController extends Controller
                     });
 
                     $firstItem = $subGroup->first();
-                    $percentageCalc = $this->calculation($totalTarget, $totalTarget, $totalActual, $firstItem->trend);
+                    $trendItem = $firstItem->trend;
+                    $recordFileItem = $firstItem->record_file;
+                    $percentageCalc = $this->calculation($totalTarget, $totalTarget, $totalActual, $trendItem, $recordFileItem);
 
                     $convertedCalc = floatval(str_replace('%', '', $percentageCalc));
 
@@ -526,7 +541,9 @@ class ReportController extends Controller
                     });
 
                     $firstItem = $subGroup->first();
-                    $percentageCalc = $this->calculation($totalTarget, $totalTarget, $totalActual, $firstItem->trend);
+                    $trendItem = $firstItem->trend;
+                    $recordFileItem = $firstItem->record_file;
+                    $percentageCalc = $this->calculation($totalTarget, $totalTarget, $totalActual, $trendItem, $recordFileItem);
 
                     $convertedCalc = floatval(str_replace('%', '', $percentageCalc));
 
@@ -657,7 +674,9 @@ class ReportController extends Controller
                     });
 
                     $firstItem = $subGroup->first();
-                    $percentageCalc = $this->calculation($totalTarget, $totalTarget, $totalActual, $firstItem->trend);
+                    $trendItem = $firstItem->trend;
+                    $recordFileItem = $firstItem->record_file;
+                    $percentageCalc = $this->calculation($totalTarget, $totalTarget, $totalActual, $trendItem, $recordFileItem);
 
                     $convertedCalc = floatval(str_replace('%', '', $percentageCalc));
 
@@ -685,7 +704,9 @@ class ReportController extends Controller
                     });
 
                     $firstItem = $subGroup->first();
-                    $percentageCalc = $this->calculation($totalTarget, $totalTarget, $totalActual, $firstItem->trend);
+                    $trendItem = $firstItem->trend;
+                    $recordFileItem = $firstItem->record_file;
+                    $percentageCalc = $this->calculation($totalTarget, $totalTarget, $totalActual, $trendItem, $recordFileItem);
 
                     $convertedCalc = floatval(str_replace('%', '', $percentageCalc));
 
@@ -713,7 +734,9 @@ class ReportController extends Controller
                     });
 
                     $firstItem = $subGroup->first();
-                    $percentageCalc = $this->calculation($totalTarget, $totalTarget, $totalActual, $firstItem->trend);
+                    $trendItem = $firstItem->trend;
+                    $recordFileItem = $firstItem->record_file;
+                    $percentageCalc = $this->calculation($totalTarget, $totalTarget, $totalActual, $trendItem, $recordFileItem);
 
                     $convertedCalc = floatval(str_replace('%', '', $percentageCalc));
 
@@ -741,7 +764,9 @@ class ReportController extends Controller
                     });
 
                     $firstItem = $subGroup->first();
-                    $percentageCalc = $this->calculation($totalTarget, $totalTarget, $totalActual, $firstItem->trend);
+                    $trendItem = $firstItem->trend;
+                    $recordFileItem = $firstItem->record_file;
+                    $percentageCalc = $this->calculation($totalTarget, $totalTarget, $totalActual, $trendItem, $recordFileItem);
 
                     $convertedCalc = floatval(str_replace('%', '', $percentageCalc));
 
@@ -872,7 +897,9 @@ class ReportController extends Controller
                     });
 
                     $firstItem = $subGroup->first();
-                    $percentageCalc = $this->calculation($totalTarget, $totalTarget, $totalActual, $firstItem->trend);
+                    $trendItem = $firstItem->trend;
+                    $recordFileItem = $firstItem->record_file;
+                    $percentageCalc = $this->calculation($totalTarget, $totalTarget, $totalActual, $trendItem, $recordFileItem);
 
                     $convertedCalc = floatval(str_replace('%', '', $percentageCalc));
 
@@ -900,7 +927,9 @@ class ReportController extends Controller
                     });
 
                     $firstItem = $subGroup->first();
-                    $percentageCalc = $this->calculation($totalTarget, $totalTarget, $totalActual, $firstItem->trend);
+                    $trendItem = $firstItem->trend;
+                    $recordFileItem = $firstItem->record_file;
+                    $percentageCalc = $this->calculation($totalTarget, $totalTarget, $totalActual, $trendItem, $recordFileItem);
 
                     $convertedCalc = floatval(str_replace('%', '', $percentageCalc));
 
@@ -928,7 +957,9 @@ class ReportController extends Controller
                     });
 
                     $firstItem = $subGroup->first();
-                    $percentageCalc = $this->calculation($totalTarget, $totalTarget, $totalActual, $firstItem->trend);
+                    $trendItem = $firstItem->trend;
+                    $recordFileItem = $firstItem->record_file;
+                    $percentageCalc = $this->calculation($totalTarget, $totalTarget, $totalActual, $trendItem, $recordFileItem);
 
                     $convertedCalc = floatval(str_replace('%', '', $percentageCalc));
 
@@ -956,7 +987,9 @@ class ReportController extends Controller
                     });
 
                     $firstItem = $subGroup->first();
-                    $percentageCalc = $this->calculation($totalTarget, $totalTarget, $totalActual, $firstItem->trend);
+                    $trendItem = $firstItem->trend;
+                    $recordFileItem = $firstItem->record_file;
+                    $percentageCalc = $this->calculation($totalTarget, $totalTarget, $totalActual, $trendItem, $recordFileItem);
 
                     $convertedCalc = floatval(str_replace('%', '', $percentageCalc));
 
@@ -1089,7 +1122,9 @@ class ReportController extends Controller
                     });
 
                     $firstItem = $subGroup->first();
-                    $percentageCalc = $this->calculation($totalTarget, $totalTarget, $totalActual, $firstItem->trend);
+                    $trendItem = $firstItem->trend;
+                    $recordFileItem = $firstItem->record_file;
+                    $percentageCalc = $this->calculation($totalTarget, $totalTarget, $totalActual, $trendItem, $recordFileItem);
 
                     $convertedCalc = floatval(str_replace('%', '', $percentageCalc));
 
@@ -1117,7 +1152,9 @@ class ReportController extends Controller
                     });
 
                     $firstItem = $subGroup->first();
-                    $percentageCalc = $this->calculation($totalTarget, $totalTarget, $totalActual, $firstItem->trend);
+                    $trendItem = $firstItem->trend;
+                    $recordFileItem = $firstItem->record_file;
+                    $percentageCalc = $this->calculation($totalTarget, $totalTarget, $totalActual, $trendItem, $recordFileItem);
 
                     $convertedCalc = floatval(str_replace('%', '', $percentageCalc));
 
@@ -1145,7 +1182,9 @@ class ReportController extends Controller
                     });
 
                     $firstItem = $subGroup->first();
-                    $percentageCalc = $this->calculation($totalTarget, $totalTarget, $totalActual, $firstItem->trend);
+                    $trendItem = $firstItem->trend;
+                    $recordFileItem = $firstItem->record_file;
+                    $percentageCalc = $this->calculation($totalTarget, $totalTarget, $totalActual, $trendItem, $recordFileItem);
 
                     $convertedCalc = floatval(str_replace('%', '', $percentageCalc));
 
@@ -1173,7 +1212,9 @@ class ReportController extends Controller
                     });
 
                     $firstItem = $subGroup->first();
-                    $percentageCalc = $this->calculation($totalTarget, $totalTarget, $totalActual, $firstItem->trend);
+                    $trendItem = $firstItem->trend;
+                    $recordFileItem = $firstItem->record_file;
+                    $percentageCalc = $this->calculation($totalTarget, $totalTarget, $totalActual, $trendItem, $recordFileItem);
 
                     $convertedCalc = floatval(str_replace('%', '', $percentageCalc));
 

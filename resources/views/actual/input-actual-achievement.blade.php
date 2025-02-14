@@ -24,15 +24,15 @@
         </div>
         @php
         $months = [
-            '01' => 'January',
-            '02' => 'February',
-            '03' => 'March',
-            '04' => 'April',
-            '05' => 'May',
-            '06' => 'June',
-            '07' => 'July',
-            '08' => 'August',
-            '09' => 'September',
+            '1' => 'January',
+            '2' => 'February',
+            '3' => 'March',
+            '4' => 'April',
+            '5' => 'May',
+            '6' => 'June',
+            '7' => 'July',
+            '8' => 'August',
+            '9' => 'September',
             '10' => 'October',
             '11' => 'November',
             '12' => 'December',
@@ -69,10 +69,10 @@
             <option value="">-- Pilih Bulan --</option>
             @foreach ($months as $monthNumber => $monthName)
             @php
-                $targetColumn = 'target_unit_' . ltrim($monthNumber, '0');
+                $targetColumn = 'target_unit_' . $monthNumber;
                 $targetValue = $formatKgValue($target->$targetColumn);                
             @endphp
-            <option value="{{ $monthNumber }}" data-target="{{ $targetValue ?? '' }}" data-unit="{{ $target->unit }}" data-rp="{{ $target->unit == 'Rp' ? 'yes' : 'no' }}" data-kg="{{ $target->unit == 'Kg' ? 'yes' : 'no' }}" data-zero="{{ $target->{$targetColumn} == 0 ? 'yes' : 'no' }}" data-is-null="{{ $target->{$targetColumn} == null ? 'yes' : 'no' }}">
+            <option value="{{ $monthNumber }}" data-target="{{ $targetValue ?? '' }}" data-unit="{{ $target->unit }}" data-rp="{{ $target->unit == 'Rp' ? 'yes' : 'no' }}" data-kg="{{ $target->unit == 'Kg' ? 'yes' : 'no' }}" data-zero="{{ $target->{$targetColumn} == 0 ? 'yes' : 'no' }}" data-is-null="{{ $target->{$targetColumn} === null ? 'yes' : 'no' }}">
                 {{ $monthName }}
             </option>
             @endforeach
@@ -228,7 +228,7 @@
         <div class="relative mt-1 rounded-md">
           <div class="w-full rounded-md border-0 py-1.5 pl-4 pr-20 text-gray-900  sm:text-sm sm:leading-6 mt-2 flex gap-x-6">
             <div class="mb-2 mt-2">
-                @if ($dateNow > 15 && $role == 'Inputer')
+                {{-- @if ($dateNow > 15 && $role == 'Inputer')
                 <button type="submit" id="submitBtn" class="px-4 py-2 bg-blue-300 text-white rounded-md" disabled >Submit</button>
                 @elseif ($dateNow > 15 && $role == '')
                 <button type="submit" id="submitBtn" class="px-4 py-2 bg-blue-300 text-white rounded-md" disabled >Submit</button>
@@ -240,7 +240,8 @@
                 <button type="submit" id="submitBtn" class="px-4 py-2 bg-blue-300 text-white rounded-md" disabled >Submit</button>
                 @else 
                 <button type="submit" id="submitBtn" class="px-4 py-2 bg-blue-600 text-white rounded-md">Submit</button>
-                @endif
+                @endif --}}
+                <button type="submit" id="submitBtn" class="px-4 py-2 bg-blue-600 text-white rounded-md">Submit</button>
               {{-- <button type="submit" id="submitBtn" class="px-4 py-2 text-white rounded-md">Submit</button> --}}
             </div>
             <div class="mb-2 mt-2">

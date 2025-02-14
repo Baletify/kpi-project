@@ -320,7 +320,7 @@
             @endphp
             <div class="flex justify-end">
                 <div class="p-0.5">
-                    @if ($totalFlAll == $totalTgAll - 1 && $role == 'Inputer')
+                    @if ($totalTgAll - $totalFlAll <= 2 && $role == 'Inputer')
                     <form action="{{ url('/generate-pdf-input') }}" method="GET">
                         @php
                             $lastInput = $actualFilled->first(function($item) use ($department_id) {
