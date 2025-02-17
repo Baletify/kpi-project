@@ -116,7 +116,7 @@
                 <th style="width: 22%" class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-white py-1 px-4 bg-blue-700">Nama</th>
                 <th style="width: 14%" class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-white py-1 px-4 bg-blue-700">Department</th>
                 <th style="width: 8%" class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-white py-1 px-4 bg-blue-700">Jabatan</th>
-                <th style="width: 24%" class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-white py-1 px-4 bg-blue-700">Opsi</th>
+                <th style="width: 40%" class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-white py-1 px-4 bg-blue-700">Opsi</th>
                 <th style="width: 8%" class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-white py-1 px-4 bg-blue-700">Upload Program</th>
             </tr>
             @php
@@ -140,7 +140,7 @@
                               <span class="text-white hover:underline">Lihat Target</span>
                             </a>
                         </button>
-                        <button class="bg-green-600 px-1.5 rounded-sm my-1">
+                        <button class="bg-green-600 px-2 rounded-sm my-1">
                             <a id="employee-link-{{ $department->employee_id }}" href="{{ route('target.showImport') }}?employee={{ $department->employee_id }}&all={{ $all }}&department={{ $department->department_id }}">
                               <span class="text-white hover:underline">Upload Excel</span>
                             </a>

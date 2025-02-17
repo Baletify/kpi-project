@@ -7,6 +7,7 @@ export default {
         "./resources/**/*.js",
         "./resources/**/*.vue",
     ],
+    safelist: ["w-[1100px]"],
     theme: {
         extend: {
             fontFamily: {
