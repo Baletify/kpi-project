@@ -186,14 +186,16 @@ class TargetController extends Controller
         $deptList = [];
 
         if ($role == 'Approver' || $email == 'johari@bskp.co.id' || $email == 'surya-sp@bskp.co.id') {
-            $deptList = DB::table('departments')->leftJoin('dept_action_plans', 'departments.id', '=', 'dept_action_plans.department_id')->select('departments.*', 'dept_action_plans.file_name as action_plan_id', 'dept_action_plans.file as file')->get();
+            $deptList = DB::table('departments')->leftJoin('dept_action_plans', 'departments.id', '=', 'dept_action_plans.department_id')->select('departments.*', 'dept_action_plans.file as file')->get();
         } elseif ($role == 'FAD' || $email == 'siswantoko@bskp.co.id' || $email == 'tabrani@bskp.co.id') {
-            $deptList = DB::table('departments')->leftJoin('dept_action_plans', 'departments.id', '=', 'dept_action_plans.department_id')->select('departments.*', 'dept_action_plans.file_name as action_plan_id', 'dept_action_plans.file as file')->whereIn('name', ['Sub Div A', 'Sub Div B', 'Sub Div C', 'Sub Div D', 'Sub Div E', 'Sub Div F', 'FAD', 'FSD', 'Div 1', 'Div 2'])->get();
+            $deptList = DB::table('departments')->leftJoin('dept_action_plans', 'departments.id', '=', 'dept_action_plans.department_id')->select('departments.*', 'dept_action_plans.file as file')->whereIn('name', ['Sub Div A', 'Sub Div B', 'Sub Div C', 'Sub Div D', 'Sub Div E', 'Sub Div F', 'FAD', 'FSD', 'Div 1', 'Div 2'])->get();
         } elseif ($email == 'hendi@bskp.co.id') {
-            $deptList = DB::table('departments')->leftJoin('dept_action_plans', 'departments.id', '=', 'dept_action_plans.department_id')->select('departments.*', 'dept_action_plans.file_name as action_plan_id', 'dept_action_plans.file as file')->whereIn('name', ['Accounting', 'Finance'])->get();
+            $deptList = DB::table('departments')->leftJoin('dept_action_plans', 'departments.id', '=', 'dept_action_plans.department_id')->select('departments.*', 'dept_action_plans.file as file')->whereIn('name', ['Accounting', 'Finance'])->get();
         } else {
             return back();
         }
+
+        // dd($deptList);
 
         return view('target.input-target-department-all', ['title' => 'Input Target', 'desc' => 'List Departemen', 'deptList' => $deptList,]);
     }

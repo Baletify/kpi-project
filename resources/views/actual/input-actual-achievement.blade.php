@@ -59,7 +59,7 @@
                 }
 
                 // Otherwise, format the value with 1 decimal place
-                return number_format($value, 2);
+                return number_format($value, 3);
             }
         @endphp
         <div class="relative mt-1 rounded-md">

@@ -71,12 +71,12 @@
                     <div class="flex justify-center gap-2 text-[12px]">
                         <div class="flex justify-center gap-3 my-0.5">
                             <button class="bg-blue-500 px-2 py-0 rounded-sm my-1">
-                                <a id="input-target-link" href="{{ route('target.showDept', 'department=' . $department->id ?? '' ) }}&semester=&year=&all={{ $allStatus }}" >
+                                <a id="input-target-link-{{ $department->id }}" href="{{ route('target.showDept', 'department=' . $department->id ?? '' ) }}&semester=&year=&all={{ $allStatus }}" >
                                     <span class="text-white">Lihat Target</span>
                                   </a>
                             </button>
                             <button class="bg-green-600 px-1.5 py-0 rounded-sm my-1">
-                                <a id="input-target-link" href="{{ route('target.showImportDept') }}?department={{ $department->id ?? '' }}&year={{ $year }}&semester={{ $currentSemester }}&all={{ $allStatus }}">
+                                <a id="input-target-link-{{ $department->id }}" href="{{ route('target.showImportDept') }}?department={{ $department->id ?? '' }}&year={{ $year }}&semester={{ $currentSemester }}&all={{ $allStatus }}">
                                   <span class="text-white hover:underline">Upload Excel</span>
                                 </a>
                             </button>
@@ -85,15 +85,15 @@
                 </td>
                 <td class="border-2 border-gray-400 text-[12px] tracking-wide px-2 py-0 text-center">
                     @if(!$department->file)
-                    <a id="input-target-link" href="{{ route('dept-action-plan.addDeptFile', $department->id) }}?year={{ $year }}&semester={{ $currentSemester }}">
+                    <a id="input-target-link-{{ $department->id }}" href="{{ route('dept-action-plan.addDeptFile', $department->id) }}?year={{ $year }}&semester={{ $currentSemester }}">
                         <i class="ri-add-line bg-green-600 text-white text-sm p-0.5 rounded-sm"></i>
                        </a>
                      @endif
                     @if ($department->file)
-                   <a id="input-target-link" href="{{ route('action-plan.showFile', $department->file) }}" target="_blank">
+                   <a id="input-target-link-{{ $department->id }}" href="{{ route('action-plan.showFile', $department->file) }}" target="_blank">
                     <i class="ri-eye-fill text-sm p-0.5 bg-blue-600 text-white rounded-sm"></i>
                    </a>
-                   <a id="input-target-link" href="{{ route('dept-action-plan.editDeptFile', $department->id) }}?year={{ $year }}&semester={{ $currentSemester }}">
+                   <a id="input-target-link-{{ $department->id }}" href="{{ route('dept-action-plan.editDeptFile', $department->id) }}?year={{ $year }}&semester={{ $currentSemester }}">
                     <i class="ri-edit-box-line p-0.5 text-sm bg-yellow-400 text-white rounded-sm"></i>
                    </a>
                    @endif
@@ -114,7 +114,6 @@
     document.addEventListener('DOMContentLoaded', function() {
         const yearDropdown = document.getElementById('year');
         const semesterDropdown = document.getElementById('semester');
-        const inputTargetLink = document.getElementById('input-target-link');
 
         // Set the dropdown values from localStorage if they exist
         const savedYear = localStorage.getItem('selectedYear');
@@ -132,7 +131,7 @@
             const semester = semesterDropdown.value;
 
             // Update employee links
-            const employeeLinks = document.querySelectorAll('a[id^="employee-link-"]');
+            const employeeLinks = document.querySelectorAll('a[id^="input-target-link-"]');
             employeeLinks.forEach(link => {
                 const url = new URL(link.href);
                 url.searchParams.set('year', year);

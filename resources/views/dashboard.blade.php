@@ -310,7 +310,7 @@
                     <h2 class="text-xl font-bold">List Approval Employee</h2>
                     <button id="closeApprovalModal" class="text-gray-500 hover:text-gray-700">&times;</button>
                 </div>
-                <div class="mt-4">
+                <div class="mt-4 max-h-[500px] overflow-y-auto">
                     <table class="w-full">
                         <tr>
                             <th style="width: 3%;" class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-white py-1 px-4 bg-blue-700">No.</th>
@@ -508,11 +508,13 @@
     });
 
         document.getElementById('viewDocumentBtn').addEventListener('click', function() {
-            fetch(`{{ route('requirement.index') }}?status=Standard`)
+            fetch(`{{ route('requirement.index', 'status=Standard' ) }}`)
                 .then(response => response.json())
                 .then(data => {
                     if (data.length > 0) {
                         const pdfUrl = data[0].file;
+                        console.log(pdfUrl);
+                        
                         
                         document.getElementById('pdfObject').setAttribute('data', `/kpi_requirement_files/${pdfUrl}`);
                         document.getElementById('documentModal').classList.remove('hidden');
@@ -521,12 +523,13 @@
                     }
                 })
                 .catch(error => console.error('Error fetching PDF URL:', error));
+                
         });
 
         
 
         document.getElementById('viewTutorialBtn').addEventListener('click', function() {
-            fetch(`{{ route('requirement.index') }}?status=Tutorial`)
+            fetch(`{{ route('requirement.index', 'status=Tutorial') }}`)
                 .then(response => response.json())
                 .then(data => {
                     if (data.length > 0) {
