@@ -149,7 +149,7 @@ class ReportController extends Controller
         }
     }
 
-    private function calculation($targetZero, $target, $actual, $trend, $recordFile, $unit, $period)
+    private function calculation($targetZero, $target, $actual, $trend, $recordFile, $unit, $period, $totalPercentage)
     {
         $recordFileCheck = ($recordFile != null) ? 'yes' : 'no';
         $zeroStatus = ($targetZero == 0 && $recordFileCheck == 'yes') ? 'yes' : 'no';
@@ -189,13 +189,13 @@ class ReportController extends Controller
 
         if ($unit == 'Tgl') {
             if ($period == 'monthly' || $period == 'Monthly') {
-                $percentageValue = ($target || $actual != 0) ? (($target / 6) / ($actual / 6)) * 100 : 0;
+                $percentageValue = ($totalPercentage / 6);
             } elseif ($period == 'quarter' || $period == 'Quarter') {
-                $percentageValue = ($target || $actual != 0) ? (($target / 2) / ($actual / 2)) * 100 : 0;
+                $percentageValue = ($totalPercentage / 2);
             } elseif ($period == 'semester' || $period == 'Semester') {
-                $percentageValue = ($target || $actual != 0) ? ($target / $actual) * 100 : 0;
+                $percentageValue = $totalPercentage;
             } elseif ($period == 'annual' || $period == 'Annual') {
-                $percentageValue = ($target || $actual != 0) ? ($target / $actual) * 100 : 0;
+                $percentageValue = $totalPercentage;
             } else {
                 $percentageValue = 0;
             }
@@ -273,12 +273,16 @@ class ReportController extends Controller
                     return (float) $item->actual;
                 });
 
+                $totalPercentage = $group->sum(function ($item) {
+                    return (float) $item->kpi_percentage;
+                });
+
                 $firstItem = $group->first();
                 $trendItem = $firstItem->trend;
                 $recordFileItem = $firstItem->record_file;
                 $unitItem = $firstItem->kpi_unit;
                 $periodItem = $firstItem->review_period;
-                $percentageCalc = $this->calculation($totalTarget, $totalTarget, $totalActual, $trendItem, $recordFileItem, $unitItem, $periodItem);
+                $percentageCalc = $this->calculation($totalTarget, $totalTarget, $totalActual, $trendItem, $recordFileItem, $unitItem, $periodItem, $totalPercentage);
 
                 $convertedCalc = floatval(str_replace('%', '', $percentageCalc));
 
@@ -360,12 +364,16 @@ class ReportController extends Controller
                     return (float) $item->actual;
                 });
 
+                $totalPercentage = $group->sum(function ($item) {
+                    return (float) $item->kpi_percentage;
+                });
+
                 $firstItem = $group->first();
                 $trendItem = $firstItem->trend;
                 $recordFileItem = $firstItem->record_file;
                 $unitItem = $firstItem->kpi_unit;
                 $periodItem = $firstItem->review_period;
-                $percentageCalc = $this->calculation($totalTarget, $totalTarget, $totalActual, $trendItem, $recordFileItem, $unitItem, $periodItem);
+                $percentageCalc = $this->calculation($totalTarget, $totalTarget, $totalActual, $trendItem, $recordFileItem, $unitItem, $periodItem, $totalPercentage);
 
 
                 $convertedCalc = floatval(str_replace('%', '', $percentageCalc));
@@ -466,12 +474,16 @@ class ReportController extends Controller
                         return (float) $item->actual;
                     });
 
+                    $totalPercentage = $subGroup->sum(function ($item) {
+                        return (float) $item->kpi_percentage;
+                    });
+
                     $firstItem = $subGroup->first();
                     $trendItem = $firstItem->trend;
                     $recordFileItem = $firstItem->record_file;
                     $unitItem = $firstItem->kpi_unit;
                     $periodItem = $firstItem->review_period;
-                    $percentageCalc = $this->calculation($totalTarget, $totalTarget, $totalActual, $trendItem, $recordFileItem, $unitItem, $periodItem);
+                    $percentageCalc = $this->calculation($totalTarget, $totalTarget, $totalActual, $trendItem, $recordFileItem, $unitItem, $periodItem, $totalPercentage);
 
 
                     $convertedCalc = floatval(str_replace('%', '', $percentageCalc));
@@ -499,12 +511,16 @@ class ReportController extends Controller
                         return (float) $item->actual;
                     });
 
+                    $totalPercentage = $subGroup->sum(function ($item) {
+                        return (float) $item->kpi_percentage;
+                    });
+
                     $firstItem = $subGroup->first();
                     $trendItem = $firstItem->trend;
                     $recordFileItem = $firstItem->record_file;
                     $unitItem = $firstItem->kpi_unit;
                     $periodItem = $firstItem->review_period;
-                    $percentageCalc = $this->calculation($totalTarget, $totalTarget, $totalActual, $trendItem, $recordFileItem, $unitItem, $periodItem);
+                    $percentageCalc = $this->calculation($totalTarget, $totalTarget, $totalActual, $trendItem, $recordFileItem, $unitItem, $periodItem, $totalPercentage);
 
                     $convertedCalc = floatval(str_replace('%', '', $percentageCalc));
 
@@ -531,12 +547,16 @@ class ReportController extends Controller
                         return (float) $item->actual;
                     });
 
+                    $totalPercentage = $subGroup->sum(function ($item) {
+                        return (float) $item->kpi_percentage;
+                    });
+
                     $firstItem = $subGroup->first();
                     $trendItem = $firstItem->trend;
                     $recordFileItem = $firstItem->record_file;
                     $unitItem = $firstItem->kpi_unit;
                     $periodItem = $firstItem->review_period;
-                    $percentageCalc = $this->calculation($totalTarget, $totalTarget, $totalActual, $trendItem, $recordFileItem, $unitItem, $periodItem);
+                    $percentageCalc = $this->calculation($totalTarget, $totalTarget, $totalActual, $trendItem, $recordFileItem, $unitItem, $periodItem, $totalPercentage);
 
                     $convertedCalc = floatval(str_replace('%', '', $percentageCalc));
 
@@ -563,12 +583,16 @@ class ReportController extends Controller
                         return (float) $item->actual;
                     });
 
+                    $totalPercentage = $subGroup->sum(function ($item) {
+                        return (float) $item->kpi_percentage;
+                    });
+
                     $firstItem = $subGroup->first();
                     $trendItem = $firstItem->trend;
                     $recordFileItem = $firstItem->record_file;
                     $unitItem = $firstItem->kpi_unit;
                     $periodItem = $firstItem->review_period;
-                    $percentageCalc = $this->calculation($totalTarget, $totalTarget, $totalActual, $trendItem, $recordFileItem, $unitItem, $periodItem);
+                    $percentageCalc = $this->calculation($totalTarget, $totalTarget, $totalActual, $trendItem, $recordFileItem, $unitItem, $periodItem, $totalPercentage);
 
                     $convertedCalc = floatval(str_replace('%', '', $percentageCalc));
 
@@ -698,12 +722,16 @@ class ReportController extends Controller
                         return (float) $item->actual;
                     });
 
+                    $totalPercentage = $subGroup->sum(function ($item) {
+                        return (float) $item->kpi_percentage;
+                    });
+
                     $firstItem = $subGroup->first();
                     $trendItem = $firstItem->trend;
                     $recordFileItem = $firstItem->record_file;
                     $unitItem = $firstItem->kpi_unit;
                     $periodItem = $firstItem->review_period;
-                    $percentageCalc = $this->calculation($totalTarget, $totalTarget, $totalActual, $trendItem, $recordFileItem, $unitItem, $periodItem);
+                    $percentageCalc = $this->calculation($totalTarget, $totalTarget, $totalActual, $trendItem, $recordFileItem, $unitItem, $periodItem, $totalPercentage);
 
                     $convertedCalc = floatval(str_replace('%', '', $percentageCalc));
 
@@ -730,12 +758,16 @@ class ReportController extends Controller
                         return (float) $item->actual;
                     });
 
+                    $totalPercentage = $subGroup->sum(function ($item) {
+                        return (float) $item->kpi_percentage;
+                    });
+
                     $firstItem = $subGroup->first();
                     $trendItem = $firstItem->trend;
                     $recordFileItem = $firstItem->record_file;
                     $unitItem = $firstItem->kpi_unit;
                     $periodItem = $firstItem->review_period;
-                    $percentageCalc = $this->calculation($totalTarget, $totalTarget, $totalActual, $trendItem, $recordFileItem, $unitItem, $periodItem);
+                    $percentageCalc = $this->calculation($totalTarget, $totalTarget, $totalActual, $trendItem, $recordFileItem, $unitItem, $periodItem, $totalPercentage);
 
                     $convertedCalc = floatval(str_replace('%', '', $percentageCalc));
 
@@ -762,12 +794,16 @@ class ReportController extends Controller
                         return (float) $item->actual;
                     });
 
+                    $totalPercentage = $subGroup->sum(function ($item) {
+                        return (float) $item->kpi_percentage;
+                    });
+
                     $firstItem = $subGroup->first();
                     $trendItem = $firstItem->trend;
                     $recordFileItem = $firstItem->record_file;
                     $unitItem = $firstItem->kpi_unit;
                     $periodItem = $firstItem->review_period;
-                    $percentageCalc = $this->calculation($totalTarget, $totalTarget, $totalActual, $trendItem, $recordFileItem, $unitItem, $periodItem);
+                    $percentageCalc = $this->calculation($totalTarget, $totalTarget, $totalActual, $trendItem, $recordFileItem, $unitItem, $periodItem, $totalPercentage);
 
                     $convertedCalc = floatval(str_replace('%', '', $percentageCalc));
 
@@ -794,12 +830,16 @@ class ReportController extends Controller
                         return (float) $item->actual;
                     });
 
+                    $totalPercentage = $subGroup->sum(function ($item) {
+                        return (float) $item->kpi_percentage;
+                    });
+
                     $firstItem = $subGroup->first();
                     $trendItem = $firstItem->trend;
                     $recordFileItem = $firstItem->record_file;
                     $unitItem = $firstItem->kpi_unit;
                     $periodItem = $firstItem->review_period;
-                    $percentageCalc = $this->calculation($totalTarget, $totalTarget, $totalActual, $trendItem, $recordFileItem, $unitItem, $periodItem);
+                    $percentageCalc = $this->calculation($totalTarget, $totalTarget, $totalActual, $trendItem, $recordFileItem, $unitItem, $periodItem, $totalPercentage);
 
                     $convertedCalc = floatval(str_replace('%', '', $percentageCalc));
 
@@ -929,12 +969,16 @@ class ReportController extends Controller
                         return (float) $item->actual;
                     });
 
+                    $totalPercentage = $subGroup->sum(function ($item) {
+                        return (float) $item->kpi_percentage;
+                    });
+
                     $firstItem = $subGroup->first();
                     $trendItem = $firstItem->trend;
                     $recordFileItem = $firstItem->record_file;
                     $unitItem = $firstItem->kpi_unit;
                     $periodItem = $firstItem->review_period;
-                    $percentageCalc = $this->calculation($totalTarget, $totalTarget, $totalActual, $trendItem, $recordFileItem, $unitItem, $periodItem);
+                    $percentageCalc = $this->calculation($totalTarget, $totalTarget, $totalActual, $trendItem, $recordFileItem, $unitItem, $periodItem, $totalPercentage);
 
                     $convertedCalc = floatval(str_replace('%', '', $percentageCalc));
 
@@ -961,12 +1005,16 @@ class ReportController extends Controller
                         return (float) $item->actual;
                     });
 
+                    $totalPercentage = $subGroup->sum(function ($item) {
+                        return (float) $item->kpi_percentage;
+                    });
+
                     $firstItem = $subGroup->first();
                     $trendItem = $firstItem->trend;
                     $recordFileItem = $firstItem->record_file;
                     $unitItem = $firstItem->kpi_unit;
                     $periodItem = $firstItem->review_period;
-                    $percentageCalc = $this->calculation($totalTarget, $totalTarget, $totalActual, $trendItem, $recordFileItem, $unitItem, $periodItem);
+                    $percentageCalc = $this->calculation($totalTarget, $totalTarget, $totalActual, $trendItem, $recordFileItem, $unitItem, $periodItem, $totalPercentage);
 
                     $convertedCalc = floatval(str_replace('%', '', $percentageCalc));
 
@@ -993,12 +1041,16 @@ class ReportController extends Controller
                         return (float) $item->actual;
                     });
 
+                    $totalPercentage = $subGroup->sum(function ($item) {
+                        return (float) $item->kpi_percentage;
+                    });
+
                     $firstItem = $subGroup->first();
                     $trendItem = $firstItem->trend;
                     $recordFileItem = $firstItem->record_file;
                     $unitItem = $firstItem->kpi_unit;
                     $periodItem = $firstItem->review_period;
-                    $percentageCalc = $this->calculation($totalTarget, $totalTarget, $totalActual, $trendItem, $recordFileItem, $unitItem, $periodItem);
+                    $percentageCalc = $this->calculation($totalTarget, $totalTarget, $totalActual, $trendItem, $recordFileItem, $unitItem, $periodItem, $totalPercentage);
 
                     $convertedCalc = floatval(str_replace('%', '', $percentageCalc));
 
@@ -1025,12 +1077,16 @@ class ReportController extends Controller
                         return (float) $item->actual;
                     });
 
+                    $totalPercentage = $subGroup->sum(function ($item) {
+                        return (float) $item->kpi_percentage;
+                    });
+
                     $firstItem = $subGroup->first();
                     $trendItem = $firstItem->trend;
                     $recordFileItem = $firstItem->record_file;
                     $unitItem = $firstItem->kpi_unit;
                     $periodItem = $firstItem->review_period;
-                    $percentageCalc = $this->calculation($totalTarget, $totalTarget, $totalActual, $trendItem, $recordFileItem, $unitItem, $periodItem);
+                    $percentageCalc = $this->calculation($totalTarget, $totalTarget, $totalActual, $trendItem, $recordFileItem, $unitItem, $periodItem, $totalPercentage);
 
                     $convertedCalc = floatval(str_replace('%', '', $percentageCalc));
 
@@ -1162,12 +1218,16 @@ class ReportController extends Controller
                         return (float) $item->actual;
                     });
 
+                    $totalPercentage = $subGroup->sum(function ($item) {
+                        return (float) $item->kpi_percentage;
+                    });
+
                     $firstItem = $subGroup->first();
                     $trendItem = $firstItem->trend;
                     $recordFileItem = $firstItem->record_file;
                     $unitItem = $firstItem->kpi_unit;
                     $periodItem = $firstItem->review_period;
-                    $percentageCalc = $this->calculation($totalTarget, $totalTarget, $totalActual, $trendItem, $recordFileItem, $unitItem, $periodItem);
+                    $percentageCalc = $this->calculation($totalTarget, $totalTarget, $totalActual, $trendItem, $recordFileItem, $unitItem, $periodItem, $totalPercentage);
 
                     $convertedCalc = floatval(str_replace('%', '', $percentageCalc));
 
@@ -1194,12 +1254,16 @@ class ReportController extends Controller
                         return (float) $item->actual;
                     });
 
+                    $totalPercentage = $subGroup->sum(function ($item) {
+                        return (float) $item->kpi_percentage;
+                    });
+
                     $firstItem = $subGroup->first();
                     $trendItem = $firstItem->trend;
                     $recordFileItem = $firstItem->record_file;
                     $unitItem = $firstItem->kpi_unit;
                     $periodItem = $firstItem->review_period;
-                    $percentageCalc = $this->calculation($totalTarget, $totalTarget, $totalActual, $trendItem, $recordFileItem, $unitItem, $periodItem);
+                    $percentageCalc = $this->calculation($totalTarget, $totalTarget, $totalActual, $trendItem, $recordFileItem, $unitItem, $periodItem, $totalPercentage);
 
                     $convertedCalc = floatval(str_replace('%', '', $percentageCalc));
 
@@ -1226,12 +1290,16 @@ class ReportController extends Controller
                         return (float) $item->actual;
                     });
 
+                    $totalPercentage = $subGroup->sum(function ($item) {
+                        return (float) $item->kpi_percentage;
+                    });
+
                     $firstItem = $subGroup->first();
                     $trendItem = $firstItem->trend;
                     $recordFileItem = $firstItem->record_file;
                     $unitItem = $firstItem->kpi_unit;
                     $periodItem = $firstItem->review_period;
-                    $percentageCalc = $this->calculation($totalTarget, $totalTarget, $totalActual, $trendItem, $recordFileItem, $unitItem, $periodItem);
+                    $percentageCalc = $this->calculation($totalTarget, $totalTarget, $totalActual, $trendItem, $recordFileItem, $unitItem, $periodItem, $totalPercentage);
 
                     $convertedCalc = floatval(str_replace('%', '', $percentageCalc));
 
@@ -1258,12 +1326,16 @@ class ReportController extends Controller
                         return (float) $item->actual;
                     });
 
+                    $totalPercentage = $subGroup->sum(function ($item) {
+                        return (float) $item->kpi_percentage;
+                    });
+
                     $firstItem = $subGroup->first();
                     $trendItem = $firstItem->trend;
                     $recordFileItem = $firstItem->record_file;
                     $unitItem = $firstItem->kpi_unit;
                     $periodItem = $firstItem->review_period;
-                    $percentageCalc = $this->calculation($totalTarget, $totalTarget, $totalActual, $trendItem, $recordFileItem, $unitItem, $periodItem);
+                    $percentageCalc = $this->calculation($totalTarget, $totalTarget, $totalActual, $trendItem, $recordFileItem, $unitItem, $periodItem, $totalPercentage);
 
                     $convertedCalc = floatval(str_replace('%', '', $percentageCalc));
 

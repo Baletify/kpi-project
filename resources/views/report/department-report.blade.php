@@ -20,6 +20,7 @@
         </div>
         <div class="flex justify-between mr-1">
             <div class="mt-2 mx-2">
+                    <button id="" class="p-1.5 rounded-md text-white bg-blue-500" onclick="history.back();">Back</button>
                 @if ($role != 'Inputer' && $role != '')
                 <button id="open-batch-modal" class="p-1.5 rounded-md text-white bg-sky-500">Batch Approve</button>
                 @endif

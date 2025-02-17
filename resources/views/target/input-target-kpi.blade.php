@@ -59,19 +59,9 @@
         <div class="flex justify-between">
                 <div class="flex items-center">
                     <div class="p-0">
-                        @if ($all == 'employee')
-                        <button type="button" class="bg-blue-500 px-2 py-1 text-white rounded-md">
-                            <a href="{{ route('target.department') }}?employee={{ $employeeQuery }}&all=employee">Back</a>
+                        <button type="button" class="bg-blue-500 px-2 py-1 text-white rounded-md" onclick="history.back();">
+                            Back
                         </button>
-                        @elseif ($all == 'dept')
-                        <button type="button" class="bg-blue-500 px-2 py-1 text-white rounded-md">
-                            <a href="{{ route('target.department') }}?department={{ $departmentQuery }}&all=dept">Back</a>
-                        </button>
-                        @else
-                        <button type="button" class="bg-blue-500 px-2 py-1 text-white rounded-md">
-                            <a href="{{ route('target.department') }}?department=all&all=true">Back</a>
-                        </button>
-                        @endif
                     </div>
                 </div>
             <div class="flex justify-end items-center">

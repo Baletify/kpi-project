@@ -37,8 +37,8 @@
         </div>
     </div>
     <div class="p-0">
-        <button type="button" class="bg-blue-500 px-2 py-1 text-white rounded-md">
-            <a href="{{ route('target.department') }}?department=all">Back</a>
+        <button type="button" class="bg-blue-500 px-2 py-1 text-white rounded-md" onclick="history.back();">
+            Back
         </button>
     </div>
 

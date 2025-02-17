@@ -3,6 +3,8 @@
         @php
             $role = auth()->user()->role;
             $userID = auth()->user()->id;
+            $allStatus = request()->query('all');
+            $statusQuery = request()->query('status');
         @endphp
         <div class="p-1">
             <span class="text-gray-600 font-bold text-lg">PT BRIDGESTONE KALIMANTAN PLANTATION</span>
@@ -60,8 +62,10 @@
 
         <div class="flex justify-between">
             <div class="mt-2 mx-2">
+                    <button id="" class="p-1.5 rounded-md text-white bg-blue-500" onclick="history.back();">Back</button>
+                
                 @if ($role != 'Inputer' && $role != '')
-                <button id="open-batch-modal" class="p-1.5 rounded-md text-white bg-sky-500">Batch Approve</button>
+                <button id="open-batch-modal" class="p-1.5 rounded-md text-white bg-blue-600">Batch Approve</button>
                 @endif
             </div>
             <div class="flex justify-end">

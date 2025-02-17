@@ -31,8 +31,8 @@
         </form>
 
         <div class="flex justify-center">
-            <button type="button" class="px-4 py-2 bg-blue-600 text-white rounded-md">
-                <a href="{{ route('target.showDept', 'department=' . $departmentID) . '&year=' . $year . '&semester=' . $semester }}&all={{ $allStatus }}">Back</a>
+            <button type="button" class="px-4 py-2 bg-blue-600 text-white rounded-md" onclick="history.back();">
+                Back
             </button>
             
         </div>
