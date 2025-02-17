@@ -4,14 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Models\Employee;
 use App\Models\ActionPlan;
-use App\Models\ActionPlanDept;
-use App\Models\DeptActionPlan;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use App\Models\ActionPlanDept;
+use App\Models\DeptActionPlan;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\Validator;
 
 class ActionPlanController extends Controller
 {
@@ -54,11 +55,24 @@ class ActionPlanController extends Controller
 
     public function storeFile(Request $request)
     {
+
+        $validator = Validator::make($request->all(), [
+            'action_plan_file' => 'required|mimes:pdf',
+        ]);
+
+        if ($validator->fails()) {
+            flash()->error('Only accept .pdf format');
+            return redirect()->back()
+                ->withErrors($validator)
+                ->withInput();
+        }
+
         if ($request->hasFile('action_plan_file')) {
             $recordFile = $request->file('action_plan_file');
             $recordFileName = Str::random(40) . '.' . $recordFile->getClientOriginalExtension();
             $recordFile->move(public_path('action_plan_files'), $recordFileName);
         }
+
 
         $employeeID = $request->employee_id;
 
@@ -84,6 +98,18 @@ class ActionPlanController extends Controller
 
     public function storeFileDept(Request $request)
     {
+
+        $validator = Validator::make($request->all(), [
+            'action_plan_file' => 'required|mimes:pdf',
+        ]);
+
+        if ($validator->fails()) {
+            flash()->error('Only accept .pdf format');
+            return redirect()->back()
+                ->withErrors($validator)
+                ->withInput();
+        }
+
         $year = $request->year;
         $semester = $request->semester;
         // dd($request->all());
@@ -158,6 +184,17 @@ class ActionPlanController extends Controller
 
     public function updateFile(Request $request)
     {
+        $validator = Validator::make($request->all(), [
+            'action_plan_file' => 'required|mimes:pdf',
+        ]);
+
+        if ($validator->fails()) {
+            flash()->error('Only accept .pdf format');
+            return redirect()->back()
+                ->withErrors($validator)
+                ->withInput();
+        }
+
         $actionPlan = ActionPlan::find($request->action_plan_id);
 
         if ($request->hasFile('action_plan_file')) {
@@ -188,6 +225,17 @@ class ActionPlanController extends Controller
 
     public function updateDeptFile(Request $request)
     {
+        $validator = Validator::make($request->all(), [
+            'action_plan_file' => 'required|mimes:pdf',
+        ]);
+
+        if ($validator->fails()) {
+            flash()->error('Only accept .pdf format');
+            return redirect()->back()
+                ->withErrors($validator)
+                ->withInput();
+        }
+
         $year = $request->year;
         $semester = $request->semester;
         dd($request->all());
