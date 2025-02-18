@@ -176,7 +176,7 @@
                         @elseif ($target->unit == 'Rp')
                         {{ $actual ? substr(number_format($actual->actual, 0, '.', ','), 0, 7) : ''}}
                         @elseif ($target->unit == 'Kg')
-                        {{ $actual ? substr(number_format($actual->target, 0, '.', ','), 0, 7) : ''}}
+                        {{ $actual ? substr(number_format($actual->actual, 0, '.', ','), 0, 7) : ''}}
                         @else
                         {{ $actual ? $actual->actual : ''}}
                         @endif
