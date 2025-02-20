@@ -162,6 +162,12 @@
                         <span class="ml-3">Master Input</span>
                     </a>
                 </li>
+                <li>
+                    <a href="{{ route('user.index')}}" class="flex items-center py-1.5 px-6 text-gray-300 hover:bg-gray-700">
+                        <i class="ri-group-2-fill text-2xl"></i>
+                        <span class="ml-3">Master Employees</span>
+                    </a>
+                </li>
                 @endif
                            
             </ul>

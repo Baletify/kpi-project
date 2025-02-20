@@ -8,13 +8,14 @@ use App\Http\Controllers\ActualController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\TargetController;
 use App\Http\Controllers\PreviewController;
-use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\ActionPlanController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\GeneratePdfController;
 use App\Http\Controllers\MailController;
 use App\Http\Controllers\RequirementController;
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\UserController;
 use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 
 Route::get('/', function () {
@@ -30,6 +31,15 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('auth.logout');
 Route::middleware(['auth'])->group(function () {
     Route::get('dashboard', [EmployeeController::class, 'index'])->name('dashboard');
     Route::get('dashboard/filter', [EmployeeController::class, 'filter']);
+
+    Route::prefix('users')->group(function () {
+        Route::get('/list', [UserController::class, 'index'])->name('user.index');
+        Route::get('/create', [UserController::class, 'create'])->name('user.create');
+        Route::post('/store', [UserController::class, 'store'])->name('user.store');
+        Route::get('/edit/{id}', [UserController::class, 'edit'])->name('user.edit');
+        Route::put('/update/{id}', [UserController::class, 'update'])->name('user.update');
+        Route::put('/delete/{id}', [UserController::class, 'softDelete'])->name('user.softDelete');
+    });
 
     Route::prefix('target')->group(function () {
         Route::get('/input-target-kpi', [TargetController::class, 'show'])->name('target.show');

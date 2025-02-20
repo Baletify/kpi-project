@@ -5,6 +5,7 @@
         $currentYear = Carbon\Carbon::now()->year;
         $startYear = 2024; 
         $endYear = $currentYear + 2;
+        $role = auth()->user()->role;
         @endphp
         <div class="flex justify-between">
         <div class="p-0">
@@ -36,10 +37,36 @@
               </div>
         </div>
     </div>
-    <div class="p-0">
-        <button type="button" class="bg-blue-500 px-2 py-1 text-white rounded-md" onclick="history.back();">
-            Back
-        </button>
+    <div class="flex justify-between">
+        <div class="p-0">
+            <button type="button" class="bg-blue-500 px-2 py-1 text-white rounded-md" onclick="history.back();">
+                Back
+            </button>
+        </div>
+        <div class="flex justify-end">
+            <div class="p-0">
+                <form action="{{ route('target.showDeptOne') }}" method="GET">
+                    <div class="mt-3 mb-1 mx-2">
+                        <select name="department" id="department" class="col-start-1 row-start-1 w-full appearance-none rounded-md py-1.5 pl-3 pr-7 text-base text-gray-500 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
+                            <option value="">-- Departemen --</option>
+                            @if ($role == 'Approver' || $role == 'Mng Approver')
+                            <option value="all">All Dept</option>
+                            @endif
+                            @foreach ($deptList as $item)  
+                            <option value="{{ $item->id }}">{{ $item->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="absolute inset-y-0 right-0 flex items-center">
+                    </div>
+                </div>
+                <div class="mt-0 rounded-md mb-1">
+                    <button type="submit" class="p-2 bg-blue-600 my-2 rounded-md text-white">
+                        Filter
+                    </button>
+                </form>
+            </div>
+        </div>
     </div>
 
         <div class="flex justify-center">
