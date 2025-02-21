@@ -6,10 +6,14 @@ use App\Models\Employee;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class UserController extends Controller
 {
+
+
     public function index(Request $request)
     {
         $department = $request->query('department');
@@ -18,17 +22,36 @@ class UserController extends Controller
         $deptList = DB::table('departments')->get();
         $statusList = DB::table('employees')->select('status')->distinct()->get();
         $query = DB::table('employees')->where('is_active', 1);
-        if ($department && $status) {
-            $users = $query->where('department_id', $department)->where('status', $status)->paginate(20);
-        } elseif ($department) {
-            $users = $query->where('department_id', $department)->paginate(20);
-        } elseif ($status) {
-            $users = $query->where('status', $status)->paginate(20);
-        } else {
-            $users = $query->paginate(20);
+
+        $response = Http::get('http://192.168.99.202/absen/public/api/user');
+        $allUsers = [];
+        if ($response->status() == 200) {
+            $allUsers = $response->json();
+
+            $allUsers = array_map(function ($user) {
+                return [
+                    'departemen' => $user['dept'] ?? '',
+                    'name' => $user['name'] ?? '',
+                    'nik' => $user['nik'] ?? '',
+                    'status' => $user['status'] ?? '',
+                    'grade' => $user['grade'] ?? '',
+                    'jabatan' => $user['jabatan'] ?? '',
+                    'email' => $user['email'] ?? '',
+                ];
+            }, $allUsers['user']);
         }
 
-        return view('users.list-user', ['title' => 'Employees', 'desc' => 'Master Employee', 'users' => $users, 'deptList' => $deptList, 'statusList' => $statusList]);
+        // dd($allUsers);
+
+        // Paginate external users
+        $currentPage = LengthAwarePaginator::resolveCurrentPage();
+        $perPage = 20; // Number of items per page
+        $currentItems = array_slice($allUsers, ($currentPage - 1) * $perPage, $perPage);
+        $externalUsersPaginated = new LengthAwarePaginator($currentItems, count($allUsers), $perPage, $currentPage, [
+            'path' => LengthAwarePaginator::resolveCurrentPath(),
+        ]);
+
+        return view('users.list-user', ['title' => 'Employees', 'desc' => 'Master Employee', 'users' => $externalUsersPaginated, 'deptList' => $deptList, 'statusList' => $statusList]);
     }
 
     public function create()

@@ -47,20 +47,21 @@
                 </div>
             </div>
         </div>
-        <div class="flex justify-end mt-4 mb-2">
+        {{-- <div class="flex justify-end mt-4 mb-2">
             <a href="{{ route('user.create') }}" class="bg-blue-500 text-white px-4 py-2 rounded-md shadow-md hover:bg-blue-600">Tambah Employee</a>
-        </div>
+        </div> --}}
         <table class="w-full table-auto">
             <tr class="bg-blue-700">
                 <th style="width: 3%" class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-white py-1 px-1">No.</th>
+                <th style="width: 7%" class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-white py-1 px-1">Dept</th>
                 <th style="width: 8%" class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-white py-1 px-1">NIK</th>
                 <th style="width: 19%" class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-white py-1 px-1">Nama</th>
                 <th style="width: 10%" class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-white py-1 px-1">Status</th>
                 <th style="width: 6%" class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-white py-1 px-1">Jabatan</th>
                 <th style="width: 15%" class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-white py-1 px-1">Email</th>
-                <th style="width: 7%" class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-white py-1 px-1">Input Type</th>
+                {{-- <th style="width: 7%" class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-white py-1 px-1">Input Type</th>
                 <th style="width: 9%" class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-white py-1 px-1">Role</th>
-                <th style="width: 4%" class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-white py-1 px-1">Aksi</th>
+                <th style="width: 4%" class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-white py-1 px-1">Aksi</th> --}}
             </tr>
             @php
                 $i = ($users->currentPage() - 1) * $users->perPage();
@@ -72,27 +73,30 @@
             <tr class="{{ $i % 2 == 0 ? 'bg-blue-100' : 'bg-white' }}">
                 <td class="border-2 border-gray-400 text-[14px] tracking-wide py-1 px-2 text-center">{{ $i }}</td>
                 <td class="border-2 border-gray-400 text-[14px] tracking-wide py-1 px-2">
-                    {{ $user->nik }}
+                    {{ $user['departemen'] }}
                 </td>
                 <td class="border-2 border-gray-400 text-[14px] tracking-wide py-1 px-2">
-                    {{ $user->name }}
+                    {{ $user['nik'] }}
                 </td>
                 <td class="border-2 border-gray-400 text-[14px] tracking-wide py-1 px-2">
-                    {{ $user->status }}
+                    {{ $user['name'] }}
                 </td>
                 <td class="border-2 border-gray-400 text-[14px] tracking-wide py-1 px-2">
-                    {{ $user->occupation }}
+                    {{ $user['status'] }}
                 </td>
                 <td class="border-2 border-gray-400 text-[14px] tracking-wide py-1 px-2">
-                    {{ $user->email }}
+                    {{ $user['jabatan'] }}
                 </td>
                 <td class="border-2 border-gray-400 text-[14px] tracking-wide py-1 px-2">
+                    {{ $user['email'] }}
+                </td>
+                {{-- <td class="border-2 border-gray-400 text-[14px] tracking-wide py-1 px-2">
                     {{ $user->input_type }}
                 </td>
                 <td class="border-2 border-gray-400 text-[14px] tracking-wide py-1 px-2">
                     {{ $user->role }}
-                </td>
-                <td class="border-2 border-gray-400 text-[14px] tracking-wide py-0.5 px-1 text-center">
+                </td> --}}
+                {{-- <td class="border-2 border-gray-400 text-[14px] tracking-wide py-0.5 px-1 text-center">
                    <div class="flex gap-x-1 justify-center">
                     <a href="{{ route('user.edit', $user->id) }}" class="bg-yellow-500 text-white px-1 py-0.5 rounded-md shadow-md hover:bg-yellow-600">
                         <i class="ri-edit-2-fill"></i>
@@ -101,11 +105,11 @@
                             <i class="ri-delete-bin-6-line"></i>
                         </button>
                    </div>
-                </td>
+                </td> --}}
             </tr>
 
             {{-- delete modal --}}
-            <div id="deleteModal-{{ $user->id }}" class="fixed flex inset-0 bg-gray-600 bg-opacity-50 items-center justify-center hidden">
+            {{-- <div id="deleteModal-{{ $user->id }}" class="fixed flex inset-0 bg-gray-600 bg-opacity-50 items-center justify-center hidden">
                 <div class="bg-white rounded-lg p-4 w-[450px]">
                     <div class="flex justify-end">
                         <button type="button" onclick="closeModal('deleteModal-{{ $user->id }}')">
@@ -136,7 +140,7 @@
                         </div>
                     </form>
                 </div>
-            </div>
+            </div> --}}
             {{-- delete modal ends --}}
             @endforeach
         </table>
