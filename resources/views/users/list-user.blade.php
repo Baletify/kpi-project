@@ -48,7 +48,7 @@
             </div>
         </div>
         <div class="flex justify-end mt-4 mb-2">
-            <a href="{{ route('user.create') }}" class="bg-blue-500 text-white px-4 py-2 rounded-md shadow-md hover:bg-blue-600">Tambah User</a>
+            <a href="{{ route('user.create') }}" class="bg-blue-500 text-white px-4 py-2 rounded-md shadow-md hover:bg-blue-600">Tambah Employee</a>
         </div>
         <table class="w-full table-auto">
             <tr class="bg-blue-700">
