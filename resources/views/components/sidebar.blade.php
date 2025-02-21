@@ -137,12 +137,21 @@
                 </li>
                 @endif
                 @if ($role != '' && $role != 'Checker 1')
+                @if ($role == 'Checker Div 1' || $role == 'Checker Div 2')
+                <li>
+                    <a href="{{ route('log-input.indexInput', 'department=' . $departmentID . '&month=' . $currentMonth . '&year=' . $currentYear) }}" class="flex items-center py-1.5 px-6 text-gray-300 hover:bg-gray-700">
+                        <i class="ri-history-line text-2xl"></i>
+                        <span class="ml-3">Log Check</span>
+                    </a>
+                </li>
+                @else
                 <li>
                     <a href="{{ route('log-input.indexInput', 'department=' . $departmentID . '&month=' . $currentMonth . '&year=' . $currentYear) }}" class="flex items-center py-1.5 px-6 text-gray-300 hover:bg-gray-700">
                         <i class="ri-history-line text-2xl"></i>
                         <span class="ml-3">Log Input</span>
                     </a>
                 </li>
+                @endif
                 @endif
                 @if ($role == 'Approver' || $role == 'Mng Approver')             
                 <li>

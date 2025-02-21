@@ -75,7 +75,7 @@
                 <select name="input_type" id="input_type" class="col-start-1 row-start-1 w-full appearance-none rounded-md py-1.5 pl-3 pr-7 text-base text-gray-500 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
                     <option value="">-- Input Type --</option>
                     <option value="Individual">Individual</option>
-                    <option value="group">Group</option>
+                    <option value="Group">Group</option>
                 </select>
               <div class="absolute inset-y-0 right-0 flex items-center">
               </div>

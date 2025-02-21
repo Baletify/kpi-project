@@ -24,6 +24,7 @@ class Authentication extends Authenticatable
         'role',
         'input_type',
         'occupation',
+        'is_active',
         'department_id',
     ];
 

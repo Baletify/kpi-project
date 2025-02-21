@@ -26,7 +26,7 @@ class AuthController extends Controller
         ]);
 
         // Attempt to authenticate the user
-        if (Auth::attempt($credentials)) {
+        if (Auth::attempt($credentials) && Auth::user()->is_active == 1) {
             // Authentication passed, regenerate session
             $request->session()->regenerate();
             flash()->success('Selamat Datang Di Aplikasi KPI!');

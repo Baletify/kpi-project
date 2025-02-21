@@ -25,7 +25,7 @@
                     <span class="font-medium text-gray-600 text-sm">PT BRIDGESTONE KALIMANTAN PLANTATION</span>
                 </div>
                 <div class="px-1">
-                    <span class=" font-bold text-gray-600 text-2xl">LOG INPUT KPI</span>
+                    <span class=" font-bold text-gray-600 text-2xl">{{ $titlePage }}</span>
                 </div>
                 <div class="px-1">
                     <span class=" font-semibold text-gray-600 text-base">Periode {{ $monthName }} {{ $yearQuery }}</span>
@@ -337,7 +337,7 @@
                     @endif
                 </div>
                 <div class="p-0.5">
-                    @if ($totalCheckedAll == $totalsTg && $role == 'Checker Div 1' || $role == 'Checker Div 2' || $role == 'Checker WS' || $role == 'Checker Factory')
+                    @if ($totalCheckedAll == $totalTgAll && ($role == 'Checker Div 1' || $role == 'Checker Div 2' || $role == 'Checker WS' || $role == 'Checker Factory'))
                     <form action="{{ url('/generate-pdf-check') }}" method="GET">
                         @php
                             $lastInput = $actualFilled->first(function($item) use ($department_id) {

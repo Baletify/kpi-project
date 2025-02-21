@@ -137,6 +137,7 @@ class ActualController extends Controller
                 ->select('employees.id as employee_id', 'employees.nik as nik', 'employees.name as employee', 'employees.occupation as occupation', 'departments.name as department', 'departments.id as department_id')
                 ->where('departments.id', $department)
                 ->where('employees.id', $employee)
+                ->where('employees.is_active', 1)
                 ->get();
 
             return view('actual.input-actual-department', [
@@ -155,6 +156,7 @@ class ActualController extends Controller
                 ->leftJoin('employees', 'employees.department_id', '=', 'departments.id')
                 ->select('employees.id as employee_id', 'employees.nik as nik', 'employees.name as employee', 'employees.occupation as occupation', 'departments.name as department', 'departments.id as department_id')
                 ->where('departments.id', $department)
+                ->where('employees.is_active', 1)
                 ->get();
 
             return view('actual.input-actual-department', [
@@ -172,6 +174,7 @@ class ActualController extends Controller
                 ->leftJoin('employees', 'employees.department_id', '=', 'departments.id')
                 ->select('employees.id as employee_id', 'employees.nik as nik', 'employees.name as employee', 'employees.occupation as occupation', 'departments.name as department', 'departments.id as department_id')
                 ->where('employees.id', $employee)
+                ->where('employees.is_active', 1)
                 ->get();
 
             return view('actual.input-actual-department', [

@@ -49,6 +49,7 @@ class ReportController extends Controller
                 ->leftJoin('employees', 'employees.department_id', '=', 'departments.id')
                 ->select('employees.id as employee_id', 'employees.nik as nik', 'employees.name as employee', 'employees.occupation as occupation', 'departments.name as department', 'departments.id as department_id')
                 ->where('employees.status', '=', $status)
+                ->where('employees.is_active', '=', 1)
                 ->paginate(20)
                 ->appends(['department' => $department, 'status' => $status]);
         } elseif ($department && $status) {
@@ -57,6 +58,7 @@ class ReportController extends Controller
                 ->select('employees.id as employee_id', 'employees.nik as nik', 'employees.name as employee', 'employees.occupation as occupation', 'departments.name as department', 'departments.id as department_id')
                 ->where('departments.id', $department)
                 ->where('employees.status', '=', $status)
+                ->where('employees.is_active', '=', 1)
                 ->paginate(20)
                 ->appends(['department' => $department, 'status' => $status]);
         } elseif ($status) {
@@ -64,12 +66,14 @@ class ReportController extends Controller
                 ->leftJoin('employees', 'employees.department_id', '=', 'departments.id')
                 ->select('employees.id as employee_id', 'employees.nik as nik', 'employees.name as employee', 'employees.occupation as occupation', 'departments.name as department', 'departments.id as department_id')
                 ->where('employees.status', '=', $status)
+                ->where('employees.is_active', '=', 1)
                 ->paginate(20)
                 ->appends(['department' => $department, 'status' => $status]);
         } elseif ($department == 'all') {
             $departments = DB::table('departments')
                 ->leftJoin('employees', 'employees.department_id', '=', 'departments.id')
                 ->select('employees.id as employee_id', 'employees.nik as nik', 'employees.name as employee', 'employees.occupation as occupation', 'departments.name as department', 'departments.id as department_id')
+                ->where('employees.is_active', '=', 1)
                 ->paginate(20)
                 ->appends(['department' => $department, 'status' => $status]);
         } elseif ($department) {
@@ -77,6 +81,7 @@ class ReportController extends Controller
                 ->leftJoin('employees', 'employees.department_id', '=', 'departments.id')
                 ->select('employees.id as employee_id', 'employees.nik as nik', 'employees.name as employee', 'employees.occupation as occupation', 'departments.name as department', 'departments.id as department_id')
                 ->where('departments.id', $department)
+                ->where('employees.is_active', '=', 1)
                 ->paginate(20)
                 ->appends(['department' => $department, 'status' => $status]);
         } elseif ($employee) {
@@ -84,6 +89,7 @@ class ReportController extends Controller
                 ->leftJoin('employees', 'employees.department_id', '=', 'departments.id')
                 ->select('employees.id as employee_id', 'employees.nik as nik', 'employees.name as employee', 'employees.occupation as occupation', 'departments.name as department', 'departments.id as department_id')
                 ->where('employees.id', $employee)
+                ->where('employees.is_active', '=', 1)
                 ->paginate(20)
                 ->appends(['department' => $department, 'status' => $status]);
         }
@@ -413,6 +419,7 @@ class ReportController extends Controller
             $employees = DB::table('employees')->leftJoin('departments', 'departments.id', '=', 'employees.department_id')->select('departments.name as dept', 'employees.name as name', 'employees.nik', 'employees.occupation', 'employees.id as employee_id', 'department_id')
                 ->where('departments.id', '=', $department)
                 ->where('employees.status', '=', $status)
+                ->where('employees.is_active', '=', 1)
                 ->paginate(18)
                 ->appends(['year' => $yearToShow, 'department' => $department, 'occupation' => $status]);
             // dd($employees);
@@ -661,6 +668,7 @@ class ReportController extends Controller
         } elseif ($yearToShow && $department) {
             $employees = DB::table('employees')->leftJoin('departments', 'departments.id', '=', 'employees.department_id')->select('departments.name as dept', 'employees.name as name', 'employees.nik', 'employees.occupation', 'employees.id as employee_id', 'department_id')
                 ->where('departments.id', '=', $department)
+                ->where('employees.is_active', '=', 1)
                 ->paginate(18)
                 ->appends(['year' => $yearToShow, 'department' => $department, 'occupation' => $status]);
             // dd($employees);
@@ -908,6 +916,7 @@ class ReportController extends Controller
         } elseif ($yearToShow && $status) {
             $employees = DB::table('employees')->leftJoin('departments', 'departments.id', '=', 'employees.department_id')->select('departments.name as dept', 'employees.name as name', 'employees.nik', 'employees.occupation', 'employees.id as employee_id', 'department_id')
                 ->where('employees.status', '=', $status)
+                ->where('employees.is_active', '=', 1)
                 ->paginate(18)
                 ->appends(['year' => $yearToShow, 'department' => $department, 'occupation' => $status]);
             // dd($employees);
@@ -1157,6 +1166,7 @@ class ReportController extends Controller
             $employees = DB::table('employees')
                 ->leftJoin('departments', 'departments.id', '=', 'employees.department_id')
                 ->select('departments.name as dept', 'employees.name as name', 'employees.nik', 'employees.occupation', 'employees.id as employee_id', 'department_id')
+                ->where('employees.is_active', '=', 1)
                 ->paginate(18)
                 ->appends(['year' => $yearToShow, 'department' => $department, 'occupation' => $status]);
 

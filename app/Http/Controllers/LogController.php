@@ -164,6 +164,11 @@ class LogController extends Controller
         $role = $user->role;
         $authDept = Auth::user()->department_id;
         $departmentNames = [];
+        if ($role == 'Checker Div 1' || $role == 'Checker Div 2') {
+            $titlePage = 'Log Check';
+        } else {
+            $titlePage = 'Log Input';
+        }
 
         if ($role == 'Checker Div 1') {
             $allDept = DB::table('departments')->whereIn('name', ['Sub Div A', 'Sub Div B', 'Sub Div C'])->get();
@@ -240,7 +245,7 @@ class LogController extends Controller
                 ->join('employees', 'actuals.employee_id', '=', 'employees.id')
                 ->join('departments', 'employees.department_id', '=', 'departments.id')
 
-                ->whereIn('actuals.status', ['Filled', 'Checked', 'Approved'])
+                ->whereIn('actuals.status', ['Filled', 'Checked 1', 'Checked 2', 'Mng Approved', 'Approved'])
                 ->whereMonth('actuals.date', $month)
                 ->whereYear('actuals.date', $year)
                 ->select('departments.id as department_id', 'actuals.*')
@@ -534,6 +539,7 @@ class LogController extends Controller
                 'targetUnitCountAll' => $targetUnitFilledCountAll,
                 'targetUnitCountAllDept' => $targetUnitFilledCountAllDept,
                 'allDept' => $allDept,
+                'titlePage' => $titlePage,
             ]);
         } elseif ($department && $month && $year) {
             $actualFilledCheck = DB::table('actuals')
@@ -579,11 +585,13 @@ class LogController extends Controller
                 ->join('employees', 'actuals.employee_id', '=', 'employees.id')
                 ->join('departments', 'employees.department_id', '=', 'departments.id')
                 ->where('departments.id', $department)
-                ->whereIn('actuals.status', ['Filled', 'Checked', 'Approved'])
+                ->whereIn('actuals.status', ['Filled', 'Checked 1', 'Checked 2', 'Mng Approved', 'Approved'])
                 ->whereMonth('actuals.date', $month)
                 ->whereYear('actuals.date', $year)
                 ->select('departments.id as department_id', 'actuals.*')
                 ->orderBy('actuals.approved_at', 'desc')->get();
+
+            // dd($actualFilled);
 
             $actualFilledCount = DB::table('actuals')
                 ->join('employees', 'actuals.employee_id', '=', 'employees.id')
@@ -854,6 +862,8 @@ class LogController extends Controller
             // dd($actualFilledCount, $actualFilledCountDept->tosSql());
             // dd($totals['total_1']);
 
+            // dd($departmentNames, $totalTgUnitAll);
+
             // dd($actualFilledCheck, $actualCheckedCheck, $actualApproved, $actualChecked, $countEmployees);
             return view('logs/log-input', [
                 'title' => 'Log Input',
@@ -873,6 +883,7 @@ class LogController extends Controller
                 'targetUnitCountAll' => $targetUnitFilledCountAll,
                 'targetUnitCountAllDept' => $targetUnitFilledCountAllDept,
                 'allDept' => $allDept,
+                'titlePage' => $titlePage,
             ]);
         } elseif ($month && $year) {
 
@@ -919,7 +930,7 @@ class LogController extends Controller
                 ->join('employees', 'actuals.employee_id', '=', 'employees.id')
                 ->join('departments', 'employees.department_id', '=', 'departments.id')
                 ->where('departments.id', $authDept)
-                ->whereIn('actuals.status', ['Filled', 'Checked', 'Approved'])
+                ->whereIn('actuals.status', ['Filled', 'Checked 1', 'Checked 2', 'Mng Approved', 'Approved'])
                 ->whereMonth('actuals.date', $month)
                 ->whereYear('actuals.date', $year)
                 ->select('departments.id as department_id', 'actuals.*')
@@ -1213,11 +1224,13 @@ class LogController extends Controller
                 'targetUnitCountAll' => $targetUnitFilledCountAll,
                 'targetUnitCountAllDept' => $targetUnitFilledCountAllDept,
                 'allDept' => $allDept,
+                'titlePage' => $titlePage,
             ]);
         } else if ($department) {
             return view('logs/log-input', [
                 'title' => 'Log Input',
                 'desc' => 'History',
+                'titlePage' => $titlePage,
             ]);
         }
     }
