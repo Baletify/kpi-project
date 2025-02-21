@@ -299,10 +299,8 @@
                 dateFieldToUse = document.getElementById('date-target');
             }
 
-            console.log(dataIsNull);
-            
-            
 
+            
             const selectedOptionToUse = dateFieldToUse.options[dateFieldToUse.selectedIndex];
 
             const zeroValue = selectedOptionToUse.getAttribute('data-zero');

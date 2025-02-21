@@ -106,7 +106,7 @@
                 $targetColumn = 'target_unit_' . ltrim($monthNumber, '0');
                 $targetValue = $formatKgValue($target->$targetColumn); 
             @endphp
-            <option value="{{ $monthNumber }}" data-target="{{ $targetValue ?? '' }}" data-unit="{{ $target->unit }}" data-rp="{{ $target->unit == 'Rp' ? 'yes' : 'no' }}" data-kg="{{ $target->unit == 'Kg' ? 'yes' : 'no' }}" data-zero="{{ $target->{$targetColumn} == 0 ? 'yes' : 'no' }}" data-is-null="{{ $target->{$targetColumn} == null ? 'yes' : 'no' }}">
+            <option value="{{ $monthNumber }}" data-target="{{ $targetValue ?? '' }}" data-unit="{{ $target->unit }}" data-rp="{{ $target->unit == 'Rp' ? 'yes' : 'no' }}" data-kg="{{ $target->unit == 'Kg' ? 'yes' : 'no' }}" data-zero="{{ $target->{$targetColumn} == 0 ? 'yes' : 'no' }}" data-is-null="{{ $target->{$targetColumn} === null ? 'yes' : 'no' }}">
                 {{ $monthName }}
             </option>
             @endforeach
@@ -300,6 +300,9 @@
             } else {
                 dateFieldToUse = document.getElementById('date');
             }
+
+            console.log(dateFieldToUse);
+            
 
             const selectedOptionToUse = dateFieldToUse.options[dateFieldToUse.selectedIndex];
             const targetValue = selectedOptionToUse.getAttribute('data-target');

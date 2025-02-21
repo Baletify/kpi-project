@@ -341,11 +341,11 @@
                                         </label>
                                         <label class="text-[14px]">
                                             <input type="checkbox" class="status-checkbox" data-actual-id="{{ $actual->actual_id }}" data-status="Mng Approve" {{$actual->status == 'Mng Approve' || $actual->status == 'Approved' ? 'checked' : '' }} {{ $role == 'Mng Approver'  ? '' : 'disabled' }}>
-                                            Check 3
+                                            Approved
                                         </label>
                                         <label class="text-[14px]">
                                             <input type="checkbox" class="status-checkbox" data-actual-id="{{ $actual->actual_id }}" data-status="Approved" {{ $actual->status == 'Approved' ? 'checked' : '' }} {{ $role == 'Approver' ? '' : 'disabled' }}>
-                                            Approve
+                                            Final Check
                                         </label>
                                     </div>
                                     @php
