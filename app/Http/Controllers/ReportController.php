@@ -229,7 +229,7 @@ class ReportController extends Controller
         if ($semester && $year) {
 
             $targets = DB::table('targets')
-                ->select('id', 'code', 'indicator', 'employee_id', 'period', 'unit', 'weighting', 'trend')
+                ->select('id', 'code', 'indicator', 'employee_id', 'period', 'unit', 'weighting', 'trend', 'detail')
                 ->where('employee_id', $id)
                 ->where(DB::raw('YEAR(targets.date)'), $year)
                 ->get();
@@ -237,7 +237,7 @@ class ReportController extends Controller
             $actuals = DB::table('actuals')
                 ->leftJoin('employees', 'actuals.employee_id', '=', 'employees.id')
                 ->leftJoin('departments', 'employees.department_id', '=', 'departments.id')
-                ->select('actuals.date as date', 'actuals.employee_id as employee_id', 'actuals.kpi_item', 'actuals.kpi_code as kpi_code', 'actuals.kpi_weighting', 'actuals.kpi_percentage as achievement', 'employees.name as name', 'employees.email as email', 'departments.name as department', 'employees.occupation as occupation', 'employees.nik as nik', 'actuals.semester as semester', 'actuals.date as year', 'actuals.target', 'actuals.actual', 'actuals.kpi_percentage', 'actuals.record_file', 'actuals.id as actual_id', 'actuals.status as status', 'actuals.trend', 'actuals.kpi_unit', 'actuals.review_period')
+                ->select('actuals.date as date', 'actuals.employee_id as employee_id', 'actuals.kpi_item', 'actuals.kpi_code as kpi_code', 'actuals.kpi_weighting', 'actuals.kpi_percentage as achievement', 'actuals.*', 'employees.name as name', 'employees.email as email', 'departments.name as department', 'employees.occupation as occupation', 'employees.nik as nik', 'actuals.semester as semester', 'actuals.date as year', 'actuals.target', 'actuals.actual', 'actuals.kpi_percentage', 'actuals.record_file', 'actuals.id as actual_id', 'actuals.status as status', 'actuals.trend', 'actuals.kpi_unit', 'actuals.review_period')
                 ->where('actuals.employee_id', $id)
                 ->where('actuals.semester', $semester)
                 ->where(DB::raw('YEAR(actuals.date)'), $year)
@@ -322,7 +322,7 @@ class ReportController extends Controller
         if ($semester && $year) {
 
             $targets = DB::table('department_targets')
-                ->select('id', 'code', 'indicator', 'department_id', 'period', 'unit', 'weighting', 'trend')
+                ->select('id', 'code', 'indicator', 'department_id', 'period', 'unit', 'weighting', 'trend', 'detail')
                 ->where('department_id', $id)
                 ->where(DB::raw('YEAR(department_targets.date)'), $year)
                 ->get();

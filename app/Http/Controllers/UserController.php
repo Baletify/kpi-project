@@ -79,6 +79,7 @@ class UserController extends Controller
         $user = DB::table('employees')->leftJoin('departments', 'departments.id', '=', 'employees.department_id')->where('employees.id', $id)->select('departments.*', 'employees.*', 'employees.id as employee_id', 'departments.name as department', 'departments.id as department_id')->first();
         $statusList = DB::table('employees')->select('status')->distinct()->get();
         $deptList = DB::table('departments')->get();
+        // dd($user->is_active);
 
         return view('users.edit-user', ['title' => 'Employees', 'desc' => 'Edit Employee', 'user' => $user, 'statusList' => $statusList, 'deptList' => $deptList]);
     }

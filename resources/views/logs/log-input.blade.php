@@ -313,7 +313,7 @@
 
                 // dd($totalCheckedAll, $totalTgAll)
 
-                // dd($totalFlAll, $totalTgAll);
+                // dd($totalFlAll, $totalTgAll, $totalFl, $totalFlDept);
                 
                 // dd('total filled:', $totalFl, 'total filled dept:', $totalFlDept, 'total filled dept and indiv', $totalFlAll, 'total target Unit dept + indiv', $totalTgAll);
                 // dd($totalFlAll, $totalTgAll);
@@ -369,7 +369,7 @@
             $i = 0;
             
         @endphp
-        @forelse ($departments as $department)
+        @forelse ($allDept as $department)
         @php
             $i++;
         @endphp
@@ -400,7 +400,7 @@
                 // dd($af);
                 // dump($totalFlAll, $totalTgAll, $totalFl, $totalFlDept, $af)
             @endphp
-            <td class="border-2 border-gray-400 tracking-wide px-2 py-0 text-[13px] text-center">{{ $totalEmployee->total_employee }}</td>
+            <td class="border-2 border-gray-400 tracking-wide px-2 py-0 text-[13px] text-center">{{ $totalEmployee->total_employee ?? 0 }}</td>
 
             
             <td class="border-2 border-gray-400 tracking-wide px-2 py-0 text-[13px] text-center">

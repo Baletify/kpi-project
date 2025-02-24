@@ -551,6 +551,7 @@ class ActualController extends Controller
         ];
 
         // dd($details);
+        // dd($targetCodes);
 
         if ($role == 'Checker 1' || $role == 'Checker Factory' || $role == 'Checker WS') {
             $status = 'Checked 1';
@@ -561,6 +562,7 @@ class ActualController extends Controller
                     ->whereMonth('actuals.date', '=', $month)
                     ->where('kpi_code', '=', $targetCode)
                     ->where('status', '=', 'Filled')
+                    ->where('record_file', '!=', '')
                     ->update(
                         [
                             'status' => $status,
@@ -578,6 +580,7 @@ class ActualController extends Controller
                     ->whereMonth('actuals.date', '=', $month)
                     ->where('kpi_code', '=', $targetCode)
                     ->where('status', '=', 'Checked 1')
+                    ->where('record_file', '!=', '')
                     ->update(
                         [
                             'status' => $status,
@@ -594,6 +597,7 @@ class ActualController extends Controller
                 DB::table('actuals')->whereYear('actuals.date', '=', $year)
                     ->whereMonth('actuals.date', '=', $month)
                     ->where('kpi_code', '=', $targetCode)
+                    ->where('record_file', '!=', '')
                     ->update(
                         [
                             'status' => $status,
@@ -610,6 +614,7 @@ class ActualController extends Controller
                 DB::table('actuals')->whereYear('actuals.date', '=', $year)
                     ->whereMonth('actuals.date', '=', $month)
                     ->where('kpi_code', '=', $targetCode)
+                    ->where('record_file', '!=', '')
                     ->update(
                         [
                             'status' => $status,
@@ -622,7 +627,7 @@ class ActualController extends Controller
             return back()->with('error', 'An Error Occured');
         }
 
-        Mail::to($details['email'])->send(new ApproveMail($details));
+        // Mail::to($details['email'])->send(new ApproveMail($details));
 
         return redirect()->back()->with('success', 'Data Updated Successfully');
     }
@@ -667,6 +672,7 @@ class ActualController extends Controller
                     ->whereMonth('department_actuals.date', '=', $month)
                     ->where('kpi_code', '=', $targetCode)
                     ->where('status', '=', 'Filled')
+                    ->where('record_file', '!=', '')
                     ->update(
                         [
                             'status' => $status,
@@ -684,6 +690,7 @@ class ActualController extends Controller
                     ->whereMonth('department_actuals.date', '=', $month)
                     ->where('kpi_code', '=', $targetCode)
                     ->where('status', '=', 'Checked 1')
+                    ->where('record_file', '!=', '')
                     ->update(
                         [
                             'status' => $status,
@@ -700,6 +707,7 @@ class ActualController extends Controller
                 DB::table('department_actuals')->whereYear('department_actuals.date', '=', $year)
                     ->whereMonth('department_actuals.date', '=', $month)
                     ->where('kpi_code', '=', $targetCode)
+                    ->where('record_file', '!=', '')
                     ->update(
                         [
                             'status' => $status,
@@ -716,6 +724,7 @@ class ActualController extends Controller
                 DB::table('department_actuals')->whereYear('department_actuals.date', '=', $year)
                     ->whereMonth('department_actuals.date', '=', $month)
                     ->where('kpi_code', '=', $targetCode)
+                    ->where('record_file', '!=', '')
                     ->update(
                         [
                             'status' => $status,

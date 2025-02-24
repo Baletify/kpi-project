@@ -93,7 +93,7 @@
                     </a>
                 </li>
                 @endif
-                @if ( $role != 'Mng Approver' && $role != 'Approver')   
+                @if ( $role == '' && $role == 'Inputer')   
                 <li>
                     <a href="{{ route('report.department', $departmentID . '?semester=&year='. $currentYear) }}" class="flex items-center py-1.5 px-6 text-gray-300 hover:bg-gray-700" id="department-link">
                         <i class="ri-file-list-3-fill text-2xl"></i>

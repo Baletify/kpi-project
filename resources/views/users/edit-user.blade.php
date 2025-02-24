@@ -95,6 +95,16 @@
                 <div class="absolute inset-y-0 right-0 flex items-center">
                 </div>
               </div>
+            <div class="relative mt-1 rounded-md">
+                <span class="pl-1 font-semibold">Status Aktif</span>
+                <select name="is_active" id="is_active" class="col-start-1 row-start-1 w-full appearance-none rounded-md py-1.5 pl-3 pr-7 text-base text-gray-500 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
+                <option value="{{ $user->is_active }}">-- Status Aktif --</option>
+                <option value="1">Aktif</option>
+                <option value="0">Nonaktif</option>
+                </select>
+                <div class="absolute inset-y-0 right-0 flex items-center">
+                </div>
+              </div>
             </div>
             <div class="flex mt-5 gap-x-3 justify-center">
                 <button type="button" class="px-4 py-2 bg-red-600 text-white rounded-md" onclick="history.back();">

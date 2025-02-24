@@ -171,10 +171,16 @@ class LogController extends Controller
         }
 
         if ($role == 'Checker Div 1') {
-            $allDept = DB::table('departments')->whereIn('name', ['Sub Div A', 'Sub Div B', 'Sub Div C'])->get();
+            $allDept = DB::table('departments')->whereIn('name', ['Div 1', 'Sub Div A', 'Sub Div B', 'Sub Div C'])->get();
+            if ($allDept) {
+                $deptList = ['Div 1', 'Sub Div A', 'Sub Div B', 'Sub Div C'];
+            }
             $departmentNames = ['Sub Div A', 'Sub Div B', 'Sub Div C'];
         } elseif ($role == 'Checker Div 2') {
-            $allDept = DB::table('departments')->whereIn('name', ['Sub Div D', 'Sub Div E', 'Sub Div F'])->get();
+            $allDept = DB::table('departments')->whereIn('name', ['Div 2', 'Sub Div D', 'Sub Div E', 'Sub Div F'])->get();
+            if ($allDept) {
+                $deptList = ['Div 2', 'Sub Div D', 'Sub Div E', 'Sub Div F'];
+            }
             $departmentNames = ['Sub Div D', 'Sub Div E', 'Sub Div F'];
         } elseif ($role == 'Approver' || ($role == 'Mng Approver' && $department == 'All Dept')) {
             $allDept = Department::all();
@@ -189,13 +195,18 @@ class LogController extends Controller
                 $departmentNames = [$departmentName];
             }
         } elseif ($role == 'Inputer') {
-            $allDept = [];
+            $allDept = DB::table('departments')->where('id', $authDept)->get();
             $departmentName = DB::table('departments')->where('id', '=', $authDept)->value('name');
             if ($departmentName) {
                 $departmentNames = [$departmentName];
+                $deptList = [$departmentName];
             }
+            // dd($deptList);
         } else {
             $allDept = DB::table('departments')->where('id', '=', $department)->get();
+            if ($allDept) {
+                $deptList = [$department];
+            }
             $departmentName = DB::table('departments')->where('id', $department)->value('name');
             if ($departmentName) {
                 $departmentNames = [$departmentName];
@@ -256,6 +267,7 @@ class LogController extends Controller
                 ->join('departments', 'employees.department_id', '=', 'departments.id')
 
                 ->where('actuals.input_at', '!=', '')
+                ->where('actuals.record_file', '!=', '')
                 ->whereMonth('actuals.date', $month)
                 ->whereYear('actuals.date', $year)
                 ->select(DB::raw('count(actuals.id) as total_filled'), 'departments.id as department_id')
@@ -265,8 +277,8 @@ class LogController extends Controller
 
             $actualFilledCountDept = DB::table('department_actuals')
                 ->join('departments', 'department_actuals.department_id', '=', 'departments.id')
-
                 ->where('department_actuals.input_at', '!=', '')
+                ->where('department_actuals.record_file', '!=', '')
                 ->whereMonth('department_actuals.date', $month)
                 ->whereYear('department_actuals.date', $year)
                 ->select(DB::raw('count(department_actuals.id) as total_filled'), 'departments.id as department_id')
@@ -508,7 +520,7 @@ class LogController extends Controller
 
             $departments = DB::table('departments')->get();
             $countEmployees = DB::table('employees')
-                ->leftJoin('departments', 'departments.id', '=', 'employees.department_id')->select(DB::raw('count(employees.id) as total_employee'), 'departments.id as department_id',)->groupBy('departments.id')->get();
+                ->leftJoin('departments', 'departments.id', '=', 'employees.department_id')->select(DB::raw('count(employees.id) as total_employee'), 'departments.name as department_name', 'departments.id as department_id')->whereIn('departments.name', $deptList)->groupBy(['departments.name', 'departments.id'])->get();
 
             $acc = $actualCheckedCount;
             $accd = $actualCheckedCountDept;
@@ -598,6 +610,7 @@ class LogController extends Controller
                 ->join('departments', 'employees.department_id', '=', 'departments.id')
                 ->where('departments.id', $department)
                 ->where('actuals.input_at', '!=', '')
+                ->where('actuals.record_file', '!=', value: '')
                 ->whereMonth('actuals.date', $month)
                 ->whereYear('actuals.date', $year)
                 ->select(DB::raw('count(actuals.id) as total_filled'), 'departments.id as department_id')
@@ -609,6 +622,7 @@ class LogController extends Controller
                 ->join('departments', 'department_actuals.department_id', '=', 'departments.id')
                 ->where('departments.id', $department)
                 ->where('department_actuals.input_at', '!=', '')
+                ->where('department_actuals.record_file', '!=', '')
                 ->whereMonth('department_actuals.date', $month)
                 ->whereYear('department_actuals.date', $year)
                 ->select(DB::raw('count(department_actuals.id) as total_filled'), 'departments.id as department_id')
@@ -850,7 +864,8 @@ class LogController extends Controller
 
             $departments = DB::table('departments')->where('departments.id', '=', $department)->get();
             $countEmployees = DB::table('employees')
-                ->leftJoin('departments', 'departments.id', '=', 'employees.department_id')->select(DB::raw('count(employees.id) as total_employee'), 'departments.id as department_id',)->where('departments.id', $department)->groupBy('departments.id')->get();
+                ->leftJoin('departments', 'departments.id', '=', 'employees.department_id')->select(DB::raw('count(employees.id) as total_employee'), 'departments.name as department_name', 'departments.id as department_id')->whereIn('departments.name', $deptList)->groupBy(['departments.name', 'departments.id'])->get();
+            // dd($deptList, $countEmployees);
 
             $acc = $actualCheckedCount ?? 0;
             $accd = $actualCheckedCountDept ?? 0;
@@ -863,6 +878,7 @@ class LogController extends Controller
             // dd($totals['total_1']);
 
             // dd($departmentNames, $totalTgUnitAll);
+            // dd($countEmployees);
 
             // dd($actualFilledCheck, $actualCheckedCheck, $actualApproved, $actualChecked, $countEmployees);
             return view('logs/log-input', [
@@ -941,6 +957,7 @@ class LogController extends Controller
                 ->join('departments', 'employees.department_id', '=', 'departments.id')
                 ->where('departments.id', $authDept)
                 ->where('actuals.input_at', '!=', '')
+                ->where('actuals.record_file', '!=', '')
                 ->whereMonth('actuals.date', $month)
                 ->whereYear('actuals.date', $year)
                 ->select(DB::raw('count(actuals.id) as total_filled'), 'departments.id as department_id')
@@ -952,6 +969,7 @@ class LogController extends Controller
                 ->join('departments', 'department_actuals.department_id', '=', 'departments.id')
                 ->where('departments.id', $authDept)
                 ->where('department_actuals.input_at', '!=', '')
+                ->where('department_actuals.record_file', '!=', '')
                 ->whereMonth('department_actuals.date', $month)
                 ->whereYear('department_actuals.date', $year)
                 ->select(DB::raw('count(department_actuals.id) as total_filled'), 'departments.id as department_id')
@@ -1193,7 +1211,7 @@ class LogController extends Controller
 
             $departments = DB::table('departments')->where('departments.id', '=', $authDept)->get();
             $countEmployees = DB::table('employees')
-                ->leftJoin('departments', 'departments.id', '=', 'employees.department_id')->select(DB::raw('count(employees.id) as total_employee'), 'departments.id as department_id',)->where('departments.id', $authDept)->groupBy('departments.id')->get();
+                ->leftJoin('departments', 'departments.id', '=', 'employees.department_id')->select(DB::raw('count(employees.id) as total_employee'), 'departments.name as department_name', 'departments.id as department_id')->whereIn('departments.name', $deptList)->groupBy(['departments.name', 'departments.id'])->get();
 
             $acc = $actualCheckedCount;
             $accd = $actualCheckedCountDept;
@@ -1202,6 +1220,7 @@ class LogController extends Controller
             // $tgUnitAll = $targetUnitCountAll;
             // $tgUnitAllDept = $targetUnitCountAllDept;
             $totalTgUnitAll = $totals;
+            // dd($countEmployees);
             // dd($actualFilledCount, $actualFilledCountDept->tosSql());
             // dd($totals['total_1']);
 
