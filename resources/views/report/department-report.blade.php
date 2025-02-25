@@ -22,7 +22,7 @@
             <div class="mt-2 mx-2">
                     <button id="" class="p-1.5 rounded-md text-white bg-blue-500" onclick="history.back();">Back</button>
                 @if ($role != 'Inputer' && $role != '')
-                <button id="open-batch-modal" class="p-1.5 rounded-md text-white bg-sky-500">Batch Approve</button>
+                <button id="open-batch-modal" class="p-1.5 rounded-md text-white bg-blue-600">Batch Approve</button>
                 @endif
             </div>
             <div class="flex justify-end">
@@ -106,7 +106,7 @@
                         <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="{{ $i % 2 === 0 ? 'FFF2F2F2' : 'FFFFFFFF' }}" class="border-2 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-1 text-center" rowspan="4">{{ $target->code }}</td>
                         <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="{{ $i % 2 === 0 ? 'FFF2F2F2' : 'FFFFFFFF' }}" class="relative border-2 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-2 group" rowspan="4">
                             {{ $target->indicator }}
-                            <div class="absolute left-0 bottom-full mb-2 hidden group-hover:block w-64 p-2 bg-gray-800 text-white text-xs rounded shadow-lg">
+                            <div class="absolute left-0 bottom-full mb-2 hidden group-hover:block w-64 p-2 bg-gray-800 text-white text-xs rounded shadow-lg z-10">
                                 {{ $target->detail }}
                             </div>
                         </td>
@@ -227,7 +227,12 @@
                      @endif
                     </tr>
                     <tr>
-                        <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="{{ $i % 2 === 0 ? 'FFF2F2F2' : 'FFFFFFFF' }}" class="border-2 bg-gray-50 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center">Rekaman</td>
+                        <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="{{ $i % 2 === 0 ? 'FFF2F2F2' : 'FFFFFFFF' }}" class="relative border-2 bg-gray-50 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center group">
+                            Rekaman
+                            <div class="absolute left-0 bottom-full mb-2 hidden group-hover:block w-64 p-2 bg-gray-800 text-white text-xs rounded shadow-lg z-10">
+                                {{ $target->supporting_document }}
+                            </div>
+                        </td>
                         @foreach ($months as $month => $monthName)
                         @php
                             $actual = $actuals->first(function($item) use ($target, $month) {
@@ -263,7 +268,7 @@
                             </button>
                             {{-- MODAL --}}
                             <div id="{{ $backgroundId }}" class="fixed inset-0 bg-gray-800 bg-opacity-75 hidden exclude-from-export"></div>
-                            <div id="{{ $modalId }}" class="modal fixed inset-0 justify-center hidden exclude-from-export" data-month="{{ $date->format('m') }}">
+                            <div id="{{ $modalId }}" class="modal fixed inset-0 justify-center hidden exclude-from-export z-50 mt-5" data-month="{{ $date->format('m') }}">
                                 <div class="flex justify-center">
                                     <div class="bg-gray-50 rounded-lg shadow-lg px-4 py-2 w-1/2 max-h-[750px] overflow-y-auto">
                                         <div class="flex justify-end">
@@ -289,23 +294,135 @@
                                     <div id="pdfViewer" class="mt-1">
                                         <object id="{{ $pdfObjectId }}" type="application/pdf" width="100%" height="400px"></object>
                                     </div>
-                                    <div id="checkbox-container-{{ $modalId }}" class="p-1 flex justify-center gap-3">
-                                        <label class="text-[14px]">
-                                            <input type="checkbox" class="status-checkbox" data-actual-id="{{ $actual->department_actual_id }}" data-status="Checked 1" {{ $actual->status == 'Checked 1' || $actual->status == 'Checked 2' || $actual->status == 'Mng Approve' || $actual->status == 'Approved' ? 'checked' : '' }} {{ $role == 'Checker 1' || $role == 'Checker WS' || $role == 'Checker Factory' || $role == 'FAD' ? '' : 'disabled' }}>
-                                            Check 1
-                                        </label>
-                                        <label class="text-[14px]">
-                                            <input type="checkbox" class="status-checkbox" data-actual-id="{{ $actual->department_actual_id }}" data-status="Checked 2" {{ $actual->status == 'Checked 2' || $actual->status == 'Mng Approve' || $actual->status == 'Approved' ? 'checked' : '' }} {{ $role == 'Checker Div 1' || $role == 'Checker Div 2' && $actual->status == 'Checked 1' ? '' : 'disabled' }}>
-                                            Check 2
-                                        </label>
-                                        <label class="text-[14px]">
-                                            <input type="checkbox" class="status-checkbox" data-actual-id="{{ $actual->department_actual_id }}" data-status="Mng Approve" {{$actual->status == 'Mng Approve' || $actual->status == 'Approved' ? 'checked' : '' }} {{ $role == 'Mng Approver'  ? '' : 'disabled' }}>
-                                            Approved
-                                        </label>
-                                        <label class="text-[14px]">
-                                            <input type="checkbox" class="status-checkbox" data-actual-id="{{ $actual->department_actual_id }}" data-status="Approved" {{ $actual->status == 'Approved' ? 'checked' : '' }} {{ $role == 'Approver' ? '' : 'disabled' }}>
-                                            Final Check
-                                        </label>
+                                    <div id="checkbox-container-{{ $modalId }}" class="p-1 grid grid-cols-4">
+                                        <div class="p-0">
+                                            <label class="text-[14px]">
+                                                <input type="checkbox" class="status-checkbox" data-actual-id="{{ $actual->department_actual_id }}" data-status="Checked 1" {{ $actual->asst_mng_checked_at ? 'checked' : '' }} {{ $role == 'Checker 1' || $role == 'Checker WS' || $role == 'Checker Factory' || $role == 'FAD' ? '' : 'disabled' }}>
+                                                Check 1
+                                            </label>             
+                                            <div class="flex justify-center gap-x-2 mt-1.5">
+                                                <div class="flex flex-col">
+                                                    <span class="text-[9px] text-center">Check 1 By:</span>
+                                                    @if ($actual->asst_mng_checked_by)                                 
+                                                    <span class="text-[9px] text-center">
+                                                        {{ $actual->asst_mng_checked_by }}
+                                                    </span>
+                                                    @else
+                                                    <span class="text-[9px] text-center text-red-500">
+                                                        N/A
+                                                    </span>
+                                                    @endif
+                                                </div>
+                                                <div class="flex flex-col">
+                                                    <span class="text-[9px] text-center">Check 1 At:</span>
+                                                    @if ($actual->asst_mng_checked_at)
+                                                    <span class="text-[9px] text-center">
+                                                        {{ $actual->asst_mng_checked_at}}
+                                                    </span>
+                                                    @else
+                                                    <span class="text-[9px] text-center text-red-500">
+                                                       N/A
+                                                    </span>
+                                                    @endif
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="p-0">
+                                            <label class="text-[14px]">
+                                                <input type="checkbox" class="status-checkbox" data-actual-id="{{ $actual->department_actual_id }}" data-status="Checked 2" {{ $actual->checked_by ? 'checked' : '' }} {{ $role == 'Checker Div 1' || $role == 'Checker Div 2' && $actual->status == 'Checked 1' ? '' : 'disabled' }}>
+                                                Check 2
+                                            </label>
+                                            <div class="flex justify-center gap-x-2 mt-1.5">
+                                                <div class="flex flex-col">
+                                                    <span class="text-[9px] text-center">Check 2 By:</span>
+                                                    @if ($actual->checked_by)                                 
+                                                    <span class="text-[9px] text-center">
+                                                        {{ $actual->checked_by }}
+                                                    </span>
+                                                    @else
+                                                    <span class="text-[9px] text-center text-red-500">
+                                                        N/A
+                                                    </span>
+                                                    @endif
+                                                </div>
+                                                <div class="flex flex-col">
+                                                    <span class="text-[9px] text-center">Check 2 At:</span>
+                                                    @if ($actual->checked_at)
+                                                    <span class="text-[9px] text-center">
+                                                        {{ $actual->checked_at}}
+                                                    </span>
+                                                    @else
+                                                    <span class="text-[9px] text-center text-red-500">
+                                                       N/A
+                                                    </span>
+                                                    @endif
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="p-0">
+                                            <label class="text-[14px]">
+                                                <input type="checkbox" class="status-checkbox" data-actual-id="{{ $actual->department_actual_id }}" data-status="Mng Approve" {{ $actual->mng_approved_at ? 'checked' : '' }} {{ $role == 'Mng Approver'  ? '' : 'disabled' }}>
+                                                Approved {{ "(Mng)" }}
+                                            </label>
+                                            <div class="flex justify-center gap-x-2 mt-1.5">
+                                                <div class="flex flex-col">
+                                                    <span class="text-[9px] text-center">Approved By:</span>
+                                                    @if ($actual->mng_approved_by)                                 
+                                                    <span class="text-[9px] text-center">
+                                                        {{ $actual->mng_approved_by }}
+                                                    </span>
+                                                    @else
+                                                    <span class="text-[9px] text-center text-red-500">
+                                                        N/A
+                                                    </span>
+                                                    @endif
+                                                </div>
+                                                <div class="flex flex-col">
+                                                    <span class="text-[9px] text-center">Approved At:</span>
+                                                    @if ($actual->mng_approved_at)
+                                                    <span class="text-[9px] text-center">
+                                                        {{ $actual->mng_approved_at}}
+                                                    </span>
+                                                    @else
+                                                    <span class="text-[9px] text-center text-red-500">
+                                                       N/A
+                                                    </span>
+                                                    @endif
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="p-0">
+                                            <label class="text-[14px]">
+                                                <input type="checkbox" class="status-checkbox" data-actual-id="{{ $actual->department_actual_id }}" data-status="Approved" {{ $actual->approved_at ? 'checked' : '' }} {{ $role == 'Approver' ? '' : 'disabled' }}>
+                                                Final Check {{ "(HRD Spv)" }}
+                                            </label>
+                                            <div class="flex justify-center gap-x-2 mt-1.5">
+                                                <div class="flex flex-col">
+                                                    <span class="text-[9px] text-center">Final Check By:</span>
+                                                    @if ($actual->approved_by)                                 
+                                                    <span class="text-[9px] text-center">
+                                                        {{ $actual->approved_by }}
+                                                    </span>
+                                                    @else
+                                                    <span class="text-[9px] text-center text-red-500">
+                                                        N/A
+                                                    </span>
+                                                    @endif
+                                                </div>
+                                                <div class="flex flex-col">
+                                                    <span class="text-[9px] text-center">Final Check At:</span>
+                                                    @if ($actual->approved_at)
+                                                    <span class="text-[9px] text-center">
+                                                        {{ $actual->approved_at}}
+                                                    </span>
+                                                    @else
+                                                    <span class="text-[9px] text-center text-red-500">
+                                                       N/A
+                                                    </span>
+                                                    @endif
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                     @php
                                     $user = auth()->user();

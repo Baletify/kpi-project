@@ -30,16 +30,25 @@ class TargetController extends Controller
         $user = Auth::user();
         $role = $user->role;
         $email = $user->email;
+        $authDept = $user->department_id;
 
         $deptList = [];
 
         if ($role == 'Approver' || $email == 'johari@bskp.co.id' || $email == 'surya-sp@bskp.co.id') {
             $deptList = DB::table('departments')->get();
         } elseif ($email == 'siswantoko@bskp.co.id' || $email == 'tabrani@bskp.co.id' || $role == 'FAD') {
-            $deptList = DB::table('departments')->whereIn('name', ['Sub Div A', 'Sub Div B', 'Sub Div C', 'Sub Div D', 'Sub Div E', 'Sub Div F', 'FAD', 'FSD', 'Div 1', 'Div 2'])->get();
+            $deptList = DB::table('departments')->whereIn('name', ['Sub Div A', 'Sub Div B', 'Sub Div C', 'Sub Div D', 'Sub Div E', 'Sub Div F', 'Div 1', 'Div 2'])->get();
         } elseif ($email == 'hendi@bskp.co.id') {
             $deptList = DB::table('departments')->whereIn('name', ['Accounting', 'Finance'])->get();
+        } elseif ($role == 'Checker 1') {
+            $deptList = DB::table('departments')->where('id', $authDept)->get();
+        } elseif ($role == 'Checker 2') {
+            $deptList = DB::table('departments')->whereIn('name', ['Sub Div A', 'Sub Div B', 'Sub Div C', 'Sub Div D', 'Sub Div E', 'Sub Div F', 'Div 1', 'Div 2'])->get();
+        } elseif ($role == 'Checker WS' || $role == 'Checker Factory') {
+            $deptList = DB::table('departments')->where('id', $authDept)->get();
         }
+
+
         $statusList = DB::table('employees')->select('status')->distinct()->get();
 
         // dd($deptList, $statusList);

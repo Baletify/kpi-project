@@ -12,10 +12,20 @@ class MailController extends Controller
 {
     public function sendEmail(Request $request)
     {
+        // dd($request->all());
+        $email = $request->email;
+        $departmentID = $request->department_id;
+        if ($email == '' || $email == 0) {
+            $sendTo =  DB::table('employees')->where('department_id', '=', $departmentID)->where('role', '=', 'Inputer')->select('email')->first();
+        } else {
+            $sendTo = $email;
+        }
+        // dd($sendTo);
+
         $from = Auth::user()->name;
         $details = [
             'revised_by' => $from,
-            'email' => $request->email,
+            'email' => $sendTo,
             'title' => 'Revisi Data Pendukung KPI',
             'greetings' => 'Dengan Hormat,',
             'msg' => 'Berdasarkan pengecekan yang kami lakukan terdapat perhitungan KPI dan data pendukung yang tidak sesuai, untuk itu segara hubungi personnel yang terkait dan segara siapkan data KPI dan data pendukung yang sesuai. Berikut ini adalah data yang perlu direvisi:',

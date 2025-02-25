@@ -108,6 +108,7 @@ class ActualController extends Controller
         $user = Auth::user();
         $role = $user->role;
         $email = $user->email;
+        $authDept = $user->department_id;
 
         if ($role == 'Checker Div 1' || $role == 'Checker Div 2') {
             $dept = ['Sub Div A', 'Sub Div B', 'Sub Div C', 'Sub Div D', 'Sub Div E', 'Sub Div F'];
@@ -122,13 +123,15 @@ class ActualController extends Controller
             $dept = 'Factory';
             $allDept = DB::table('departments')->where('name', '=', $dept)->get();
         } elseif ($email == 'tabrani@bskp.co.id' || $email == 'siswantoko@bskp.co.id') {
-            $dept = ['Sub Div A', 'Sub Div B', 'Sub Div C', 'Sub Div D', 'Sub Div E', 'Sub Div F', 'FAD', 'FSD', 'Div 1', 'Div 2'];
+            $dept = ['Sub Div A', 'Sub Div B', 'Sub Div C', 'Sub Div D', 'Sub Div E', 'Sub Div F', 'Div 1', 'Div 2'];
             $allDept = DB::table('departments')->whereIn('name', $dept)->get();
         } elseif ($email == 'hendi@bskp.co.id') {
             $dept = ['Accounting', 'Finance'];
             $allDept = DB::table('departments')->whereIn('name', $dept)->get();
+        } elseif ($role == 'Checker 1') {
+            $allDept = DB::table('departments')->where('departments.id', $authDept)->get();
         } else {
-            $allDept = Department::all();
+            $allDept = DB::table('departments')->get();
         }
 
         if ($department && $employee) {
@@ -627,7 +630,10 @@ class ActualController extends Controller
             return back()->with('error', 'An Error Occured');
         }
 
-        // Mail::to($details['email'])->send(new ApproveMail($details));
+
+        if ($sendTo != null || $sendTo != 0) {
+            Mail::to($details['email'])->send(new ApproveMail($details));
+        }
 
         return redirect()->back()->with('success', 'Data Updated Successfully');
     }
@@ -737,7 +743,9 @@ class ActualController extends Controller
             return back()->with('error', 'An Error Occured');
         }
 
-        Mail::to($details['email'])->send(new ApproveMail($details));
+        if ($sendTo != null || $sendTo != 0) {
+            Mail::to($details['email'])->send(new ApproveMail($details));
+        }
 
 
         return redirect()->back()->with('success', 'Data Updated Successfully');

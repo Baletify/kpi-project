@@ -193,19 +193,21 @@ class ReportController extends Controller
             return $zeroCalc;
         }
 
-        if ($unit == 'Tgl') {
-            if ($period == 'monthly' || $period == 'Monthly') {
-                $percentageValue = ($totalPercentage / 6);
-            } elseif ($period == 'quarter' || $period == 'Quarter') {
-                $percentageValue = ($totalPercentage / 2);
-            } elseif ($period == 'semester' || $period == 'Semester') {
-                $percentageValue = $totalPercentage;
-            } elseif ($period == 'annual' || $period == 'Annual') {
-                $percentageValue = $totalPercentage;
-            } else {
-                $percentageValue = 0;
-            }
-        } elseif ($trend == 'Negatif') {
+        // if ($unit == 'Tgl') {
+        //     if ($period == 'monthly' || $period == 'Monthly') {
+        //         $percentageValue = ($totalPercentage / 6);
+        //     } elseif ($period == 'quarter' || $period == 'Quarter') {
+        //         $percentageValue = ($totalPercentage / 2);
+        //     } elseif ($period == 'semester' || $period == 'Semester') {
+        //         $percentageValue = $totalPercentage;
+        //     } elseif ($period == 'annual' || $period == 'Annual') {
+        //         $percentageValue = $totalPercentage;
+        //     } else {
+        //         $percentageValue = 0;
+        //     }
+        // } else
+
+        if ($trend == 'Negatif') {
             $percentageValue = ($target || $actual != 0) ? ($target / $actual) * 100 : 0;
         } elseif ($trend == 'Positif') {
             $percentageValue = ($target || $actual != 0) ? $actual / $target * 100 : 0;
@@ -229,7 +231,7 @@ class ReportController extends Controller
         if ($semester && $year) {
 
             $targets = DB::table('targets')
-                ->select('id', 'code', 'indicator', 'employee_id', 'period', 'unit', 'weighting', 'trend', 'detail')
+                ->select('targets.*')
                 ->where('employee_id', $id)
                 ->where(DB::raw('YEAR(targets.date)'), $year)
                 ->get();
@@ -237,12 +239,13 @@ class ReportController extends Controller
             $actuals = DB::table('actuals')
                 ->leftJoin('employees', 'actuals.employee_id', '=', 'employees.id')
                 ->leftJoin('departments', 'employees.department_id', '=', 'departments.id')
-                ->select('actuals.date as date', 'actuals.employee_id as employee_id', 'actuals.kpi_item', 'actuals.kpi_code as kpi_code', 'actuals.kpi_weighting', 'actuals.kpi_percentage as achievement', 'actuals.*', 'employees.name as name', 'employees.email as email', 'departments.name as department', 'employees.occupation as occupation', 'employees.nik as nik', 'actuals.semester as semester', 'actuals.date as year', 'actuals.target', 'actuals.actual', 'actuals.kpi_percentage', 'actuals.record_file', 'actuals.id as actual_id', 'actuals.status as status', 'actuals.trend', 'actuals.kpi_unit', 'actuals.review_period')
+                ->select('actuals.date as date', 'actuals.employee_id as employee_id', 'actuals.kpi_item', 'actuals.kpi_code as kpi_code', 'actuals.kpi_weighting', 'actuals.kpi_percentage as achievement', 'actuals.*', 'employees.name as name', 'employees.email as email', 'departments.name as department', 'employees.occupation as occupation', 'employees.nik as nik', 'actuals.semester as semester', 'actuals.date as year', 'actuals.target', 'actuals.actual', 'actuals.kpi_percentage', 'actuals.record_file', 'actuals.id as actual_id', 'actuals.status as status', 'actuals.trend', 'actuals.kpi_unit', 'actuals.review_period', 'departments.id as department_id')
                 ->where('actuals.employee_id', $id)
                 ->where('actuals.semester', $semester)
                 ->where(DB::raw('YEAR(actuals.date)'), $year)
                 ->orderBy(DB::raw('MONTH(actuals.date)'))
                 ->get();
+
 
             // sum bobot
             $targetWeightingSum = DB::table('targets')
@@ -271,22 +274,39 @@ class ReportController extends Controller
 
             // Hitung total target dan actual untuk setiap kelompok
             $totals = $groupedData->map(function ($group) {
-                $totalTarget = $group->sum(function ($item) {
-                    return (float) $item->target;
-                });
-
-                $totalActual = $group->sum(function ($item) {
-                    return (float) $item->actual;
-                });
-
-                $totalPercentage = $group->sum(function ($item) {
-                    return (float) $item->kpi_percentage;
-                });
-
                 $firstItem = $group->first();
+                $unitItem = $firstItem->kpi_unit;
+
+                $zeroCheck = ($firstItem->target == 0) ? 'yes' : 'no';
+                if ($unitItem == 'Tgl' || $unitItem == 'tgl' || $zeroCheck == 'yes') {
+                    $totalTarget = $group->avg(function ($item) {
+                        return (float) $item->target;
+                    });
+
+                    $totalActual = $group->avg(function ($item) {
+                        return (float) $item->actual;
+                    });
+
+                    $totalPercentage = $group->avg(function ($item) {
+                        return (float) $item->kpi_percentage;
+                    });
+                } else {
+                    $totalTarget = $group->sum(function ($item) {
+                        return (float) $item->target;
+                    });
+
+                    $totalActual = $group->sum(function ($item) {
+                        return (float) $item->actual;
+                    });
+
+                    $totalPercentage = $group->sum(function ($item) {
+                        return (float) $item->kpi_percentage;
+                    });
+                }
+
+
                 $trendItem = $firstItem->trend;
                 $recordFileItem = $firstItem->record_file;
-                $unitItem = $firstItem->kpi_unit;
                 $periodItem = $firstItem->review_period;
                 $percentageCalc = $this->calculation($totalTarget, $totalTarget, $totalActual, $trendItem, $recordFileItem, $unitItem, $periodItem, $totalPercentage);
 
@@ -322,14 +342,14 @@ class ReportController extends Controller
         if ($semester && $year) {
 
             $targets = DB::table('department_targets')
-                ->select('id', 'code', 'indicator', 'department_id', 'period', 'unit', 'weighting', 'trend', 'detail')
+                ->select('department_targets.*')
                 ->where('department_id', $id)
                 ->where(DB::raw('YEAR(department_targets.date)'), $year)
                 ->get();
 
             $actuals = DB::table('department_actuals')
                 ->leftJoin('departments', 'department_actuals.department_id', '=', 'departments.id')
-                ->select('department_actuals.date as date', 'department_actuals.department_id as department_id', 'department_actuals.kpi_item', 'department_actuals.kpi_code as kpi_code', 'department_actuals.kpi_weighting', 'department_actuals.kpi_percentage as achievement', 'department_actuals.semester as semester', DB::raw('YEAR(department_actuals.date) as year'), 'department_actuals.target', 'department_actuals.actual', 'department_actuals.kpi_percentage', 'department_actuals.record_file', 'department_actuals.id as department_actual_id', 'department_actuals.status as status', 'departments.name as department', 'department_actuals.trend', 'department_actuals.kpi_unit', 'department_actuals.kpi_unit', 'department_actuals.review_period')
+                ->select('department_actuals.date as date', 'department_actuals.department_id as department_id', 'department_actuals.kpi_item', 'department_actuals.kpi_code as kpi_code', 'department_actuals.kpi_weighting', 'department_actuals.kpi_percentage as achievement', 'department_actuals.semester as semester', DB::raw('YEAR(department_actuals.date) as year'), 'department_actuals.target', 'department_actuals.actual', 'department_actuals.kpi_percentage', 'department_actuals.record_file', 'department_actuals.id as department_actual_id', 'department_actuals.status as status', 'departments.name as department', 'department_actuals.trend', 'department_actuals.kpi_unit', 'department_actuals.kpi_unit', 'department_actuals.review_period', 'department_actuals.*')
                 ->where('department_actuals.department_id', $id)
                 ->where('department_actuals.semester', $semester)
                 ->where(DB::raw('YEAR(department_actuals.date)'), $year)
@@ -362,22 +382,38 @@ class ReportController extends Controller
 
             // Hitung total target dan actual untuk setiap kelompok
             $totals = $groupedData->map(function ($group) {
-                $totalTarget = $group->sum(function ($item) {
-                    return (float) $item->target;
-                });
-
-                $totalActual = $group->sum(function ($item) {
-                    return (float) $item->actual;
-                });
-
-                $totalPercentage = $group->sum(function ($item) {
-                    return (float) $item->kpi_percentage;
-                });
-
                 $firstItem = $group->first();
+                $unitItem = $firstItem->kpi_unit;
+
+                $zeroCheck = ($firstItem->target == 0) ? 'yes' : 'no';
+                if ($unitItem == 'Tgl' || $unitItem == 'tgl' || $zeroCheck == 'yes') {
+                    $totalTarget = $group->avg(function ($item) {
+                        return (float) $item->target;
+                    });
+
+                    $totalActual = $group->avg(function ($item) {
+                        return (float) $item->actual;
+                    });
+
+                    $totalPercentage = $group->avg(function ($item) {
+                        return (float) $item->kpi_percentage;
+                    });
+                } else {
+                    $totalTarget = $group->sum(function ($item) {
+                        return (float) $item->target;
+                    });
+
+                    $totalActual = $group->sum(function ($item) {
+                        return (float) $item->actual;
+                    });
+
+                    $totalPercentage = $group->sum(function ($item) {
+                        return (float) $item->kpi_percentage;
+                    });
+                }
+
                 $trendItem = $firstItem->trend;
                 $recordFileItem = $firstItem->record_file;
-                $unitItem = $firstItem->kpi_unit;
                 $periodItem = $firstItem->review_period;
                 $percentageCalc = $this->calculation($totalTarget, $totalTarget, $totalActual, $trendItem, $recordFileItem, $unitItem, $periodItem, $totalPercentage);
 

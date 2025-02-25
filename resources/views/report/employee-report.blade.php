@@ -241,6 +241,8 @@
                      <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="{{ $i % 2 === 0 ? 'FFF2F2F2' : 'FFFFFFFF' }}" class="border-2 bg-gray-50 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center">
                         @if ($target->unit === '%')
                         {{ $totalActual }}%
+                        @elseif ($target->unit === 'Tgl')
+                        {{ number_format($totalActual, 1) }}
                         @elseif ($target->unit === 'Rp')
                         {{ substr(number_format($totalActual, 0, '.', ','), 0, 7) }}
                         @elseif ($target->unit === 'Kg')
@@ -273,7 +275,12 @@
                  @endif
                 </tr>
                 <tr>
-                    <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="{{ $i % 2 === 0 ? 'FFF2F2F2' : 'FFFFFFFF' }}" class="border-2 bg-gray-50 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center">Rekaman</td>
+                <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="{{ $i % 2 === 0 ? 'FFF2F2F2' : 'FFFFFFFF' }}" class="relative border-2 bg-gray-50 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center group">
+                    Rekaman
+                    <div class="absolute left-0 bottom-full mb-2 hidden group-hover:block w-64 p-2 bg-gray-800 text-white text-xs rounded shadow-lg z-10">
+                        {{ $target->supporting_document }}
+                    </div>
+                </td>
                     @foreach ($months as $month => $monthName)
                     @php
                         $actual = $actuals->first(function($item) use ($target, $month) {
@@ -338,73 +345,129 @@
                                     <div id="checkbox-container-{{ $modalId }}" class="p-1 grid grid-cols-4">
                                         <div class="p-0">
                                             <label class="text-[14px]">
-                                                <input type="checkbox" class="status-checkbox" data-actual-id="{{ $actual->actual_id }}" data-status="Checked 1" {{ $actual->status == 'Checked 1' || $actual->status == 'Checked 2' || $actual->status == 'Mng Approve' || $actual->status == 'Approved' ? 'checked' : '' }} {{ $role == 'Checker 1' || $role == 'Checker WS' || $role == 'Checker Factory' || $role == 'FAD' ? '' : 'disabled' }}>
+                                                <input type="checkbox" class="status-checkbox" data-actual-id="{{ $actual->actual_id }}" data-status="Checked 1" {{ $actual->asst_mng_checked_at ? 'checked' : '' }} {{ $role == 'Checker 1' || $role == 'Checker WS' || $role == 'Checker Factory' || $role == 'FAD' ? '' : 'disabled' }}>
                                                 Check 1
                                             </label>             
                                             <div class="flex justify-center gap-x-2 mt-1.5">
                                                 <div class="flex flex-col">
                                                     <span class="text-[9px] text-center">Check 1 By:</span>
-                                                    <span class="text-[9px] text-center">{{ $actual->asst_mng_checked_by ?? 'N/A' }}</span>
+                                                    @if ($actual->asst_mng_checked_by)                                 
+                                                    <span class="text-[9px] text-center">
+                                                        {{ $actual->asst_mng_checked_by }}
+                                                    </span>
+                                                    @else
+                                                    <span class="text-[9px] text-center text-red-500">
+                                                        N/A
+                                                    </span>
+                                                    @endif
                                                 </div>
                                                 <div class="flex flex-col">
                                                     <span class="text-[9px] text-center">Check 1 At:</span>
+                                                    @if ($actual->asst_mng_checked_at)
                                                     <span class="text-[9px] text-center">
-                                                        {{ $actual->asst_mng_checked_at ? \Carbon\Carbon::parse(time: $actual->asst_mng_checked_at)->format('d M Y H:i') : 'N/A' }}
+                                                        {{ $actual->asst_mng_checked_at}}
                                                     </span>
+                                                    @else
+                                                    <span class="text-[9px] text-center text-red-500">
+                                                       N/A
+                                                    </span>
+                                                    @endif
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="p-0">
                                             <label class="text-[14px]">
-                                                <input type="checkbox" class="status-checkbox" data-actual-id="{{ $actual->actual_id }}" data-status="Checked 2" {{ $actual->status == 'Checked 2' || $actual->status == 'Mng Approve' || $actual->status == 'Approved' ? 'checked' : '' }} {{ $role == 'Checker Div 1' || $role == 'Checker Div 2' && $actual->status == 'Checked 1' ? '' : 'disabled' }}>
+                                                <input type="checkbox" class="status-checkbox" data-actual-id="{{ $actual->actual_id }}" data-status="Checked 2" {{ $actual->checked_by ? 'checked' : '' }} {{ $role == 'Checker Div 1' || $role == 'Checker Div 2' && $actual->status == 'Checked 1' ? '' : 'disabled' }}>
                                                 Check 2
                                             </label>
                                             <div class="flex justify-center gap-x-2 mt-1.5">
                                                 <div class="flex flex-col">
                                                     <span class="text-[9px] text-center">Check 2 By:</span>
-                                                    <span class="text-[9px] text-center">{{ $actual->checked_by ?? 'N/A' }}</span>
+                                                    @if ($actual->checked_by)                                 
+                                                    <span class="text-[9px] text-center">
+                                                        {{ $actual->checked_by }}
+                                                    </span>
+                                                    @else
+                                                    <span class="text-[9px] text-center text-red-500">
+                                                        N/A
+                                                    </span>
+                                                    @endif
                                                 </div>
                                                 <div class="flex flex-col">
                                                     <span class="text-[9px] text-center">Check 2 At:</span>
+                                                    @if ($actual->checked_at)
                                                     <span class="text-[9px] text-center">
-                                                        {{ $actual->checked_at ? \Carbon\Carbon::parse(time: $actual->checked_at)->format('d M Y H:i') : 'N/A' }}
+                                                        {{ $actual->checked_at}}
                                                     </span>
+                                                    @else
+                                                    <span class="text-[9px] text-center text-red-500">
+                                                       N/A
+                                                    </span>
+                                                    @endif
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="p-0">
                                             <label class="text-[14px]">
-                                                <input type="checkbox" class="status-checkbox" data-actual-id="{{ $actual->actual_id }}" data-status="Mng Approve" {{$actual->status == 'Mng Approve' || $actual->status == 'Approved' ? 'checked' : '' }} {{ $role == 'Mng Approver'  ? '' : 'disabled' }}>
+                                                <input type="checkbox" class="status-checkbox" data-actual-id="{{ $actual->actual_id }}" data-status="Mng Approve" {{ $actual->mng_approved_at ? 'checked' : '' }} {{ $role == 'Mng Approver'  ? '' : 'disabled' }}>
                                                 Approved {{ "(Mng)" }}
                                             </label>
                                             <div class="flex justify-center gap-x-2 mt-1.5">
                                                 <div class="flex flex-col">
                                                     <span class="text-[9px] text-center">Approved By:</span>
-                                                    <span class="text-[9px] text-center">{{ $actual->mng_approved_by ?? 'N/A' }}</span>
+                                                    @if ($actual->mng_approved_by)                                 
+                                                    <span class="text-[9px] text-center">
+                                                        {{ $actual->mng_approved_by }}
+                                                    </span>
+                                                    @else
+                                                    <span class="text-[9px] text-center text-red-500">
+                                                        N/A
+                                                    </span>
+                                                    @endif
                                                 </div>
                                                 <div class="flex flex-col">
                                                     <span class="text-[9px] text-center">Approved At:</span>
+                                                    @if ($actual->mng_approved_at)
                                                     <span class="text-[9px] text-center">
-                                                        {{ $actual->mng_approved_at ? \Carbon\Carbon::parse(time: $actual->mng_approved_at)->format('d M Y H:i') : 'N/A' }}
+                                                        {{ $actual->mng_approved_at}}
                                                     </span>
+                                                    @else
+                                                    <span class="text-[9px] text-center text-red-500">
+                                                       N/A
+                                                    </span>
+                                                    @endif
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="p-0">
                                             <label class="text-[14px]">
-                                                <input type="checkbox" class="status-checkbox" data-actual-id="{{ $actual->actual_id }}" data-status="Approved" {{ $actual->status == 'Approved' ? 'checked' : '' }} {{ $role == 'Approver' ? '' : 'disabled' }}>
+                                                <input type="checkbox" class="status-checkbox" data-actual-id="{{ $actual->actual_id }}" data-status="Approved" {{ $actual->approved_at ? 'checked' : '' }} {{ $role == 'Approver' ? '' : 'disabled' }}>
                                                 Final Check {{ "(HRD Spv)" }}
                                             </label>
                                             <div class="flex justify-center gap-x-2 mt-1.5">
                                                 <div class="flex flex-col">
-                                                    <span class="text-[9px] text-center">Approved By:</span>
-                                                    <span class="text-[9px] text-center">{{ $actual->approved_by ?? 'N/A' }}</span>
+                                                    <span class="text-[9px] text-center">Final Check By:</span>
+                                                    @if ($actual->approved_by)                                 
+                                                    <span class="text-[9px] text-center">
+                                                        {{ $actual->approved_by }}
+                                                    </span>
+                                                    @else
+                                                    <span class="text-[9px] text-center text-red-500">
+                                                        N/A
+                                                    </span>
+                                                    @endif
                                                 </div>
                                                 <div class="flex flex-col">
-                                                    <span class="text-[9px] text-center">Approved At:</span>
+                                                    <span class="text-[9px] text-center">Final Check At:</span>
+                                                    @if ($actual->approved_at)
                                                     <span class="text-[9px] text-center">
-                                                        {{ $actual->approved_at ? \Carbon\Carbon::parse(time: $actual->approved_at)->format('d M Y H:i') : 'N/A' }}
+                                                        {{ $actual->approved_at}}
                                                     </span>
+                                                    @else
+                                                    <span class="text-[9px] text-center text-red-500">
+                                                       N/A
+                                                    </span>
+                                                    @endif
                                                 </div>
                                             </div>
                                         </div>
@@ -436,9 +499,10 @@
                                                     @php
 
                                                     @endphp
-                                                    <input type="hidden" name="email" id="email" value="{{ $actuals->first()->email }}">
+                                                    <input type="hidden" name="email" id="email" value="{{ $actuals->first()->email ?? '' }}">
                                                     <input type="hidden" name="kpi_code" id="kpi_code" value="{{ $target->code }}">
                                                     <input type="hidden" name="kpi_item" id="kpi_item" value="{{ $target->indicator }}">
+                                                    <input type="hidden" name="department_id" id="department_id" value="{{ $actuals->first()->department_id }}">
                                                 </div>
                                             </form>
                                             @endif

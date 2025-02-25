@@ -187,12 +187,14 @@ class LogController extends Controller
             $departmentName = DB::table('departments')->pluck('name')->toArray();
             if ($departmentName) {
                 $departmentNames = $departmentName;
+                $deptList = $departmentName;
             }
         } elseif ($role == 'Approver' || $role == 'Mng Approver') {
             $allDept = Department::all();
             $departmentName = DB::table('departments')->where('id', '=', $department)->value('name');
             if ($departmentName) {
                 $departmentNames = [$departmentName];
+                $deptList = $departmentName;
             }
         } elseif ($role == 'Inputer') {
             $allDept = DB::table('departments')->where('id', $authDept)->get();
@@ -213,6 +215,7 @@ class LogController extends Controller
             }
         }
 
+        // dd($deptList);
         if ($department == 'All Dept' && $month && $year) {
             $actualFilledCheck = DB::table('actuals')
                 ->join('employees', 'actuals.employee_id', '=', 'employees.id')

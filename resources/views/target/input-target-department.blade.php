@@ -25,7 +25,7 @@
             </div>
             <div class="flex justify-end">
                 <div class="flex flex-col">
-                    @if ($role == 'Approver' || $role == 'Mng Approver')
+                    @if ($role != '')
                     <div class="flex justify-end">
                         <div class="relative mt-1 rounded-md">
                             <form action="{{ route('target.department') }}" method="GET">
@@ -43,8 +43,8 @@
                             <div class="absolute inset-y-0 right-0 flex items-center">
                             </div>
                         </div>
+                        @if ($role == 'Approver' || $role == 'Mng Approver')
                         <div class="relative mt-1 rounded-md">
-                            <form action="{{ route('target.department') }}" method="GET">
                             <div class="mt-1 mb-1 mx-2">
                                 <select name="status" id="status" class="col-start-1 row-start-1 w-full appearance-none rounded-md py-1.5 pl-3 pr-7 text-base text-gray-500 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
                                     <option value="">-- Status --</option>
@@ -57,6 +57,7 @@
                             <div class="absolute inset-y-0 right-0 flex items-center">
                             </div>
                         </div>
+                        @endif
                         <div class="mt-0 rounded-md mb-1">
                             <button type="submit" class="p-2 bg-blue-600 my-2 rounded-md text-white">
                                 Filter
