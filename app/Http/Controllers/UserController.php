@@ -10,14 +10,52 @@ use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
+    // public function index(Request $request)
+    // {
+    //     $department = $request->query('department');
+    //     $status = $request->query('status');
+
+    //     $deptList = DB::table('departments')->get();
+    //     $statusList = DB::table('employees')->select('status')->distinct()->get();
+    //     $query = DB::table('employees')->where('is_active', 1);
+    //     if ($department && $status) {
+    //         $users = $query->where('department_id', $department)->where('status', $status)->paginate(20);
+    //     } elseif ($department) {
+    //         $users = $query->where('department_id', $department)->paginate(20);
+    //     } elseif ($status) {
+    //         $users = $query->where('status', $status)->paginate(20);
+    //     } else {
+    //         $users = $query->paginate(20);
+    //     }
+
+    //     return view('users.list-user', ['title' => 'Employees', 'desc' => 'Master Employee', 'users' => $users, 'deptList' => $deptList, 'statusList' => $statusList]);
+    // }
+
     public function index(Request $request)
     {
         $department = $request->query('department');
         $status = $request->query('status');
 
-        $deptList = DB::table('departments')->get();
-        $statusList = DB::table('employees')->select('status')->distinct()->get();
-        $query = DB::table('employees')->where('is_active', 1);
+        // Subquery for employees table from the first database
+        $employeesSubquery = DB::connection('mysql')->table('employees')
+            ->select('id', 'name as employee_name');
+
+        // Main query for users table from the second database
+        $employees = DB::connection('mysql2')->table('users')
+            ->leftJoinSub($employeesSubquery, 'employees', function ($join) {
+                $join->on('users.kpi_id', '=', 'employees.id');
+            })
+            ->select('users.id as user_id', 'users.name as user_name', 'users.kpi_id', 'employees.employee_name')
+            ->where('users.active', 'yes')
+            ->where('users.kpi_id', '!=', null)
+            ->get();
+
+        dd($employees);
+
+        $deptList = DB::connection('mysql')->table('departments')->get();
+        $statusList = DB::connection('mysql')->table('employees')->select('status')->distinct()->get();
+        $query = DB::connection('mysql')->table('employees')->where('is_active', 1);
+
         if ($department && $status) {
             $users = $query->where('department_id', $department)->where('status', $status)->paginate(20);
         } elseif ($department) {
@@ -28,7 +66,13 @@ class UserController extends Controller
             $users = $query->paginate(20);
         }
 
-        return view('users.list-user', ['title' => 'Employees', 'desc' => 'Master Employee', 'users' => $users, 'deptList' => $deptList, 'statusList' => $statusList]);
+        return view('users.list-user', [
+            'title' => 'Employees',
+            'desc' => 'Master Employee',
+            'users' => $users,
+            'deptList' => $deptList,
+            'statusList' => $statusList
+        ]);
     }
 
     public function create()
