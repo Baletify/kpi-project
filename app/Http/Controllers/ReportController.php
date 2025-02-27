@@ -123,6 +123,7 @@ class ReportController extends Controller
     {
         $user = Auth::user();
         $role = $user->role;
+        $authDept = $user->department_id;
         $email = $user->email;
 
         $divDept = DB::table('departments')->whereIn('name', ['Sub Div A', 'Sub Div B', 'Sub Div C', 'Sub Div D', 'Sub Div E', 'Sub Div F'])->get();
@@ -151,6 +152,10 @@ class ReportController extends Controller
             return view('report.list-department-report', ['title' => 'Report', 'desc' => 'Department List', 'deptList' => $deptList]);
         } else if ($role == 'Approver' || $role == 'Mng Approver') {
             $deptList = $allDept;
+            return view('report.list-department-report', ['title' => 'Report', 'desc' => 'Department List', 'deptList' => $deptList]);
+        } else {
+            $deptList = DB::table('departments')->where('departments.id', $authDept)
+                ->get();
             return view('report.list-department-report', ['title' => 'Report', 'desc' => 'Department List', 'deptList' => $deptList]);
         }
     }
