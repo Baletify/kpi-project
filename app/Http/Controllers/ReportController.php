@@ -228,6 +228,11 @@ class ReportController extends Controller
         $semester = $request->query('semester');
         $year = $request->query('year');
         $employee = Employee::find($id);
+        $userCreds = DB::table('employees')->leftJoin('departments', 'departments.id', '=', 'employees.department_id')
+            ->where('employees.id', $id)
+            ->select('employees.*', 'departments.name as department', 'employees.name as employee', 'employees.id as employee_id')
+            ->first();
+        // dd($userCreds);
 
         // if (!$employee) {
         //     abort(404, 'Employee not found');
@@ -236,7 +241,8 @@ class ReportController extends Controller
         if ($semester && $year) {
 
             $targets = DB::table('targets')
-                ->select('targets.*')
+                ->leftJoin('target_units', 'targets.target_unit_id', '=', 'target_units.id')
+                ->select('targets.*', 'target_units.*')
                 ->where('employee_id', $id)
                 ->where(DB::raw('YEAR(targets.date)'), $year)
                 ->get();
@@ -268,9 +274,9 @@ class ReportController extends Controller
 
 
 
-            if ($actuals->isEmpty()) {
-                return view('components/404-page-report');
-            }
+            // if ($actuals->isEmpty()) {
+            //     return view('components/404-page-report');
+            // }
 
 
 
@@ -332,7 +338,7 @@ class ReportController extends Controller
 
             // dd($totals);
 
-            return view('report.employee-report', ['title' => 'Report', 'desc' => 'Employee Report', 'employee' => $employee, 'actuals' => $actuals, 'targets' => $targets, 'totals' => $totals, 'sumWeighting' => $sumWeighting,]);
+            return view('report.employee-report', ['title' => 'Report', 'desc' => 'Employee Report', 'employee' => $employee, 'actuals' => $actuals, 'targets' => $targets, 'totals' => $totals, 'sumWeighting' => $sumWeighting, 'userCreds' => $userCreds, 'idParam' => $id]);
         } else {
 
             return view('components/404-page-report');
@@ -343,11 +349,13 @@ class ReportController extends Controller
     {
         $semester = $request->query('semester');
         $year = $request->query('year');
+        $departmentCreds = DB::table('departments')->where('id', $id)->first();
 
         if ($semester && $year) {
 
             $targets = DB::table('department_targets')
-                ->select('department_targets.*')
+                ->leftJoin('target_units', 'department_targets.target_unit_id', '=', 'target_units.id')
+                ->select('department_targets.*', 'target_units.*')
                 ->where('department_id', $id)
                 ->where(DB::raw('YEAR(department_targets.date)'), $year)
                 ->get();
@@ -361,9 +369,9 @@ class ReportController extends Controller
                 ->orderBy(DB::raw('MONTH(department_actuals.date)'))->get();
 
 
-            if ($actuals->isEmpty()) {
-                return view('components/404-page-report');
-            }
+            // if ($actuals->isEmpty()) {
+            //     return view('components/404-page-report');
+            // }
             // sum bobot
             $targetWeightingSum = DB::table('department_targets')
                 ->select('weighting')
@@ -442,7 +450,7 @@ class ReportController extends Controller
             // dd($totals);
 
 
-            return view('report.department-report', ['title' => 'Report', 'desc' => 'Summary KPI Dept', 'actuals' => $actuals, 'targets' => $targets, 'totals' => $totals, 'sumWeighting' => $sumWeighting,]);
+            return view('report.department-report', ['title' => 'Report', 'desc' => 'Summary KPI Dept', 'actuals' => $actuals, 'targets' => $targets, 'totals' => $totals, 'sumWeighting' => $sumWeighting, 'departmentCreds' => $departmentCreds, 'idParam' => $id]);
         } else {
             return view('components/404-page-report');
         }

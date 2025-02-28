@@ -3,6 +3,9 @@
         @php
             $role = auth()->user()->role;
             $user = auth()->user()->name;
+            $email = auth()->user()->email;
+            $year = request()->query('year');
+            $semester = request()->query('semester');
         @endphp
         <div class="p-1">
             <span class="text-gray-600 font-bold text-lg">PT BRIDGESTONE KALIMANTAN PLANTATION</span>
@@ -12,10 +15,10 @@
                 <span class="text-gray-600 font-bold text-lg text-center">Key Performance Indicator</span>
             </div>
             <div class="">
-                <span class="text-gray-600 font-bold text-xs text-center">Semester {{ $actuals->first()->semester }} Tahun {{ $actuals->first()->year }}</span>
+                <span class="text-gray-600 font-bold text-xs text-center">Semester {{ $semester ?? 1 }} Tahun {{ $year ?? date('Y') }}</span>
             </div>
             <div class="">
-                <span id="departmentName" class="text-gray-600 font-bold text-xs text-center">Divisi: {{ $actuals->first()->department }}</span>
+                <span id="departmentName" class="text-gray-600 font-bold text-xs text-center">Divisi: {{ $departmentCreds->name }}</span>
             </div>
         </div>
         <div class="flex justify-between mr-1">
@@ -27,8 +30,8 @@
             </div>
             <div class="flex justify-end">
                 <div class="relative mt-0 rounded-md">
-                    <form action="{{ route('report.department', $actuals->first()->department_id) }}" method="GET">
-                        <input type="hidden" name="year" id="year" value="{{ $actuals->first()->year }}">
+                    <form action="{{ route('report.department', $departmentCreds->id) }}" method="GET">
+                        <input type="hidden" name="year" id="year" value="{{ $year }}">
                     <div class="mt-2 mx-2">
                         <select name="semester" id="semester" class="col-start-1 row-start-1 w-full appearance-none rounded-md py-1.5 pl-3 pr-7 text-base text-gray-500 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
                             <option value="">-- Semester --</option>
@@ -70,16 +73,16 @@
                     </tr>
                     @php
                     $months = [];
-                    $selectedSemester = $actuals->first()->semester;
+                    $selectedSemester = $semester ?? 1;
                 
                     if ($selectedSemester == 1) {
                         $months = [
-                            '01' => 'Jan', '02' => 'Feb', '03' => 'Mar', '04' => 'Apr', 
-                            '05' => 'May', '06' => 'Jun'
+                            '1' => 'Jan', '2' => 'Feb', '3' => 'Mar', '4' => 'Apr', 
+                            '5' => 'May', '6' => 'Jun'
                         ];
                     } else {
                         $months = [
-                            '07' => 'Jul', '08' => 'Aug', '09' => 'Sep', '10' => 'Oct', 
+                            '7' => 'Jul', '8' => 'Aug', '9' => 'Sep', '10' => 'Oct', 
                             '11' => 'Nov', '12' => 'Dec'
                         ];
                     }
@@ -118,20 +121,19 @@
                         </td>
                         <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="{{ $i % 2 === 0 ? 'FFF2F2F2' : 'FFFFFFFF' }}" class="border-2 bg-blue-100  border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center">Target</td>
                         @foreach ($months as $month => $monthName)
-                    @php
-                        $actual = $actuals->first(function($item) use ($target, $month) {
-                            return \Carbon\Carbon::parse($item->date)->format('m') == $month && $item->kpi_code == $target->code;
-                        });
-                    @endphp
+                        @php
+                        $targetUnitField = 'target_' . $month;
+                        $targetUnit = $target->$targetUnitField;
+                        @endphp
                         <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="{{ $i % 2 === 0 ? 'FFF2F2F2' : 'FFFFFFFF' }}" class="border-2 bg-blue-100 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center">
                         @if ($target->unit === '%')
-                            {{ $actual ? $actual->target . '%' : '' }}
+                            {{ $targetUnit !== null ? ($targetUnit * 100) . '%' : '' }}
                         @elseif ($target->unit == 'Rp')
-                            {{ $actual ? substr(number_format($actual->target, 0, '.', ','), 0, 7) : ''}}
+                            {{ $targetUnit !== null ? substr(number_format($targetUnit, 0, '.', ','), 0, 7) : ''}}
                         @elseif ($target->unit == 'Kg')
-                            {{ $actual ? substr(number_format($actual->target, 0, '.', ','), 0, 7) : ''}}
+                            {{ $targetUnit !== null ? substr(number_format($targetUnit, 1, '.', ','), 0, 7) : ''}}
                         @else
-                            {{ $actual ? $actual->target : '' }} 
+                            {{ $targetUnit !== null ? $targetUnit : '' }} 
                         @endif
                         </td>
                         @endforeach
@@ -297,7 +299,7 @@
                                     <div id="checkbox-container-{{ $modalId }}" class="p-1 grid grid-cols-4">
                                         <div class="p-0">
                                             <label class="text-[14px]">
-                                                <input type="checkbox" class="status-checkbox" data-actual-id="{{ $actual->department_actual_id }}" data-status="Checked 1" {{ $actual->asst_mng_checked_at ? 'checked' : '' }} {{ $role == 'Checker 1' || $role == 'Checker WS' || $role == 'Checker Factory' || $role == 'FAD' ? '' : 'disabled' }}>
+                                                <input type="checkbox" class="status-checkbox" data-actual-id="{{ $actual->department_actual_id }}" data-status="Checked 1" {{ $actual->asst_mng_checked_at ? 'checked' : '' }} {{ $role == 'Checker 1' || $role == 'Checker WS' || $role == 'Checker Factory' || $role == 'FAD' || $email == 'widya.citra@bskp.co.id' ? '' : 'disabled' }}>
                                                 Check 1
                                             </label>             
                                             <div class="flex justify-center gap-x-2 mt-1.5">
@@ -498,13 +500,13 @@
                         <div class="">
                             <span class="mb-0.5 font-semibold">Pilih Bulan</span>
                         </div>
-                        <form id="batch-approve-form" action="{{ route('actual.batchUpdateActualDept', $actuals->first()->department_id) }}" method="POST" class="flex gap-x-3 p-0">
+                        <form id="batch-approve-form" action="{{ route('actual.batchUpdateActualDept', $departmentCreds->id) }}" method="POST" class="flex gap-x-3 p-0">
                             @csrf
                             @method('PUT')  
                             <input type="hidden" name="year" id="year" value="{{ request()->query('year') }}">
                             <input type="hidden" name="selected_targets" id="selected_targets">
                             <input type="hidden" name="target_codes" id="target_codes">
-                            <input type="hidden" name="department_id" id="department_id" value="{{ $actuals->first()->department_id }}">
+                            <input type="hidden" name="department_id" id="department_id" value="{{ $departmentCreds->id }}">
                             <div class="my-2">
                                 <select name="month" id="month" class="col-start-1 row-start-1 w-60 appearance-none rounded-md py-1.5 pl-3 pr-7 text-base text-gray-500 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
                                     <option value="">Bulan</option>
