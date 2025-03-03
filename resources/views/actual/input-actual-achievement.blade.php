@@ -193,8 +193,8 @@
                 <input type="hidden" name="employee_id" id="employee_id" value="{{ $target->employee_id }}">
                 <input type="hidden" name="pv_employee_id" id="pv_employee_id" value="{{ $target->employee_id }}">
                 <input type="hidden" name="year" id="year" value="{{ request()->query('year') }}">
-                <input type="hidden" name="input_by" id="input_by" value="Admin Kebun">
                 <input type="hidden" name="status" id="status" value="Filled">
+                <input type="hidden" name="role" id="role" value="{{ $role }}">
               <div class="absolute inset-y-0 right-0 flex items-center">
               </div>
             </div>

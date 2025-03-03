@@ -421,7 +421,11 @@ class ActualController extends Controller
             $kpi_percentage = $request->achievement;
         }
 
-        $input_by = Auth::user()->name;
+        if ($role == 'Approver' || $role == 'Checker Div 1' || $role == 'Checker Div 2') {
+            $input_by = $request->name;
+        } else {
+            $input_by = Auth::user()->name;
+        }
 
         $searchConditions = [
             'kpi_code' => $request->kpi_code,

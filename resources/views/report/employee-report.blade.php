@@ -5,6 +5,7 @@
             $userID = auth()->user()->id;
             $allStatus = request()->query('all');
             $statusQuery = request()->query('status');
+            $email = auth()->user()->email;
         @endphp
         <div class="p-1">
             <span class="text-gray-600 font-bold text-lg">PT BRIDGESTONE KALIMANTAN PLANTATION</span>
