@@ -366,7 +366,7 @@
                                                     <span class="text-[9px] text-center">Check 1 At:</span>
                                                     @if ($actual->asst_mng_checked_at)
                                                     <span class="text-[9px] text-center">
-                                                        {{ $actual->asst_mng_checked_at}}
+                                                        {{ \Carbon\Carbon::parse($actual->asst_mng_checked_at)->format('d M Y H:i') }}
                                                     </span>
                                                     @else
                                                     <span class="text-[9px] text-center text-red-500">
@@ -398,7 +398,7 @@
                                                     <span class="text-[9px] text-center">Check 2 At:</span>
                                                     @if ($actual->checked_at)
                                                     <span class="text-[9px] text-center">
-                                                        {{ $actual->checked_at}}
+                                                        {{ \Carbon\Carbon::parse($actual->checked_at)->format('d M Y H:i') }}
                                                     </span>
                                                     @else
                                                     <span class="text-[9px] text-center text-red-500">
@@ -430,7 +430,7 @@
                                                     <span class="text-[9px] text-center">Approved At:</span>
                                                     @if ($actual->mng_approved_at)
                                                     <span class="text-[9px] text-center">
-                                                        {{ $actual->mng_approved_at}}
+                                                        {{ \Carbon\Carbon::parse($actual->mng_approved_at)->format('d M Y H:i')}}
                                                     </span>
                                                     @else
                                                     <span class="text-[9px] text-center text-red-500">
@@ -462,7 +462,7 @@
                                                     <span class="text-[9px] text-center">Final Check At:</span>
                                                     @if ($actual->approved_at)
                                                     <span class="text-[9px] text-center">
-                                                        {{ $actual->approved_at}}
+                                                        {{ \Carbon\Carbon::parse($actual->approved_at)->format('d M Y H:i') }}
                                                     </span>
                                                     @else
                                                     <span class="text-[9px] text-center text-red-500">
