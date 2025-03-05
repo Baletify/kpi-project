@@ -99,6 +99,8 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/log-check', [LogController::class, 'index'])->name('log-check.index');
         Route::get('/log-input', [LogController::class, 'indexInput'])->name('log-input.indexInput');
         Route::get('/log-input-individual', [LogController::class, 'individual'])->name('log-input.individual');
+        Route::get('/log-input-monitoring-employee', [LogController::class, 'indexMonitoringEmployee'])->name('log-input.monitoringEmployee');
+        Route::get('/log-input-monitoring-dept', [LogController::class, 'indexMonitoringDept'])->name('log-input.monitoringDept');
     });
 
     Route::prefix('action-plan')->group(function () {

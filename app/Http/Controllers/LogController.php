@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Carbon\Carbon;
 use App\Models\Department;
+use App\Models\Employee;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -1331,5 +1332,212 @@ class LogController extends Controller
                 'desc' => 'History',
             ]);
         }
+    }
+
+    public function indexMonitoringEmployee(Request $request)
+    {
+        $semesterQuery = $request->query('semester');
+        $yearQuery = $request->query('year');
+        $statusQuery = $request->query('status');
+        $deptList = DB::table('departments')->select('name', 'id')->get();
+        $statusList = DB::table('employees')->select('status')->distinct()->get();
+        $year = $request->year;
+        $department = $request->department;
+        $semester = $request->semester;
+        $status = $request->status;
+
+        $totalTarget = DB::table('target_units')
+            ->leftJoin('targets', 'target_units.id', '=', 'targets.target_unit_id')
+            ->leftJoin('employees', 'targets.employee_id', '=', 'employees.id')
+            ->leftJoin('departments', 'employees.department_id', '=', 'departments.id')
+            ->whereYear('targets.date', $yearQuery)
+            ->select(
+                'employees.id as employee_id',
+                DB::raw('count(target_units.target_1) as total_1'),
+                DB::raw('count(target_units.target_2) as total_2'),
+                DB::raw('count(target_units.target_3) as total_3'),
+                DB::raw('count(target_units.target_4) as total_4'),
+                DB::raw('count(target_units.target_5) as total_5'),
+                DB::raw('count(target_units.target_6) as total_6'),
+                DB::raw('count(target_units.target_7) as total_7'),
+                DB::raw('count(target_units.target_8) as total_8'),
+                DB::raw('count(target_units.target_9) as total_9'),
+                DB::raw('count(target_units.target_10) as total_10'),
+                DB::raw('count(target_units.target_11) as total_11'),
+                DB::raw('count(target_units.target_12) as total_12'),
+
+            )
+            ->groupBy('employees.id')
+            ->get();
+
+        // dd($totalTarget);
+
+        if ($department == 'all' && $year && $semester && $status) {
+            $employees = DB::table('employees')
+                ->leftJoin('departments', 'departments.id', '=', 'employees.department_id')
+                ->select('employees.*', 'departments.name as department',)
+                ->where('employees.status', '=', $status)
+                ->where('is_active', '=', 1)
+                ->orderBy('departments.id', 'asc')
+                ->orderBy('employees.id', 'asc')
+                ->paginate(20)
+                ->appends(['department' => $department, 'semester' => $semester, 'year' => $year, 'status' => $status]);
+            $actuals = DB::table('actuals')
+                ->where('actuals.semester', '=', $semester)
+                ->whereNotNull('record_file')
+                ->whereYear('actuals.date', $yearQuery)
+                ->select(DB::raw('count(actuals.id) as total'), 'actuals.employee_id', DB::raw('MONTH(actuals.date) as month'))
+                ->groupBy('actuals.employee_id', DB::raw('MONTH(actuals.date)'))
+                ->get();
+        } elseif ($department == 'all' && $year && $semester) {
+            $employees = DB::table('employees')
+                ->leftJoin('departments', 'departments.id', '=', 'employees.department_id')
+                ->select('employees.*', 'departments.name as department',)
+                ->where('is_active', '=', 1)
+                ->orderBy('departments.id', 'asc')
+                ->orderBy('employees.id', 'asc')
+                ->paginate(20)
+                ->appends(['department' => $department, 'semester' => $semester, 'year' => $year, 'status' => $status]);
+            $actuals = DB::table('actuals')
+                ->where('actuals.semester', '=', $semester)
+                ->whereNotNull('record_file')
+                ->whereYear('actuals.date', $yearQuery)
+                ->select(DB::raw('count(actuals.id) as total'), 'actuals.employee_id', DB::raw('MONTH(actuals.date) as month'))
+                ->groupBy('actuals.employee_id', DB::raw('MONTH(actuals.date)'))
+                ->get();
+        } elseif ($department && $year && $semester && $status) {
+            $employees = DB::table('employees')
+                ->leftJoin('departments', 'departments.id', '=', 'employees.department_id')
+                ->select('employees.*', 'departments.name as department',)
+                ->where('departments.id', '=', $department)
+                ->where('employees.status', '=', $status)
+                ->where('is_active', '=', 1)
+                ->orderBy('departments.id', 'asc')
+                ->orderBy('employees.id', 'asc')
+                ->paginate(20)
+                ->appends(['department' => $department, 'semester' => $semester, 'year' => $year, 'status' => $status]);
+            $actuals = DB::table('actuals')
+                ->where('actuals.semester', '=', $semester)
+                ->whereNotNull('record_file')
+                ->whereYear('actuals.date', $yearQuery)
+                ->select(DB::raw('count(actuals.id) as total'), 'actuals.employee_id', DB::raw('MONTH(actuals.date) as month'))
+                ->groupBy('actuals.employee_id', DB::raw('MONTH(actuals.date)'))
+                ->get();
+        } elseif ($department && $year && $semester) {
+            $employees = DB::table('employees')
+                ->leftJoin('departments', 'departments.id', '=', 'employees.department_id')
+                ->select('employees.*', 'departments.name as department',)
+                ->where('departments.id', '=', $department)
+                ->where('is_active', '=', 1)
+                ->orderBy('departments.id', 'asc')
+                ->orderBy('employees.id', 'asc')
+                ->paginate(20)
+                ->appends(['department' => $department, 'semester' => $semester, 'year' => $year, 'status' => $status]);
+            $actuals = DB::table('actuals')
+                ->where('actuals.semester', '=', $semester)
+                ->whereNotNull('record_file')
+                ->whereYear('actuals.date', $yearQuery)
+                ->select(DB::raw('count(actuals.id) as total'), 'actuals.employee_id', DB::raw('MONTH(actuals.date) as month'))
+                ->groupBy('actuals.employee_id', DB::raw('MONTH(actuals.date)'))
+                ->get();
+        } elseif ($semester && $year && $status) {
+            $employees = DB::table('employees')
+                ->leftJoin('departments', 'departments.id', '=', 'employees.department_id')
+                ->select('employees.*', 'departments.name as department',)
+                ->where('employees.status', '=', $status)
+                ->where('is_active', '=', 1)
+                ->orderBy('departments.id', 'asc')
+                ->orderBy('employees.id', 'asc')
+                ->paginate(20)
+                ->appends(['department' => $department, 'semester' => $semester, 'year' => $year, 'status' => $status]);
+            $actuals = DB::table('actuals')
+                ->where('actuals.semester', '=', $semester)
+                ->whereNotNull('record_file')
+                ->whereYear('actuals.date', $yearQuery)
+                ->select(DB::raw('count(actuals.id) as total'), 'actuals.employee_id', DB::raw('MONTH(actuals.date) as month'))
+                ->groupBy('actuals.employee_id', DB::raw('MONTH(actuals.date)'))
+                ->get();
+        } else {
+            $employees = DB::table('employees')
+                ->leftJoin('departments', 'departments.id', '=', 'employees.department_id')
+                ->select('employees.*', 'departments.name as department',)
+                ->where('is_active', '=', 1)
+                ->orderBy('departments.id', 'asc')
+                ->orderBy('employees.id', 'asc')
+                ->paginate(20)
+                ->appends(['department' => $department, 'semester' => $semesterQuery, 'year' => $yearQuery, 'status' => $statusQuery]);
+            $actuals = DB::table('actuals')
+                ->where('actuals.semester', '=', $semesterQuery)
+                ->whereNotNull('record_file')
+                ->whereYear('actuals.date', $yearQuery)
+                ->select(DB::raw('count(actuals.id) as total'), 'actuals.employee_id', DB::raw('MONTH(actuals.date) as month'))
+                ->groupBy('actuals.employee_id', DB::raw('MONTH(actuals.date)'))
+                ->get();
+        }
+
+        // dd($actuals);
+
+        // dd($employees, $actuals, $actualsCount, $totalTarget);
+
+
+
+        return view('logs.log-monitoring-input-employee', [
+            'title' => 'Log Monitoring Aktual Employee',
+            'desc' => 'History',
+            'actuals' => $actuals,
+            'totalTarget' => $totalTarget,
+            'employees' => $employees,
+            'deptList' => $deptList,
+            'statusList' => $statusList,
+        ]);
+    }
+    public function indexMonitoringDept(Request $request)
+    {
+        $semesterQuery = $request->query('semester');
+        $yearQuery = $request->query('year');
+
+        $totalTarget = DB::table('target_units')
+            ->leftJoin('department_targets', 'target_units.id', '=', 'department_targets.target_unit_id')
+            ->leftJoin('departments', 'department_targets.department_id', '=', 'departments.id')
+            ->whereYear('department_targets.date', $yearQuery)
+            ->select(
+                'departments.id as department_id',
+                DB::raw('count(target_units.target_1) as total_1'),
+                DB::raw('count(target_units.target_2) as total_2'),
+                DB::raw('count(target_units.target_3) as total_3'),
+                DB::raw('count(target_units.target_4) as total_4'),
+                DB::raw('count(target_units.target_5) as total_5'),
+                DB::raw('count(target_units.target_6) as total_6'),
+                DB::raw('count(target_units.target_7) as total_7'),
+                DB::raw('count(target_units.target_8) as total_8'),
+                DB::raw('count(target_units.target_9) as total_9'),
+                DB::raw('count(target_units.target_10) as total_10'),
+                DB::raw('count(target_units.target_11) as total_11'),
+                DB::raw('count(target_units.target_12) as total_12'),
+
+            )
+            ->groupBy('departments.id')
+            ->get();
+
+        // dd($totalTarget);
+
+        $departments = DB::table('departments')->get();
+        $actuals = DB::table('department_actuals')
+            ->where('department_actuals.semester', '=', $semesterQuery)
+            ->whereNotNull('record_file')
+            ->whereYear('department_actuals.date', $yearQuery)
+            ->select(DB::raw('count(department_actuals.id) as total'), 'department_actuals.department_id', DB::raw('MONTH(department_actuals.date) as month'))
+            ->groupBy('department_actuals.department_id', DB::raw('MONTH(department_actuals.date)'))
+            ->get();
+
+        // dd($actuals, $totalTarget);
+
+        return view('logs.log-monitoring-input-dept', [
+            'title' => 'Log Monitoring Aktual Department',
+            'desc' => 'History',
+            'actuals' => $actuals,
+            'totalTarget' => $totalTarget,
+            'departments' => $departments,
+        ]);
     }
 }
