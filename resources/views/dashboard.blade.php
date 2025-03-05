@@ -516,7 +516,7 @@
                         console.log(pdfUrl);
                         
                         
-                        document.getElementById('pdfObject').setAttribute('data', `/kpi_requirement_files/${pdfUrl}`);
+                        document.getElementById('pdfObject').setAttribute('data', `kpi_requirement_files/${pdfUrl}`);
                         document.getElementById('documentModal').classList.remove('hidden');
                     } else {
                         console.error('No PDF found');
@@ -535,7 +535,7 @@
                     if (data.length > 0) {
                         const pdfUrl = data[0].file;
                         
-                        document.getElementById('pdfObjectTutorial').setAttribute('data', `/kpi_requirement_files/${pdfUrl}`);
+                        document.getElementById('pdfObjectTutorial').setAttribute('data', `kpi_requirement_files/${pdfUrl}`);
                         document.getElementById('tutorialModal').classList.remove('hidden');
                     } else {
                         console.error('No PDF found');
