@@ -179,6 +179,8 @@ class ReportController extends Controller
                 $oneCalc = '115%';
             } else if ($actual >= 5) {
                 $oneCalc = '120%';
+            } else {
+                $oneCalc = '0%';
             }
             return $oneCalc;
         } elseif ($zeroStatus == 'yes') {
@@ -193,6 +195,8 @@ class ReportController extends Controller
             } else if ($actual == 4) {
                 $zeroCalc = '10%';
             } else if ($actual >= 5) {
+                $zeroCalc = '0%';
+            } else {
                 $zeroCalc = '0%';
             }
             return $zeroCalc;
