@@ -311,7 +311,7 @@
             let actual = parseFloat(actualField.value.replace(/,/g, '').replace(/[^0-9.%]/g, ''));
             
     
-            if (zeroValue === 'yes' && unitValue == 'Freq') {
+            if (zeroValue === 'yes' && (unitValue == 'Freq' || unitValue == 'Freq "0"')) {
                 if (actual == 0) {
                     achievementField.value = '100%';
                 } else if (actual == 1) {

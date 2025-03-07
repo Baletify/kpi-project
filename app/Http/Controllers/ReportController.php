@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Response;
+use PhpOffice\PhpSpreadsheet\Calculation\Statistical\Averages;
 use Termwind\Components\Dd;
 
 use function Laravel\Prompts\select;
@@ -133,9 +134,7 @@ class ReportController extends Controller
         $accFin = DB::table('departments')->whereIn('name', ['Accounting', 'Finance'])->get();
         $allDept = Department::all();
 
-        if ($role == 'Inputer' || $role == '') {
-            abort(403, 'Unauthorized');
-        } else if ($role == 'Checker Div 1' || $role == 'Checker Div 2') {
+        if ($role == 'Checker Div 1' || $role == 'Checker Div 2') {
             $deptList = $divDept;
             return view('report.list-department-report', ['title' => 'Report', 'desc' => 'Department List', 'deptList' => $deptList]);
         } else if ($role == 'FAD' || $email == 'tabrani@bskp.co.id' || $email == 'siswantoko@bskp.co.id') {
@@ -186,7 +185,7 @@ class ReportController extends Controller
         } elseif ($zeroStatus == 'yes') {
             if ($actual == 0) {
                 $zeroCalc = '100%';
-            } elseif ($actual == 1) {
+            } elseif ($actual == 1.5) {
                 $zeroCalc = '75%';
             } elseif ($actual == 2) {
                 $zeroCalc = '50%';
@@ -202,21 +201,9 @@ class ReportController extends Controller
             return $zeroCalc;
         }
 
-        // if ($unit == 'Tgl') {
-        //     if ($period == 'monthly' || $period == 'Monthly') {
-        //         $percentageValue = ($totalPercentage / 6);
-        //     } elseif ($period == 'quarter' || $period == 'Quarter') {
-        //         $percentageValue = ($totalPercentage / 2);
-        //     } elseif ($period == 'semester' || $period == 'Semester') {
-        //         $percentageValue = $totalPercentage;
-        //     } elseif ($period == 'annual' || $period == 'Annual') {
-        //         $percentageValue = $totalPercentage;
-        //     } else {
-        //         $percentageValue = 0;
-        //     }
-        // } else
-
-        if ($trend == 'Negatif') {
+        if ($unit == 'Tgl' || $unit == 'tgl') {
+            $percentageValue = Averages::average($totalPercentage);
+        } elseif ($trend == 'Negatif') {
             $percentageValue = ($target || $actual != 0) ? ($target / $actual) * 100 : 0;
         } elseif ($trend == 'Positif') {
             $percentageValue = ($target || $actual != 0) ? $actual / $target * 100 : 0;
@@ -292,8 +279,7 @@ class ReportController extends Controller
                 $firstItem = $group->first();
                 $unitItem = $firstItem->kpi_unit;
 
-                $zeroCheck = ($firstItem->target == 0) ? 'yes' : 'no';
-                if ($unitItem == 'Tgl' || $unitItem == 'tgl' || $zeroCheck == 'yes') {
+                if ($unitItem == 'Tgl' || $unitItem == 'tgl') {
                     $totalTarget = $group->avg(function ($item) {
                         return (float) $item->target;
                     });
@@ -323,7 +309,8 @@ class ReportController extends Controller
                 $trendItem = $firstItem->trend;
                 $recordFileItem = $firstItem->record_file;
                 $periodItem = $firstItem->review_period;
-                $percentageCalc = $this->calculation($totalTarget, $totalTarget, $totalActual, $trendItem, $recordFileItem, $unitItem, $periodItem, $totalPercentage);
+                $target = $firstItem->target;
+                $percentageCalc = $this->calculation($target, $totalTarget, $totalActual, $trendItem, $recordFileItem, $unitItem, $periodItem, $totalPercentage);
 
                 $convertedCalc = floatval(str_replace('%', '', $percentageCalc));
 

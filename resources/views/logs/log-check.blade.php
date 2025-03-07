@@ -117,6 +117,7 @@
 
                     $totalTargetUnitCount = ($targetUnitCount->$targetColumn ?? 0) + ($targetUnitCountDept->$targetColumn ?? 0);
 
+                    // dump('Count iteration ' . $targetColumn .':', $targetUnitCountDept, 'Count Employee iteration ' . $targetColumn .':', $targetUnitCount)
                     
                 @endphp
                 

@@ -72,7 +72,7 @@
                 $targetColumn = 'target_unit_' . $monthNumber;
                 $targetValue = $formatKgValue($target->$targetColumn);                
             @endphp
-            <option value="{{ $monthNumber }}" data-target="{{ $targetValue ?? '' }}" data-unit="{{ $target->unit }}" data-rp="{{ $target->unit == 'Rp' ? 'yes' : 'no' }}" data-kg="{{ $target->unit == 'Kg' ? 'yes' : 'no' }}" data-zero="{{ $target->{$targetColumn} == 0 ? 'yes' : 'no' }}" data-is-null="{{ $target->{$targetColumn} === null ? 'yes' : 'no' }}">
+            <option value="{{ $monthNumber }}" data-target="{{ $targetValue ?? '' }}" data-unit="{{ $target->unit }}" data-rp="{{ $target->unit == 'Rp' || $target->unit == 'Rp/Kg' ? 'yes' : 'no' }}" data-kg="{{ $target->unit == 'Kg' ? 'yes' : 'no' }}" data-zero="{{ $target->{$targetColumn} == 0 ? 'yes' : 'no' }}" data-is-null="{{ $target->{$targetColumn} === null ? 'yes' : 'no' }}">
                 {{ $monthName }}
             </option>
             @endforeach
@@ -106,7 +106,7 @@
                 $targetColumn = 'target_unit_' . ltrim($monthNumber, '0');
                 $targetValue = $formatKgValue($target->$targetColumn); 
             @endphp
-            <option value="{{ $monthNumber }}" data-target="{{ $targetValue ?? '' }}" data-unit="{{ $target->unit }}" data-rp="{{ $target->unit == 'Rp' ? 'yes' : 'no' }}" data-kg="{{ $target->unit == 'Kg' ? 'yes' : 'no' }}" data-zero="{{ $target->{$targetColumn} == 0 ? 'yes' : 'no' }}" data-is-null="{{ $target->{$targetColumn} === null ? 'yes' : 'no' }}">
+            <option value="{{ $monthNumber }}" data-target="{{ $targetValue ?? '' }}" data-unit="{{ $target->unit }}" data-rp="{{ $target->unit == 'Rp' || $target->unit == 'Rp/Kg' ? 'yes' : 'no' }}" data-kg="{{ $target->unit == 'Kg' ? 'yes' : 'no' }}" data-zero="{{ $target->{$targetColumn} == 0 ? 'yes' : 'no' }}" data-is-null="{{ $target->{$targetColumn} === null ? 'yes' : 'no' }}">
                 {{ $monthName }}
             </option>
             @endforeach
@@ -345,7 +345,7 @@
             let target = parseFloat(targetField.value.replace(/,/g, '').replace(/[^0-9.%]/g, ''));
             let actual = parseFloat(actualField.value.replace(/,/g, '').replace(/[^0-9.%]/g, ''));
             
-            if (zeroValue === 'yes' && unitValue == 'Freq') {
+            if (zeroValue === 'yes' && (unitValue == 'Freq' || unitValue == 'Freq "0"')) {
                 if (actual == 0) {
                     achievementField.value = '100%';
                 } else if (actual == 1) {
