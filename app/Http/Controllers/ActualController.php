@@ -40,7 +40,7 @@ class ActualController extends Controller
             ->leftJoin('employees', 'actuals.employee_id', '=', 'employees.id')
             ->leftJoin('targets', 'actuals.kpi_code', '=', 'targets.code')
             ->leftJoin('target_units', 'target_units.id', '=', 'targets.target_unit_id')
-            ->select('actuals.kpi_code as kpi_code', 'targets.code as code', 'actuals.date as actual_date', 'targets.date as target_date', 'targets.indicator as indicator')
+            ->select('actuals.kpi_code as kpi_code', 'targets.code as code', 'actuals.date as actual_date', 'targets.date as target_date', 'targets.indicator as indicator', 'actuals.kpi_item')
             // ->where(DB::raw('MONTH(actuals.date)'), '<=', $now->month)
             ->where('actuals.employee_id', $employeeID)
             ->where(DB::raw('YEAR(actuals.date)'), '=', $year)
@@ -248,6 +248,7 @@ class ActualController extends Controller
             'date' => 'required',
             'actual' => 'required',
             'record_file' => 'mimes:jpeg,pdf',
+            'kpi_percentage' => 'required',
 
         ]);
 
@@ -362,6 +363,7 @@ class ActualController extends Controller
             'date' => 'required',
             'actual' => 'required',
             'record_file' => 'mimes:jpeg,pdf',
+            'kpi_percentage' => 'required',
         ]);
         if ($validator->fails()) {
             flash()->error('Please fill all required field and upload a valid file format');
@@ -428,19 +430,19 @@ class ActualController extends Controller
         }
 
         $searchConditions = [
-            'kpi_code' => $request->kpi_code,
+            'kpi_item' => $request->kpi_item,
             'date' => $date,
             'employee_id' => $request->employee_id,
         ];
 
-        $existingActual = DB::table('actuals')->where($searchConditions)
-            ->whereIn('status', ['Checked', 'Approved'])->first();
-        // dd($existingActual);
+        // $existingActual = DB::table('actuals')->where($searchConditions)
+        //     ->whereIn('status', ['Checked', 'Approved'])->first();
+        // // dd($existingActual);
 
-        if ($existingActual && ($role != 'Approver')) {
-            flash()->error('This KPI item already Checked or Approved');
-            return redirect()->back()->withErrors(['status' => 'Cannot update or create record: Data sudah di check atau di approve.']);
-        }
+        // if ($existingActual && ($role != 'Approver')) {
+        //     flash()->error('This KPI item already Checked or Approved');
+        //     return redirect()->back()->withErrors(['status' => 'Cannot update or create record: Data sudah di check atau di approve.']);
+        // }
 
 
         $dataToUpdateOrCreate = [

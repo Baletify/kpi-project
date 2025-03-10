@@ -45,13 +45,13 @@
             <tr>
                 
                 <th style="width: 1%;" class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-white py-0 bg-blue-700" rowspan="2">No</th>
-                <th style="width: 6%;" class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-white py-0 bg-blue-700" rowspan="2">Dept</th>
+                <th style="width: 3.5%;" class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-white py-0 bg-blue-700" rowspan="2">Dept</th>
                 <th style="width: 3%;" class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-white py-0 bg-blue-700" rowspan="2">KPI Dept</th>
                 <th style="width: 3%;" class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-white py-0 bg-blue-700" rowspan="2">KPI Individu</th>
                 <th style="width: 3%;" class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-white py-0 bg-blue-700" rowspan="2">Total</th>
 
                 @foreach ($months as $month)
-                    <th style="width: 5%" class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-white py-0 bg-blue-700" colspan="2">
+                    <th style="width: 5%" class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-white py-0 bg-blue-700" colspan="3">
                         {{ \Carbon\Carbon::create()->month($month)->format('M') }}
                     </th>
                 @endforeach
@@ -60,6 +60,7 @@
                 @foreach ($months as $month)
                     <th style="width: 4%" class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-white py-0 bg-blue-700">OK</th>
                     <th style="width: 4%" class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-white py-0 bg-blue-700">Not OK</th>
+                    <th style="width: 4%" class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-white py-0 bg-blue-700">Total</th>
                 @endforeach
             </tr>
             @foreach ($departments as $department) 
@@ -128,6 +129,13 @@
                 @else
                 <td class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-gray-600 py-0.5 px-2 text-center"></td>
                 @endif
+                <td class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-gray-600 py-0.5 px-2 text-center">
+                    @if ($totalTargetUnitCount > 0)
+                    {{ $totalTargetUnitCount - $totalActual }}
+                    @else
+                    <span></span>
+                    @endif
+                </td>
                 <td class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-gray-600 py-0.5 px-2 text-center">
                     @if ($totalTargetUnitCount > 0)
                     {{ $totalTargetUnitCount }}

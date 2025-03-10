@@ -260,7 +260,7 @@ class LogController extends Controller
                 ->join('employees', 'actuals.employee_id', '=', 'employees.id')
                 ->join('departments', 'employees.department_id', '=', 'departments.id')
 
-                ->whereIn('actuals.status', ['Filled', 'Checked 1', 'Checked 2', 'Mng Approved', 'Approved'])
+                ->whereIn('departments.name', $deptList)
                 ->whereMonth('actuals.date', $month)
                 ->whereYear('actuals.date', $year)
                 ->select('departments.id as department_id', 'actuals.*')
@@ -949,8 +949,7 @@ class LogController extends Controller
             $actualFilled = DB::table('actuals')
                 ->join('employees', 'actuals.employee_id', '=', 'employees.id')
                 ->join('departments', 'employees.department_id', '=', 'departments.id')
-                ->where('departments.id', $authDept)
-                ->whereIn('actuals.status', ['Filled', 'Checked 1', 'Checked 2', 'Mng Approved', 'Approved'])
+                ->whereIn('departments.name', $deptList)
                 ->whereMonth('actuals.date', $month)
                 ->whereYear('actuals.date', $year)
                 ->select('departments.id as department_id', 'actuals.*')
@@ -1033,7 +1032,7 @@ class LogController extends Controller
                     ->join('employees', 'actuals.employee_id', '=', 'employees.id')
                     ->join('departments', 'employees.department_id', '=', 'departments.id')
                     ->whereIn('departments.name', $departmentNames)
-                    ->where('actuals.checked_at', '!=', '')
+                    ->where('actuals.checked_at', '!=', null)
                     ->whereMonth('actuals.date', $month)
                     ->whereYear('actuals.date', $year)
                     ->count();
@@ -1041,11 +1040,11 @@ class LogController extends Controller
                 $actualCheckedCountDept = DB::table('department_actuals')
                     ->join('departments', 'department_actuals.department_id', '=', 'departments.id')
                     ->whereIn('departments.name', $departmentNames)
-                    ->where('department_actuals.checked_at', '!=', '')
+                    ->where('department_actuals.checked_at', '!=', null)
                     ->whereMonth('department_actuals.date', $month)
                     ->whereYear('department_actuals.date', $year)
                     ->count();
-                // dd($actualCheckedCount, $actualCheckedCountDept);
+                // dd($actualCheckedCount, $actualCheckedCountDept, $departmentNames);
 
                 $targetUnitCountAll = DB::table('target_units')
                     ->leftJoin('targets', 'target_units.id', '=', 'targets.target_unit_id')
@@ -1145,7 +1144,7 @@ class LogController extends Controller
                     ->join('employees', 'actuals.employee_id', '=', 'employees.id')
                     ->join('departments', 'employees.department_id', '=', 'departments.id')
                     ->where('departments.id', '=', $department)
-                    ->where('actuals.checked_at', '!=', '')
+                    ->where('actuals.checked_at', '!=', null)
                     ->whereMonth('actuals.date', $month)
                     ->whereYear('actuals.date', $year)
                     ->select(DB::raw('count(actuals.id) as total_checked'), 'departments.id as department_id')
@@ -1156,7 +1155,7 @@ class LogController extends Controller
                 $actualCheckedCountDept = DB::table('department_actuals')
                     ->join('departments', 'department_actuals.department_id', '=', 'departments.id')
                     ->where('departments.id', '=', $department)
-                    ->where('department_actuals.checked_at', '!=', '')
+                    ->where('department_actuals.checked_at', '!=', null)
                     ->whereMonth('department_actuals.date', $month)
                     ->whereYear('department_actuals.date', $year)
                     ->select(DB::raw('count(department_actuals.id) as total_checked'), 'departments.id as department_id')
@@ -1227,6 +1226,7 @@ class LogController extends Controller
             // dd($countEmployees);
             // dd($actualFilledCount, $actualFilledCountDept->tosSql());
             // dd($totals['total_1']);
+            // dd($totalTgUnitAll, $targetUnitCountAll, $targetUnitCountAllDept, $actualCheckedCount, $actualCheckedCountDept);
 
             // dd($actualFilledCheck, $actualCheckedCheck, $actualApproved, $actualChecked, $countEmployees);
             return view('logs/log-input', [

@@ -60,8 +60,8 @@
                     @php
                         $actual = $actuals->first(function($item) use ($target, $month) {
                         $itemMonth = \Carbon\Carbon::parse($item->actual_date)->format('m');
-                        $itemIndicator = $item->kpi_code;
-                        $targetIndicator = $target->code;
+                        $itemIndicator = $item->kpi_item;
+                        $targetIndicator = $target->indicator;
 
                         // Debugging output
                         // dump('Item Month:', $itemMonth, 'Month:', $month, 'Item Indicator:', $itemIndicator, 'Target Indicator:', $targetIndicator);

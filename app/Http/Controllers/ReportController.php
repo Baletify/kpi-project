@@ -245,10 +245,10 @@ class ReportController extends Controller
                 ->where('actuals.employee_id', $id)
                 ->where('actuals.semester', $semester)
                 ->where(DB::raw('YEAR(actuals.date)'), $year)
-                ->orderBy(DB::raw('MONTH(actuals.date)'))
+                ->orderBy(DB::raw('MONTH(actuals.date)'), 'desc')
                 ->get();
 
-
+            // dd($targets, $actuals);
             // sum bobot
             $targetWeightingSum = DB::table('targets')
                 ->select('weighting')
@@ -271,7 +271,7 @@ class ReportController extends Controller
 
 
 
-            $groupedData = $actuals->groupBy('kpi_code');
+            $groupedData = $actuals->groupBy('kpi_item');
 
 
             // Hitung total target dan actual untuk setiap kelompok

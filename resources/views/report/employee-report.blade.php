@@ -165,10 +165,14 @@
                         {{ $target->weighting }}
                     </td>
                     <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="{{ $i % 2 === 0 ? 'FFF2F2F2' : 'FFFFFFFF' }}" class="border-2 bg-blue-100  border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center">Target</td>
+                    @php
+                    $sumTarget = 0;
+                    @endphp
                     @foreach ($months as $month => $monthName)
                 @php
                     $targetUnitField = 'target_' . $month;
                     $targetUnit = $target->$targetUnitField;
+                    $sumTarget += $targetUnit;
                 @endphp
                     <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="{{ $i % 2 === 0 ? 'FFF2F2F2' : 'FFFFFFFF' }}" class="border-2 bg-blue-100 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center">
                     @if ($target->unit === '%')
@@ -178,20 +182,20 @@
                     @elseif ($target->unit == 'Kg')
                     {{ $targetUnit !== null ? substr(number_format($targetUnit, 1, '.', ','), 0, 7) : ''}}
                     @else
-                        {{ $targetUnit !== null ? $targetUnit : '' }} 
+                        {{ $targetUnit !== null ? $targetUnit : 'N/A' }} 
                     @endif
                     </td>
                     @endforeach
                     
                     @php
-                        $totalTarget = $totals[$target->code]['total_target'] ?? 0;
+                        $totalTarget = $sumTarget;
                     @endphp
                 @if ($totalTarget >= 0)
                      <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="{{ $i % 2 === 0 ? 'FFF2F2F2' : 'FFFFFFFF' }}" class="border-2 bg-blue-100 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center">
                         @if ($target->unit === '%')
-                            {{ $totalTarget }}%
+                            {{ $totalTarget * 100 }}%
                         @elseif ($target->unit === 'Rp')
-                        {{ substr(number_format($totalTarget, 0, '.', ','), 0, 7) }}
+                        {{ substr(number_format($totalTarget, 0, '.', ','), 0, 9) }}
                         @elseif ($target->unit === 'Kg')
                         {{ substr(number_format($totalTarget, 0, '.', ','), 0, 7) }}
                         @else
@@ -202,7 +206,7 @@
                      <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="{{ $i % 2 === 0 ? 'FFF2F2F2' : 'FFFFFFFF' }}" class="border-2 bg-blue-100 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center"></td>
                  @endif
                     @php
-                        $totalWeightingAchievement = $totals[$target->code]['total_achievement_weight'] ?? 0;
+                        $totalWeightingAchievement = $totals[$target->indicator]['total_achievement_weight'] ?? 0;
                         $sumTotalWeightingAchievement += $totalWeightingAchievement;
                     @endphp
 
@@ -218,8 +222,10 @@
                     @foreach ($months as $month => $monthName)
                     @php
                         $actual = $actuals->first(function($item) use ($target, $month) {
-                            return \Carbon\Carbon::parse($item->date)->format('m') == $month && $item->kpi_code == $target->code;
+                            return \Carbon\Carbon::parse($item->date)->format('m') == $month && $item->kpi_item == $target->indicator;
                         });
+
+                        //  dump('target: ', $target, 'actual: ', $actual,  $month);
                     @endphp
                     
                     <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="{{ $i % 2 === 0 ? 'FFF2F2F2' : 'FFFFFFFF' }}" class="border-2 bg-gray-50 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center">
@@ -236,7 +242,7 @@
                     @endforeach
 
                     @php
-                         $totalActual = $totals[$target->code]['total_actual'] ?? 0;
+                         $totalActual = $totals[$target->indicator]['total_actual'] ?? 0;
                     @endphp
                     @if ($totalTarget >= 0)
                      <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="{{ $i % 2 === 0 ? 'FFF2F2F2' : 'FFFFFFFF' }}" class="border-2 bg-gray-50 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center">
@@ -261,13 +267,13 @@
                     @foreach ($months as $month => $monthName)
                     @php
                         $actual = $actuals->first(function($item) use ($target, $month) {
-                            return \Carbon\Carbon::parse($item->date)->format('m') == $month && $item->kpi_code == $target->code;
+                            return \Carbon\Carbon::parse($item->date)->format('m') == $month && $item->kpi_item == $target->indicator;
                         });
                     @endphp
                     <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="{{ $i % 2 === 0 ? 'FFF2F2F2' : 'FFFFFFFF' }}" class="border-2 bg-blue-100 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center">{{ $actual ? $actual->kpi_percentage : '' }}</td>
                     @endforeach
                     @php
-                         $totalPercentage = $totals[$target->code]['percentageCalc'] ?? 0;
+                         $totalPercentage = $totals[$target->indicator]['percentageCalc'] ?? 0;
                     @endphp
                     @if ($totalTarget >= 0)
                      <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="{{ $i % 2 === 0 ? 'FFF2F2F2' : 'FFFFFFFF' }}" class="border-2 bg-blue-100 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center">{{ number_format($totalPercentage) }}%</td>
@@ -279,13 +285,14 @@
                 <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="{{ $i % 2 === 0 ? 'FFF2F2F2' : 'FFFFFFFF' }}" class="relative border-2 bg-gray-50 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center group">
                     Rekaman
                     <div class="absolute left-0 bottom-full mb-2 hidden group-hover:block w-64 p-2 bg-gray-800 text-white text-xs rounded shadow-lg z-10">
+                        <p>Data Pendukung:</p>
                         {{ $target->supporting_document }}
                     </div>
                 </td>
                     @foreach ($months as $month => $monthName)
                     @php
                         $actual = $actuals->first(function($item) use ($target, $month) {
-                            return \Carbon\Carbon::parse($item->date)->format('m') == $month && $item->kpi_code == $target->code;
+                            return \Carbon\Carbon::parse($item->date)->format('m') == $month && $item->kpi_item == $target->indicator;
                         });
                     @endphp
                     <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="{{ $i % 2 === 0 ? 'FFF2F2F2' : 'FFFFFFFF' }}" class="border-2 bg-gray-50 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center hover:underline">
@@ -519,7 +526,7 @@
                             <span class="text-red-500">No</span>
                             @endif
                         @else
-                            <span></span>
+                        <span class="text-red-500"></span>
                         @endif
                         {{-- MODAL ENDS --}}
                     </td>

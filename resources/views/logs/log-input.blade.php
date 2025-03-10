@@ -308,6 +308,7 @@
                 $month = request()->query('month');
                 $year = request()->query('year');
                 $totalTgAll = $totalTgUnit + $totalTgUnitDept;
+                // dd($totalTgUnit, $totalTgUnitDept, $totalsTg);
                 // dd($totalsTg, $totalCheck, $totalCheckDept);
                 // dd($totalCheck, $totalCheckDept, $totalTgAll);
 
@@ -337,7 +338,7 @@
                     @endif
                 </div>
                 <div class="p-0.5">
-                    @if ($totalCheckedAll == $totalTgAll && ($role == 'Checker Div 1' || $role == 'Checker Div 2' || $role == 'Checker WS' || $role == 'Checker Factory'))
+                    @if ($totalCheckedAll == $totalsTg && ($role == 'Checker Div 1' || $role == 'Checker Div 2' || $role == 'Checker WS' || $role == 'Checker Factory'))
                     <form action="{{ url('/generate-pdf-check') }}" method="GET">
                         @php
                             $lastInput = $actualFilled->first(function($item) use ($department_id) {
@@ -353,10 +354,33 @@
                     </form>
                     @endif
                 </div>
-            </div>
-            
-            
+            </div>  
         </div>
+        @if ($role == 'Checker Div 1' || $role == 'Checker Div 2' || $role == 'Checker WS' || $role == 'Checker Factory')
+        <div class="flex gap-x-3">
+            <div class="">
+                <p>Not Checked: {{ $totalsTg - $totalCheckedAll }}</p>
+            </div>
+            <div class="">
+                <p>Checked: {{ $totalCheckedAll }}</p>
+            </div>
+            <div class="">
+                <p>Total this month: {{ $totalsTg }}</p>
+            </div>
+        </div>
+        @elseif ($role == 'Inputer')
+        <div class="flex gap-x-3">
+            <div class="">
+                <p>Not Inputed: {{ $totalTgAll - $totalFlAll }}</p>
+            </div>
+            <div class="">
+                <p>Inputed: {{ $totalFlAll }}</p>
+            </div>
+            <div class="">
+                <p>Total this month: {{ $totalTgAll }}</p>
+            </div>
+        </div>
+        @endif
         <table class="w-full bg-white">
             <tr>
                 <th style="width: 7%;" class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-white py-0 px-4 bg-blue-700">Dept</th>
@@ -404,16 +428,13 @@
 
             
             <td class="border-2 border-gray-400 tracking-wide px-2 py-0 text-[13px] text-center">
-                @if ($totalFlAll == $totalTgAll)
                 {{ $af ? $af->input_by : '' }} | {{  $af ? formatDate($af->input_at) : '' }}
-                @endif
             </td>
             <td class="border-2 border-gray-400 tracking-wide px-2 py-0 text-[13px] text-center">
-
                 {{ $afc ? '' : ($af->checked_by ?? '') }} | {{ $afc ? '' : (formatDate($af->checked_at ?? '')) }}
             </td>
             <td class="border-2 border-gray-400 tracking-wide px-2 py-0 text-[13px] text-center">
-                {{ $ap ? ($af->approved_by ?? '') : '' }} | {{ $ap ? (formatDate($af->approved_at ?? '')) : '' }}
+                {{ $af ? $af->approved_by : '' }} | {{  $af ? formatDate($af->approved_at) : '' }}
             </td>
             @empty
             <td class="border-2 border-gray-400 tracking-wide px-2 py-0 text-[13px] text-center" colspan="5">No data available</td>
