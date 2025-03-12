@@ -38,6 +38,9 @@
                 </div>
                 </div>
             </div>
+            @php
+            // dd($deptLists, $role);
+            @endphp
             <div class="bg-gradient-to-bl from-[#3572EF] to-[#050C9C] rounded-md border border-gray-200 p-6 mt-2 shadow-md shadow-black/15">
                 <div class="flex justify-between">
                     <div>
