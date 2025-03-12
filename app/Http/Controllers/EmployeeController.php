@@ -26,8 +26,8 @@ class EmployeeController extends Controller
         $email = $user->email;
         $departmentID = $user->department_id;
 
-        $div1Dept = DB::table('departments')->whereIn('name', ['Sub Div A', 'Sub Div B', 'Sub Div C', 'FAD',])->get();
-        $div2Dept = DB::table('departments')->whereIn('name', ['Sub Div D', 'Sub Div E', 'Sub Div F', 'FAD'])->get();
+        $div1Dept = DB::table('departments')->whereIn('name', ['Sub Div A', 'Sub Div B', 'Sub Div C',])->get();
+        $div2Dept = DB::table('departments')->whereIn('name', ['Sub Div D', 'Sub Div E', 'Sub Div F',])->get();
         $fad = DB::table('departments')->whereIn('name', ['Sub Div A', 'Sub Div B', 'Sub Div C', 'Sub Div D', 'Sub Div E', 'Sub Div F', 'FAD', 'FSD', 'Div 1', 'Div 2'])->get();
         $accDept = $div2Dept = DB::table('departments')->whereIn('name', ['Accounting', 'Finance'])->get();
         $ws = DB::table('departments')->where('name', '=', 'Workshop')->get();
