@@ -248,7 +248,7 @@ class ActualController extends Controller
             'date' => 'required',
             'actual' => 'required',
             'record_file' => 'mimes:jpeg,pdf',
-            'kpi_percentage' => 'required',
+            'achievement' => 'required',
 
         ]);
 
@@ -363,7 +363,7 @@ class ActualController extends Controller
             'date' => 'required',
             'actual' => 'required',
             'record_file' => 'mimes:jpeg,pdf',
-            'kpi_percentage' => 'required',
+            'achievement' => 'required',
         ]);
         if ($validator->fails()) {
             flash()->error('Please fill all required field and upload a valid file format');
