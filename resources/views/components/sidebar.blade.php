@@ -136,7 +136,7 @@
                     </a>
                 </li>
                 @endif
-                @if ($role != '' && $role != 'Checker 1')
+                @if ($role != '' && $role != 'Checker 1' && $role != 'Checker Factory' && $role != 'Checker WS')
                 @if ($role == 'Checker Div 1' || $role == 'Checker Div 2')
                 <li>
                     <a href="{{ route('log-input.indexInput', 'department=' . $departmentID . '&month=' . $currentMonth . '&year=' . $currentYear) }}" class="flex items-center py-1.5 px-6 text-gray-300 hover:bg-gray-700">

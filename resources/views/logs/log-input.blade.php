@@ -359,7 +359,10 @@
         @if ($role == 'Checker Div 1' || $role == 'Checker Div 2' || $role == 'Checker WS' || $role == 'Checker Factory')
         <div class="flex gap-x-3">
             <div class="">
-                <p>Not Checked: {{ $totalsTg - $totalCheckedAll }}</p>
+                <button type="button" onclick="openModal('checkModal')" class="hover:text-blue-500 rounded-md">
+                    <p>Not Checked: {{ $totalsTg - $totalCheckedAll }}</p>
+                </button>
+
             </div>
             <div class="">
                 <p>Checked: {{ $totalCheckedAll }}</p>
@@ -444,6 +447,88 @@
     </table>
 </div>
 
+<div id="checkModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 items-center justify-center flex hidden">
+    <div class="bg-white rounded-lg p-4 w-[500px]">
+        <div class="flex justify-between items-center">
+            <h2 class="text-xl font-bold">Not Checked List</h2>
+            <button id="closeCheckModal" class="text-gray-500 hover:text-gray-700" onclick="closeModal('checkModal')">&times;</button>
+        </div>
+        <div class="mt-4">
+            <p>KPI Employee</p>
+            <table class="w-full">
+                <tr>
+                    <th style="width: 3%;" class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-white py-1 px-4 bg-blue-700">No.</th>
+                    <th style="width: 70%;" class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-white py-1 px-4 bg-blue-700">Dept</th>
+                    <th style="width: 27%;" class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-white py-1 px-4 bg-blue-700">Detail Item</th>
+                    <th style="width: 27%;" class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-white py-1 px-4 bg-blue-700">Not Checked</th>
+                </tr>
+                @php
+                $i = 0;
+                @endphp
+                @foreach ($actualCheckedCountGroup as $item)
+                @php
+                $i++;
+                @endphp
+                <tr>
+                    <td class="border-2 border-gray-400 tracking-wide px-2 py-0 text-center">
+                        {{ $i }}
+                    </td>
+                    <td class="border-2 border-gray-400 tracking-wide px-2 py-0">
+                       {{ $item->department_name }}
+                    </td>
+                    <td class="border-2 border-gray-400 tracking-wide px-2 py-0">
+                       {{ $item->kpi_code }}
+                    </td>
+                    <td class="border-2 border-gray-400 tracking-wide px-2 py-0 text-center">
+                        {{ $item->total_not_checked }}
+                    </td>
+                </tr>
+                @endforeach
+            </table>
+        </div>
+        <div class="mt-4">
+            <p>KPI Dept</p>
+            <table class="w-full">
+                <tr>
+                    <th style="width: 3%;" class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-white py-1 px-4 bg-blue-700">No.</th>
+                    <th style="width: 70%;" class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-white py-1 px-4 bg-blue-700">Dept</th>
+                    <th style="width: 27%;" class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-white py-1 px-4 bg-blue-700">Not Checked</th>
+                </tr>
+                @php
+                $i = 0;
+                @endphp
+                @foreach ($actualCheckedCountDeptGroup as $item)
+                @php
+                $i++;
+                @endphp
+                <tr>
+                    <td class="border-2 border-gray-400 tracking-wide px-2 py-0 text-center">
+                        {{ $i }}
+                    </td>
+                    <td class="border-2 border-gray-400 tracking-wide px-2 py-0">
+                       {{ $item->department_name }}
+                    </td>
+                    <td class="border-2 border-gray-400 tracking-wide px-2 py-0 text-center">
+                        {{ $item->total_not_checked }}
+                    </td>
+                </tr>
+                @endforeach
+            </table>
+        </div>
+    </div>
+</div>
+
 </x-app-layout>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfobject/2.3.0/pdfobject.min.js" integrity="sha512-Nr6NV16pWOefJbWJiT8SrmZwOomToo/84CNd0MN6DxhP5yk8UAoPUjNuBj9KyRYVpESUb14RTef7FKxLVA4WGQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<script>
+    function openModal(modalId) {
+        document.getElementById(modalId).classList.remove('hidden');
+    }
+
+    function closeModal(modalId) {
+        document.getElementById(modalId).classList.add('hidden');
+    }
+
+</script>
