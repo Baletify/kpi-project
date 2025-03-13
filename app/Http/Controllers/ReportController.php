@@ -161,9 +161,11 @@ class ReportController extends Controller
 
     private function calculation($targetZero, $target, $actual, $trend, $recordFile, $unit, $period, $totalPercentage)
     {
-        $recordFileCheck = ($recordFile != null) ? 'yes' : 'no';
-        $zeroStatus = ($targetZero == 0 && $recordFileCheck == 'yes') ? 'yes' : 'no';
-        $oneStatus = ($targetZero == 1 && $recordFileCheck == 'yes') ? 'yes' : 'no';
+        dump($target, $actual);
+        $recordFileCheck = ($recordFile !== null) ? 'yes' : 'no';
+        $zeroStatus = ($targetZero === 0 && $recordFileCheck == 'yes') ? 'yes' : 'no';
+        $oneStatus = ($targetZero === 1 && $recordFileCheck == 'yes') ? 'yes' : 'no';
+
 
         if ($oneStatus == 'yes') {
             if ($actual == 0) {
@@ -204,9 +206,9 @@ class ReportController extends Controller
         if ($unit == 'Tgl' || $unit == 'tgl') {
             $percentageValue = Averages::average($totalPercentage);
         } elseif ($trend == 'Negatif') {
-            $percentageValue = ($target || $actual != 0) ? ($target / $actual) * 100 : 0;
+            $percentageValue = ($target != 0 || $actual !== 0) ? ($target / $actual) * 100 : 0;
         } elseif ($trend == 'Positif') {
-            $percentageValue = ($target || $actual != 0) ? $actual / $target * 100 : 0;
+            $percentageValue = ($target != 0 || $actual !== 0) ? ($actual / $target) * 100 : 0;
         } else {
             $percentageValue = 0;
             $oneCalc = 0;
@@ -1509,7 +1511,8 @@ class ReportController extends Controller
             ->get();
 
         $targets = DB::table('department_targets')->leftJoin('departments', 'departments.id', '=', 'department_targets.department_id')
-            ->select('department_targets.*', 'departments.name as department')
+            ->leftJoin('target_units', 'target_units.id', '=', 'department_targets.target_unit_id')
+            ->select('department_targets.*', 'departments.name as department', 'target_units.*')
             ->whereYear('department_targets.date', '=', $year)
             ->where('indicator', '=', $item)->get();
 

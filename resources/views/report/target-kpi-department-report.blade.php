@@ -60,12 +60,18 @@
                 <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="{{ $i % 2 === 0 ? 'FFF2F2F2' : 'FFFFFFFF' }}" class="border-2 border-gray-400 tracking-wide text-[12px] px-2 py-0 text-center">{{ $target->unit }}</td>
                 @foreach ($range as $month)
                 @php
+                // dd($range);
+                    $targetUnitField = 'target_' . $month;
                     $actual = $actuals->first(function($item) use ($month, $target){
                         return \Carbon\Carbon::parse($item->date)->format('m') == $month && $item->department == $target->department;
                     })
                 @endphp 
                 <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="{{ $i % 2 === 0 ? 'FFF2F2F2' : 'FFFFFFFF' }}" class="border-2 border-gray-400 tracking-wide text-[12px] px-2 py-0 text-center">
+                @if ($target->$targetUnitField !== null)
                     {{ $actual->actual ?? '' }}
+                @else
+                    {{ "N/A" }}
+                @endif
                 </td>
                 @endforeach
             </tr>
