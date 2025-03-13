@@ -272,6 +272,7 @@ class ReportController extends Controller
 
 
             $groupedData = $actuals->groupBy('kpi_item');
+            // dd($targets, $groupedData);
 
 
             // Hitung total target dan actual untuk setiap kelompok
