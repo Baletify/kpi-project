@@ -461,7 +461,7 @@ class ReportController extends Controller
                 ->where('departments.id', '=', $department)
                 ->where('employees.status', '=', $status)
                 ->where('employees.is_active', '=', 1)
-                ->paginate(18)
+                ->paginate(50)
                 ->appends(['year' => $yearToShow, 'department' => $department, 'occupation' => $status]);
             // dd($employees);
 
@@ -710,7 +710,7 @@ class ReportController extends Controller
             $employees = DB::table('employees')->leftJoin('departments', 'departments.id', '=', 'employees.department_id')->select('departments.name as dept', 'employees.name as name', 'employees.nik', 'employees.occupation', 'employees.id as employee_id', 'department_id')
                 ->where('departments.id', '=', $department)
                 ->where('employees.is_active', '=', 1)
-                ->paginate(18)
+                ->paginate(50)
                 ->appends(['year' => $yearToShow, 'department' => $department, 'occupation' => $status]);
             // dd($employees);
 
@@ -958,7 +958,7 @@ class ReportController extends Controller
             $employees = DB::table('employees')->leftJoin('departments', 'departments.id', '=', 'employees.department_id')->select('departments.name as dept', 'employees.name as name', 'employees.nik', 'employees.occupation', 'employees.id as employee_id', 'department_id')
                 ->where('employees.status', '=', $status)
                 ->where('employees.is_active', '=', 1)
-                ->paginate(18)
+                ->paginate(50)
                 ->appends(['year' => $yearToShow, 'department' => $department, 'occupation' => $status]);
             // dd($employees);
 
@@ -1208,7 +1208,7 @@ class ReportController extends Controller
                 ->leftJoin('departments', 'departments.id', '=', 'employees.department_id')
                 ->select('departments.name as dept', 'employees.name as name', 'employees.nik', 'employees.occupation', 'employees.id as employee_id', 'department_id')
                 ->where('employees.is_active', '=', 1)
-                ->paginate(18)
+                ->paginate(50)
                 ->appends(['year' => $yearToShow, 'department' => $department, 'occupation' => $status]);
 
             // Get the employee IDs for the current page

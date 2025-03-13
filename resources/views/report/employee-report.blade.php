@@ -12,7 +12,7 @@
         </div>
         <div class="justify-center flex flex-col items-center">
             <div class="">
-                <span class="text-gray-600 font-bold text-lg text-center">Key Performance Indicator</span>
+                <span class="text-gray-600 font-bold text-lg text-center">KPI Report {{ "(Employees)" }}</span>
             </div>
             <div class="">
                 @php

@@ -12,7 +12,7 @@
         </div>
         <div class="justify-center flex flex-col items-center">
             <div class="">
-                <span class="text-gray-600 font-bold text-lg text-center">Key Performance Indicator</span>
+                <span class="text-gray-600 font-bold text-lg text-center">KPI Report {{ "(Dept)" }}</span>
             </div>
             <div class="">
                 <span class="text-gray-600 font-bold text-xs text-center">Semester {{ $semester ?? 1 }} Tahun {{ $year ?? date('Y') }}</span>

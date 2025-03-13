@@ -113,14 +113,14 @@
                 $totalSumDept = $totalSumSemesterDept[$departmentId] ?? 0;
                 $totalAll = ($totalSumEmployee ?? 0) + ($totalSumDept ?? 0);
 
-                $totalSemester1Weight += $sumSemester1;
-                $totalSemester2Weight += $sumSemester2;
-                $totalSemester1DeptWeight += $sumSemester1Dept;
-                $totalSemester2DeptWeight += $sumSemester2Dept;
-                $totalWeightSum += $totalSumEmployee;
-                $totalDeptWeightSum += $totalSumDept;
-                $totalAllSum += $totalAll;
-                // dd($sumSemester1Dept, $sumSemester2Dept);
+                $totalSemester1Weight = PhpOffice\PhpSpreadsheet\Calculation\Statistical\Averages::average($sumSemester1);
+                $totalSemester2Weight =  PhpOffice\PhpSpreadsheet\Calculation\Statistical\Averages::average($sumSemester2);
+                $totalSemester1DeptWeight =  PhpOffice\PhpSpreadsheet\Calculation\Statistical\Averages::average($sumSemester1Dept);
+                $totalSemester2DeptWeight =  PhpOffice\PhpSpreadsheet\Calculation\Statistical\Averages::average($sumSemester2Dept);
+                $totalWeightSum =  PhpOffice\PhpSpreadsheet\Calculation\Statistical\Averages::average($totalSumEmployee);
+                $totalDeptWeightSum = PhpOffice\PhpSpreadsheet\Calculation\Statistical\Averages::average($totalSumDept);
+                $totalAllSum =  PhpOffice\PhpSpreadsheet\Calculation\Statistical\Averages::average($totalAll);
+                // dd($totalWeightSum, $totalDeptWeightSum, $totalAllSum);  
                   
               @endphp
             <tr class="{{ $i % 2 === 0 ? 'bg-white' : 'bg-blue-100' }}">

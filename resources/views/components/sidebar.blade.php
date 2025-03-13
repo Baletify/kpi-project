@@ -82,14 +82,14 @@
                 <li>
                     <a href="{{ route('report.index', 'department=' . $departmentID) }}" class="flex items-center py-1.5 px-6 text-gray-300 hover:bg-gray-700">
                         <i class="ri-contacts-book-2-line text-2xl"></i>
-                        <span class="ml-3">Summary KPI Employee</span>
+                        <span class="ml-3">KPI Report {{ "(Employees)" }}</span>
                     </a>
                 </li>
                 @elseif (auth()->user()->input_type == 'Individual')
                 <li>
                     <a href="{{ route('report.index', 'employee=' . $userID) }}" class="flex items-center py-1.5 px-6 text-gray-300 hover:bg-gray-700">
                         <i class="ri-contacts-book-2-line text-2xl"></i>
-                        <span class="ml-3">Summary KPI Employee</span>
+                        <span class="ml-3">KPI Report {{ "(Employees)" }}</span>
                     </a>
                 </li>
                 @endif
@@ -97,14 +97,14 @@
                 <li>
                     <a href="{{ route('report.department', $departmentID . '?semester=&year='. $currentYear) }}" class="flex items-center py-1.5 px-6 text-gray-300 hover:bg-gray-700" id="department-link">
                         <i class="ri-file-list-3-fill text-2xl"></i>
-                        <span class="ml-3">Summary KPI Dept</span>
+                        <span class="ml-3">KPI Report {{ "(Dept)" }}</span>
                     </a>
                 </li>
                 @else
                 <li>
                     <a href="{{ route('report.indexDept') }}" class="flex items-center py-1.5 px-6 text-gray-300 hover:bg-gray-700" id="department-link">
                         <i class="ri-file-list-3-fill text-2xl"></i>
-                        <span class="ml-3">Summary KPI Dept</span>
+                        <span class="ml-3">KPI Report {{ "(Dept)" }}</span>
                     </a>
                 </li>
                 
@@ -114,13 +114,13 @@
                 <li>
                     <a href="{{ route('report.summaryDept', 'year=' . $currentYear) }}" class="flex items-center py-1.5 px-6 text-gray-300 hover:bg-gray-700">
                         <i class="ri-line-chart-line text-2xl"></i>
-                        <span class="ml-3">Summary All Employee</span>
+                        <span class="ml-3">Summary KPI Report {{ "(Employees)" }}</span>
                     </a>
                 </li>
                 <li>
                     <a href="{{ route('report.indexDeptTargetReport', 'year=' . $currentYear) }}" class="flex items-center py-1.5 px-6 text-gray-300 hover:bg-gray-700">
                         <i class="ri-bar-chart-box-line text-2xl"></i>
-                        <span class="ml-3">Summary All Dept</span>
+                        <span class="ml-3">Summary KPI Report {{ "(Dept)" }}</span>
                     </a>
                 </li>
                 @endif
