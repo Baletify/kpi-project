@@ -125,22 +125,33 @@
                         @php
                         $targetUnitField = 'target_' . $month;
                         $targetUnit = $target->$targetUnitField;
-                        @endphp
-                        @php
-                        $targetUnitField = 'target_' . $month;
-                        $targetUnit = $target->$targetUnitField;
                         $sumTarget += $targetUnit;
+                        $actual = $actuals->first(function($item) use ($target, $month) {
+                                return \Carbon\Carbon::parse($item->date)->format('m') == $month && $item->kpi_item == $target->indicator;
+                            });
                         @endphp
                         <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="{{ $i % 2 === 0 ? 'FFF2F2F2' : 'FFFFFFFF' }}" class="border-2 bg-blue-100 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center">
-                        @if ($target->unit === '%')
-                            {{ $targetUnit !== null ? ($targetUnit * 100) . '%' : '' }}
-                        @elseif ($target->unit == 'Rp')
+                            @if ($actual)
+                            @if ($actual->target === '%')
+                                {{ $actual->target !== null ? ($actual->target * 100) . '%' : '' }}
+                            @elseif ($actual->target == 'Rp')
+                            {{ $actual->target !== null ? substr(number_format($actual->target, 0, '.', ','), 0, 7) : ''}}
+                            @elseif ($actual->target == 'Kg')
+                            {{ $actual->target !== null ? substr(number_format($actual->target, 1, '.', ','), 0, 7) : ''}}
+                            @else
+                                {{ $actual->target !== null ? $actual->target : 'N/A' }} 
+                            @endif
+                            @else
+                            @if ($target->unit === '%')
+                                {{ $targetUnit !== null ? ($targetUnit * 100) . '%' : '' }}
+                            @elseif ($target->unit == 'Rp')
                             {{ $targetUnit !== null ? substr(number_format($targetUnit, 0, '.', ','), 0, 7) : ''}}
-                        @elseif ($target->unit == 'Kg')
+                            @elseif ($target->unit == 'Kg')
                             {{ $targetUnit !== null ? substr(number_format($targetUnit, 1, '.', ','), 0, 7) : ''}}
-                        @else
-                            {{ $targetUnit !== null ? $targetUnit : '' }} 
-                        @endif
+                            @else
+                                {{ $targetUnit !== null ? $targetUnit : 'N/A' }} 
+                            @endif
+                            @endif
                         </td>
                         @endforeach
                         
