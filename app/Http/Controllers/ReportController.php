@@ -161,13 +161,13 @@ class ReportController extends Controller
 
     private function calculation($targetZero, $target, $actual, $trend, $recordFile, $unit, $period, $totalPercentage)
     {
-        dump($target, $actual);
+        // dump($target, $actual);
         $recordFileCheck = ($recordFile !== null) ? 'yes' : 'no';
         $zeroStatus = ($targetZero === 0 && $recordFileCheck == 'yes') ? 'yes' : 'no';
         $oneStatus = ($targetZero === 1 && $recordFileCheck == 'yes') ? 'yes' : 'no';
 
 
-        if ($oneStatus == 'yes') {
+        if ($oneStatus == 'yes' && ($unit != 'Tgl' || $unit != 'tgl')) {
             if ($actual == 0) {
                 $oneCalc = '0%';
             } elseif ($actual == 1) {
@@ -201,14 +201,12 @@ class ReportController extends Controller
                 $zeroCalc = '0%';
             }
             return $zeroCalc;
-        }
-
-        if ($unit == 'Tgl' || $unit == 'tgl') {
+        } elseif ($unit == 'Tgl' || $unit == 'tgl') {
             $percentageValue = Averages::average($totalPercentage);
         } elseif ($trend == 'Negatif') {
-            $percentageValue = ($target != 0 || $actual !== 0) ? ($target / $actual) * 100 : 0;
+            $percentageValue = ($target != 0 && $actual != 0) ? ($target / $actual) * 100 : 0;
         } elseif ($trend == 'Positif') {
-            $percentageValue = ($target != 0 || $actual !== 0) ? ($actual / $target) * 100 : 0;
+            $percentageValue = ($target != 0 && $actual != 0) ? ($actual / $target) * 100 : 0;
         } else {
             $percentageValue = 0;
             $oneCalc = 0;
@@ -282,7 +280,7 @@ class ReportController extends Controller
                 $firstItem = $group->first();
                 $unitItem = $firstItem->kpi_unit;
 
-                if ($unitItem == 'Tgl' || $unitItem == 'tgl') {
+                if ($unitItem == 'Tgl' || $unitItem == 'tgl' || $unitItem == '%') {
                     $totalTarget = $group->avg(function ($item) {
                         return (float) $item->target;
                     });
@@ -1516,11 +1514,13 @@ class ReportController extends Controller
             ->whereYear('department_targets.date', '=', $year)
             ->where('indicator', '=', $item)->get();
 
+        $indicatorList = DB::table('department_targets')->select('indicator')->whereYear('date', '=', $year)->groupBy('indicator')->get();
+
         // dd($targets, $actuals);
 
 
         // dd($actuals);
 
-        return view('report.target-kpi-department-report', ['title' => 'Summary KPI', 'desc' => 'All Department', 'actuals' => $actuals, 'targets' => $targets]);
+        return view('report.target-kpi-department-report', ['title' => 'Summary KPI', 'desc' => 'All Department', 'actuals' => $actuals, 'targets' => $targets, 'indicatorList' => $indicatorList]);
     }
 }

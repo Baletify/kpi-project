@@ -149,7 +149,13 @@
                         $sumActual += $totalActual->total ?? 0;
                     @endphp
                 <td data-b-a-s="thin" data-a-v="middle" data-a-wrap="true" data-fill-color="{{ $i % 2 === 0 ? 'FFF2F2F2' : 'FFFFFFFF' }}" class="border-2 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center">{{ $target->$targetColumn ?? 0 }}</td>
-                <td data-b-a-s="thin" data-a-v="middle" data-a-wrap="true" data-fill-color="{{ $i % 2 === 0 ? 'FFF2F2F2' : 'FFFFFFFF' }}" class="border-2 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center">{{ $totalActual->total ?? '' }}</td>
+                <td data-b-a-s="thin" data-a-v="middle" data-a-wrap="true" data-fill-color="{{ $i % 2 === 0 ? 'FFF2F2F2' : 'FFFFFFFF' }}" class="border-2 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center">
+                    <div class="flex justify-center gap-2 text-[12px] ">
+                        <a class="hover:underline hover:text-blue-600" href="{{ route('report.show', $employee->id) }}?semester={{ $semesterQuery }}&year={{ $yearQuery }}">
+                            {{ $totalActual->total ?? '' }}
+                        </a>
+                    </div>
+                </td>
                 <td data-b-a-s="thin" data-a-v="middle" data-a-wrap="true" data-fill-color="{{ $i % 2 === 0 ? 'FFF2F2F2' : 'FFFFFFFF' }}" class="border-2 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center">{{ $percentage > 0 ? number_format($percentage, 0) . '%' : '' }}</td>
                 @endforeach
                 <td data-b-a-s="thin" data-a-v="middle" data-a-wrap="true" data-fill-color="{{ $i % 2 === 0 ? 'FFF2F2F2' : 'FFFFFFFF' }}" class="border-2 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center">{{ $sumTarget > 0 ? $sumTarget : '' }}</td>

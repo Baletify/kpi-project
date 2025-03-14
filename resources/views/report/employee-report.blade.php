@@ -149,7 +149,7 @@
                 @endphp
                 <tr class="{{ $i % 2 === 0 ? 'bg-gray-50' : 'bg-blue-100' }}">
                     <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="{{ $i % 2 === 0 ? 'FFF2F2F2' : 'FFFFFFFF' }}" name="selected_targets[]" class="border-2 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-1 text-center exclude-from-export" rowspan="4">
-                        <input id="selected-item-{{ $target->id }}" type="checkbox" class="selected-item appearance-none w-4 h-4 border-2 border-gray-400 rounded-sm bg-white text-green-500"  data-code="{{ $target->code }} {{ $role == 'Inputer' || $role == '' ? 'disabled' : '' }}">
+                        <input id="selected-item-{{ $target->id }}" type="checkbox" class="selected-item appearance-none w-4 h-4 border-2 border-gray-400 rounded-sm bg-white text-green-500"  data-code="{{ $target->code }}" {{ $role == 'Inputer' || $role == '' ? 'disabled' : '' }}">
                     </td>
                     <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="{{ $i % 2 === 0 ? 'FFF2F2F2' : 'FFFFFFFF' }}" class="border-2 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-2" rowspan="4">{{ $target->code }}</td>
                     <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="{{ $i % 2 === 0 ? 'FFF2F2F2' : 'FFFFFFFF' }}" class="relative border-2 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-2 group" rowspan="4">
@@ -193,7 +193,7 @@
                 @if ($totalTarget >= 0)
                      <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="{{ $i % 2 === 0 ? 'FFF2F2F2' : 'FFFFFFFF' }}" class="border-2 bg-blue-100 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center">
                         @if ($target->unit === '%')
-                            {{ $totalTarget * 100 }}%
+                            {{ PhpOffice\PhpSpreadsheet\Calculation\Statistical\Averages::average(floatval($targetUnit)) * 100 }}%
                         @elseif ($target->unit === 'Rp')
                         {{ substr(number_format($totalTarget, 0, '.', ','), 0, 9) }}
                         @elseif ($target->unit === 'Kg')
@@ -306,19 +306,20 @@
                             $prevButtonId = 'prevButton-' . $actual->actual_id;
                             $nextButtonId = 'nextButton-' . $actual->actual_id;
                             $pdfObjectId = 'pdfObject-' . $actual->actual_id;
+                            // dd($userID);
                         @endphp
                             <button id="{{ $buttonId }}" class="hover:underline" data-month="{{ $date->format('m') }}" data-actual-id="{{ $actual->actual_id }}">
-                                @if ($actual->status == 'Approved')
+                                @if ($actual->approved_at != null)
                                 <span class="text-green-500">Yes</span>
-                                @elseif ($actual->status == 'Checked 1')
-                                <span class="text-orange-300">Check 1</span>
-                                @elseif ($actual->status == 'Checked 2')
-                                <span class="text-indigo-700">Check 2</span>
-                                @elseif ($actual->status == 'Mng Approve')
+                                @elseif ($actual->mng_approved_at != null)
                                 <span class="text-blue-500">Review</span>
-                                @elseif ($actual->status == 'Filled')
+                                @elseif ($actual->checked_at != null)
+                                <span class="text-indigo-700">Check 2</span>
+                                @elseif ($actual->asst_mng_checked_at != null)
+                                <span class="text-orange-300">Check 1</span>
+                                @elseif ($actual->input_at != null)
                                 <span class="text-yellow-500">Check</span>
-                                @elseif ($actual->status == 'Revisi')
+                                @elseif ($actual->status != 'Revisi')
                                 <span class="text-orange-600">Revisi</span>
                                 @endif
                             </button>
@@ -511,6 +512,8 @@
                                                     <input type="hidden" name="kpi_code" id="kpi_code" value="{{ $target->code }}">
                                                     <input type="hidden" name="kpi_item" id="kpi_item" value="{{ $target->indicator }}">
                                                     <input type="hidden" name="department_id" id="department_id" value="{{ $actuals->first()->department_id }}">
+
+
                                                 </div>
                                             </form>
                                             @endif
@@ -565,6 +568,7 @@
                             <input type="hidden" name="selected_targets" id="selected_targets">
                             <input type="hidden" name="target_codes" id="target_codes">
                             <input type="hidden" name="nik" id="nik" value="{{ $userCreds->nik }}">
+                            <input type="hidden" name="employee_id" id="employee_id" value="{{ $userID }}">
                             <div class="my-2">
                                 <select name="month" id="month" class="col-start-1 row-start-1 w-60 appearance-none rounded-md py-1.5 pl-3 pr-7 text-base text-gray-500 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
                                     <option value="">Bulan</option>

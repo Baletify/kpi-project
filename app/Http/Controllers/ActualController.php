@@ -328,6 +328,7 @@ class ActualController extends Controller
         }
 
         $dataToUpdateOrCreate = [
+            'kpi_code' => $request->kpi_code,
             'kpi_item' => $request->kpi_item,
             'kpi_unit' => $request->kpi_unit,
             'review_period' => $request->review_period,
@@ -430,7 +431,7 @@ class ActualController extends Controller
         }
 
         $searchConditions = [
-            'kpi_item' => $request->kpi_item,
+            'kpi_code' => $request->kpi_code,
             'date' => $date,
             'employee_id' => $request->employee_id,
         ];
@@ -446,6 +447,7 @@ class ActualController extends Controller
 
 
         $dataToUpdateOrCreate = [
+            'kpi_code' => $request->kpi_code,
             'kpi_item' => $request->kpi_item,
             'kpi_unit' => $request->kpi_unit,
             'review_period' => $request->review_period,
@@ -546,6 +548,7 @@ class ActualController extends Controller
         $status = '';
         $from = $user->email;
         $nik = $request->nik;
+        $userID = $request->employee_id;
 
         $sendTo = DB::table('employees')
             ->where('nik', $nik)
@@ -571,6 +574,7 @@ class ActualController extends Controller
                     ->whereMonth('actuals.date', '=', $month)
                     ->where('kpi_code', '=', $targetCode)
                     ->where('status', '=', 'Filled')
+                    ->where('employee_id', $userID)
                     ->where('record_file', '!=', '')
                     ->update(
                         [
@@ -589,6 +593,7 @@ class ActualController extends Controller
                     ->whereMonth('actuals.date', '=', $month)
                     ->where('kpi_code', '=', $targetCode)
                     ->where('status', '=', 'Checked 1')
+                    ->where('employee_id', $userID)
                     ->where('record_file', '!=', '')
                     ->update(
                         [
@@ -606,6 +611,7 @@ class ActualController extends Controller
                 DB::table('actuals')->whereYear('actuals.date', '=', $year)
                     ->whereMonth('actuals.date', '=', $month)
                     ->where('kpi_code', '=', $targetCode)
+                    ->where('employee_id', $userID)
                     ->where('record_file', '!=', '')
                     ->update(
                         [
@@ -623,6 +629,7 @@ class ActualController extends Controller
                 DB::table('actuals')->whereYear('actuals.date', '=', $year)
                     ->whereMonth('actuals.date', '=', $month)
                     ->where('kpi_code', '=', $targetCode)
+                    ->where('employee_id', $userID)
                     ->where('record_file', '!=', '')
                     ->update(
                         [

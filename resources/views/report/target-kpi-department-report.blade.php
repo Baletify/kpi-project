@@ -4,7 +4,8 @@
             $currentYear = Carbon\Carbon::now()->year;
             $startYear = 2024; 
             $endYear = $currentYear + 2;
-            $range = range(1, 12)
+            $range = range(1, 12);
+            $year = request()->query('year') ?? $currentYear;
             
         @endphp
         <div class="flex justify-between">
@@ -14,18 +15,29 @@
         </div>
         <div class="flex justify-center mt-0.5">
             <div class="p-1">
-                <span class="text-gray-600 font-bold text-xl text-center">Laporan Pencapaian KPI Departemen</span>
+                <span class="text-gray-600 font-bold text-xl text-center">Summary - KPI Report {{ 'Dept' }}</span>
             </div>
         </div>
         <div class="grid grid-cols-2">
-            <div class="flex justify-start">
-                <table>
-                    <tr>
-                        <td class="text-[16px] font-semibold">Item KPI</td>
-                        <td class="px-1">:</td>
-                        <td class="font-bold">{{ $actuals->first()->kpi_item ?? '' }}</td>
-                    </tr>
-                </table>
+            <div class="flex items-start">
+                <form action="{{ route('report.departmentTargetReport') }}" method="GET">
+               
+                        <select name="item" id="item" class="rounded-md py-1.5 pl-3 pr-7 text-base text-gray-500 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
+                            @if (request()->query('item'))
+                            <option value="{{ request()->query('item') }}">{{ request()->query('item') }}</option>
+                            @else
+                            <option value="">-- Item KPI --</option>
+                            @endif
+                            @foreach ($indicatorList as $item)
+                            <option value="{{ $item->indicator }}">{{ \Illuminate\Support\Str::limit($item->indicator, 25) }}</option>    
+                            @endforeach
+                        </select>
+                        <input type="hidden" name="year" id="year" value="{{ $year }}">
+                    <button class="py-1.5 px-2 bg-blue-600 my-2 rounded-md text-white">
+                        Filter
+                    </button>
+
+                </form>
             </div>
             <div class="flex justify-end">
                 <button id="exportBtn" class="p-1.5 rounded-md text-white bg-green-500">Export</button>
@@ -70,7 +82,7 @@
                 @if ($target->$targetUnitField !== null)
                     {{ $actual->actual ?? '' }}
                 @else
-                    {{ "N/A" }}
+                    <span>N/A</span>
                 @endif
                 </td>
                 @endforeach
@@ -94,7 +106,7 @@
                 <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="#FFFFE893" colspan="4" class="border-2 border-gray-400 tracking-wide text-[12px] px-2 py-0 text-center">Total</td>
                 @foreach ($range as $month)
                 <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="#FFFFE893" class="border-2 border-gray-400 tracking-wide text-[12px] px-2 py-0 text-center">
-                    {{ $monthlySums[$month] }}
+                    {{ $monthlySums[$month] ?? 'N/A' }}
                 </td>
                 @endforeach
             </tr>

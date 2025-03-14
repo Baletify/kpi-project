@@ -97,6 +97,7 @@
                     @php
                         $i = 0;
                         $sumTotalWeightingAchievement = 0;
+                        $sumTarget = 0;
                     @endphp
                     @foreach ($targets as $target)
                     @php        
@@ -125,6 +126,11 @@
                         $targetUnitField = 'target_' . $month;
                         $targetUnit = $target->$targetUnitField;
                         @endphp
+                        @php
+                        $targetUnitField = 'target_' . $month;
+                        $targetUnit = $target->$targetUnitField;
+                        $sumTarget += $targetUnit;
+                        @endphp
                         <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="{{ $i % 2 === 0 ? 'FFF2F2F2' : 'FFFFFFFF' }}" class="border-2 bg-blue-100 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center">
                         @if ($target->unit === '%')
                             {{ $targetUnit !== null ? ($targetUnit * 100) . '%' : '' }}
@@ -139,7 +145,7 @@
                         @endforeach
                         
                         @php
-                            $totalTarget = $totals[$target->code]['total_target'] ?? 0;
+                            $totalTarget = $sumTarget;
                         @endphp
                     @if ($totalTarget >= 0)
                          <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="{{ $i % 2 === 0 ? 'FFF2F2F2' : 'FFFFFFFF' }}" class="border-2 bg-blue-100 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center">
@@ -256,17 +262,17 @@
                             $pdfObjectId = 'pdfObject-' . $actual->department_actual_id;
                         @endphp
                             <button id="{{ $buttonId }}" class="hover:underline" data-month="{{ $date->format('m') }}" data-actual-id="{{ $actual->department_actual_id }}">
-                                @if ($actual->status == 'Approved')
+                                @if ($actual->approved_at != null)
                                 <span class="text-green-500">Yes</span>
-                                @elseif ($actual->status == 'Checked 1')
-                                <span class="text-orange-300">Check 1</span>
-                                @elseif ($actual->status == 'Checked 2')
-                                <span class="text-indigo-700">Check 2</span>
-                                @elseif ($actual->status == 'Mng Approve')
+                                @elseif ($actual->mng_approved_at != null)
                                 <span class="text-blue-500">Review</span>
-                                @elseif ($actual->status == 'Filled')
+                                @elseif ($actual->checked_at != null)
+                                <span class="text-indigo-700">Check 2</span>
+                                @elseif ($actual->asst_mng_checked_at != null)
+                                <span class="text-orange-300">Check 1</span>
+                                @elseif ($actual->input_at != null)
                                 <span class="text-yellow-500">Check</span>
-                                @elseif ($actual->status == 'Revisi')
+                                @elseif ($actual->status != 'Revisi')
                                 <span class="text-orange-600">Revisi</span>
                                 @endif
                             </button>
