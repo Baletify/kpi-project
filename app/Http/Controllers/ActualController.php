@@ -573,6 +573,8 @@ class ActualController extends Controller
                 DB::table('actuals')->whereYear('actuals.date', '=', $year)
                     ->whereMonth('actuals.date', '=', $month)
                     ->where('kpi_code', '=', $targetCode)
+                    ->where('kpi_code', '!=', '')
+                    ->where('kpi_code', '!=', '')
                     ->where('status', '=', 'Filled')
                     ->where('employee_id', $userID)
                     ->where('record_file', '!=', '')
@@ -592,6 +594,7 @@ class ActualController extends Controller
                 DB::table('actuals')->whereYear('actuals.date', '=', $year)
                     ->whereMonth('actuals.date', '=', $month)
                     ->where('kpi_code', '=', $targetCode)
+                    ->where('kpi_code', '!=', '')
                     ->where('status', '=', 'Checked 1')
                     ->where('employee_id', $userID)
                     ->where('record_file', '!=', '')
@@ -611,6 +614,7 @@ class ActualController extends Controller
                 DB::table('actuals')->whereYear('actuals.date', '=', $year)
                     ->whereMonth('actuals.date', '=', $month)
                     ->where('kpi_code', '=', $targetCode)
+                    ->where('kpi_code', '!=', '')
                     ->where('employee_id', $userID)
                     ->where('record_file', '!=', '')
                     ->update(
@@ -629,6 +633,7 @@ class ActualController extends Controller
                 DB::table('actuals')->whereYear('actuals.date', '=', $year)
                     ->whereMonth('actuals.date', '=', $month)
                     ->where('kpi_code', '=', $targetCode)
+                    ->where('kpi_code', '!=', '')
                     ->where('employee_id', $userID)
                     ->where('record_file', '!=', '')
                     ->update(
@@ -690,6 +695,7 @@ class ActualController extends Controller
                 DB::table('department_actuals')->whereYear('department_actuals.date', '=', $year)
                     ->whereMonth('department_actuals.date', '=', $month)
                     ->where('kpi_code', '=', $targetCode)
+                    ->where('kpi_code', '!=', '')
                     ->where('status', '=', 'Filled')
                     ->where('record_file', '!=', '')
                     ->update(
@@ -708,6 +714,7 @@ class ActualController extends Controller
                 DB::table('department_actuals')->whereYear('department_actuals.date', '=', $year)
                     ->whereMonth('department_actuals.date', '=', $month)
                     ->where('kpi_code', '=', $targetCode)
+                    ->where('kpi_code', '!=', '')
                     ->where('status', '=', 'Checked 1')
                     ->where('record_file', '!=', '')
                     ->update(
@@ -726,6 +733,7 @@ class ActualController extends Controller
                 DB::table('department_actuals')->whereYear('department_actuals.date', '=', $year)
                     ->whereMonth('department_actuals.date', '=', $month)
                     ->where('kpi_code', '=', $targetCode)
+                    ->where('kpi_code', '!=', '')
                     ->where('record_file', '!=', '')
                     ->update(
                         [
@@ -743,6 +751,7 @@ class ActualController extends Controller
                 DB::table('department_actuals')->whereYear('department_actuals.date', '=', $year)
                     ->whereMonth('department_actuals.date', '=', $month)
                     ->where('kpi_code', '=', $targetCode)
+                    ->where('kpi_code', '!=', '')
                     ->where('record_file', '!=', '')
                     ->update(
                         [
