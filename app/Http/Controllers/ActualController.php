@@ -574,7 +574,6 @@ class ActualController extends Controller
                     ->whereMonth('actuals.date', '=', $month)
                     ->where('kpi_code', '=', $targetCode)
                     ->where('kpi_code', '!=', '')
-                    ->where('kpi_code', '!=', '')
                     ->where('status', '=', 'Filled')
                     ->where('employee_id', $userID)
                     ->where('record_file', '!=', '')

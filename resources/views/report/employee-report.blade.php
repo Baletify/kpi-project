@@ -750,9 +750,9 @@ function updatePdfViewer(buttonId, actualId) {
  // update status
  document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('.status-checkbox').forEach(function(checkbox) {
-        if (checkbox.checked) {
-            checkbox.disabled = true;
-        }
+        // if (checkbox.checked) {
+        //     checkbox.disabled = true;
+        // }
         checkbox.addEventListener('change', function() {
             const actualId = this.getAttribute('data-actual-id');
             const status = this.getAttribute('data-status');
