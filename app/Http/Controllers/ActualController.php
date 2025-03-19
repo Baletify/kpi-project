@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\ApproveEmail;
 use Carbon\Carbon;
 use App\Models\Actual;
 use App\Models\Employee;
@@ -649,7 +650,7 @@ class ActualController extends Controller
 
 
         if ($sendTo != null || $sendTo != 0) {
-            Mail::to($details['email'])->send(new ApproveMail($details));
+            ApproveEmail::dispatch($details);
         }
 
         return redirect()->back()->with('success', 'Data Updated Successfully');
@@ -765,7 +766,7 @@ class ActualController extends Controller
         }
 
         if ($sendTo != null || $sendTo != 0) {
-            Mail::to($details['email'])->send(new ApproveMail($details));
+            ApproveEmail::dispatch($details);
         }
 
 

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\ProcessEmail;
 use App\Mail\PostMail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -36,7 +37,7 @@ class MailController extends Controller
 
         // dd($details);
 
-        Mail::to($details['email'])->send(new PostMail($details));
+        ProcessEmail::dispatch($details);
 
         return back()->with('success', 'Email has been sent');
     }
@@ -64,7 +65,7 @@ class MailController extends Controller
             'comment' => $request->comment,
         ];
 
-        Mail::to($details['email'])->send(new PostMail($details));
+        ProcessEmail::dispatch($details);
 
         return back()->with('success', 'Email has been sent');
     }
