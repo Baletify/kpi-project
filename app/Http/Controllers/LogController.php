@@ -138,7 +138,7 @@ class LogController extends Controller
 
 
         return view('logs/log-check', [
-            'title' => 'Log Input',
+            'title' => 'Log Check',
             'desc' => 'History',
             'departments' => $departments,
             'months' => $months,
@@ -180,7 +180,7 @@ class LogController extends Controller
         } elseif ($role == 'Checker Div 2') {
             $allDept = DB::table('departments')->whereIn('name', ['Div 2', 'Sub Div D', 'Sub Div E', 'Sub Div F'])->get();
             if ($allDept) {
-                $deptList = ['Div 2', 'Sub Div D', 'Sub Div E', 'Sub Div F'];
+                $deptList = ['Sub Div D', 'Sub Div E', 'Sub Div F'];
             }
             $departmentNames = ['Sub Div D', 'Sub Div E', 'Sub Div F'];
         } elseif ($role == 'Approver' || ($role == 'Mng Approver' && $department == 'All Dept')) {
@@ -818,6 +818,9 @@ class LogController extends Controller
                     )
                     ->groupBy('departments.id')
                     ->get();
+
+
+
                 // dd($departmentNames, $actualCheckedCount, $actualCheckedCountDept, $targetUnitCountAll, $targetUnitCountAllDept, $actualFilledCount, $actualFilledCountDept);
 
                 $totals = [
@@ -964,6 +967,7 @@ class LogController extends Controller
             $countEmployees = DB::table('employees')
                 ->leftJoin('departments', 'departments.id', '=', 'employees.department_id')->select(DB::raw('count(employees.id) as total_employee'), 'departments.name as department_name', 'departments.id as department_id')->whereIn('departments.name', $deptList)->groupBy(['departments.name', 'departments.id'])->get();
             // dd($deptList, $countEmployees);
+
 
             $acc = $actualCheckedCount ?? 0;
             $accd = $actualCheckedCountDept ?? 0;
@@ -1364,6 +1368,38 @@ class LogController extends Controller
 
             $acc = $actualCheckedCount;
             $accd = $actualCheckedCountDept;
+
+            // // Step 1: Get all KPI codes from the targets table
+            // $allKpiCodes = DB::table('targets')
+            //     ->join('employees', 'targets.employee_id', '=', 'employees.id')
+            //     ->join('departments', 'employees.department_id', '=', 'departments.id')
+            //     ->whereIn('departments.name', $departmentNames)
+            //     // ->whereMonth('date', $month)
+            //     // ->whereYear('date', $year)
+            //     ->whereIn('departments.name', $departmentNames)
+            //     ->select('targets.code')
+            //     ->pluck('targets.code')
+            //     ->toArray();
+
+            // // Step 2: Get all KPI codes that have actuals inputted for the current month
+            // $inputtedKpiCodes = DB::table('actuals')
+            //     ->join('employees', 'actuals.employee_id', '=', 'employees.id')
+            //     ->join('departments', 'employees.department_id', '=', 'departments.id')
+            //     ->whereIn('departments.name', $departmentNames)
+            //     ->whereMonth('date', $month)
+            //     ->whereYear('date', $year)
+            //     ->select('kpi_code')
+            //     ->pluck('kpi_code')
+            //     ->toArray();
+
+            // Step 3: Find missing KPI codes
+            // $missingKpiCodes = array_diff($allKpiCodes, $inputtedKpiCodes);
+            // dd($missingKpiCodes, $allKpiCodes, $inputtedKpiCodes);
+
+
+            // dd($actualCheckedCountGroup, $actualCheckedCountDeptGroup, $targetUnitCountAll, $targetUnitCountAllDept);
+
+            // dd($acc, $accd, $totals);
             // dd($actualFilled);
             // dd($acc, $accd);
             // $tgUnitAll = $targetUnitCountAll;
