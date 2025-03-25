@@ -329,7 +329,6 @@ class ActualController extends Controller
         }
 
         $dataToUpdateOrCreate = [
-            'kpi_code' => $request->kpi_code,
             'kpi_item' => $request->kpi_item,
             'kpi_unit' => $request->kpi_unit,
             'review_period' => $request->review_period,
@@ -448,7 +447,6 @@ class ActualController extends Controller
 
 
         $dataToUpdateOrCreate = [
-            'kpi_code' => $request->kpi_code,
             'kpi_item' => $request->kpi_item,
             'kpi_unit' => $request->kpi_unit,
             'review_period' => $request->review_period,
