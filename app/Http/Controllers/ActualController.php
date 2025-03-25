@@ -430,7 +430,7 @@ class ActualController extends Controller
         }
 
         $searchConditions = [
-            'kpi_code' => $request->kpi_item,
+            'kpi_code' => $request->kpi_code,
             'date' => $date,
             'employee_id' => $request->employee_id,
         ];
