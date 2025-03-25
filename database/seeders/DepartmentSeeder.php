@@ -14,97 +14,119 @@ class DepartmentSeeder extends Seeder
     public function run(): void
     {
         $departments = [
+            // [
+            //     'name' => 'BSKP',
+            //     'code' => 'BSKP',
+            // ],
+            // [
+            //     'name' => 'SPID',
+            //     'code' => 'SPID',
+            // ],
+            // [
+            //     'name' => 'HR Legal',
+            //     'code' => 'HRD',
+            // ],
+            // [
+            //     'name' => 'GA',
+            //     'code' => 'GA',
+            // ],
+            // [
+            //     'name' => 'Accounting',
+            //     'code' => 'ACC',
+            // ],
+            // [
+            //     'name' => 'IT',
+            //     'code' => 'IT',
+            // ],
+            // [
+            //     'name' => 'Safety',
+            //     'code' => 'HSE',
+            // ],
+            // [
+            //     'name' => 'Enviro',
+            //     'code' => 'ENV',
+            // ],
+            // [
+            //     'name' => 'QA/QM',
+            //     'code' => 'QA',
+            // ],
+            // [
+            //     'name' => 'Factory',
+            //     'code' => 'FAC',
+            // ],
+            // [
+            //     'name' => 'FAD',
+            //     'code' => 'FAD',
+            // ],
+            // [
+            //     'name' => 'FSD',
+            //     'code' => 'FSD',
+            // ],
+            // [
+            //     'name' => 'Sub Div A',
+            //     'code' => 'DIVA',
+            // ],
+            // [
+            //     'name' => 'Sub Div B',
+            //     'code' => 'DIVB',
+            // ],
+            // [
+            //     'name' => 'Sub Div C',
+            //     'code' => 'DIVC',
+            // ],
+            // [
+            //     'name' => 'Sub Div D',
+            //     'code' => 'DIVD',
+            // ],
+            // [
+            //     'name' => 'Sub Div E',
+            //     'code' => 'DIVE',
+            // ],
+            // [
+            //     'name' => 'Sub Div F',
+            //     'code' => 'DIVF',
+            // ],
+            // [
+            //     'name' => 'Security',
+            //     'code' => 'SEC',
+            // ],
+            // [
+            //     'name' => 'Workshop',
+            //     'code' => 'WSD',
+            // ],
+            // [
+            //     'name' => 'Div 1',
+            //     'code' => 'DIV1',
+            // ],
+            // [
+            //     'name' => 'Div 2',
+            //     'code' => 'DIV2',
+            // ],
+            // [
+            //     'name' => 'Finance',
+            //     'code' => 'FIN',
+            // ],
+
+
             [
                 'name' => 'BSKP',
                 'code' => 'BSKP',
             ],
             [
-                'name' => 'SPID',
-                'code' => 'SPID',
-            ],
-            [
-                'name' => 'HR Legal',
+                'name' => 'HR/Legal',
                 'code' => 'HRD',
             ],
             [
-                'name' => 'GA',
-                'code' => 'GA',
-            ],
-            [
-                'name' => 'Accounting',
-                'code' => 'ACC',
+                'name' => 'Sub Divisi A',
+                'code' => 'DIVA',
             ],
             [
                 'name' => 'IT',
                 'code' => 'IT',
             ],
             [
-                'name' => 'Safety',
-                'code' => 'HSE',
-            ],
-            [
-                'name' => 'Enviro',
-                'code' => 'ENV',
-            ],
-            [
-                'name' => 'QA/QM',
-                'code' => 'QA',
-            ],
-            [
-                'name' => 'Factory',
-                'code' => 'FAC',
-            ],
-            [
-                'name' => 'FAD',
-                'code' => 'FAD',
-            ],
-            [
-                'name' => 'FSD',
-                'code' => 'FSD',
-            ],
-            [
-                'name' => 'Sub Div A',
-                'code' => 'DIVA',
-            ],
-            [
-                'name' => 'Sub Div B',
-                'code' => 'DIVB',
-            ],
-            [
-                'name' => 'Sub Div C',
-                'code' => 'DIVC',
-            ],
-            [
-                'name' => 'Sub Div D',
-                'code' => 'DIVD',
-            ],
-            [
-                'name' => 'Sub Div E',
-                'code' => 'DIVE',
-            ],
-            [
-                'name' => 'Sub Div F',
-                'code' => 'DIVF',
-            ],
-            [
-                'name' => 'Security',
-                'code' => 'SEC',
-            ],
-            [
-                'name' => 'Workshop',
-                'code' => 'WSD',
-            ],
-            [
                 'name' => 'Div 1',
                 'code' => 'DIV1',
-            ],
-            [
-                'name' => 'Div 2',
-                'code' => 'DIV2',
-            ],
-            [
-                'name' => 'Finance',
-                'code' => 'FIN',
             ],
 
         ];

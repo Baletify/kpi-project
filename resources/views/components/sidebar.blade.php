@@ -174,7 +174,7 @@
                 </li>  
                 @endif           
             </ul>
-            <ul x-show="open" x-transition:enter="transition ease-out duration-100" x-transition:enter-start="transform opacity-0 scale-95" x-transition:enter-end="transform opacity-100 scale-100" x-transition:leave="transition ease-in duration-75" x-transition:leave-start="transform opacity-100 scale-100" x-transition:leave-end="transform opacity-0 scale-95" class="mt-2 space-y-2">
+            {{-- <ul x-show="open" x-transition:enter="transition ease-out duration-100" x-transition:enter-start="transform opacity-0 scale-95" x-transition:enter-end="transform opacity-100 scale-100" x-transition:leave="transition ease-in duration-75" x-transition:leave-start="transform opacity-100 scale-100" x-transition:leave-end="transform opacity-0 scale-95" class="mt-2 space-y-2">
                 @if ($role == 'Approver')
                 <div class="flex items-center pb-0 border-b border-b-gray-600"></div>
                 <li>
@@ -191,7 +191,7 @@
                 </li>
                 @endif
                            
-            </ul>
+            </ul> --}}
     </ul>
 </div>
 

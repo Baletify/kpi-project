@@ -100,7 +100,7 @@ class ReportController extends Controller
         if ($employee || $department || $status) {
             if ($role == 'Checker Div 1' || $role == 'Checker Div 2') {
                 $deptList = $divDept;
-            } elseif ($role == 'FAD' || $email == 'tabrani@bskp.co.id' || $email == 'siswantoko@bskp.co.id') {
+            } elseif ($role == 'FAD' || $email == 'tabrani@bskp.co.id' || $email == 'div1mng@example.com') {
                 $deptList = $divFAD;
             } elseif ($role == 'Checker WS') {
                 $deptList = $ws;
@@ -137,7 +137,7 @@ class ReportController extends Controller
         if ($role == 'Checker Div 1' || $role == 'Checker Div 2') {
             $deptList = $divDept;
             return view('report.list-department-report', ['title' => 'Report', 'desc' => 'Department List', 'deptList' => $deptList]);
-        } else if ($role == 'FAD' || $email == 'tabrani@bskp.co.id' || $email == 'siswantoko@bskp.co.id') {
+        } else if ($role == 'FAD' || $email == 'tabrani@bskp.co.id' || $email == 'div1mng@example.com') {
             $deptList = $divFAD;
             return view('report.list-department-report', ['title' => 'Report', 'desc' => 'Department List', 'deptList' => $deptList]);
         } else if ($role == 'Checker WS') {

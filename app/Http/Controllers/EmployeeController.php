@@ -55,7 +55,7 @@ class EmployeeController extends Controller
             $deptList = $factory;
         } else if ($role == 'FAD') {
             $deptList = $fad;
-        } elseif ($email == 'siswantoko@bskp.co.id') {
+        } elseif ($email == 'div1mng@example.com') {
             $deptList = $div1DeptManager;
         } else if ($email == 'tabrani@bskp.co.id') {
             $deptList = $div2DeptManager;
@@ -432,7 +432,7 @@ class EmployeeController extends Controller
                 ->whereIn('departments.name', $accMngDept)
                 ->groupBy('departments.name', 'departments.id')
                 ->get();
-        } elseif ($email == 'siswantoko@bskp.co.id') {
+        } elseif ($email == 'div1mng@example.co.id') {
             $approveList = DB::table('actuals')
                 ->join('employees', 'actuals.employee_id', '=', 'employees.id')
                 ->join('departments', 'employees.department_id', '=', 'departments.id')
@@ -587,7 +587,7 @@ class EmployeeController extends Controller
             $deptList = $factory;
         } else if ($role == 'FAD') {
             $deptList = $fad;
-        } elseif ($email == 'siswantoko@bskp.co.id' || $email == 'tabrani@bskp.co.id') {
+        } elseif ($email == 'div1mng@example.co.id' || $email == 'tabrani@bskp.co.id') {
             $deptList = $divMng;
         } else if ($email == 'hendi@bskp.co.id') {
             $deptList = $accDept;

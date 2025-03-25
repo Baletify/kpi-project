@@ -122,7 +122,7 @@ class ActualController extends Controller
         } elseif ($role == 'Checker Factory') {
             $dept = 'Factory';
             $allDept = DB::table('departments')->where('name', '=', $dept)->get();
-        } elseif ($email == 'tabrani@bskp.co.id' || $email == 'siswantoko@bskp.co.id') {
+        } elseif ($email == 'tabrani@bskp.co.id' || $email == 'div1mng@example.com') {
             $dept = ['Sub Div A', 'Sub Div B', 'Sub Div C', 'Sub Div D', 'Sub Div E', 'Sub Div F', 'Div 1', 'Div 2'];
             $allDept = DB::table('departments')->whereIn('name', $dept)->get();
         } elseif ($email == 'hendi@bskp.co.id') {
@@ -430,7 +430,7 @@ class ActualController extends Controller
         }
 
         $searchConditions = [
-            'kpi_item' => $request->kpi_item,
+            'kpi_code' => $request->kpi_item,
             'date' => $date,
             'employee_id' => $request->employee_id,
         ];
