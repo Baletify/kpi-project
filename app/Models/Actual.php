@@ -40,5 +40,6 @@ class Actual extends Model
         'mng_approved_by',
         'mng_approved_at',
         'employee_id',
+        'target_id',
     ];
 }

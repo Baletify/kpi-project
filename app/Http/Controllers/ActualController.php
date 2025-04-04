@@ -355,7 +355,7 @@ class ActualController extends Controller
 
     public function store(Request $request)
     {
-
+        // dd($request->all());
         $user = Auth::user();
         $role = $user->role;
 
@@ -464,7 +464,9 @@ class ActualController extends Controller
             'detail' => $request->detail,
             'input_by' => $input_by,
             'input_at' => now(),
+            'target_id' => $request->target_id,
         ];
+        // dd($dataToUpdateOrCreate, $searchConditions);
 
         Actual::updateOrCreate($searchConditions, $dataToUpdateOrCreate);
 

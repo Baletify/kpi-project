@@ -222,7 +222,7 @@
                     @foreach ($months as $month => $monthName)
                     @php
                         $actual = $actuals->first(function($item) use ($target, $month) {
-                            return \Carbon\Carbon::parse($item->date)->format('m') == $month && $item->kpi_item == $target->indicator;
+                            return \Carbon\Carbon::parse($item->date)->format('m') == $month && ($item->target_id ? $item->target_id == $target->id : $item->kpi_item == $target->indicator);
                         });
 
                         //  dump('target: ', $target, 'actual: ', $actual,  $month);
@@ -242,7 +242,10 @@
                     @endforeach
 
                     @php
-                         $totalActual = $totals[$target->indicator]['total_actual'] ?? 0;
+                         $totalActualByIndicator = $totals[$target->indicator]['total_actual'] ?? 0;
+                         $totalActualByID = $totals[$target->id]['total_actual'] ?? 0;
+                        //  dump($totalActualByID);
+                         $totalActual = $totalActualByIndicator + $totalActualByID;
                     @endphp
                     @if ($totalTarget >= 0)
                      <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="{{ $i % 2 === 0 ? 'FFF2F2F2' : 'FFFFFFFF' }}" class="border-2 bg-gray-50 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center">
@@ -267,13 +270,16 @@
                     @foreach ($months as $month => $monthName)
                     @php
                         $actual = $actuals->first(function($item) use ($target, $month) {
-                            return \Carbon\Carbon::parse($item->date)->format('m') == $month && $item->kpi_item == $target->indicator;
+                            return \Carbon\Carbon::parse($item->date)->format('m') == $month && ($item->target_id ? $item->target_id == $target->id : $item->kpi_item == $target->indicator);
                         });
                     @endphp
                     <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="{{ $i % 2 === 0 ? 'FFF2F2F2' : 'FFFFFFFF' }}" class="border-2 bg-blue-100 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center">{{ $actual ? $actual->kpi_percentage : '' }}</td>
                     @endforeach
                     @php
-                         $totalPercentage = $totals[$target->indicator]['percentageCalc'] ?? 0;
+                         $totalPercentageByIndicator = $totals[$target->indicator]['percentageCalc'] ?? 0;
+                         $totalPercentageByID = $totals[$target->id]['percentageCalc'] ?? 0;
+                         $totalPercentage = $totalPercentageByIndicator + $totalPercentageByID;
+                         
                     @endphp
                     @if ($totalTarget >= 0)
                      <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="{{ $i % 2 === 0 ? 'FFF2F2F2' : 'FFFFFFFF' }}" class="border-2 bg-blue-100 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center">{{ number_format($totalPercentage) }}%</td>

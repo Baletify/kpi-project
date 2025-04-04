@@ -212,6 +212,7 @@ class ReportController extends Controller
             $oneCalc = 0;
             $zeroCalc = 0;
         }
+        // dd($percentageValue);
         return $percentageValue;
     }
     public function show($id, Request $request)
@@ -241,7 +242,7 @@ class ReportController extends Controller
             $actuals = DB::table('actuals')
                 ->leftJoin('employees', 'actuals.employee_id', '=', 'employees.id')
                 ->leftJoin('departments', 'employees.department_id', '=', 'departments.id')
-                ->select('actuals.date as date', 'actuals.employee_id as employee_id', 'actuals.kpi_item', 'actuals.kpi_code as kpi_code', 'actuals.kpi_weighting', 'actuals.kpi_percentage as achievement', 'actuals.*', 'employees.name as name', 'employees.email as email', 'departments.name as department', 'employees.occupation as occupation', 'employees.nik as nik', 'actuals.semester as semester', 'actuals.date as year', 'actuals.target', 'actuals.actual', 'actuals.kpi_percentage', 'actuals.record_file', 'actuals.id as actual_id', 'actuals.status as status', 'actuals.trend', 'actuals.kpi_unit', 'actuals.review_period', 'departments.id as department_id')
+                ->select('actuals.date as date', 'actuals.employee_id as employee_id', 'actuals.kpi_item', 'actuals.kpi_code as kpi_code', 'actuals.kpi_weighting', 'actuals.kpi_percentage as achievement', 'actuals.*', 'employees.name as name', 'employees.email as email', 'departments.name as department', 'employees.occupation as occupation', 'employees.nik as nik', 'actuals.semester as semester', 'actuals.date as year', 'actuals.target', 'actuals.actual', 'actuals.kpi_percentage', 'actuals.record_file', 'actuals.id as actual_id', 'actuals.status as status', 'actuals.trend', 'actuals.kpi_unit', 'actuals.review_period', 'departments.id as department_id', 'target_id')
                 ->where('actuals.employee_id', $id)
                 ->where('actuals.semester', $semester)
                 ->where(DB::raw('YEAR(actuals.date)'), $year)
@@ -269,9 +270,19 @@ class ReportController extends Controller
             //     return view('components/404-page-report');
             // }
 
+            if ($actuals->contains(function ($item) {
+                return $item->target_id !== null;
+            })) {
+                // Group by target_id for rows where target_id is not null
+                $groupedData = $actuals->groupBy(function ($item) {
+                    return $item->target_id ?? $item->kpi_item; // Use kpi_item as fallback for null target_id
+                });
+            } else {
+                // Group by kpi_item if all target_id values are null
+                $groupedData = $actuals->groupBy('kpi_item');
+            }
 
 
-            $groupedData = $actuals->groupBy('kpi_item');
             // dd($targets, $groupedData);
 
 
@@ -312,6 +323,8 @@ class ReportController extends Controller
                 $periodItem = $firstItem->review_period;
                 $target = $firstItem->target;
                 $percentageCalc = $this->calculation($target, $totalTarget, $totalActual, $trendItem, $recordFileItem, $unitItem, $periodItem, $totalPercentage);
+
+                // dd($percentageCalc, $totalTarget, $totalActual);
 
                 $convertedCalc = floatval(str_replace('%', '', $percentageCalc));
 

@@ -195,6 +195,7 @@
                 <input type="hidden" name="year" id="year" value="{{ request()->query('year') }}">
                 <input type="hidden" name="status" id="status" value="Filled">
                 <input type="hidden" name="role" id="role" value="{{ $role }}">
+                <input type="hidden" name="target_id" id="target_id" value="{{ $target->id }}">
               <div class="absolute inset-y-0 right-0 flex items-center">
               </div>
             </div>
