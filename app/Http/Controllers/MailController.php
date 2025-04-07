@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Jobs\ProcessEmail;
 use App\Mail\PostMail;
+use App\Models\Actual;
+use App\Jobs\ProcessEmail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -19,24 +20,32 @@ class MailController extends Controller
         if ($email == '' || $email == 0) {
             $sendTo =  DB::table('employees')->where('department_id', '=', $departmentID)->where('role', '=', 'Inputer')->select('email')->first();
         } else {
-            $sendTo = $email;
+            $sendTo = 'iqbalpanggung@gmail.com';
         }
         // dd($sendTo);
 
         $from = Auth::user()->name;
+        $emailBy = Auth::user()->email;
         $details = [
             'revised_by' => $from,
+            'email_by' => $emailBy,
             'email' => $sendTo,
             'title' => 'Revisi Data Pendukung KPI',
             'greetings' => 'Dengan Hormat,',
-            'msg' => 'Berdasarkan pengecekan yang kami lakukan terdapat perhitungan KPI dan data pendukung yang tidak sesuai, untuk itu segara hubungi personnel yang terkait dan segara siapkan data KPI dan data pendukung yang sesuai. Berikut ini adalah data yang perlu direvisi:',
+            'msg' => 'Berdasarkan pengecekan yang kami lakukan terdapat perhitungan KPI dan data pendukung yang tidak sesuai, untuk itu segera hubungi personnel yang terkait dan segara siapkan data KPI dan data pendukung yang sesuai. Berikut ini adalah data yang perlu direvisi:',
             'kpi_code' => $request->kpi_code,
             'kpi_item' => $request->kpi_item,
             'comment' => $request->comment,
+            'request' => 'Silahkan upload ulang data pendukung KPI yang sesuai dalam waktu 3 hari',
+            'closing' => 'Terima kasih atas perhatian dan kerjasamanya.',
         ];
 
         // dd($details);
 
+        Actual::where('id', $request->actual_id)->update([
+            'status' => 'Revisi',
+
+        ]);
         ProcessEmail::dispatch($details);
 
         return back()->with('success', 'Email has been sent');
@@ -45,6 +54,7 @@ class MailController extends Controller
     public function sendEmailDept(Request $request)
     {
         $from = Auth::user()->name;
+        $emailBy = Auth::user()->email;
         $departmentID = $request->department_id;
         $sendTo = DB::table('employees')
             ->join('departments', 'employees.department_id', '=', 'departments.id')
@@ -57,12 +67,15 @@ class MailController extends Controller
         $details = [
             'revised_by' => $from,
             'email' => $sendTo,
+            'email_by' => $emailBy,
             'title' => 'Revisi Data Pendukung KPI',
             'greetings' => 'Dengan Hormat,',
-            'msg' => 'Berdasarkan pengecekan yang kami lakukan terdapat perhitungan KPI dan data pendukung yang tidak sesuai, untuk itu segara hubungi personnel yang terkait dan segara siapkan data KPI dan data pendukung yang sesuai. Berikut ini adalah data yang perlu direvisi:',
+            'msg' => 'Berdasarkan pengecekan yang kami lakukan terdapat perhitungan KPI dan data pendukung yang tidak sesuai, untuk itu segera hubungi personnel yang terkait dan segara siapkan data KPI dan data pendukung yang sesuai. Berikut ini adalah data yang perlu direvisi:',
             'kpi_code' => $request->kpi_code,
             'kpi_item' => $request->kpi_item,
             'comment' => $request->comment,
+            'request' => 'Silahkan upload ulang data pendukung KPI yang sesuai dalam waktu 3 hari',
+            'closing' => 'Terima kasih atas perhatian dan kerjasamanya.',
         ];
 
         ProcessEmail::dispatch($details);

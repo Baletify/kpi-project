@@ -335,7 +335,7 @@
                                 <span class="text-orange-300">Check 1</span>
                                 @elseif ($actual->input_at != null)
                                 <span class="text-yellow-500">Check</span>
-                                @elseif ($actual->status != 'Revisi')
+                                @elseif ($actual->status != 'Revise')
                                 <span class="text-orange-600">Revisi</span>
                                 @endif
                             </button>
@@ -528,8 +528,7 @@
                                                     <input type="hidden" name="kpi_code" id="kpi_code" value="{{ $target->code }}">
                                                     <input type="hidden" name="kpi_item" id="kpi_item" value="{{ $target->indicator }}">
                                                     <input type="hidden" name="department_id" id="department_id" value="{{ $actuals->first()->department_id }}">
-
-
+                                                    <input type="hidden" name="actual_id" id="actual_id" value="{{ $actual->actual_id }}">
                                                 </div>
                                             </form>
                                             @endif

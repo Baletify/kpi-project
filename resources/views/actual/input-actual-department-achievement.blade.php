@@ -469,6 +469,9 @@
                     } else {
                         achievement = (actual / target) * 100;
                     }
+                    if (achievement >= 150) {
+                        achievement = 150;
+                    }
                     achievementField.value = Math.round(achievement) + '%';
                 } else {
                     achievementField.value = '';

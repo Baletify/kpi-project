@@ -17,20 +17,13 @@
     <section class="bg-blue-500 min-h-screen flex items-center justify-center">
         <div class="bg-blue-100 flex shadow-lg max-w-5xl p-5 rounded-2xl">
             <div class="sm:w-1/2 px-5">
-                <h2 class="font-bold text-3xl">Login</h2>
-                <p class="text-sm mt-4 mb-6">Login untuk melanjutkan ke Aplikasi KPI</p>
-                <form action="{{ url('auth/me') }}" method="POST" class="flex flex-col">
+                <h2 class="font-bold text-3xl">Reset Password</h2>
+                <p class="text-sm mt-4 mb-6">Masukkan email anda</p>
+                <form action="{{ route('password.reset') }}" method="POST" class="flex flex-col">
                     @csrf
                     <label for="email" class="font-semibold mb-0.5">Email:</label>
-                    <input class="p-2 rounded-xl border-none mb-2" type="text" name="email" id="email" placeholder="Email" autocomplete="off">
-                    <label for="password" class="font-semibold mb-0.5">Password:</label>
-                    <input class="p-2 rounded-xl border-none mb-0" type="password" name="password" id="password" placeholder="Password" autocomplete="off">
-                    <div class="mb-3 mt-1 ml-1">
-                        <a href="{{ route('reset-password') }}">
-                            <p class="text-blue-500">Reset Password</p>
-                        </a>
-                    </div>
-                    <button class="bg-blue-700 text-white rounded-xl py-2">Login</button>
+                    <input class="p-2 rounded-xl border-none mb-4" type="text" name="email" id="email" placeholder="Email" autocomplete="off">
+                    <button class="bg-blue-700 text-white rounded-xl py-2">Email Password Reset Link</button>
                 </form>
             </div>
             <div class="w-2/3">

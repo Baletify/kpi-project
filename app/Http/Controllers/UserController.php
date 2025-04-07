@@ -126,4 +126,23 @@ class UserController extends Controller
 
         return redirect()->route('user.index')->with('success', 'Employee deleted successfully.');
     }
+
+    public function updatePassword(Request $request)
+    {
+        // dd($request->all()); 
+        $validator = Validator::make($request->all(), [
+            'token' => 'required',
+            'email' => 'required',
+            'password' => 'required',
+            'confirm_password' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()->with('error', 'Please fill all the fields.');
+        }
+
+        Employee::where('email', $request->email)->update(['password' => Hash::make($request->password)]);
+
+        return redirect()->to('/')->with('success', 'Password reset successfully.');
+    }
 }
