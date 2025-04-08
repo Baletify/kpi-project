@@ -325,7 +325,9 @@
                             // dd($userID);
                         @endphp
                             <button id="{{ $buttonId }}" class="hover:underline" data-month="{{ $date->format('m') }}" data-actual-id="{{ $actual->actual_id }}">
-                                @if ($actual->approved_at != null)
+                                @if ($actual->status == 'Revise')
+                                <span class="text-orange-600">Revisi</span>
+                                @elseif ($actual->approved_at != null)
                                 <span class="text-green-500">Yes</span>
                                 @elseif ($actual->mng_approved_at != null)
                                 <span class="text-blue-500">Review</span>
@@ -335,8 +337,6 @@
                                 <span class="text-orange-300">Check 1</span>
                                 @elseif ($actual->input_at != null)
                                 <span class="text-yellow-500">Check</span>
-                                @elseif ($actual->status != 'Revise')
-                                <span class="text-orange-600">Revisi</span>
                                 @endif
                             </button>
                             {{-- MODAL --}}

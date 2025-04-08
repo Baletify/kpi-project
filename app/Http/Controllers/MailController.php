@@ -14,13 +14,13 @@ class MailController extends Controller
 {
     public function sendEmail(Request $request)
     {
-        // dd($request->all());
+        dd($request->all());
         $email = $request->email;
         $departmentID = $request->department_id;
         if ($email == '' || $email == 0) {
             $sendTo =  DB::table('employees')->where('department_id', '=', $departmentID)->where('role', '=', 'Inputer')->select('email')->first();
         } else {
-            $sendTo = 'iqbalpanggung@gmail.com';
+            $sendTo = $email;
         }
         // dd($sendTo);
 
@@ -43,7 +43,7 @@ class MailController extends Controller
         // dd($details);
 
         Actual::where('id', $request->actual_id)->update([
-            'status' => 'Revisi',
+            'status' => 'Revise',
 
         ]);
         ProcessEmail::dispatch($details);
