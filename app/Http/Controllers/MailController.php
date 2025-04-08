@@ -14,7 +14,7 @@ class MailController extends Controller
 {
     public function sendEmail(Request $request)
     {
-        dd($request->all());
+        // dd($request->all());
         $email = $request->email;
         $departmentID = $request->department_id;
         if ($email == '' || $email == 0) {
