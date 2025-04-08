@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Mail\PostMail;
 use App\Models\Actual;
 use App\Jobs\ProcessEmail;
+use App\Models\DepartmentActual;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -79,6 +80,10 @@ class MailController extends Controller
         ];
 
         ProcessEmail::dispatch($details);
+        DepartmentActual::where('id', $request->actual_id)->update([
+            'status' => 'Revise',
+
+        ]);
 
         return back()->with('success', 'Email has been sent');
     }

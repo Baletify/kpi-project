@@ -474,6 +474,7 @@
                                                 <input type="hidden" name="kpi_code" id="kpi_code" value="{{ $target->code }}">
                                                 <input type="hidden" name="kpi_item" id="kpi_item" value="{{ $target->indicator }}">
                                                 <input type="hidden" name="department_id" id="department_id" value="{{ $target->department_id }}">
+                                                <input type="hidden" name="actual_id" id="actual_id" value="{{ $actual->department_actual_id }}">
                                             </form>
                                             @endif
                                         @endif
