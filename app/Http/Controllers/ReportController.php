@@ -173,7 +173,7 @@ class ReportController extends Controller
             } elseif ($actual == 1) {
                 $oneCalc = '100%';
             } elseif ($actual == 2) {
-                $oneCalc = '105%%';
+                $oneCalc = '105%';
             } else if ($actual == 3) {
                 $oneCalc = '110%';
             } else if ($actual == 4) {
@@ -183,11 +183,12 @@ class ReportController extends Controller
             } else {
                 $oneCalc = '0%';
             }
-            return $oneCalc;
+            $percentageValue = $oneCalc;
+            return $percentageValue;
         } elseif ($zeroStatus == 'yes') {
             if ($actual == 0) {
                 $zeroCalc = '100%';
-            } elseif ($actual == 1.5) {
+            } elseif ($actual == 1) {
                 $zeroCalc = '75%';
             } elseif ($actual == 2) {
                 $zeroCalc = '50%';
@@ -200,7 +201,8 @@ class ReportController extends Controller
             } else {
                 $zeroCalc = '0%';
             }
-            return $zeroCalc;
+            $percentageValue = $zeroCalc;
+            return $percentageValue;
         } elseif ($unit == 'Tgl' || $unit == 'tgl') {
             $percentageValue = Averages::average($totalPercentage);
         } elseif ($trend == 'Negatif') {
@@ -383,7 +385,7 @@ class ReportController extends Controller
             // }
 
             $groupedData = $actuals->groupBy('kpi_code');
-            // dd($groupedData);
+            // dd($groupedData, $targets);
 
             // Hitung total target dan actual untuk setiap kelompok
             $totals = $groupedData->map(function ($group) {
@@ -420,10 +422,11 @@ class ReportController extends Controller
                 $trendItem = $firstItem->trend;
                 $recordFileItem = $firstItem->record_file;
                 $periodItem = $firstItem->review_period;
-                $percentageCalc = $this->calculation($totalTarget, $totalTarget, $totalActual, $trendItem, $recordFileItem, $unitItem, $periodItem, $totalPercentage);
+                $percentageCalc = $totalPercentage;
 
 
                 $convertedCalc = floatval(str_replace('%', '', $percentageCalc));
+                // dd($convertedCalc);
 
 
                 $weight = floatval($group->first()->kpi_weighting); // Ambil bobot dari item pertama dalam grup

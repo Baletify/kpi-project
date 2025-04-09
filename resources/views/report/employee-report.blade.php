@@ -178,7 +178,7 @@
                         });
                 @endphp
                     <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="{{ $i % 2 === 0 ? 'FFF2F2F2' : 'FFFFFFFF' }}" class="border-2 bg-blue-100 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center">
-                    @if ($actual)
+                    {{-- @if ($actual)
                     @if ($actual->target === '%')
                         {{ $actual->target !== null ? ($actual->target * 100) . '%' : '' }}
                     @elseif ($actual->target == 'Rp')
@@ -188,17 +188,17 @@
                     @else
                         {{ $actual->target !== null ? $actual->target : 'N/A' }} 
                     @endif
-                    @else
+                    @else --}}
                     @if ($target->unit === '%')
-                        {{ $targetUnit !== null ? ($targetUnit * 100) . '%' : '' }}
+                        {{ $targetUnit !== null ? ($targetUnit * 100) . '%' : 'N/A' }}
                     @elseif ($target->unit == 'Rp')
-                    {{ $targetUnit !== null ? substr(number_format($targetUnit, 0, '.', ','), 0, 7) : ''}}
+                    {{ $targetUnit !== null ? substr(number_format($targetUnit, 0, '.', ','), 0, 7) : 'N/A'}}
                     @elseif ($target->unit == 'Kg')
-                    {{ $targetUnit !== null ? substr(number_format($targetUnit, 1, '.', ','), 0, 7) : ''}}
+                    {{ $targetUnit !== null ? substr(number_format($targetUnit, 1, '.', ','), 0, 7) : 'N/A'}}
                     @else
                         {{ $targetUnit !== null ? $targetUnit : 'N/A' }} 
                     @endif
-                    @endif
+                    {{-- @endif --}}
                     
                     </td>
                     @endforeach

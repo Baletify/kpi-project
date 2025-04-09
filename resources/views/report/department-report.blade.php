@@ -97,7 +97,6 @@
                     @php
                         $i = 0;
                         $sumTotalWeightingAchievement = 0;
-                        $sumTarget = 0;
                     @endphp
                     @foreach ($targets as $target)
                     @php        
@@ -121,37 +120,40 @@
                             {{ $target->weighting }}
                         </td>
                         <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="{{ $i % 2 === 0 ? 'FFF2F2F2' : 'FFFFFFFF' }}" class="border-2 bg-blue-100  border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center">Target</td>
+                        @php
+                            $sumTarget = 0;
+                        @endphp
                         @foreach ($months as $month => $monthName)
                         @php
                         $targetUnitField = 'target_' . $month;
                         $targetUnit = $target->$targetUnitField;
                         $sumTarget += $targetUnit;
                         $actual = $actuals->first(function($item) use ($target, $month) {
-                                return \Carbon\Carbon::parse($item->date)->format('m') == $month && $item->kpi_item == $target->indicator;
+                                return \Carbon\Carbon::parse($item->date)->format('m') == $month && $item->kpi_code == $target->code;
                             });
                         @endphp
                         <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="{{ $i % 2 === 0 ? 'FFF2F2F2' : 'FFFFFFFF' }}" class="border-2 bg-blue-100 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center">
-                            @if ($actual)
-                            @if ($actual->target === '%')
-                                {{ $actual->target !== null ? ($actual->target * 100) . '%' : '' }}
-                            @elseif ($actual->target == 'Rp')
-                            {{ $actual->target !== null ? substr(number_format($actual->target, 0, '.', ','), 0, 7) : ''}}
-                            @elseif ($actual->target == 'Kg')
-                            {{ $actual->target !== null ? substr(number_format($actual->target, 1, '.', ','), 0, 7) : ''}}
-                            @else
-                                {{ $actual->target !== null ? $actual->target : 'N/A' }} 
-                            @endif
-                            @else
-                            @if ($target->unit === '%')
-                                {{ $targetUnit !== null ? ($targetUnit * 100) . '%' : '' }}
-                            @elseif ($target->unit == 'Rp')
-                            {{ $targetUnit !== null ? substr(number_format($targetUnit, 0, '.', ','), 0, 7) : ''}}
-                            @elseif ($target->unit == 'Kg')
-                            {{ $targetUnit !== null ? substr(number_format($targetUnit, 1, '.', ','), 0, 7) : ''}}
-                            @else
-                                {{ $targetUnit !== null ? $targetUnit : 'N/A' }} 
-                            @endif
-                            @endif
+                            {{-- @if ($actual)
+                                @if ($actual->target === '%')
+                                    {{ $actual->target !== null ? ($actual->target * 100) . '%' : '' }}
+                                @elseif ($actual->target == 'Rp')
+                                {{ $actual->target !== null ? substr(number_format($actual->target, 0, '.', ','), 0, 7) : ''}}
+                                @elseif ($actual->target == 'Kg')
+                                {{ $actual->target !== null ? substr(number_format($actual->target, 1, '.', ','), 0, 7) : ''}}
+                                @else
+                                    {{ $actual->target !== null ? $actual->target : 'N/A' }} 
+                                @endif
+                            @else --}}
+                                @if ($target->unit === '%')
+                                    {{ $targetUnit !== null ? ($targetUnit) . '%' : 'N/A' }}
+                                @elseif ($target->unit == 'Rp')
+                                {{ $targetUnit !== null ? substr(number_format($targetUnit, 0, '.', ','), 0, 7) : 'N/A'}}
+                                @elseif ($target->unit == 'Kg')
+                                {{ $targetUnit !== null ? substr(number_format($targetUnit, 1, '.', ','), 0, 7) : 'N/A'}}
+                                @else
+                                    {{ $targetUnit !== null ? $targetUnit : 'N/A' }} 
+                                @endif
+                            {{-- @endif --}}
                         </td>
                         @endforeach
                         
@@ -273,7 +275,7 @@
                             $pdfObjectId = 'pdfObject-' . $actual->department_actual_id;
                         @endphp
                             <button id="{{ $buttonId }}" class="hover:underline" data-month="{{ $date->format('m') }}" data-actual-id="{{ $actual->department_actual_id }}">
-                                @if ($actual->status != 'Revisi')
+                                @if ($actual->status == 'Revise')
                                 <span class="text-orange-600">Revisi</span>
                                 @elseif ($actual->approved_at != null)
                                 <span class="text-green-500">Yes</span>
