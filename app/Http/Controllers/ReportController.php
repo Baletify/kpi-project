@@ -510,8 +510,8 @@ class ReportController extends Controller
                 ->whereIn('departments.id', $departmentIds)
                 ->get();
 
-            $actualsGroup1 = $semester1Actuals->groupBy(['employee_id', 'kpi_code']);
-            $actualsGroup2 = $semester2Actuals->groupBy(['employee_id', 'kpi_code']);
+            $actualsGroup1 = $semester1Actuals->groupBy(['employee_id', 'kpi_item']);
+            $actualsGroup2 = $semester2Actuals->groupBy(['employee_id', 'kpi_item']);
             $actualsDeptGroup1 = $semester1ActualsDept->groupBy(['department_id', 'kpi_code']);
             $actualsDeptGroup2 = $semester2ActualsDept->groupBy(['department_id', 'kpi_code']);
 
@@ -759,8 +759,8 @@ class ReportController extends Controller
                 ->whereIn('departments.id', $departmentIds)
                 ->get();
 
-            $actualsGroup1 = $semester1Actuals->groupBy(['employee_id', 'kpi_code']);
-            $actualsGroup2 = $semester2Actuals->groupBy(['employee_id', 'kpi_code']);
+            $actualsGroup1 = $semester1Actuals->groupBy(['employee_id', 'kpi_item']);
+            $actualsGroup2 = $semester2Actuals->groupBy(['employee_id', 'kpi_item']);
             $actualsDeptGroup1 = $semester1ActualsDept->groupBy(['department_id', 'kpi_code']);
             $actualsDeptGroup2 = $semester2ActualsDept->groupBy(['department_id', 'kpi_code']);
 
@@ -1007,8 +1007,8 @@ class ReportController extends Controller
                 ->whereIn('departments.id', $departmentIds)
                 ->get();
 
-            $actualsGroup1 = $semester1Actuals->groupBy(['employee_id', 'kpi_code']);
-            $actualsGroup2 = $semester2Actuals->groupBy(['employee_id', 'kpi_code']);
+            $actualsGroup1 = $semester1Actuals->groupBy(['employee_id', 'kpi_item']);
+            $actualsGroup2 = $semester2Actuals->groupBy(['employee_id', 'kpi_item']);
             $actualsDeptGroup1 = $semester1ActualsDept->groupBy(['department_id', 'kpi_code']);
             $actualsDeptGroup2 = $semester2ActualsDept->groupBy(['department_id', 'kpi_code']);
 
@@ -1257,8 +1257,8 @@ class ReportController extends Controller
                 ->whereIn('departments.id', $departmentIds)
                 ->get();
 
-            $actualsGroup1 = $semester1Actuals->groupBy(['employee_id', 'kpi_code']);
-            $actualsGroup2 = $semester2Actuals->groupBy(['employee_id', 'kpi_code']);
+            $actualsGroup1 = $semester1Actuals->groupBy(['employee_id', 'kpi_item']);
+            $actualsGroup2 = $semester2Actuals->groupBy(['employee_id', 'kpi_item']);
             $actualsDeptGroup1 = $semester1ActualsDept->groupBy(['department_id', 'kpi_code']);
             $actualsDeptGroup2 = $semester2ActualsDept->groupBy(['department_id', 'kpi_code']);
 

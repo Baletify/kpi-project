@@ -96,11 +96,15 @@
                   $startIndex = ($employees->currentPage() - 1) * $employees->perPage() + 1;
                   $totalSemester1Weight = 0;
                     $totalSemester2Weight = 0;
+                    $totalSemester1WeightSum = 0;
+                    $totalSemester2WeightSum = 0;
                     $totalSemester1DeptWeight = 0;
                     $totalSemester2DeptWeight = 0;
                     $totalWeightSum = 0;
                     $totalDeptWeightSum = 0;
-                    $totalAllSum = 0;
+                    $totalAverage = 0;
+                    $totalAverageSum = 0;
+                    $rowCount = 0;
               @endphp
               @foreach ($employees as $index => $employee)
               @php
@@ -124,8 +128,12 @@
                 $totalSemester2DeptWeight =  PhpOffice\PhpSpreadsheet\Calculation\Statistical\Averages::average($sumSemester2Dept);
                 $totalWeightSum =  PhpOffice\PhpSpreadsheet\Calculation\Statistical\Averages::average($totalSumEmployee);
                 $totalDeptWeightSum = PhpOffice\PhpSpreadsheet\Calculation\Statistical\Averages::average($totalSumDept);
-                $totalAllSum =  PhpOffice\PhpSpreadsheet\Calculation\Statistical\Averages::average($totalAll);
-                // dd($totalWeightSum, $totalDeptWeightSum, $totalAllSum);  
+                $totalAverage = PhpOffice\PhpSpreadsheet\Calculation\Statistical\Averages::average($totalAll);
+
+                $totalSemester1WeightSum += $totalSemester1Weight;
+                $totalSemester2WeightSum += $totalSemester2Weight;
+                $totalAverageSum += $totalAverage;
+                $rowCount++;
                   
               @endphp
             <tr class="{{ $i % 2 === 0 ? 'bg-white' : 'bg-blue-100' }}">
@@ -177,16 +185,22 @@
               @endforeach
 
               @if(request()->query('department'))
+              @php
+              $finalTotalSemester1Weight = $rowCount > 0 ? $totalSemester1WeightSum / $rowCount : 0;
+              $finalTotalSemester2Weight = $rowCount > 0 ? $totalSemester2WeightSum / $rowCount : 0;
+              $finalTotalEmployeeWeight = $finalTotalSemester1Weight + $finalTotalSemester2Weight;
+              $finalTotalAverage = $rowCount > 0 ? $totalAverageSum / $rowCount : 0;
+              @endphp
               <tr class="bg-gray-200">
                 <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="FFF2F2F2" class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-gray-600 py-0.5 px-2 text-center"></td>
                 <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="FFF2F2F2" class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-gray-600 py-0.5 px-2 text-center" colspan="4">Total</td>
                 <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="FFF2F2F2" class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-gray-600 py-0.5 px-2 text-center">{{ number_format($totalSemester1DeptWeight, 1) }}%</td>
                 <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="FFF2F2F2" class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-gray-600 py-0.5 px-2 text-center">{{ number_format($totalSemester2DeptWeight, 1) }}%</td>
                 <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="FFF2F2F2" class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-gray-600 py-0.5 px-2 text-center">{{ number_format($totalDeptWeightSum, 1) }}%</td>
-                <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="FFF2F2F2" class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-gray-600 py-0.5 px-2 text-center">{{ number_format($totalSemester1Weight, 1) }}%</td>
-                <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="FFF2F2F2" class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-gray-600 py-0.5 px-2 text-center">{{ number_format($totalSemester2Weight, 1) }}%</td>
-                <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="FFF2F2F2" class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-gray-600 py-0.5 px-2 text-center">{{ number_format($totalWeightSum, 1) }}%</td>
-                <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="FFF2F2F2" class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-gray-600 py-0.5 px-2 text-center">{{ number_format($totalAllSum, 1) }}%</td>
+                <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="FFF2F2F2" class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-gray-600 py-0.5 px-2 text-center">{{ number_format($finalTotalSemester1Weight, 1) }}%</td>
+                <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="FFF2F2F2" class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-gray-600 py-0.5 px-2 text-center">{{ number_format($finalTotalSemester2Weight, 1) }}%</td>
+                <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="FFF2F2F2" class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-gray-600 py-0.5 px-2 text-center">{{ number_format($finalTotalEmployeeWeight, 1) }}%</td>
+                <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="FFF2F2F2" class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-gray-600 py-0.5 px-2 text-center">{{ number_format($finalTotalAverage, 1) }}%</td>
             </tr>
             @endif
         </table>
