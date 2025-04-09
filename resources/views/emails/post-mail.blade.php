@@ -50,7 +50,7 @@
             <td>{{ $details['revised_by'] . '(' . $details['email_by'] . ')' }}</td>
         </tr>
         <tr>
-            <td>Permintaan</td>
+            <td>Perbaikan</td>
             <td>:</td>
             <td>{{ $details['request'] }}</td>
         </tr>

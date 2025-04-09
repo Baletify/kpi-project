@@ -18,6 +18,7 @@ use App\Http\Controllers\ActionPlanController;
 use App\Http\Controllers\GeneratePdfController;
 use App\Http\Controllers\RequirementController;
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\SupportingDocumentController;
 use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 
 Route::get('/', function () {
@@ -155,6 +156,10 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/master-input', [EmployeeController::class, 'indexMasterInput'])->name('masterInput');
     Route::post('/master-input/update', [EmployeeController::class, 'updateMasterInput'])->name('updateMasterInput');
+
+    Route::get('/supporting-document-employee', [SupportingDocumentController::class, 'index'])->name('supportingDocumentEmployee');
+
+    Route::get('/supporting-document-dept', [SupportingDocumentController::class, 'indexDept'])->name('supportingDocumentDept');
 });
 
 

@@ -39,7 +39,7 @@ class MailController extends Controller
             'kpi_code' => $request->kpi_code,
             'kpi_item' => $request->kpi_item,
             'comment' => $request->comment,
-            'request' => 'Silahkan upload ulang data pendukung KPI yang sesuai dalam waktu 3 hari',
+            'request' => 'Segera lakukan perbaikan dan upload data yang sesuai (maksimal 3 hari setelah email ini)',
             'closing' => 'Terima kasih atas perhatian dan kerjasamanya.',
         ];
 
@@ -77,7 +77,7 @@ class MailController extends Controller
             'kpi_code' => $request->kpi_code,
             'kpi_item' => $request->kpi_item,
             'comment' => $request->comment,
-            'request' => 'Silahkan upload ulang data pendukung KPI yang sesuai dalam waktu 3 hari',
+            'request' => 'Segera lakukan perbaikan dan upload data yang sesuai (maksimal 3 hari setelah email ini)',
             'closing' => 'Terima kasih atas perhatian dan kerjasamanya.',
         ];
 
@@ -95,23 +95,25 @@ class MailController extends Controller
     {
         $details = [
             'title' => 'Notifikasi Pengingat Pengisian data KPI',
-            'greetings' => 'Dengan Hormat,',
-            'msg' => 'Mengingatkan kembali untuk mengisi data KPI dan data pendukung KPI. Jika anda sudah mengisi data KPI dan data pendukung KPI, abaikan email ini.',
+            'greetings' => 'Yth. ',
+            'name' => '',
+            'msg' => 'Mengingatkan kembali untuk mengisi data KPI dan mengupload data pendukung KPI yang sesuai.',
+            'msg2' => 'Jika anda sudah mengisi data KPI dan data pendukung KPI, abaikan email ini.',
             'closing' => 'Terima kasih atas perhatian dan kerjasamanya.',
             'email' => '',
         ];
 
         $sendTo = DB::table('employees')
             ->where('employees.role', '!=', 'Mng Approver')
-            ->select('employees.email')
+            ->select('employees.email', 'employees.name')
             ->get();
 
         foreach ($sendTo as $email) {
             $details['email'] = $email->email;
-            if ($details['email'] != null && $details['email'] != '') {
+            $details['name'] = $email->name;
+
+            if ($details['email'] !== null && $details['email'] !== '' && $details['email'] !== 0) {
                 ReminderInputEmail::dispatch($details);
-            } else {
-                continue;
             }
         }
     }

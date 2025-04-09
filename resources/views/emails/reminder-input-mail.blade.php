@@ -24,12 +24,18 @@
 
     <p style="font-weight: bold">Email ini merupakan email otomatis yang berasal dari Aplikasi KPI</p>
     <div class="">
-        <p>{{ $details['greetings'] }}</p>
+        <p>{{ $details['greetings'] }}{{ $details['name'] }} "{{ $details['email'] }}"</p>
     </br>
         <p>{{ $details['msg'] }}</p>
+        <p>{{ $details['msg2'] }}</p>
     </div>
     <div class="">
         <p>{{ $details['closing'] }}</p>
+    </div>
+    <div class="">
+        <p>Salam, </p>
+    </br>
+        <p>[HR/Admin KPI]</p>
     </div>
 
 </body>
