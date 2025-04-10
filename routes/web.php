@@ -158,8 +158,9 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/master-input/update', [EmployeeController::class, 'updateMasterInput'])->name('updateMasterInput');
 
     Route::get('/supporting-document-employee', [SupportingDocumentController::class, 'index'])->name('supportingDocumentEmployee');
-
     Route::get('/supporting-document-dept', [SupportingDocumentController::class, 'indexDept'])->name('supportingDocumentDept');
+    Route::get('/supporting-document-employee-list', [SupportingDocumentController::class, 'employeeSupportingDocumentList'])->name('employeeSupportingDocumentList');
+    Route::get('/supporting-document-file', [SupportingDocumentController::class, 'showFile'])->name('supportingDocumentFile');
 });
 
 

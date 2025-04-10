@@ -13,10 +13,13 @@
             <div class="flex flex-col justify-end">
                 <div class="flex justify-end">
                     <div class=" mt-1 rounded-md">
-                        <form action="{{ route('report.index') }}" method="GET">
+                        <form action="{{ route('report.indexDept') }}" method="GET">
                         <div class="mt-1 mb-1 mx-2">
                             <select name="department" id="department" class="col-start-1 row-start-1 w-full appearance-none rounded-md py-1.5 pl-3 pr-7 text-base text-gray-500 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
-                                <option value="">-- Departmen --</option>
+                                <option value="">-- Departemen --</option>
+                                @foreach ($departments as $item ) 
+                                    <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                @endforeach
                             </select>
                         </div>
                         <div class="absolute inset-y-0 right-0 flex items-center">
@@ -40,18 +43,9 @@
                                 </select>
                             </div>
                           </div>
-                          <div class="relative mt-1 rounded-md">
-                            <div class="mt-2 mb-1 mx-0.5">
-                                <select name="semester" id="semester" class="col-start-1 row-start-1 w-full appearance-none rounded-md py-1.5 pl-3 pr-7 text-base text-gray-500 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
-                                    <option value="">-- Semester --</option>
-                                    <option value="1">1</option>
-                                    <option value="2">2</option>
-                                </select>
-                            </div>
-                          </div>
                           <div class="mt-0 rounded-md mb-1 mx-2">
                             <button type="button" class="p-2 bg-blue-600 my-2 rounded-md text-white">
-                                <a href="">
+                                <a href="{{ route('supportingDocumentDept') }}" id="employee-link-">
                                     Data Pendukung Dept
                                 </a>
                             </button>
@@ -59,6 +53,7 @@
                     </div>
             </div>
         </div>
+        
 
         <div class="flex justify-center mt-2 mb-2">
             <table class="w-3/4 table-auto">
@@ -83,7 +78,7 @@
                         <td class="border-2 border-gray-400 text-[12px] tracking-wide px-2 py-0">{{ $employee->department }}</td>
                         <td class="border-2 border-gray-400 text-[12px] tracking-wide px-2 py-0">
                             <div class="flex justify-center gap-3 my-0.5">
-                                <a href="" class="rounded-md text-blue-500 hover:underline">Lihat Data Pendukung</a>
+                                <a href="{{ route('employeeSupportingDocumentList') }}?employee={{ $employee->id }}" id="employee-link-{{ $employee->id }}" class="rounded-md text-blue-500 hover:underline">Lihat Data Pendukung</a>
                             </div>
                         </td>
                     </tr>
@@ -99,3 +94,37 @@
         
     </div>
 </x-app-layout>
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const yearDropdown = document.getElementById('year');
+        
+        // Set the dropdown values from localStorage if they exist
+        const savedYear = localStorage.getItem('selectedYear');
+        if (savedYear) {
+            yearDropdown.value = savedYear;
+        }
+
+        // Save the dropdown values to localStorage on change
+        yearDropdown.addEventListener('change', function() {
+            const year = this.value;
+            localStorage.setItem('selectedYear', year);
+            updateLinks();
+        });
+
+
+        function updateLinks() {
+            const year = yearDropdown.value;
+            const links = document.querySelectorAll('a[id^="employee-link-"]');
+            links.forEach(link => {
+                const url = new URL(link.href);
+                url.searchParams.set('year', year);
+                link.href = url.toString();
+            });
+        }
+
+        // Initial update of links
+        updateLinks();
+    });
+</script>
