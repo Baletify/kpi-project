@@ -2,20 +2,19 @@
 
 namespace App\Jobs;
 
-use App\Mail\PostMail;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Foundation\Queue\Queueable;
+use App\Mail\ReminderCheck1Mail;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Foundation\Queue\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
 
-class ProcessEmail implements ShouldQueue
+class ReminderCheck1Email implements ShouldQueue
 {
     use Queueable;
+    public $details;
 
     /**
      * Create a new job instance.
      */
-    public $details;
-
     public function __construct($details)
     {
         $this->details = $details;
@@ -26,7 +25,6 @@ class ProcessEmail implements ShouldQueue
      */
     public function handle(): void
     {
-        $cc = ['hamzah@bskp.co.id', 'ga@bskp.co.id'];
-        Mail::to($this->details['email'])->cc($cc)->send(new PostMail($this->details));
+        Mail::to($this->details['email'])->send(new ReminderCheck1Mail($this->details));
     }
 }

@@ -8,7 +8,10 @@ use App\Jobs\ProcessEmail;
 use Illuminate\Http\Request;
 use App\Mail\ReminderInputMail;
 use App\Jobs\ReminderInputEmail;
+use App\Mail\ReminderCheck1Mail;
 use App\Models\DepartmentActual;
+use App\Jobs\ReminderCheck1Email;
+use App\Jobs\ReminderCheck2Email;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
@@ -88,33 +91,5 @@ class MailController extends Controller
         ]);
 
         return back()->with('success', 'Email has been sent');
-    }
-
-
-    public function sendEmailReminderInput()
-    {
-        $details = [
-            'title' => 'Notifikasi Pengingat Pengisian data KPI',
-            'greetings' => 'Yth. ',
-            'name' => '',
-            'msg' => 'Mengingatkan kembali untuk mengisi data KPI dan mengupload data pendukung KPI yang sesuai.',
-            'msg2' => 'Jika anda sudah mengisi data KPI dan data pendukung KPI, abaikan email ini.',
-            'closing' => 'Terima kasih atas perhatian dan kerjasamanya.',
-            'email' => '',
-        ];
-
-        $sendTo = DB::table('employees')
-            ->where('employees.role', '!=', 'Mng Approver')
-            ->select('employees.email', 'employees.name')
-            ->get();
-
-        foreach ($sendTo as $email) {
-            $details['email'] = $email->email;
-            $details['name'] = $email->name;
-
-            if ($details['email'] !== null && $details['email'] !== '' && $details['email'] !== 0) {
-                ReminderInputEmail::dispatch($details);
-            }
-        }
     }
 }

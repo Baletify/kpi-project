@@ -3,25 +3,24 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
-use App\Jobs\ReminderInputEmail;
+use App\Jobs\ReminderCheck2Email;
 use Illuminate\Support\Facades\DB;
-use App\Http\Controllers\MailController;
 
-class SendEmailReminderInput extends Command
+class SendEmailReminderCheck2 extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'email:send-reminder-input';
+    protected $signature = 'email:send-reminder-check2';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Send email reminders for input';
+    protected $description = 'Send email reminders for check 2';
 
     /**
      * Execute the console command.
@@ -29,17 +28,17 @@ class SendEmailReminderInput extends Command
     public function handle()
     {
         $details = [
-            'title' => 'Notifikasi Pengingat Pengisian Data KPI',
+            'title' => 'Notifikasi Pengingat Pengecekan (Check 2) Data KPI',
             'greetings' => 'Yth. ',
             'name' => '',
-            'msg' => 'Mengingatkan kembali untuk mengisi data KPI dan mengupload data pendukung KPI yang sesuai.',
-            'msg2' => 'Jika anda sudah mengisi data KPI dan data pendukung KPI, abaikan email ini.',
+            'msg' => 'Mengingatkan kembali untuk melakukan pengecekan (Check 2) pada data KPI dan data pendukung KPI yang sudah diinputkan.',
+            'msg2' => 'Jika anda sudah melakukan pengecekan data KPI dan data pendukung KPI, abaikan email ini.',
             'closing' => 'Terima kasih atas perhatian dan kerjasamanya.',
             'email' => '',
         ];
 
         $sendTo = DB::table('employees')
-            ->where('employees.role', '!=', 'Mng Approver')
+            ->whereIn('employees.role', ['Checker Div 1', 'Checker Div 2'])
             ->select('employees.email', 'employees.name')
             ->get();
 
@@ -48,9 +47,9 @@ class SendEmailReminderInput extends Command
             $details['name'] = $email->name;
 
             if ($details['email'] !== null && $details['email'] !== '' && $details['email'] !== 0) {
-                ReminderInputEmail::dispatch($details);
+                ReminderCheck2Email::dispatch($details);
             }
         }
-        $this->info('Email reminders for Input have been dispatched successfully.');
+        $this->info('Email reminders for Check 2 have been dispatched successfully.');
     }
 }

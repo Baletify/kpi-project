@@ -21,9 +21,12 @@ use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\SupportingDocumentController;
 use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 
-Route::get('/', function () {
-    return view('login-page');
-});
+// Auth Routes
+Route::get('/', [AuthController::class, 'login']);
+Route::get('/login', [AuthController::class, 'login'])->name('auth.login');
+Route::post('auth/me', [AuthController::class, 'authMe'])->name('auth.me');
+Route::post('/logout', [AuthController::class, 'logout'])->name('auth.logout');
+
 
 Route::get('/reset-password', function () {
     return view('reset-password');
@@ -43,10 +46,7 @@ Route::get('/reset-password/{token}', function (string $token) {
 
 Route::post('/reset-password/update', [UserController::class, 'updatePassword'])->name('password.update');
 
-// Auth Routes
-Route::get('/login', [AuthController::class, 'login'])->name('auth.login');
-Route::post('auth/me', [AuthController::class, 'authMe'])->name('auth.me');
-Route::post('/logout', [AuthController::class, 'logout'])->name('auth.logout');
+
 
 
 Route::middleware(['auth'])->group(function () {
@@ -160,7 +160,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/supporting-document-employee', [SupportingDocumentController::class, 'index'])->name('supportingDocumentEmployee');
     Route::get('/supporting-document-dept', [SupportingDocumentController::class, 'indexDept'])->name('supportingDocumentDept');
     Route::get('/supporting-document-employee-list', [SupportingDocumentController::class, 'employeeSupportingDocumentList'])->name('employeeSupportingDocumentList');
+    Route::get('/supporting-document-dept-list', [SupportingDocumentController::class, 'departmentSupportingDocumentList'])->name('deptSupportingDocumentList');
     Route::get('/supporting-document-file', [SupportingDocumentController::class, 'showFile'])->name('supportingDocumentFile');
+    Route::get('/supporting-document-file-dept', [SupportingDocumentController::class, 'showFileDept'])->name('supportingDocumentFileDept');
 });
 
 

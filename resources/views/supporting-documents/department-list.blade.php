@@ -50,7 +50,7 @@
                         <td class="border-2 border-gray-400 text-[12px] tracking-wide px-2 py-0">{{ $department->code }}</td>
                         <td class="border-2 border-gray-400 text-[12px] tracking-wide px-2 py-0">
                             <div class="flex justify-center gap-3 my-0.5">
-                                <a href="" id="employee-link-{{ $department->id }}" class="rounded-md text-blue-500 hover:underline">Lihat Data Pendukung</a>
+                                <a href="{{ route('deptSupportingDocumentList') }}?department={{ $department->id }}" id="employee-link-{{ $department->id }}" class="rounded-md text-blue-500 hover:underline">Lihat Data Pendukung</a>
                             </div>
                         </td>
                     </tr>

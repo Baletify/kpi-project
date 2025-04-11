@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Actual;
+use App\Models\Department;
 use Illuminate\Http\Request;
+use App\Models\DepartmentActual;
 use Illuminate\Support\Facades\DB;
 
 class SupportingDocumentController extends Controller
@@ -99,7 +101,7 @@ class SupportingDocumentController extends Controller
         $actuals = DB::table('department_actuals')->leftJoin('departments', 'department_actuals.department_id', '=', 'departments.id')
             ->where('department_actuals.department_id', $departmentQuery)
             ->whereYear('department_actuals.date', $yearQuery)
-            ->select('department_actuals.*', 'departments.name as employee_name', 'departments.nik as employee_nik', 'deparment.id as department_id')
+            ->select('department_actuals.*', 'departments.name as department_name', 'departments.code as department_code', 'departments.id as department_id')
             ->get();
 
         return view('supporting-documents.department-supporting-document', [
@@ -117,6 +119,18 @@ class SupportingDocumentController extends Controller
         $actualId = $request->query('actual_id');
 
         $pdfUrls = Actual::whereMonth('date', $month)
+            ->where('id', $actualId)
+            ->get(['id', 'record_file', 'kpi_code', 'kpi_item', 'status', 'comment'])
+            ->toArray();
+
+        return response()->json($pdfUrls);
+    }
+    public function showFileDept(Request $request)
+    {
+        $month = $request->query('month');
+        $actualId = $request->query('actual_id');
+
+        $pdfUrls = DepartmentActual::whereMonth('date', $month)
             ->where('id', $actualId)
             ->get(['id', 'record_file', 'kpi_code', 'kpi_item', 'status', 'comment'])
             ->toArray();

@@ -12,7 +12,7 @@ class AuthController extends Controller
 {
     public function login()
     {
-
+        flash()->info('Silahkan melakukan pergantian password anda di halaman login. Maksimal tanggal 25 April 2025');
         return view('login-page');
     }
 
@@ -29,6 +29,7 @@ class AuthController extends Controller
         if (Auth::attempt($credentials) && Auth::user()->is_active == 1) {
             // Authentication passed, regenerate session
             $request->session()->regenerate();
+            flash()->info('Silahkan melakukan pergantian password anda di halaman login. Maksimal tanggal 25 April 2025');
             flash()->success('Selamat Datang Di Aplikasi KPI!');
             // Redirect to the intended page or dashboard
 

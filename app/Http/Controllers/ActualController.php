@@ -323,7 +323,7 @@ class ActualController extends Controller
             ->whereIn('status', ['Checked', 'Approved'])->first();
         // dd($existingActual);
 
-        if ($existingActual && ($role != 'Approver')) {
+        if ($existingActual && ($role != 'Approver' || $existingActual->status != 'Revise')) {
             flash()->error('This KPI item already checked or approved');
             return redirect()->back()->withErrors(['status' => 'Cannot update or create record: Data sudah di check atau di approve.']);
         }
@@ -436,14 +436,14 @@ class ActualController extends Controller
             'employee_id' => $request->employee_id,
         ];
 
-        // $existingActual = DB::table('actuals')->where($searchConditions)
-        //     ->whereIn('status', ['Checked', 'Approved'])->first();
-        // // dd($existingActual);
+        $existingActual = DB::table('actuals')->where($searchConditions)
+            ->whereIn('status', ['Checked', 'Approved'])->first();
+        // dd($existingActual);
 
-        // if ($existingActual && ($role != 'Approver')) {
-        //     flash()->error('This KPI item already Checked or Approved');
-        //     return redirect()->back()->withErrors(['status' => 'Cannot update or create record: Data sudah di check atau di approve.']);
-        // }
+        if ($existingActual && ($role != 'Approver' || $existingActual->status != 'Revise')) {
+            flash()->error('This KPI item already Checked or Approved');
+            return redirect()->back()->withErrors(['status' => 'Cannot update or create record: Data sudah di check atau di approve.']);
+        }
 
 
         $dataToUpdateOrCreate = [
