@@ -130,7 +130,7 @@
                 <div class="flex items-center pb-0 border-b border-b-gray-600"></div>
                 <li>
                     <a href="{{ route('supportingDocumentEmployee') }}?department={{ $departmentID }}" class="flex items-center py-1.5 px-6 text-gray-300 hover:bg-gray-700">
-                        <i class="ri-contacts-book-2-line text-2xl"></i>
+                        <i class="ri-database-line text-2xl"></i>
                         <span class="ml-3">Lihat Data Pendukung</span>
                     </a>
                 </li>
