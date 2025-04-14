@@ -1,5 +1,9 @@
 <x-app-layout :title="$title" :desc="$desc">
     <div class="ml-64 mt-4 overflow-x-auto p-2 bg-white border border-gray-100 shadow-md shadow-black/10 rounded-md border-collapse">
+      @php
+      $semesterQuery = request()->query('semester');
+
+      @endphp
         <form action="{{ route('target.update') }}" method="POST">
             @csrf
             @method('PUT')
@@ -13,7 +17,7 @@
             </div>
             <div class="relative mt-1 rounded-md">
                 <span class="pl-3 font-semibold">KPI</span>  
-                <textarea name="indicator" id="indicator" class="block w-full rounded-md border-0 py-1.5 pl-4 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 mt-1" placeholder="Item KPI" rows="2" readonly>{{ $target->indicator }}</textarea>
+                <textarea name="indicator" id="indicator" class="block w-full rounded-md border-0 py-1.5 pl-4 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 mt-1" placeholder="Item KPI" rows="2">{{ $target->indicator }}</textarea>
               <div class="absolute inset-y-0 right-0 flex items-center">
               </div>
             </div>
@@ -134,12 +138,11 @@
               <input type="hidden" name="target_id" id="target_id" value="{{ $target->target_id }}">
               <input type="hidden" name="year" id="year" value="{{ $target->year }}">
               <input type="hidden" name="target_unit_id" id="target_unit_id" value="{{ $target->target_unit_id }}">
+              <input type="hidden" name="semester" id="semester" value="{{ $semesterQuery }}">
             </div>
         </div>
         <div class="flex justify-center mt-4 gap-3">
-            <a href="/target/input-target-kpi?employee={{ $target->employee_id }}&year={{ $target->year }}">
-                <button type="button" class="px-4 py-2 bg-red-600 text-white rounded-md">Cancel</button>
-            </a>
+            <button type="button" class="px-4 py-2 bg-red-600 text-white rounded-md" onclick="history.back()">Cancel</button>
             <button type="submit" id="submitBtn" class="px-4 py-2 bg-blue-600 text-white rounded-md">Submit</button>
         </div>
     </form>

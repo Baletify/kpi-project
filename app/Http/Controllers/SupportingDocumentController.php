@@ -75,7 +75,7 @@ class SupportingDocumentController extends Controller
 
         return view('supporting-documents.employee-supporting-document', [
             'title' => 'Lihat Data Pendukung',
-            'desc' => 'Employee Supporting Document List',
+            'desc' => 'Employee',
             'targets' => $targets,
             'actuals' => $actuals,
             'employee' => $employeeDetail,
@@ -106,7 +106,7 @@ class SupportingDocumentController extends Controller
 
         return view('supporting-documents.department-supporting-document', [
             'title' => 'Lihat Data Pendukung',
-            'desc' => 'Department Supporting Document List',
+            'desc' => 'Department',
             'targets' => $targets,
             'actuals' => $actuals,
             'department' => $departmentDetail,

@@ -6,6 +6,7 @@
             $semesterQuery = request()->query('semester');
             $allStatus = request()->query('all');
             $statusQuery = request()->query('status');
+            $role = auth()->user()->role;
 
             // dd($yearQuery, $departmentQuery, $semesterQuery, $allStatus, $employeeQuery, $statusQuery);
         @endphp
@@ -90,7 +91,7 @@
                 <th style="width: 5%" class="border-2 border-gray-400 text-[13px] tracking-wide font-medium text-white py-1 bg-blue-700">{{ $month }}</th>
                 
             @endforeach
-                {{-- <th style="width: 4%" class="border-2 border-gray-400 text-[13px] tracking-wide font-medium text-white py-1 bg-blue-700">Aksi</th> --}}
+                <th style="width: 4%" class="border-2 border-gray-400 text-[13px] tracking-wide font-medium text-white py-1 bg-blue-700">Aksi</th>
             </tr>
             @php
                 $i = 0;
@@ -201,10 +202,17 @@
                 </td>
                 @endforeach
                 @endif
+                @if ($role == 'Approver')
+                <td class="border-2 border-gray-400 text-[10px] tracking-wide px-2 py-1 text-center">
+                    <a href="{{ route('target.editDept', ['id' => $target->id]) }}?semester={{ $semesterQuery }}">
+                        <i class="ri-edit-2-line bg-yellow-500 p-1 rounded-sm"></i>
+                    </a>
+                </td>
+                @endif
                 </tr>
             @empty
             <tr>
-                <td colspan="16" class="border-2 border-gray-400 tracking-wide  py-0 px-2 text-center">Data Tidak ditemukan</td>
+                <td colspan="16" class="border-2 border-gray-400 tracking-wide py-0 px-2 text-center">Data Tidak ditemukan</td>
             </tr>
             @endforelse
         </table>
