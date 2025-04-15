@@ -244,6 +244,7 @@ class ActualController extends Controller
     {
         $user = Auth::user();
         $role = $user->role;
+        $now = now()->format('d');
 
         $validator = Validator::make($request->all(), [
             'date' => 'required',
@@ -323,11 +324,21 @@ class ActualController extends Controller
             ->whereIn('status', ['Checked', 'Approved'])->first();
         // dd($existingActual);
 
-        if ($existingActual && ($role != 'Approver' || $existingActual->status != 'Revise')) {
-            flash()->error('This KPI item already checked or approved');
-            return redirect()->back()->withErrors(['status' => 'Cannot update or create record: Data sudah di check atau di approve.']);
+        if ($now > 15 && ($role == '' || $role == 'Inputer' || $role == 'Checker 1')) {
+            flash()->error('Sudah melewati batas pengisian KPI');
+            return redirect()->back()->withErrors(['status' => 400]);
+        } elseif ($now > 20 && ($role == 'Checker 2')) {
+            flash()->error('Sudah melewati batas pengisian KPI');
+            return redirect()->back()->withErrors(['status' => 400]);
+        } elseif ($now > 25 && ($role == 'Mng Approver')) {
+            flash()->error('Sudah melewati batas pengisian KPI');
+            return redirect()->back()->withErrors(['status' => 400]);
         }
 
+        if ($existingActual && ($role != 'Approver' || $existingActual->status != 'Revise')) {
+            flash()->error('Data sudah melewati Final Check (HRD)');
+            return redirect()->back()->withErrors(['status' => 'Cannot update or create record: Data sudah di check atau di approve.']);
+        }
         $dataToUpdateOrCreate = [
             'kpi_item' => $request->kpi_item,
             'kpi_unit' => $request->kpi_unit,
@@ -359,6 +370,8 @@ class ActualController extends Controller
 
         $user = Auth::user();
         $role = $user->role;
+        $now = now()->format('d');
+        // dd($now);
 
         $validator = Validator::make($request->all(), [
             'date' => 'required',
@@ -437,13 +450,24 @@ class ActualController extends Controller
         ];
 
         $existingActual = DB::table('actuals')->where($searchConditions)
-            ->whereIn('status', ['Checked', 'Approved'])->first();
-        // dd($existingActual);
+            ->whereIn('status', ['Approved'])->first();
+
+        if ($now > 15 && ($role == '' || $role == 'Inputer' || $role == 'Checker 1')) {
+            flash()->error('Sudah melewati batas pengisian KPI');
+            return redirect()->back()->withErrors(['status' => 400]);
+        } elseif ($now > 20 && ($role == 'Checker 2')) {
+            flash()->error('Sudah melewati batas pengisian KPI');
+            return redirect()->back()->withErrors(['status' => 400]);
+        } elseif ($now > 25 && ($role == 'Mng Approver')) {
+            flash()->error('Sudah melewati batas pengisian KPI');
+            return redirect()->back()->withErrors(['status' => 400]);
+        }
 
         if ($existingActual && ($role != 'Approver' || $existingActual->status != 'Revise')) {
-            flash()->error('This KPI item already Checked or Approved');
+            flash()->error('Data sudah melewati Final Check (HRD)');
             return redirect()->back()->withErrors(['status' => 'Cannot update or create record: Data sudah di check atau di approve.']);
         }
+
 
 
         $dataToUpdateOrCreate = [

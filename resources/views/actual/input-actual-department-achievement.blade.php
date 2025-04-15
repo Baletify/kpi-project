@@ -190,7 +190,7 @@
               <div class="relative mt-1 rounded-md">
                 <div class="w-full rounded-md border-0 py-1.5 pl-0 pr-20 text-gray-900  sm:text-sm sm:leading-6 mt-2 flex gap-x-6">
                   <div class="mb-2 mt-2">
-                    @if ($dateNow > 15 && $role == 'Inputer')
+                    {{-- @if ($dateNow > 15 && $role == 'Inputer')
                     <button type="submit" id="submitBtn" class="px-4 py-2 bg-blue-300 text-white rounded-md" disabled >Submit</button>
                     @elseif ($dateNow > 15 && $role == '')
                     <button type="submit" id="submitBtn" class="px-4 py-2 bg-blue-300 text-white rounded-md" disabled >Submit</button>
@@ -203,8 +203,8 @@
                     @else 
                     <button type="submit" id="submitBtn" class="px-4 py-2 bg-blue-600 text-white rounded-md">Submit</button>
                     @endif
-                    {{-- <button type="submit" id="submitBtn" class="px-4 py-2 {{ $dateNow > 12 ? 'bg-blue-300' : 'bg-blue-600' }} text-white rounded-md" {{ $dateNow > 12 ? 'disabled' : '' }}>Submit</button> --}}
-                    {{-- <button type="submit" id="submitBtn" class="px-4 py-2 bg-blue-600 text-white rounded-md">Submit</button> --}}
+                    <button type="submit" id="submitBtn" class="px-4 py-2 {{ $dateNow > 12 ? 'bg-blue-300' : 'bg-blue-600' }} text-white rounded-md" {{ $dateNow > 12 ? 'disabled' : '' }}>Submit</button> --}}
+                    <button type="submit" id="submitBtn" class="px-4 py-2 bg-blue-600 text-white rounded-md">Submit</button>
                   </div>
                 <div class="absolute inset-y-0 right-0 flex items-center">
                 </div>
