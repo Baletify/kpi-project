@@ -324,16 +324,16 @@ class ActualController extends Controller
             ->whereIn('status', ['Checked', 'Approved'])->first();
         // dd($existingActual);
 
-        if ($now > 15 && ($role == '' || $role == 'Inputer' || $role == 'Checker 1')) {
-            flash()->error('Sudah melewati batas pengisian KPI');
-            return redirect()->back()->withErrors(['status' => 400]);
-        } elseif ($now > 20 && ($role == 'Checker 2')) {
-            flash()->error('Sudah melewati batas pengisian KPI');
-            return redirect()->back()->withErrors(['status' => 400]);
-        } elseif ($now > 25 && ($role == 'Mng Approver')) {
-            flash()->error('Sudah melewati batas pengisian KPI');
-            return redirect()->back()->withErrors(['status' => 400]);
-        }
+        // if ($now > 15 && ($role == '' || $role == 'Inputer' || $role == 'Checker 1')) {
+        //     flash()->error('Sudah melewati batas pengisian KPI');
+        //     return redirect()->back()->withErrors(['status' => 400]);
+        // } elseif ($now > 20 && ($role == 'Checker 2')) {
+        //     flash()->error('Sudah melewati batas pengisian KPI');
+        //     return redirect()->back()->withErrors(['status' => 400]);
+        // } elseif ($now > 25 && ($role == 'Mng Approver')) {
+        //     flash()->error('Sudah melewati batas pengisian KPI');
+        //     return redirect()->back()->withErrors(['status' => 400]);
+        // }
 
         if ($existingActual && ($role != 'Approver' || $existingActual->status != 'Revise')) {
             flash()->error('Data sudah melewati Final Check (HRD)');
@@ -452,16 +452,16 @@ class ActualController extends Controller
         $existingActual = DB::table('actuals')->where($searchConditions)
             ->whereIn('status', ['Approved'])->first();
 
-        if ($now > 15 && ($role == '' || $role == 'Inputer' || $role == 'Checker 1')) {
-            flash()->error('Sudah melewati batas pengisian KPI');
-            return redirect()->back()->withErrors(['status' => 400]);
-        } elseif ($now > 20 && ($role == 'Checker 2')) {
-            flash()->error('Sudah melewati batas pengisian KPI');
-            return redirect()->back()->withErrors(['status' => 400]);
-        } elseif ($now > 25 && ($role == 'Mng Approver')) {
-            flash()->error('Sudah melewati batas pengisian KPI');
-            return redirect()->back()->withErrors(['status' => 400]);
-        }
+        // if ($now > 15 && ($role == '' || $role == 'Inputer' || $role == 'Checker 1')) {
+        //     flash()->error('Sudah melewati batas pengisian KPI');
+        //     return redirect()->back()->withErrors(['status' => 400]);
+        // } elseif ($now > 20 && ($role == 'Checker 2')) {
+        //     flash()->error('Sudah melewati batas pengisian KPI');
+        //     return redirect()->back()->withErrors(['status' => 400]);
+        // } elseif ($now > 25 && ($role == 'Mng Approver')) {
+        //     flash()->error('Sudah melewati batas pengisian KPI');
+        //     return redirect()->back()->withErrors(['status' => 400]);
+        // }
 
         if ($existingActual && ($role != 'Approver' || $existingActual->status != 'Revise')) {
             flash()->error('Data sudah melewati Final Check (HRD)');
