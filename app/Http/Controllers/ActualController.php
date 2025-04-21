@@ -41,7 +41,7 @@ class ActualController extends Controller
             ->leftJoin('employees', 'actuals.employee_id', '=', 'employees.id')
             ->leftJoin('targets', 'actuals.kpi_code', '=', 'targets.code')
             ->leftJoin('target_units', 'target_units.id', '=', 'targets.target_unit_id')
-            ->select('actuals.kpi_code as kpi_code', 'targets.code as code', 'actuals.date as actual_date', 'targets.date as target_date', 'targets.indicator as indicator', 'actuals.kpi_item')
+            ->select('actuals.kpi_code as kpi_code', 'targets.code as code', 'actuals.date as actual_date', 'targets.date as target_date', 'targets.indicator as indicator', 'actuals.kpi_item', 'actuals.status')
             // ->where(DB::raw('MONTH(actuals.date)'), '<=', $now->month)
             ->where('actuals.employee_id', $employeeID)
             ->where(DB::raw('YEAR(actuals.date)'), '=', $year)
@@ -81,7 +81,7 @@ class ActualController extends Controller
         $actuals = DB::table('department_actuals')
             ->leftJoin('departments', 'departments.id', '=', 'department_actuals.department_id')
             ->leftJoin('department_targets', 'department_actuals.kpi_code', '=', 'department_targets.code')
-            ->select('department_actuals.kpi_code as kpi_code', 'department_targets.code as code', 'department_actuals.date as actual_date', 'department_targets.date as target_date', 'department_targets.indicator as indicator')
+            ->select('department_actuals.kpi_code as kpi_code', 'department_targets.code as code', 'department_actuals.date as actual_date', 'department_targets.date as target_date', 'department_targets.indicator as indicator', 'department_actuals.status')
             // ->where(DB::raw('MONTH(actuals.date)'), '<=', $now->month)
             ->where('department_actuals.department_id', '=', $departmentID)
             ->get();
@@ -320,25 +320,28 @@ class ActualController extends Controller
             'department_id' => $request->department_id,
         ];
 
-        $existingActual = DB::table('department_actuals')->where($searchConditions)
-            ->whereIn('status', ['Checked', 'Approved'])->first();
+        $existingActual = DB::table('actuals')->where($searchConditions)->first();
+        $existingActualApproved = DB::table('actuals')->where($searchConditions)
+            ->whereIn('status', ['Approved'])->first();
         $revisedActual = DB::table('actuals')->where($searchConditions)
             ->whereIn('status', ['Revise'])->first();
 
+        $deadline = $existingActual->deadline ?? 15;
+
         // if (!$revisedActual) {
-        //     if ($now > 15 && ($role == '' || $role == 'Inputer' || $role == 'Checker 1')) {
+        //     if ($now > $deadline && ($role == '' || $role == 'Inputer' || $role == 'Checker 1')) {
         //         flash()->error('Sudah melewati batas pengisian KPI');
         //         return redirect()->back()->withErrors(['status' => 400]);
-        //     } elseif ($now > 20 && ($role == 'Checker 2')) {
+        //     } elseif ($now > $deadline && ($role == 'Checker 2')) {
         //         flash()->error('Sudah melewati batas pengisian KPI');
         //         return redirect()->back()->withErrors(['status' => 400]);
-        //     } elseif ($now > 25 && ($role == 'Mng Approver')) {
+        //     } elseif ($now > $deadline && ($role == 'Mng Approver')) {
         //         flash()->error('Sudah melewati batas pengisian KPI');
         //         return redirect()->back()->withErrors(['status' => 400]);
         //     }
         // }
 
-        if ($existingActual && ($role != 'Approver' || $existingActual->status != 'Revise')) {
+        if ($existingActualApproved && ($role != 'Approver' || $existingActual->status != 'Revise')) {
             flash()->error('Data sudah melewati Final Check (HRD)');
             return redirect()->back()->withErrors(['status' => 'Cannot update or create record: Data sudah di check atau di approve.']);
         }
@@ -452,26 +455,28 @@ class ActualController extends Controller
             'employee_id' => $request->employee_id,
         ];
 
-        $existingActual = DB::table('actuals')->where($searchConditions)
+        $existingActual = DB::table('actuals')->where($searchConditions)->first();
+        $existingActualApproved = DB::table('actuals')->where($searchConditions)
             ->whereIn('status', ['Approved'])->first();
-
         $revisedActual = DB::table('actuals')->where($searchConditions)
             ->whereIn('status', ['Revise'])->first();
 
+        $deadline = $existingActual->deadline ?? 15;
+
         // if (!$revisedActual) {
-        //     if ($now > 15 && ($role == '' || $role == 'Inputer' || $role == 'Checker 1')) {
+        //     if ($now > $deadline && ($role == '' || $role == 'Inputer' || $role == 'Checker 1')) {
         //         flash()->error('Sudah melewati batas pengisian KPI');
         //         return redirect()->back()->withErrors(['status' => 400]);
-        //     } elseif ($now > 20 && ($role == 'Checker 2')) {
+        //     } elseif ($now > $deadline && ($role == 'Checker 2')) {
         //         flash()->error('Sudah melewati batas pengisian KPI');
         //         return redirect()->back()->withErrors(['status' => 400]);
-        //     } elseif ($now > 25 && ($role == 'Mng Approver')) {
+        //     } elseif ($now > $deadline && ($role == 'Mng Approver')) {
         //         flash()->error('Sudah melewati batas pengisian KPI');
         //         return redirect()->back()->withErrors(['status' => 400]);
         //     }
         // }
 
-        if ($existingActual && $role != 'Approver') {
+        if ($existingActualApproved && $role != 'Approver') {
             flash()->error('Data sudah melewati Final Check (HRD)');
             return redirect()->back()->withErrors(['status' => 'Cannot update or create record: Data sudah di check atau di approve.']);
         }

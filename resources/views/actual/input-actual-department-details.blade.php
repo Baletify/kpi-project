@@ -79,10 +79,14 @@
                     
                     @endphp
 
-                    @if ($actual !== null && $targetUnitCheck->$targetColumn !== null)   
-                        <td style="width: 6%" class="border-2 border-gray-400 text-[10px] tracking-wide py-0 px-2 text-center">
-                            <i class="ri-checkbox-circle-fill text-xl text-green-500"></i>
-                        </td>
+                    @if ($actual !== null && $targetUnitCheck->$targetColumn !== null && $actual->status == 'Revise')
+                    <td style="width: 6%" class="border-2 border-gray-400 text-[10px] tracking-wide py-0 px-2 text-center">
+                        <i class="ri-error-warning-fill text-xl text-yellow-500"></i>
+                    </td>
+                    @elseif ($actual !== null && $targetUnitCheck->$targetColumn !== null)   
+                    <td style="width: 6%" class="border-2 border-gray-400 text-[10px] tracking-wide py-0 px-2 text-center">
+                        <i class="ri-checkbox-circle-fill text-xl text-green-500"></i>
+                    </td>
                     @elseif ($targetUnitCheck->$targetColumn !== null)
                     <td style="width: 6%" class="border-2 border-gray-400 text-[10px] tracking-wide py-0 px-2 text-center">
                         <i class="ri-pencil-fill text-xl text-gray-500"></i>
