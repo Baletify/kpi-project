@@ -22,7 +22,7 @@
                 <form action="{{ route('password.reset') }}" method="POST" class="flex flex-col">
                     @csrf
                     <label for="email" class="font-semibold mb-0.5">Email:</label>
-                    <input class="p-2 rounded-xl border-none mb-4" type="text" name="email" id="email" placeholder="Email" autocomplete="off">
+                    <input class="p-2 rounded-xl border-none mb-4" type="text" name="email" id="email" placeholder="Email" autocomplete="on">
                     <button class="bg-blue-700 text-white rounded-xl py-2">Email Password Reset Link</button>
                 </form>
             </div>
