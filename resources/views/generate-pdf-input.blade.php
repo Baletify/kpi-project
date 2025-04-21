@@ -121,6 +121,39 @@
             </td>
         </tr>
         <tr>
+            <td class="border-none">
+               <span class="padding">Total Target</span>
+            </td>
+            <td class="border-none">
+                <span class="padding">:</span>
+            </td>   
+            <td class="border-none">
+                <span class="padding">{{ $totalThisMonthTarget }}</span>
+            </td>
+        </tr>
+        <tr>
+            <td class="border-none">
+               <span class="padding">Data Terinput</span>
+            </td>
+            <td class="border-none">
+                <span class="padding">:</span>
+            </td>   
+            <td class="border-none">
+                <span class="padding">{{ $inputed }}</span>
+            </td>
+        </tr>
+        <tr>
+            <td class="border-bottom-solid">
+               <span class="padding">Persentase</span>
+            </td>
+            <td class="border-bottom-solid">
+                <span class="padding">:</span>
+            </td>   
+            <td class="border-bottom-solid">
+                <span class="padding">{{ $ttePercentage }}%</span>
+            </td>
+        </tr>
+        <tr>
             <td class="text-center" colspan="3">
                <span class="font-medium">{{ $desc_1 }}</span>
                <br>

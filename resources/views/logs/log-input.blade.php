@@ -321,7 +321,7 @@
             @endphp
             <div class="flex justify-end">
                 <div class="p-0.5">
-                    @if ($totalTgAll - $totalFlAll <= 2 && $role == 'Inputer')
+                    @if ($role == 'Inputer')
                     <form action="{{ url('/generate-pdf-input') }}" method="GET">
                         @php
                             $lastInput = $actualFilled->first(function($item) use ($department_id) {
@@ -333,23 +333,25 @@
                         <input type="hidden" name="department_id" id="department_id" value="{{ $department_id }}">
                         <input type="hidden" name="input_at" id="input_at" value="{{ $lastInput->input_at ?? '' }}">
                         <input type="hidden" name="input_by" id="input_by" value="{{ $lastInput->input_by ?? '' }}">
+                        <input type="hidden" name="inputThisMonth" id="inputThisMonth" value="{{ $totalTgAll }}">
+                        <input type="hidden" name="inputed" id="inputed" value="{{ $totalFlAll }}">
                         <button type="submit" class="rounded-md bg-green-700 text-white p-2">Generate TTE</button>
                     </form>
                     @endif
                 </div>
                 <div class="p-0.5">
-                    @if ($totalCheckedAll == $totalsTg && ($role == 'Checker Div 1' || $role == 'Checker Div 2' || $role == 'Checker WS' || $role == 'Checker Factory'))
+                    @if ($role == 'Checker Div 1' || $role == 'Checker Div 2' || $role == 'Checker WS' || $role == 'Checker Factory')
                     <form action="{{ url('/generate-pdf-check') }}" method="GET">
                         @php
                             $lastInput = $actualFilled->first(function($item) use ($department_id) {
                                 return $item->department_id == $department_id;
                             });
-    
-                            
                         @endphp
                         <input type="hidden" name="department_id" id="department_id" value="{{ $department_id }}">
                         <input type="hidden" name="input_at" id="input_at" value="{{ $lastInput->checked_at ?? '' }}">
                         <input type="hidden" name="input_by" id="input_by" value="{{ $lastInput->checked_by ?? '' }}">
+                        <input type="hidden" name="checkedThisMonth" id="checkedThisMonth" value="{{ $totalsTg }}">
+                        <input type="hidden" name="checked" id="checked" value="{{ $totalCheckedAll }}">
                         <button type="submit" class="rounded-md bg-blue-500 text-white p-2">Generate TTE</button>
                     </form>
                     @endif
