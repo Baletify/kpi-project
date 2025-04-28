@@ -26,6 +26,7 @@ class Authentication extends Authenticatable
         'input_type',
         'occupation',
         'is_active',
+        'last_password_reset_at',
         'department_id',
     ];
 
@@ -46,6 +47,7 @@ class Authentication extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'last_password_reset_at' => 'datetime',
     ];
 
     public function sendPasswordResetNotification($token)

@@ -141,7 +141,11 @@ class UserController extends Controller
             return redirect()->back()->with('error', 'Please fill all the fields.');
         }
 
-        Employee::where('email', $request->email)->update(['password' => Hash::make($request->password)]);
+        Employee::where('email', $request->email)
+            ->update([
+                'password' => Hash::make($request->password),
+                'last_password_reset_at' => now(),
+            ]);
 
         return redirect()->to('/')->with('success', 'Password reset successfully.');
     }

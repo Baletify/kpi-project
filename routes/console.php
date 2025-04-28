@@ -4,9 +4,9 @@ use Illuminate\Foundation\Inspiring;
 use Illuminate\Queue\Middleware\WithoutOverlapping;
 use Illuminate\Support\Facades\Artisan;
 
-Artisan::command('inspire', function () {
-    $this->comment(Inspiring::quote());
-})->purpose('Display an inspiring quote')->hourly();
+// Artisan::command('inspire', function () {
+//     $this->comment(Inspiring::quote());
+// })->purpose('Display an inspiring quote')->hourly();
 
 // Artisan::command('schedule:run', function () {
 //     $this->comment('Running scheduled tasks...');
@@ -18,7 +18,7 @@ app('Illuminate\Console\Scheduling\Schedule')->command('email:send-reminder-inpu
     ->daily()
     ->when(function () {
         $day = now()->day;
-        return $day >= 1 && $day <= 15; // Run only from 1st to 15th of the month
+        return $day >= 10 && $day <= 15; // Run only from 1st to 15th of the month
     })->between('08:00', '17:00')
     ->withoutOverlapping(); // Run only between 8 AM and 5 PM
 

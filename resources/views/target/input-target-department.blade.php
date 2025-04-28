@@ -7,6 +7,7 @@
             $role = auth()->user()->role;
             $departmentQuery = request()->query('department');
             $employeeQuery = request()->query('employee');
+            $currentMonth = Carbon\Carbon::now()->month;
 
             if ($departmentQuery == 'all') {
                 $all = 'true';
@@ -141,11 +142,13 @@
                               <span class="text-white hover:underline">Lihat Target</span>
                             </a>
                         </button>
+                        @if ($currentMonth == 3 || $currentMonth == 12 || $role == 'Approver')
                         <button class="bg-green-600 px-2 rounded-sm my-1">
                             <a id="employee-link-{{ $department->employee_id }}" href="{{ route('target.showImport') }}?employee={{ $department->employee_id }}&all={{ $all }}&department={{ $department->department_id }}">
-                              <span class="text-white hover:underline">Upload Excel</span>
+                                <span class="text-white hover:underline">Upload Excel</span>
                             </a>
                         </button>
+                        @endif
                 </div>
                 </td>
                 <td class="border-2 text-[12px] border-gray-400 tracking-wide px-2 text-center">

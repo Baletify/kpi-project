@@ -7,6 +7,7 @@
             $allStatus = request()->query('all');
             $statusQuery = request()->query('status');
             $role = auth()->user()->role;
+            $currentMonth = Carbon\Carbon::now()->month;
 
             // dd($yearQuery, $departmentQuery, $semesterQuery, $allStatus, $employeeQuery, $statusQuery);
         @endphp
@@ -52,10 +53,12 @@
                     $year = request()->query('year');
                 @endphp
                 <div class="mt-3">
+                    @if ($role == 'Approver' || $currentMonth == 1 || $currentMonth == 12)
                     <a href="{{ route('target.showImportDept', 'semester=' . $currentSemester . '&department=' . $department . '&year=' . $year) }}&all={{ $allStatus }}" class="p-1 mx-2 bg-green-600 py-2 items-center rounded-md">
                         <i class="ri-file-excel-2-line text-2xl text-white"></i>
                         <span class="font-medium text-white">Upload Excel</span>
                     </a>
+                    @endif
                 </div>
             </div>
         </div>
