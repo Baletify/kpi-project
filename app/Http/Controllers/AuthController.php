@@ -12,7 +12,6 @@ class AuthController extends Controller
 {
     public function login()
     {
-
         return view('login-page');
     }
 
@@ -26,7 +25,22 @@ class AuthController extends Controller
         ]);
 
         // Attempt to authenticate the user
-        if (Auth::attempt($credentials) && Auth::user()->is_active == 1) {
+        if (Auth::attempt($credentials)) {
+            $user = Auth::user();
+
+            // Check if the user is active
+            if ($user->is_active != 1) {
+                Auth::logout();
+                flash()->error('Your account is inactive. Please contact the administrator.');
+                return back()->withErrors(['email' => 'Your account is inactive.'])->onlyInput('email');
+            }
+
+            // Check if the user needs to reset their password
+            // if (!$user->last_password_reset_at || $user->last_password_reset_at->lt(now()->subMonths(3))) {
+            //     Auth::logout(); // Log the user out to prevent access
+            //     flash()->info('You are required to reset your password.');
+            //     return redirect()->route('reset-password');
+            // }
             // Authentication passed, regenerate session
             $request->session()->regenerate();
             flash()->success('Selamat Datang Di Aplikasi KPI!');

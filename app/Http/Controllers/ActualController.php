@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\ApproveEmail;
 use Carbon\Carbon;
 use App\Models\Actual;
 use App\Models\Employee;
@@ -40,7 +41,7 @@ class ActualController extends Controller
             ->leftJoin('employees', 'actuals.employee_id', '=', 'employees.id')
             ->leftJoin('targets', 'actuals.kpi_code', '=', 'targets.code')
             ->leftJoin('target_units', 'target_units.id', '=', 'targets.target_unit_id')
-            ->select('actuals.kpi_code as kpi_code', 'targets.code as code', 'actuals.date as actual_date', 'targets.date as target_date', 'targets.indicator as indicator')
+            ->select('actuals.kpi_code as kpi_code', 'targets.code as code', 'actuals.date as actual_date', 'targets.date as target_date', 'targets.indicator as indicator', 'actuals.kpi_item', 'actuals.status')
             // ->where(DB::raw('MONTH(actuals.date)'), '<=', $now->month)
             ->where('actuals.employee_id', $employeeID)
             ->where(DB::raw('YEAR(actuals.date)'), '=', $year)
@@ -80,7 +81,7 @@ class ActualController extends Controller
         $actuals = DB::table('department_actuals')
             ->leftJoin('departments', 'departments.id', '=', 'department_actuals.department_id')
             ->leftJoin('department_targets', 'department_actuals.kpi_code', '=', 'department_targets.code')
-            ->select('department_actuals.kpi_code as kpi_code', 'department_targets.code as code', 'department_actuals.date as actual_date', 'department_targets.date as target_date', 'department_targets.indicator as indicator')
+            ->select('department_actuals.kpi_code as kpi_code', 'department_targets.code as code', 'department_actuals.date as actual_date', 'department_targets.date as target_date', 'department_targets.indicator as indicator', 'department_actuals.status')
             // ->where(DB::raw('MONTH(actuals.date)'), '<=', $now->month)
             ->where('department_actuals.department_id', '=', $departmentID)
             ->get();
@@ -243,11 +244,13 @@ class ActualController extends Controller
     {
         $user = Auth::user();
         $role = $user->role;
+        $now = now()->format('d');
 
         $validator = Validator::make($request->all(), [
             'date' => 'required',
             'actual' => 'required',
             'record_file' => 'mimes:jpeg,pdf',
+            'achievement' => 'required',
 
         ]);
 
@@ -317,15 +320,31 @@ class ActualController extends Controller
             'department_id' => $request->department_id,
         ];
 
-        $existingActual = DB::table('department_actuals')->where($searchConditions)
-            ->whereIn('status', ['Checked', 'Approved'])->first();
-        // dd($existingActual);
+        $existingActual = DB::table('actuals')->where($searchConditions)->first();
+        $existingActualApproved = DB::table('actuals')->where($searchConditions)
+            ->whereIn('status', ['Approved'])->first();
+        $revisedActual = DB::table('actuals')->where($searchConditions)
+            ->whereIn('status', ['Revise'])->first();
 
-        if ($existingActual && ($role != 'Approver')) {
-            flash()->error('This KPI item already checked or approved');
+        $deadline = $existingActual->deadline ?? 15;
+
+        // if (!$revisedActual) {
+        //     if ($now > $deadline && ($role == '' || $role == 'Inputer' || $role == 'Checker 1')) {
+        //         flash()->error('Sudah melewati batas pengisian KPI');
+        //         return redirect()->back()->withErrors(['status' => 400]);
+        //     } elseif ($now > $deadline && ($role == 'Checker 2')) {
+        //         flash()->error('Sudah melewati batas pengisian KPI');
+        //         return redirect()->back()->withErrors(['status' => 400]);
+        //     } elseif ($now > $deadline && ($role == 'Mng Approver')) {
+        //         flash()->error('Sudah melewati batas pengisian KPI');
+        //         return redirect()->back()->withErrors(['status' => 400]);
+        //     }
+        // }
+
+        if ($existingActualApproved && ($role != 'Approver' || $existingActual->status != 'Revise')) {
+            flash()->error('Data sudah melewati Final Check (HRD)');
             return redirect()->back()->withErrors(['status' => 'Cannot update or create record: Data sudah di check atau di approve.']);
         }
-
         $dataToUpdateOrCreate = [
             'kpi_item' => $request->kpi_item,
             'kpi_unit' => $request->kpi_unit,
@@ -357,11 +376,14 @@ class ActualController extends Controller
 
         $user = Auth::user();
         $role = $user->role;
+        $now = now()->format('d');
+        // dd($now);
 
         $validator = Validator::make($request->all(), [
             'date' => 'required',
             'actual' => 'required',
             'record_file' => 'mimes:jpeg,pdf',
+            'achievement' => 'required',
         ]);
         if ($validator->fails()) {
             flash()->error('Please fill all required field and upload a valid file format');
@@ -421,7 +443,11 @@ class ActualController extends Controller
             $kpi_percentage = $request->achievement;
         }
 
-        $input_by = Auth::user()->name;
+        if ($role == 'Approver' || $role == 'Checker Div 1' || $role == 'Checker Div 2') {
+            $input_by = $request->name;
+        } else {
+            $input_by = Auth::user()->name;
+        }
 
         $searchConditions = [
             'kpi_code' => $request->kpi_code,
@@ -429,14 +455,32 @@ class ActualController extends Controller
             'employee_id' => $request->employee_id,
         ];
 
-        $existingActual = DB::table('actuals')->where($searchConditions)
-            ->whereIn('status', ['Checked', 'Approved'])->first();
-        // dd($existingActual);
+        $existingActual = DB::table('actuals')->where($searchConditions)->first();
+        $existingActualApproved = DB::table('actuals')->where($searchConditions)
+            ->whereIn('status', ['Approved'])->first();
+        $revisedActual = DB::table('actuals')->where($searchConditions)
+            ->whereIn('status', ['Revise'])->first();
 
-        if ($existingActual && ($role != 'Approver')) {
-            flash()->error('This KPI item already Checked or Approved');
+        $deadline = $existingActual->deadline ?? 15;
+
+        // if (!$revisedActual) {
+        //     if ($now > $deadline && ($role == '' || $role == 'Inputer' || $role == 'Checker 1')) {
+        //         flash()->error('Sudah melewati batas pengisian KPI');
+        //         return redirect()->back()->withErrors(['status' => 400]);
+        //     } elseif ($now > $deadline && ($role == 'Checker 2')) {
+        //         flash()->error('Sudah melewati batas pengisian KPI');
+        //         return redirect()->back()->withErrors(['status' => 400]);
+        //     } elseif ($now > $deadline && ($role == 'Mng Approver')) {
+        //         flash()->error('Sudah melewati batas pengisian KPI');
+        //         return redirect()->back()->withErrors(['status' => 400]);
+        //     }
+        // }
+
+        if ($existingActualApproved && $role != 'Approver') {
+            flash()->error('Data sudah melewati Final Check (HRD)');
             return redirect()->back()->withErrors(['status' => 'Cannot update or create record: Data sudah di check atau di approve.']);
         }
+
 
 
         $dataToUpdateOrCreate = [
@@ -540,6 +584,7 @@ class ActualController extends Controller
         $status = '';
         $from = $user->email;
         $nik = $request->nik;
+        $userID = $request->employee_id;
 
         $sendTo = DB::table('employees')
             ->where('nik', $nik)
@@ -564,7 +609,9 @@ class ActualController extends Controller
                 DB::table('actuals')->whereYear('actuals.date', '=', $year)
                     ->whereMonth('actuals.date', '=', $month)
                     ->where('kpi_code', '=', $targetCode)
+                    ->where('kpi_code', '!=', '')
                     ->where('status', '=', 'Filled')
+                    ->where('employee_id', $userID)
                     ->where('record_file', '!=', '')
                     ->update(
                         [
@@ -582,7 +629,9 @@ class ActualController extends Controller
                 DB::table('actuals')->whereYear('actuals.date', '=', $year)
                     ->whereMonth('actuals.date', '=', $month)
                     ->where('kpi_code', '=', $targetCode)
+                    ->where('kpi_code', '!=', '')
                     ->where('status', '=', 'Checked 1')
+                    ->where('employee_id', $userID)
                     ->where('record_file', '!=', '')
                     ->update(
                         [
@@ -600,6 +649,8 @@ class ActualController extends Controller
                 DB::table('actuals')->whereYear('actuals.date', '=', $year)
                     ->whereMonth('actuals.date', '=', $month)
                     ->where('kpi_code', '=', $targetCode)
+                    ->where('kpi_code', '!=', '')
+                    ->where('employee_id', $userID)
                     ->where('record_file', '!=', '')
                     ->update(
                         [
@@ -617,6 +668,8 @@ class ActualController extends Controller
                 DB::table('actuals')->whereYear('actuals.date', '=', $year)
                     ->whereMonth('actuals.date', '=', $month)
                     ->where('kpi_code', '=', $targetCode)
+                    ->where('kpi_code', '!=', '')
+                    ->where('employee_id', $userID)
                     ->where('record_file', '!=', '')
                     ->update(
                         [
@@ -632,7 +685,7 @@ class ActualController extends Controller
 
 
         if ($sendTo != null || $sendTo != 0) {
-            Mail::to($details['email'])->send(new ApproveMail($details));
+            ApproveEmail::dispatch($details);
         }
 
         return redirect()->back()->with('success', 'Data Updated Successfully');
@@ -677,6 +730,7 @@ class ActualController extends Controller
                 DB::table('department_actuals')->whereYear('department_actuals.date', '=', $year)
                     ->whereMonth('department_actuals.date', '=', $month)
                     ->where('kpi_code', '=', $targetCode)
+                    ->where('kpi_code', '!=', '')
                     ->where('status', '=', 'Filled')
                     ->where('record_file', '!=', '')
                     ->update(
@@ -695,6 +749,7 @@ class ActualController extends Controller
                 DB::table('department_actuals')->whereYear('department_actuals.date', '=', $year)
                     ->whereMonth('department_actuals.date', '=', $month)
                     ->where('kpi_code', '=', $targetCode)
+                    ->where('kpi_code', '!=', '')
                     ->where('status', '=', 'Checked 1')
                     ->where('record_file', '!=', '')
                     ->update(
@@ -713,6 +768,7 @@ class ActualController extends Controller
                 DB::table('department_actuals')->whereYear('department_actuals.date', '=', $year)
                     ->whereMonth('department_actuals.date', '=', $month)
                     ->where('kpi_code', '=', $targetCode)
+                    ->where('kpi_code', '!=', '')
                     ->where('record_file', '!=', '')
                     ->update(
                         [
@@ -730,6 +786,7 @@ class ActualController extends Controller
                 DB::table('department_actuals')->whereYear('department_actuals.date', '=', $year)
                     ->whereMonth('department_actuals.date', '=', $month)
                     ->where('kpi_code', '=', $targetCode)
+                    ->where('kpi_code', '!=', '')
                     ->where('record_file', '!=', '')
                     ->update(
                         [
@@ -744,7 +801,7 @@ class ActualController extends Controller
         }
 
         if ($sendTo != null || $sendTo != 0) {
-            Mail::to($details['email'])->send(new ApproveMail($details));
+            ApproveEmail::dispatch($details);
         }
 
 

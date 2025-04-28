@@ -7,13 +7,28 @@ export default {
         "./resources/**/*.js",
         "./resources/**/*.vue",
     ],
-    safelist: ["w-[1100px]"],
     theme: {
         extend: {
             fontFamily: {
                 sans: ["InterVariable", ...defaultTheme.fontFamily.sans],
             },
+            writingMode: {
+                "vertical-rl": "vertical-rl",
+                "vertical-lr": "vertical-lr",
+            },
         },
     },
-    plugins: [require("@tailwindcss/forms")],
+    plugins: [
+        require("@tailwindcss/forms"),
+        function ({ addUtilities }) {
+            addUtilities({
+                ".vertical-rl": {
+                    "writing-mode": "vertical-rl",
+                },
+                ".vertical-lr": {
+                    "writing-mode": "vertical-lr",
+                },
+            });
+        },
+    ],
 };

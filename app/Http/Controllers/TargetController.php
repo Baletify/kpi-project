@@ -433,6 +433,7 @@ class TargetController extends Controller
     {
         $id = $request->target_id;
         $year = $request->year;
+        $semester = $request->semester;
         $employee_id = $request->employee_id;
         $targetUnitId = $request->target_unit_id;
 
@@ -441,18 +442,22 @@ class TargetController extends Controller
         $targetUnit = TargetUnit::find($targetUnitId);
         $targetUnit->update(request()->all());
 
-        return redirect()->to('/target/input-target-kpi?employee=' . $employee_id . '&year=' . $year)->with('success', 'Data updated successfully.');
+        return redirect()->to('/target/input-target-kpi?employee=' . $employee_id . '&year=' . $year . '&semester=' . $semester)->with('success', 'Data updated successfully.');
     }
 
     public function updateDept(Request $request)
     {
         $id = $request->department_target_id;
         $year = $request->year;
+        $semester = $request->semester;
         $departmentID = $request->department_id;
+        $targetUnitId = $request->target_unit_id;
 
         $target = DepartmentTarget::find($id);
         $target->update(request()->all());
+        $targetUnit = TargetUnit::find($targetUnitId);
+        $targetUnit->update(request()->all());
 
-        return redirect()->to('/target/input-target-kpi-department?department=' . $departmentID . '&year=' . $year)->with('success', 'Data updated successfully.');
+        return redirect()->to('/target/input-target-kpi-department?department=' . $departmentID . '&year=' . $year  . '&semester=' . $semester)->with('success', 'Data updated successfully.');
     }
 }

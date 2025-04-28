@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Response;
+use PhpOffice\PhpSpreadsheet\Calculation\Statistical\Averages;
 use Termwind\Components\Dd;
 
 use function Laravel\Prompts\select;
@@ -123,6 +124,7 @@ class ReportController extends Controller
     {
         $user = Auth::user();
         $role = $user->role;
+        $authDept = $user->department_id;
         $email = $user->email;
 
         $divDept = DB::table('departments')->whereIn('name', ['Sub Div A', 'Sub Div B', 'Sub Div C', 'Sub Div D', 'Sub Div E', 'Sub Div F'])->get();
@@ -132,9 +134,7 @@ class ReportController extends Controller
         $accFin = DB::table('departments')->whereIn('name', ['Accounting', 'Finance'])->get();
         $allDept = Department::all();
 
-        if ($role == 'Inputer' || $role == '') {
-            abort(403, 'Unauthorized');
-        } else if ($role == 'Checker Div 1' || $role == 'Checker Div 2') {
+        if ($role == 'Checker Div 1' || $role == 'Checker Div 2') {
             $deptList = $divDept;
             return view('report.list-department-report', ['title' => 'Report', 'desc' => 'Department List', 'deptList' => $deptList]);
         } else if ($role == 'FAD' || $email == 'tabrani@bskp.co.id' || $email == 'siswantoko@bskp.co.id') {
@@ -152,30 +152,39 @@ class ReportController extends Controller
         } else if ($role == 'Approver' || $role == 'Mng Approver') {
             $deptList = $allDept;
             return view('report.list-department-report', ['title' => 'Report', 'desc' => 'Department List', 'deptList' => $deptList]);
+        } else {
+            $deptList = DB::table('departments')->where('departments.id', $authDept)
+                ->get();
+            return view('report.list-department-report', ['title' => 'Report', 'desc' => 'Department List', 'deptList' => $deptList]);
         }
     }
 
     private function calculation($targetZero, $target, $actual, $trend, $recordFile, $unit, $period, $totalPercentage)
     {
-        $recordFileCheck = ($recordFile != null) ? 'yes' : 'no';
-        $zeroStatus = ($targetZero == 0 && $recordFileCheck == 'yes') ? 'yes' : 'no';
-        $oneStatus = ($targetZero == 1 && $recordFileCheck == 'yes') ? 'yes' : 'no';
+        // dump($target, $actual);
+        $recordFileCheck = ($recordFile !== null) ? 'yes' : 'no';
+        $zeroStatus = ($targetZero === 0 && $recordFileCheck == 'yes') ? 'yes' : 'no';
+        $oneStatus = ($targetZero === 1 && $recordFileCheck == 'yes') ? 'yes' : 'no';
 
-        if ($oneStatus == 'yes') {
+
+        if ($oneStatus == 'yes' && ($unit != 'Tgl' || $unit != 'tgl')) {
             if ($actual == 0) {
                 $oneCalc = '0%';
             } elseif ($actual == 1) {
                 $oneCalc = '100%';
             } elseif ($actual == 2) {
-                $oneCalc = '105%%';
+                $oneCalc = '105%';
             } else if ($actual == 3) {
                 $oneCalc = '110%';
             } else if ($actual == 4) {
                 $oneCalc = '115%';
             } else if ($actual >= 5) {
                 $oneCalc = '120%';
+            } else {
+                $oneCalc = '0%';
             }
-            return $oneCalc;
+            $percentageValue = $oneCalc;
+            return $percentageValue;
         } elseif ($zeroStatus == 'yes') {
             if ($actual == 0) {
                 $zeroCalc = '100%';
@@ -189,28 +198,17 @@ class ReportController extends Controller
                 $zeroCalc = '10%';
             } else if ($actual >= 5) {
                 $zeroCalc = '0%';
+            } else {
+                $zeroCalc = '0%';
             }
-            return $zeroCalc;
-        }
-
-        // if ($unit == 'Tgl') {
-        //     if ($period == 'monthly' || $period == 'Monthly') {
-        //         $percentageValue = ($totalPercentage / 6);
-        //     } elseif ($period == 'quarter' || $period == 'Quarter') {
-        //         $percentageValue = ($totalPercentage / 2);
-        //     } elseif ($period == 'semester' || $period == 'Semester') {
-        //         $percentageValue = $totalPercentage;
-        //     } elseif ($period == 'annual' || $period == 'Annual') {
-        //         $percentageValue = $totalPercentage;
-        //     } else {
-        //         $percentageValue = 0;
-        //     }
-        // } else
-
-        if ($trend == 'Negatif') {
-            $percentageValue = ($target || $actual != 0) ? ($target / $actual) * 100 : 0;
+            $percentageValue = $zeroCalc;
+            return $percentageValue;
+        } elseif ($unit == 'Tgl' || $unit == 'tgl') {
+            $percentageValue = Averages::average($totalPercentage);
+        } elseif ($trend == 'Negatif') {
+            $percentageValue = ($target != 0 && $actual != 0) ? ($target / $actual) * 100 : 0;
         } elseif ($trend == 'Positif') {
-            $percentageValue = ($target || $actual != 0) ? $actual / $target * 100 : 0;
+            $percentageValue = ($target != 0 && $actual != 0) ? ($actual / $target) * 100 : 0;
         } else {
             $percentageValue = 0;
             $oneCalc = 0;
@@ -223,6 +221,11 @@ class ReportController extends Controller
         $semester = $request->query('semester');
         $year = $request->query('year');
         $employee = Employee::find($id);
+        $userCreds = DB::table('employees')->leftJoin('departments', 'departments.id', '=', 'employees.department_id')
+            ->where('employees.id', $id)
+            ->select('employees.*', 'departments.name as department', 'employees.name as employee', 'employees.id as employee_id')
+            ->first();
+        // dd($userCreds);
 
         // if (!$employee) {
         //     abort(404, 'Employee not found');
@@ -231,7 +234,8 @@ class ReportController extends Controller
         if ($semester && $year) {
 
             $targets = DB::table('targets')
-                ->select('targets.*')
+                ->leftJoin('target_units', 'targets.target_unit_id', '=', 'target_units.id')
+                ->select('targets.*', 'target_units.*')
                 ->where('employee_id', $id)
                 ->where(DB::raw('YEAR(targets.date)'), $year)
                 ->get();
@@ -243,10 +247,10 @@ class ReportController extends Controller
                 ->where('actuals.employee_id', $id)
                 ->where('actuals.semester', $semester)
                 ->where(DB::raw('YEAR(actuals.date)'), $year)
-                ->orderBy(DB::raw('MONTH(actuals.date)'))
+                ->orderBy(DB::raw('MONTH(actuals.date)'), 'desc')
                 ->get();
 
-
+            // dd($targets, $actuals);
             // sum bobot
             $targetWeightingSum = DB::table('targets')
                 ->select('weighting')
@@ -263,13 +267,14 @@ class ReportController extends Controller
 
 
 
-            if ($actuals->isEmpty()) {
-                return view('components/404-page-report');
-            }
+            // if ($actuals->isEmpty()) {
+            //     return view('components/404-page-report');
+            // }
 
 
 
-            $groupedData = $actuals->groupBy('kpi_code');
+            $groupedData = $actuals->groupBy('kpi_item');
+            // dd($targets, $groupedData);
 
 
             // Hitung total target dan actual untuk setiap kelompok
@@ -277,8 +282,7 @@ class ReportController extends Controller
                 $firstItem = $group->first();
                 $unitItem = $firstItem->kpi_unit;
 
-                $zeroCheck = ($firstItem->target == 0) ? 'yes' : 'no';
-                if ($unitItem == 'Tgl' || $unitItem == 'tgl' || $zeroCheck == 'yes') {
+                if ($unitItem == 'Tgl' || $unitItem == 'tgl' || $unitItem == '%') {
                     $totalTarget = $group->avg(function ($item) {
                         return (float) $item->target;
                     });
@@ -308,7 +312,8 @@ class ReportController extends Controller
                 $trendItem = $firstItem->trend;
                 $recordFileItem = $firstItem->record_file;
                 $periodItem = $firstItem->review_period;
-                $percentageCalc = $this->calculation($totalTarget, $totalTarget, $totalActual, $trendItem, $recordFileItem, $unitItem, $periodItem, $totalPercentage);
+                $target = $firstItem->target;
+                $percentageCalc = $this->calculation($target, $totalTarget, $totalActual, $trendItem, $recordFileItem, $unitItem, $periodItem, $totalPercentage);
 
                 $convertedCalc = floatval(str_replace('%', '', $percentageCalc));
 
@@ -327,7 +332,7 @@ class ReportController extends Controller
 
             // dd($totals);
 
-            return view('report.employee-report', ['title' => 'Report', 'desc' => 'Employee Report', 'employee' => $employee, 'actuals' => $actuals, 'targets' => $targets, 'totals' => $totals, 'sumWeighting' => $sumWeighting,]);
+            return view('report.employee-report', ['title' => 'Report', 'desc' => 'Employee Report', 'employee' => $employee, 'actuals' => $actuals, 'targets' => $targets, 'totals' => $totals, 'sumWeighting' => $sumWeighting, 'userCreds' => $userCreds, 'idParam' => $id]);
         } else {
 
             return view('components/404-page-report');
@@ -338,11 +343,13 @@ class ReportController extends Controller
     {
         $semester = $request->query('semester');
         $year = $request->query('year');
+        $departmentCreds = DB::table('departments')->where('id', $id)->first();
 
         if ($semester && $year) {
 
             $targets = DB::table('department_targets')
-                ->select('department_targets.*')
+                ->leftJoin('target_units', 'department_targets.target_unit_id', '=', 'target_units.id')
+                ->select('department_targets.*', 'target_units.*')
                 ->where('department_id', $id)
                 ->where(DB::raw('YEAR(department_targets.date)'), $year)
                 ->get();
@@ -356,9 +363,9 @@ class ReportController extends Controller
                 ->orderBy(DB::raw('MONTH(department_actuals.date)'))->get();
 
 
-            if ($actuals->isEmpty()) {
-                return view('components/404-page-report');
-            }
+            // if ($actuals->isEmpty()) {
+            //     return view('components/404-page-report');
+            // }
             // sum bobot
             $targetWeightingSum = DB::table('department_targets')
                 ->select('weighting')
@@ -378,7 +385,7 @@ class ReportController extends Controller
             // }
 
             $groupedData = $actuals->groupBy('kpi_code');
-            // dd($groupedData);
+            // dd($groupedData, $targets);
 
             // Hitung total target dan actual untuk setiap kelompok
             $totals = $groupedData->map(function ($group) {
@@ -415,10 +422,11 @@ class ReportController extends Controller
                 $trendItem = $firstItem->trend;
                 $recordFileItem = $firstItem->record_file;
                 $periodItem = $firstItem->review_period;
-                $percentageCalc = $this->calculation($totalTarget, $totalTarget, $totalActual, $trendItem, $recordFileItem, $unitItem, $periodItem, $totalPercentage);
+                $percentageCalc = $totalPercentage;
 
 
                 $convertedCalc = floatval(str_replace('%', '', $percentageCalc));
+                // dd($convertedCalc);
 
 
                 $weight = floatval($group->first()->kpi_weighting); // Ambil bobot dari item pertama dalam grup
@@ -437,7 +445,7 @@ class ReportController extends Controller
             // dd($totals);
 
 
-            return view('report.department-report', ['title' => 'Report', 'desc' => 'Summary KPI Dept', 'actuals' => $actuals, 'targets' => $targets, 'totals' => $totals, 'sumWeighting' => $sumWeighting,]);
+            return view('report.department-report', ['title' => 'Report', 'desc' => 'Summary KPI Dept', 'actuals' => $actuals, 'targets' => $targets, 'totals' => $totals, 'sumWeighting' => $sumWeighting, 'departmentCreds' => $departmentCreds, 'idParam' => $id]);
         } else {
             return view('components/404-page-report');
         }
@@ -456,7 +464,7 @@ class ReportController extends Controller
                 ->where('departments.id', '=', $department)
                 ->where('employees.status', '=', $status)
                 ->where('employees.is_active', '=', 1)
-                ->paginate(18)
+                ->paginate(50)
                 ->appends(['year' => $yearToShow, 'department' => $department, 'occupation' => $status]);
             // dd($employees);
 
@@ -502,8 +510,8 @@ class ReportController extends Controller
                 ->whereIn('departments.id', $departmentIds)
                 ->get();
 
-            $actualsGroup1 = $semester1Actuals->groupBy(['employee_id', 'kpi_code']);
-            $actualsGroup2 = $semester2Actuals->groupBy(['employee_id', 'kpi_code']);
+            $actualsGroup1 = $semester1Actuals->groupBy(['employee_id', 'kpi_item']);
+            $actualsGroup2 = $semester2Actuals->groupBy(['employee_id', 'kpi_item']);
             $actualsDeptGroup1 = $semester1ActualsDept->groupBy(['department_id', 'kpi_code']);
             $actualsDeptGroup2 = $semester2ActualsDept->groupBy(['department_id', 'kpi_code']);
 
@@ -705,7 +713,7 @@ class ReportController extends Controller
             $employees = DB::table('employees')->leftJoin('departments', 'departments.id', '=', 'employees.department_id')->select('departments.name as dept', 'employees.name as name', 'employees.nik', 'employees.occupation', 'employees.id as employee_id', 'department_id')
                 ->where('departments.id', '=', $department)
                 ->where('employees.is_active', '=', 1)
-                ->paginate(18)
+                ->paginate(50)
                 ->appends(['year' => $yearToShow, 'department' => $department, 'occupation' => $status]);
             // dd($employees);
 
@@ -751,8 +759,8 @@ class ReportController extends Controller
                 ->whereIn('departments.id', $departmentIds)
                 ->get();
 
-            $actualsGroup1 = $semester1Actuals->groupBy(['employee_id', 'kpi_code']);
-            $actualsGroup2 = $semester2Actuals->groupBy(['employee_id', 'kpi_code']);
+            $actualsGroup1 = $semester1Actuals->groupBy(['employee_id', 'kpi_item']);
+            $actualsGroup2 = $semester2Actuals->groupBy(['employee_id', 'kpi_item']);
             $actualsDeptGroup1 = $semester1ActualsDept->groupBy(['department_id', 'kpi_code']);
             $actualsDeptGroup2 = $semester2ActualsDept->groupBy(['department_id', 'kpi_code']);
 
@@ -953,7 +961,7 @@ class ReportController extends Controller
             $employees = DB::table('employees')->leftJoin('departments', 'departments.id', '=', 'employees.department_id')->select('departments.name as dept', 'employees.name as name', 'employees.nik', 'employees.occupation', 'employees.id as employee_id', 'department_id')
                 ->where('employees.status', '=', $status)
                 ->where('employees.is_active', '=', 1)
-                ->paginate(18)
+                ->paginate(50)
                 ->appends(['year' => $yearToShow, 'department' => $department, 'occupation' => $status]);
             // dd($employees);
 
@@ -999,8 +1007,8 @@ class ReportController extends Controller
                 ->whereIn('departments.id', $departmentIds)
                 ->get();
 
-            $actualsGroup1 = $semester1Actuals->groupBy(['employee_id', 'kpi_code']);
-            $actualsGroup2 = $semester2Actuals->groupBy(['employee_id', 'kpi_code']);
+            $actualsGroup1 = $semester1Actuals->groupBy(['employee_id', 'kpi_item']);
+            $actualsGroup2 = $semester2Actuals->groupBy(['employee_id', 'kpi_item']);
             $actualsDeptGroup1 = $semester1ActualsDept->groupBy(['department_id', 'kpi_code']);
             $actualsDeptGroup2 = $semester2ActualsDept->groupBy(['department_id', 'kpi_code']);
 
@@ -1203,7 +1211,7 @@ class ReportController extends Controller
                 ->leftJoin('departments', 'departments.id', '=', 'employees.department_id')
                 ->select('departments.name as dept', 'employees.name as name', 'employees.nik', 'employees.occupation', 'employees.id as employee_id', 'department_id')
                 ->where('employees.is_active', '=', 1)
-                ->paginate(18)
+                ->paginate(50)
                 ->appends(['year' => $yearToShow, 'department' => $department, 'occupation' => $status]);
 
             // Get the employee IDs for the current page
@@ -1249,8 +1257,8 @@ class ReportController extends Controller
                 ->whereIn('departments.id', $departmentIds)
                 ->get();
 
-            $actualsGroup1 = $semester1Actuals->groupBy(['employee_id', 'kpi_code']);
-            $actualsGroup2 = $semester2Actuals->groupBy(['employee_id', 'kpi_code']);
+            $actualsGroup1 = $semester1Actuals->groupBy(['employee_id', 'kpi_item']);
+            $actualsGroup2 = $semester2Actuals->groupBy(['employee_id', 'kpi_item']);
             $actualsDeptGroup1 = $semester1ActualsDept->groupBy(['department_id', 'kpi_code']);
             $actualsDeptGroup2 = $semester2ActualsDept->groupBy(['department_id', 'kpi_code']);
 
@@ -1504,15 +1512,18 @@ class ReportController extends Controller
             ->get();
 
         $targets = DB::table('department_targets')->leftJoin('departments', 'departments.id', '=', 'department_targets.department_id')
-            ->select('department_targets.*', 'departments.name as department')
+            ->leftJoin('target_units', 'target_units.id', '=', 'department_targets.target_unit_id')
+            ->select('department_targets.*', 'departments.name as department', 'target_units.*')
             ->whereYear('department_targets.date', '=', $year)
             ->where('indicator', '=', $item)->get();
+
+        $indicatorList = DB::table('department_targets')->select('indicator')->whereYear('date', '=', $year)->groupBy('indicator')->get();
 
         // dd($targets, $actuals);
 
 
         // dd($actuals);
 
-        return view('report.target-kpi-department-report', ['title' => 'Summary KPI', 'desc' => 'All Department', 'actuals' => $actuals, 'targets' => $targets]);
+        return view('report.target-kpi-department-report', ['title' => 'Summary KPI', 'desc' => 'All Department', 'actuals' => $actuals, 'targets' => $targets, 'indicatorList' => $indicatorList]);
     }
 }

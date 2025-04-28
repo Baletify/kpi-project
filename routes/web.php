@@ -2,30 +2,55 @@
 
 use App\Models\Actual;
 use App\Models\Preview;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LogController;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\MailController;
+use App\Http\Controllers\UserController;
+use Illuminate\Support\Facades\Password;
 use App\Http\Controllers\ActualController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\TargetController;
 use App\Http\Controllers\PreviewController;
-use App\Http\Controllers\ActionPlanController;
-use App\Http\Controllers\AuthController;
 use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\ActionPlanController;
 use App\Http\Controllers\GeneratePdfController;
-use App\Http\Controllers\MailController;
 use App\Http\Controllers\RequirementController;
 use App\Http\Controllers\NotificationController;
-use App\Http\Controllers\UserController;
+use App\Http\Controllers\SupportingDocumentController;
 use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 
-Route::get('/', function () {
-    return view('login-page');
-});
-
 // Auth Routes
+Route::get('/', [AuthController::class, 'login']);
 Route::get('/login', [AuthController::class, 'login'])->name('auth.login');
 Route::post('auth/me', [AuthController::class, 'authMe'])->name('auth.me');
 Route::post('/logout', [AuthController::class, 'logout'])->name('auth.logout');
+
+
+Route::get('/reset-password', function () {
+    return view('reset-password');
+})->name('reset-password');
+
+Route::post('/reset-password/reset', function (Request $request) {
+    $request->validate(['email' => 'required|email']);
+    $status = Password::sendResetLink(
+        $request->only('email')
+    );
+    if ($status !== Password::RESET_LINK_SENT) {
+        return back()->withErrors(['email' => __($status)])->with('error', __($status));
+    } else {
+        return redirect()->to('/')->with('success', __($status));
+    }
+})->name('password.reset');
+
+Route::get('/reset-password/{token}', function (string $token) {
+    return view('reset-password-token', ['token' => $token]);
+})->name('reset-password-token');
+
+Route::post('/reset-password/update', [UserController::class, 'updatePassword'])->name('password.update');
+
+
 
 
 Route::middleware(['auth'])->group(function () {
@@ -99,6 +124,8 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/log-check', [LogController::class, 'index'])->name('log-check.index');
         Route::get('/log-input', [LogController::class, 'indexInput'])->name('log-input.indexInput');
         Route::get('/log-input-individual', [LogController::class, 'individual'])->name('log-input.individual');
+        Route::get('/log-input-monitoring-employee', [LogController::class, 'indexMonitoringEmployee'])->name('log-input.monitoringEmployee');
+        Route::get('/log-input-monitoring-dept', [LogController::class, 'indexMonitoringDept'])->name('log-input.monitoringDept');
     });
 
     Route::prefix('action-plan')->group(function () {
@@ -133,6 +160,13 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/master-input', [EmployeeController::class, 'indexMasterInput'])->name('masterInput');
     Route::post('/master-input/update', [EmployeeController::class, 'updateMasterInput'])->name('updateMasterInput');
+
+    Route::get('/supporting-document-employee', [SupportingDocumentController::class, 'index'])->name('supportingDocumentEmployee');
+    Route::get('/supporting-document-dept', [SupportingDocumentController::class, 'indexDept'])->name('supportingDocumentDept');
+    Route::get('/supporting-document-employee-list', [SupportingDocumentController::class, 'employeeSupportingDocumentList'])->name('employeeSupportingDocumentList');
+    Route::get('/supporting-document-dept-list', [SupportingDocumentController::class, 'departmentSupportingDocumentList'])->name('deptSupportingDocumentList');
+    Route::get('/supporting-document-file', [SupportingDocumentController::class, 'showFile'])->name('supportingDocumentFile');
+    Route::get('/supporting-document-file-dept', [SupportingDocumentController::class, 'showFileDept'])->name('supportingDocumentFileDept');
 });
 
 

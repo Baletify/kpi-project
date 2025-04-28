@@ -6,6 +6,8 @@
             $semesterQuery = request()->query('semester');
             $allStatus = request()->query('all');
             $statusQuery = request()->query('status');
+            $role = auth()->user()->role;
+            $currentMonth = Carbon\Carbon::now()->month;
 
             // dd($yearQuery, $departmentQuery, $semesterQuery, $allStatus, $employeeQuery, $statusQuery);
         @endphp
@@ -51,10 +53,12 @@
                     $year = request()->query('year');
                 @endphp
                 <div class="mt-3">
+                    @if ($role == 'Approver' || $currentMonth == 1 || $currentMonth == 12)
                     <a href="{{ route('target.showImportDept', 'semester=' . $currentSemester . '&department=' . $department . '&year=' . $year) }}&all={{ $allStatus }}" class="p-1 mx-2 bg-green-600 py-2 items-center rounded-md">
                         <i class="ri-file-excel-2-line text-2xl text-white"></i>
                         <span class="font-medium text-white">Upload Excel</span>
                     </a>
+                    @endif
                 </div>
             </div>
         </div>
@@ -90,7 +94,7 @@
                 <th style="width: 5%" class="border-2 border-gray-400 text-[13px] tracking-wide font-medium text-white py-1 bg-blue-700">{{ $month }}</th>
                 
             @endforeach
-                {{-- <th style="width: 4%" class="border-2 border-gray-400 text-[13px] tracking-wide font-medium text-white py-1 bg-blue-700">Aksi</th> --}}
+                <th style="width: 4%" class="border-2 border-gray-400 text-[13px] tracking-wide font-medium text-white py-1 bg-blue-700">Aksi</th>
             </tr>
             @php
                 $i = 0;
@@ -201,10 +205,17 @@
                 </td>
                 @endforeach
                 @endif
+                @if ($role == 'Approver')
+                <td class="border-2 border-gray-400 text-[10px] tracking-wide px-2 py-1 text-center">
+                    <a href="{{ route('target.editDept', ['id' => $target->id]) }}?semester={{ $semesterQuery }}">
+                        <i class="ri-edit-2-line bg-yellow-500 p-1 rounded-sm"></i>
+                    </a>
+                </td>
+                @endif
                 </tr>
             @empty
             <tr>
-                <td colspan="16" class="border-2 border-gray-400 tracking-wide  py-0 px-2 text-center">Data Tidak ditemukan</td>
+                <td colspan="16" class="border-2 border-gray-400 tracking-wide py-0 px-2 text-center">Data Tidak ditemukan</td>
             </tr>
             @endforelse
         </table>

@@ -45,10 +45,19 @@
             <td>{{ $details['comment'] }}</td>
         </tr>
         <tr>
-            <td>Revised by</td>
+            <td>Commented by</td>
             <td>:</td>
-            <td>{{ $details['revised_by'] }}</td>
+            <td>{{ $details['revised_by'] . '(' . $details['email_by'] . ')' }}</td>
+        </tr>
+        <tr>
+            <td>Perbaikan</td>
+            <td>:</td>
+            <td>{{ $details['request'] }}</td>
         </tr>
     </table>
+    <div class="">
+        <p>{{ $details['closing'] }}</p>
+    </div>
+
 </body>
 </html>

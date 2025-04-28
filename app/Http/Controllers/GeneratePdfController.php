@@ -37,6 +37,11 @@ class GeneratePdfController extends Controller
 
         $tteNumber = date('His', $newestTimestamp) . '/' . date('m', $newestTimestamp) . '/' . date('Y', $newestTimestamp);
 
+        $totalThisMonthTarget = $request->inputThisMonth;
+        $inputed = $request->inputed;
+        $ttePercentage = ($inputed / $totalThisMonthTarget) * 100;
+        $ttePercentageFormat = number_format($ttePercentage, 1, '.', '');
+
 
         $dept = Department::where('id', $request->department_id)->first();
         $data = [
@@ -49,6 +54,9 @@ class GeneratePdfController extends Controller
             'department' => $dept->name,
             'nik' => $nik,
             'name' => $userNameString,
+            'inputed' => $inputed,
+            'totalThisMonthTarget' => $totalThisMonthTarget,
+            'ttePercentage' => $ttePercentageFormat,
             'desc_1' => 'Dokumen ini sah, diterbitkan secara elektronik melalui aplikasi KPI di PT Bridgestone Kalimantan Plantation sehingga tidak memerlukan cap dan tanda tangan.',
             'desc_2' => 'Terima kasih telah menyampaikan laporan KPI. ',
             'signature' => 'Manajemen BSKP'
@@ -73,7 +81,6 @@ class GeneratePdfController extends Controller
         // dd($userNameString);
         $departmentID = Auth::user()->department_id;
 
-
         $actual = DB::table('actuals')->leftJoin('employees', 'employees.id', '=', 'actuals.employee_id')->leftJoin('departments', 'departments.id', '=', 'employees.department_id')->select('input_at')->where('departments.id', '=', $departmentID)->orderBy('checked_at', 'desc')->first();
 
         $actualDept = DB::table('department_actuals')->select('input_at')->where('department_id', '=', $departmentID)->orderBy('checked_at', 'desc')->first();
@@ -84,6 +91,12 @@ class GeneratePdfController extends Controller
 
         $last_input = date('d M Y H:i:s', $newestTimestamp);
         $tteNumber = date('His', $newestTimestamp) . '/' . date('m', $newestTimestamp) . '/' . date('Y', $newestTimestamp);
+
+        $totalThisMonthTarget = $request->checkedThisMonth;
+        $checked = $request->checked;
+        $ttePercentage = ($checked / $totalThisMonthTarget) * 100;
+        $ttePercentageFormat = number_format($ttePercentage, 1, '.', '');
+
 
         $dept = Department::where('id', $request->department_id)->first();
         $data = [
@@ -96,6 +109,9 @@ class GeneratePdfController extends Controller
             'department' => $dept->name,
             'nik' => $nik,
             'name' => $userNameString,
+            'checked' => $checked,
+            'totalThisMonthTarget' => $totalThisMonthTarget,
+            'ttePercentage' => $ttePercentageFormat,
             'desc_1' => 'Dokumen ini sah, diterbitkan secara elektronik melalui aplikasi KPI di PT Bridgestone Kalimantan Plantation sehingga tidak memerlukan cap dan tanda tangan.',
             'desc_2' => 'Terima kasih telah menyampaikan laporan KPI. ',
             'signature' => 'Manajemen BSKP'

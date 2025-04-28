@@ -8,6 +8,8 @@
                     $semesterQuery = request()->query('semester');
                     $departmentQuery = request()->query('department');
                     $statusQuery = request()->query('status');
+                    $role = auth()->user()->role;
+                    $currentMonth = Carbon\Carbon::now()->month;
                     $allStatus = request()->query('all');
                     if ($allStatus == 'dept') {
                         $all = 'dept';
@@ -16,7 +18,6 @@
                     } elseif($allStatus == 'true') {
                         $all = 'true';
             }
-
             // dd($yearQuery, $departmentQuery, $semesterQuery, $allStatus, $employeeQuery, $statusQuery);
                 @endphp
             </div>
@@ -88,10 +89,13 @@
                 </div>
                 </form>
                 <div class="p-0">
+                    @if ($currentMonth == 1 || $currentMonth == 12 || $role == 'Approver')
+                 
                     <a href="{{ route('target.showImport', 'semester=' . $semesterQuery . '&employee=' . $employeeQuery . '&year=' . $yearQuery) }}&all={{ $all }}" class="p-1 mx-2 bg-green-600 py-2 items-center rounded-md">
-                    <i class="ri-file-excel-2-line text-2xl text-white"></i>
-                    <span class="font-medium text-white">Upload Excel</span>
+                        <i class="ri-file-excel-2-line text-2xl text-white"></i>
+                        <span class="font-medium text-white">Upload Excel</span>
                     </a>
+                    @endif
                 </div>
             </div>
         </div>
@@ -127,7 +131,9 @@
                 <th style="width: 4%" class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-white py-1 bg-blue-700">{{ $month }}</th>
                 
             @endforeach
-                {{-- <th class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-white py-1 bg-blue-700">Aksi</th> --}}
+            @if ($role == 'Approver')
+            <th class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-white py-1 bg-blue-700">Aksi</th>
+            @endif
             </tr>
             @php
                 $i = 0;
@@ -237,6 +243,13 @@
                 @endif
                 </td>
                 @endforeach
+                @endif
+                @if ($role == 'Approver')
+                <td class="border-2 border-gray-400 text-[10px] tracking-wide px-2 py-0 text-center">
+                    <a href="{{ route('target.edit', ['id' => $target->id]) }}?semester={{ $semesterQuery }}">
+                        <i class="ri-edit-2-line bg-yellow-500 p-1 rounded-sm"></i>
+                    </a>
+                </td>
                 @endif
                 </tr>
             @empty

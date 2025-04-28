@@ -308,6 +308,7 @@
                 $month = request()->query('month');
                 $year = request()->query('year');
                 $totalTgAll = $totalTgUnit + $totalTgUnitDept;
+                // dd($totalTgUnit, $totalTgUnitDept, $totalsTg);
                 // dd($totalsTg, $totalCheck, $totalCheckDept);
                 // dd($totalCheck, $totalCheckDept, $totalTgAll);
 
@@ -320,7 +321,7 @@
             @endphp
             <div class="flex justify-end">
                 <div class="p-0.5">
-                    @if ($totalTgAll - $totalFlAll <= 2 && $role == 'Inputer')
+                    @if ($role == 'Inputer')
                     <form action="{{ url('/generate-pdf-input') }}" method="GET">
                         @php
                             $lastInput = $actualFilled->first(function($item) use ($department_id) {
@@ -332,31 +333,59 @@
                         <input type="hidden" name="department_id" id="department_id" value="{{ $department_id }}">
                         <input type="hidden" name="input_at" id="input_at" value="{{ $lastInput->input_at ?? '' }}">
                         <input type="hidden" name="input_by" id="input_by" value="{{ $lastInput->input_by ?? '' }}">
+                        <input type="hidden" name="inputThisMonth" id="inputThisMonth" value="{{ $totalTgAll }}">
+                        <input type="hidden" name="inputed" id="inputed" value="{{ $totalFlAll }}">
                         <button type="submit" class="rounded-md bg-green-700 text-white p-2">Generate TTE</button>
                     </form>
                     @endif
                 </div>
                 <div class="p-0.5">
-                    @if ($totalCheckedAll == $totalTgAll && ($role == 'Checker Div 1' || $role == 'Checker Div 2' || $role == 'Checker WS' || $role == 'Checker Factory'))
+                    @if ($role == 'Checker Div 1' || $role == 'Checker Div 2' || $role == 'Checker WS' || $role == 'Checker Factory')
                     <form action="{{ url('/generate-pdf-check') }}" method="GET">
                         @php
                             $lastInput = $actualFilled->first(function($item) use ($department_id) {
                                 return $item->department_id == $department_id;
                             });
-    
-                            
                         @endphp
                         <input type="hidden" name="department_id" id="department_id" value="{{ $department_id }}">
                         <input type="hidden" name="input_at" id="input_at" value="{{ $lastInput->checked_at ?? '' }}">
                         <input type="hidden" name="input_by" id="input_by" value="{{ $lastInput->checked_by ?? '' }}">
+                        <input type="hidden" name="checkedThisMonth" id="checkedThisMonth" value="{{ $totalsTg }}">
+                        <input type="hidden" name="checked" id="checked" value="{{ $totalCheckedAll }}">
                         <button type="submit" class="rounded-md bg-blue-500 text-white p-2">Generate TTE</button>
                     </form>
                     @endif
                 </div>
-            </div>
-            
-            
+            </div>  
         </div>
+        @if ($role == 'Checker Div 1' || $role == 'Checker Div 2' || $role == 'Checker WS' || $role == 'Checker Factory')
+        <div class="flex gap-x-3">
+            <div class="">
+                <button type="button" onclick="openModal('checkModal')" class="hover:text-blue-500 rounded-md">
+                    <p>Not Checked: {{ $totalsTg - $totalCheckedAll }}</p>
+                </button>
+
+            </div>
+            <div class="">
+                <p>Checked: {{ $totalCheckedAll }}</p>
+            </div>
+            <div class="">
+                <p>Total this month: {{ $totalsTg }}</p>
+            </div>
+        </div>
+        @elseif ($role == 'Inputer')
+        <div class="flex gap-x-3">
+            <div class="">
+                <p>Not Inputed: {{ $totalTgAll - $totalFlAll }}</p>
+            </div>
+            <div class="">
+                <p>Inputed: {{ $totalFlAll }}</p>
+            </div>
+            <div class="">
+                <p>Total this month: {{ $totalTgAll }}</p>
+            </div>
+        </div>
+        @endif
         <table class="w-full bg-white">
             <tr>
                 <th style="width: 7%;" class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-white py-0 px-4 bg-blue-700">Dept</th>
@@ -404,16 +433,13 @@
 
             
             <td class="border-2 border-gray-400 tracking-wide px-2 py-0 text-[13px] text-center">
-                @if ($totalFlAll == $totalTgAll)
                 {{ $af ? $af->input_by : '' }} | {{  $af ? formatDate($af->input_at) : '' }}
-                @endif
             </td>
             <td class="border-2 border-gray-400 tracking-wide px-2 py-0 text-[13px] text-center">
-
                 {{ $afc ? '' : ($af->checked_by ?? '') }} | {{ $afc ? '' : (formatDate($af->checked_at ?? '')) }}
             </td>
             <td class="border-2 border-gray-400 tracking-wide px-2 py-0 text-[13px] text-center">
-                {{ $ap ? ($af->approved_by ?? '') : '' }} | {{ $ap ? (formatDate($af->approved_at ?? '')) : '' }}
+                {{ $af ? $af->approved_by : '' }} | {{  $af ? formatDate($af->approved_at) : '' }}
             </td>
             @empty
             <td class="border-2 border-gray-400 tracking-wide px-2 py-0 text-[13px] text-center" colspan="5">No data available</td>
@@ -423,6 +449,88 @@
     </table>
 </div>
 
+<div id="checkModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 items-center justify-center flex hidden">
+    <div class="bg-white rounded-lg p-4 w-[500px]">
+        <div class="flex justify-between items-center">
+            <h2 class="text-xl font-bold">Not Checked List</h2>
+            <button id="closeCheckModal" class="text-gray-500 hover:text-gray-700" onclick="closeModal('checkModal')">&times;</button>
+        </div>
+        <div class="mt-4">
+            <p>KPI Employee</p>
+            <table class="w-full">
+                <tr>
+                    <th style="width: 3%;" class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-white py-1 px-4 bg-blue-700">No.</th>
+                    <th style="width: 70%;" class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-white py-1 px-4 bg-blue-700">Dept</th>
+                    <th style="width: 27%;" class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-white py-1 px-4 bg-blue-700">Detail Item</th>
+                    <th style="width: 27%;" class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-white py-1 px-4 bg-blue-700">Not Checked</th>
+                </tr>
+                @php
+                $i = 0;
+                @endphp
+                @foreach ($actualCheckedCountGroup as $item)
+                @php
+                $i++;
+                @endphp
+                <tr>
+                    <td class="border-2 border-gray-400 tracking-wide px-2 py-0 text-center">
+                        {{ $i }}
+                    </td>
+                    <td class="border-2 border-gray-400 tracking-wide px-2 py-0">
+                       {{ $item->department_name }}
+                    </td>
+                    <td class="border-2 border-gray-400 tracking-wide px-2 py-0">
+                       {{ $item->kpi_code }}
+                    </td>
+                    <td class="border-2 border-gray-400 tracking-wide px-2 py-0 text-center">
+                        {{ $item->total_not_checked }}
+                    </td>
+                </tr>
+                @endforeach
+            </table>
+        </div>
+        <div class="mt-4">
+            <p>KPI Dept</p>
+            <table class="w-full">
+                <tr>
+                    <th style="width: 3%;" class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-white py-1 px-4 bg-blue-700">No.</th>
+                    <th style="width: 70%;" class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-white py-1 px-4 bg-blue-700">Dept</th>
+                    <th style="width: 27%;" class="border-2 border-gray-400 text-[14px] tracking-wide font-medium text-white py-1 px-4 bg-blue-700">Not Checked</th>
+                </tr>
+                @php
+                $i = 0;
+                @endphp
+                @foreach ($actualCheckedCountDeptGroup as $item)
+                @php
+                $i++;
+                @endphp
+                <tr>
+                    <td class="border-2 border-gray-400 tracking-wide px-2 py-0 text-center">
+                        {{ $i }}
+                    </td>
+                    <td class="border-2 border-gray-400 tracking-wide px-2 py-0">
+                       {{ $item->department_name }}
+                    </td>
+                    <td class="border-2 border-gray-400 tracking-wide px-2 py-0 text-center">
+                        {{ $item->total_not_checked }}
+                    </td>
+                </tr>
+                @endforeach
+            </table>
+        </div>
+    </div>
+</div>
+
 </x-app-layout>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfobject/2.3.0/pdfobject.min.js" integrity="sha512-Nr6NV16pWOefJbWJiT8SrmZwOomToo/84CNd0MN6DxhP5yk8UAoPUjNuBj9KyRYVpESUb14RTef7FKxLVA4WGQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<script>
+    function openModal(modalId) {
+        document.getElementById(modalId).classList.remove('hidden');
+    }
+
+    function closeModal(modalId) {
+        document.getElementById(modalId).classList.add('hidden');
+    }
+
+</script>

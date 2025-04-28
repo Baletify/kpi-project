@@ -38,6 +38,9 @@
                 </div>
                 </div>
             </div>
+            @php
+            // dd($deptLists, $role);
+            @endphp
             <div class="bg-gradient-to-bl from-[#3572EF] to-[#050C9C] rounded-md border border-gray-200 p-6 mt-2 shadow-md shadow-black/15">
                 <div class="flex justify-between">
                     <div>
@@ -516,7 +519,7 @@
                         console.log(pdfUrl);
                         
                         
-                        document.getElementById('pdfObject').setAttribute('data', `/kpi_requirement_files/${pdfUrl}`);
+                        document.getElementById('pdfObject').setAttribute('data', `kpi_requirement_files/${pdfUrl}`);
                         document.getElementById('documentModal').classList.remove('hidden');
                     } else {
                         console.error('No PDF found');
@@ -535,7 +538,7 @@
                     if (data.length > 0) {
                         const pdfUrl = data[0].file;
                         
-                        document.getElementById('pdfObjectTutorial').setAttribute('data', `/kpi_requirement_files/${pdfUrl}`);
+                        document.getElementById('pdfObjectTutorial').setAttribute('data', `kpi_requirement_files/${pdfUrl}`);
                         document.getElementById('tutorialModal').classList.remove('hidden');
                     } else {
                         console.error('No PDF found');

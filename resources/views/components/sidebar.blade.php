@@ -82,14 +82,14 @@
                 <li>
                     <a href="{{ route('report.index', 'department=' . $departmentID) }}" class="flex items-center py-1.5 px-6 text-gray-300 hover:bg-gray-700">
                         <i class="ri-contacts-book-2-line text-2xl"></i>
-                        <span class="ml-3">Summary KPI Employee</span>
+                        <span class="ml-3">KPI Report {{ "(Employees)" }}</span>
                     </a>
                 </li>
                 @elseif (auth()->user()->input_type == 'Individual')
                 <li>
                     <a href="{{ route('report.index', 'employee=' . $userID) }}" class="flex items-center py-1.5 px-6 text-gray-300 hover:bg-gray-700">
                         <i class="ri-contacts-book-2-line text-2xl"></i>
-                        <span class="ml-3">Summary KPI Employee</span>
+                        <span class="ml-3">KPI Report {{ "(Employees)" }}</span>
                     </a>
                 </li>
                 @endif
@@ -97,14 +97,14 @@
                 <li>
                     <a href="{{ route('report.department', $departmentID . '?semester=&year='. $currentYear) }}" class="flex items-center py-1.5 px-6 text-gray-300 hover:bg-gray-700" id="department-link">
                         <i class="ri-file-list-3-fill text-2xl"></i>
-                        <span class="ml-3">Summary KPI Dept</span>
+                        <span class="ml-3">KPI Report {{ "(Dept)" }}</span>
                     </a>
                 </li>
                 @else
                 <li>
                     <a href="{{ route('report.indexDept') }}" class="flex items-center py-1.5 px-6 text-gray-300 hover:bg-gray-700" id="department-link">
                         <i class="ri-file-list-3-fill text-2xl"></i>
-                        <span class="ml-3">Summary KPI Dept</span>
+                        <span class="ml-3">KPI Report {{ "(Dept)" }}</span>
                     </a>
                 </li>
                 
@@ -114,17 +114,26 @@
                 <li>
                     <a href="{{ route('report.summaryDept', 'year=' . $currentYear) }}" class="flex items-center py-1.5 px-6 text-gray-300 hover:bg-gray-700">
                         <i class="ri-line-chart-line text-2xl"></i>
-                        <span class="ml-3">Summary All Employee</span>
+                        <span class="ml-3">Summary KPI Report {{ "(Employees)" }}</span>
                     </a>
                 </li>
                 <li>
-                    <a href="{{ route('report.indexDeptTargetReport', 'year=' . $currentYear) }}" class="flex items-center py-1.5 px-6 text-gray-300 hover:bg-gray-700">
+                    <a href="{{ route('report.departmentTargetReport', 'year=' . $currentYear) }}" class="flex items-center py-1.5 px-6 text-gray-300 hover:bg-gray-700">
                         <i class="ri-bar-chart-box-line text-2xl"></i>
-                        <span class="ml-3">Summary All Dept</span>
+                        <span class="ml-3">Summary KPI Report {{ "(Dept)" }}</span>
                     </a>
                 </li>
                 @endif
                 
+            </ul>
+            <ul class="mt-2 space-y-2">
+                <div class="flex items-center pb-0 border-b border-b-gray-600"></div>
+                <li>
+                    <a href="{{ route('supportingDocumentEmployee') }}?department={{ $departmentID }}" class="flex items-center py-1.5 px-6 text-gray-300 hover:bg-gray-700">
+                        <i class="ri-database-line text-2xl"></i>
+                        <span class="ml-3">Lihat Data Pendukung</span>
+                    </a>
+                </li>
             </ul>
             <div class="flex items-center pb-0 border-b border-b-gray-600"></div>
             <ul x-show="open" x-transition:enter="transition ease-out duration-100" x-transition:enter-start="transform opacity-0 scale-95" x-transition:enter-end="transform opacity-100 scale-100" x-transition:leave="transition ease-in duration-75" x-transition:leave-start="transform opacity-100 scale-100" x-transition:leave-end="transform opacity-0 scale-95" class="mt-2 space-y-2">
@@ -136,7 +145,7 @@
                     </a>
                 </li>
                 @endif
-                @if ($role != '' && $role != 'Checker 1')
+                @if ($role != '' && $role != 'Checker 1' && $role != 'Checker Factory' && $role != 'Checker WS')
                 @if ($role == 'Checker Div 1' || $role == 'Checker Div 2')
                 <li>
                     <a href="{{ route('log-input.indexInput', 'department=' . $departmentID . '&month=' . $currentMonth . '&year=' . $currentYear) }}" class="flex items-center py-1.5 px-6 text-gray-300 hover:bg-gray-700">
@@ -158,6 +167,18 @@
                     <a href="{{ route('log-input.individual', 'department=' . $departmentID . '&month=' . $currentMonth . '&year=' . $currentYear) }}" class="flex items-center py-1.5 px-6 text-gray-300 hover:bg-gray-700">
                         <i class="ri-user-follow-fill text-2xl"></i>
                         <span class="ml-3">Log Input Individual</span>
+                    </a>
+                </li>  
+                <li>
+                    <a href="{{ route('log-input.monitoringEmployee') }}?department=all&semester={{ $semester }}&year={{ $currentYear }}" class="flex items-center py-1.5 px-6 text-gray-300 hover:bg-gray-700">
+                        <i class="ri-pass-valid-line text-2xl"></i>
+                        <span class="ml-3">Log Input Aktual Employee</span>
+                    </a>
+                </li>  
+                <li>
+                    <a href="{{ route('log-input.monitoringDept')}}?semester={{ $semester }}&year={{ $currentYear }}" class="flex items-center py-1.5 px-6 text-gray-300 hover:bg-gray-700">
+                        <i class="ri-building-line text-2xl"></i>
+                        <span class="ml-3">Log Input Aktual Dept</span>
                     </a>
                 </li>  
                 @endif           

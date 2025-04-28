@@ -5,19 +5,21 @@
             $userID = auth()->user()->id;
             $allStatus = request()->query('all');
             $statusQuery = request()->query('status');
+            $email = auth()->user()->email;
         @endphp
         <div class="p-1">
             <span class="text-gray-600 font-bold text-lg">PT BRIDGESTONE KALIMANTAN PLANTATION</span>
         </div>
         <div class="justify-center flex flex-col items-center">
             <div class="">
-                <span class="text-gray-600 font-bold text-lg text-center">Key Performance Indicator</span>
+                <span class="text-gray-600 font-bold text-lg text-center">KPI Report {{ "(Employees)" }}</span>
             </div>
             <div class="">
                 @php
-                $year = \Carbon\Carbon::parse($actuals->first()->date)->year;
+                $year = request()->query('year') ?? date('Y');
+                $semester = request()->query('semester') ?? 1;
                 @endphp
-                <span class="text-gray-600 font-bold text-xs text-center">Periode: Semester {{ $actuals->first()->semester }} {{ $year }}</span>
+                <span class="text-gray-600 font-bold text-xs text-center">Periode: Semester {{ $semester }} {{ $year }}</span>
             </div>
         </div>
         <div class="grid grid-cols-5 p-1">
@@ -26,12 +28,12 @@
                     <tr>
                         <td style="width: 6%" class="text-[13px] tracking-wide font-medium text-gray-600 px-1">Dept</td>
                         <td style="width: 2%" class="text-[13px] tracking-wide font-medium text-gray-600 px-1">:</td>
-                        <td class="text-[13px] tracking-wide font-medium text-gray-600 px-1">{{ $actuals->first()->department }}</td>
+                        <td class="text-[13px] tracking-wide font-medium text-gray-600 px-1">{{ $userCreds->department }}</td>
                     </tr>
                     <tr>
                         <td style="width: 6%" class="text-[13px] tracking-wide font-medium text-gray-600 px-1">NIK</td>
                         <td style="width: 2%" class="text-[13px] tracking-wide font-medium text-gray-600 px-1">:</td>
-                        <td class="text-[13px] tracking-wide font-medium text-gray-600 px-1">{{ $actuals->first()->nik }}</td>
+                        <td class="text-[13px] tracking-wide font-medium text-gray-600 px-1">{{ $userCreds->nik }}</td>
                     </tr>
                 </table>
             </div>
@@ -40,12 +42,12 @@
                     <tr>
                         <td style="width: 6%" class="text-[13px] tracking-wide font-medium text-gray-600 px-1">Nama</td>
                         <td style="width: 2%" class="text-[13px] tracking-wide font-medium text-gray-600 px-1">:</td>
-                        <td class="text-[13px] tracking-wide font-medium text-gray-600 px-1">{{ $actuals->first()->name }}</td>
+                        <td class="text-[13px] tracking-wide font-medium text-gray-600 px-1">{{ $userCreds->employee }}</td>
                     </tr>
                     <tr>
                         <td style="width: 6%" class="text-[13px] tracking-wide font-medium text-gray-600 px-1">Posisi</td>
                         <td style="width: 2%" class="text-[13px] tracking-wide font-medium text-gray-600 px-1">:</td>
-                        <td class="text-[13px] tracking-wide font-medium text-gray-600 px-1">{{ $actuals->first()->occupation }}</td>
+                        <td class="text-[13px] tracking-wide font-medium text-gray-600 px-1">{{ $userCreds->occupation }}</td>
                     </tr>
                 </table>
             </div>
@@ -70,7 +72,7 @@
             </div>
             <div class="flex justify-end">
                 <div class="relative mt-0 rounded-md">
-                    <form action="{{ route('report.show', $actuals->first()->employee_id) }}" method="GET">
+                    <form action="{{ route('report.show', $idParam) }}" method="GET">
                         <input type="hidden" name="year" id="year" value="{{ $year }}">
                     <div class="mt-2 mx-2">
                         <select name="semester" id="semester" class="col-start-1 row-start-1 w-full appearance-none rounded-md py-1.5 pl-3 pr-7 text-base text-gray-500 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
@@ -114,16 +116,16 @@
                 </tr>
                 @php
                 $months = [];
-                $selectedSemester = $actuals->first()->semester;
+                $selectedSemester = $semester;
             
                 if ($selectedSemester == 1) {
                     $months = [
-                        '01' => 'Jan', '02' => 'Feb', '03' => 'Mar', '04' => 'Apr', 
-                        '05' => 'May', '06' => 'Jun'
+                        '1' => 'Jan', '2' => 'Feb', '3' => 'Mar', '4' => 'Apr', 
+                        '5' => 'May', '6' => 'Jun'
                     ];
                 } else {
                     $months = [
-                        '07' => 'Jul', '08' => 'Aug', '09' => 'Sep', '10' => 'Oct', 
+                        '7' => 'Jul', '8' => 'Aug', '9' => 'Sep', '10' => 'Oct', 
                         '11' => 'Nov', '12' => 'Dec'
                     ];
                 }
@@ -147,7 +149,7 @@
                 @endphp
                 <tr class="{{ $i % 2 === 0 ? 'bg-gray-50' : 'bg-blue-100' }}">
                     <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="{{ $i % 2 === 0 ? 'FFF2F2F2' : 'FFFFFFFF' }}" name="selected_targets[]" class="border-2 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-1 text-center exclude-from-export" rowspan="4">
-                        <input id="selected-item-{{ $target->id }}" type="checkbox" class="selected-item appearance-none w-4 h-4 border-2 border-gray-400 rounded-sm bg-white text-green-500"  data-code="{{ $target->code }} {{ $role == 'Inputer' || $role == '' ? 'disabled' : '' }}">
+                        <input id="selected-item-{{ $target->id }}" type="checkbox" class="selected-item appearance-none w-4 h-4 border-2 border-gray-400 rounded-sm bg-white text-green-500"  data-code="{{ $target->code }}" {{ $role == 'Inputer' || $role == '' ? 'disabled' : '' }}">
                     </td>
                     <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="{{ $i % 2 === 0 ? 'FFF2F2F2' : 'FFFFFFFF' }}" class="border-2 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-2" rowspan="4">{{ $target->code }}</td>
                     <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="{{ $i % 2 === 0 ? 'FFF2F2F2' : 'FFFFFFFF' }}" class="relative border-2 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-2 group" rowspan="4">
@@ -163,34 +165,53 @@
                         {{ $target->weighting }}
                     </td>
                     <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="{{ $i % 2 === 0 ? 'FFF2F2F2' : 'FFFFFFFF' }}" class="border-2 bg-blue-100  border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center">Target</td>
+                    @php
+                    $sumTarget = 0;
+                    @endphp
                     @foreach ($months as $month => $monthName)
                 @php
+                    $targetUnitField = 'target_' . $month;
+                    $targetUnit = $target->$targetUnitField;
+                    $sumTarget += $targetUnit;
                     $actual = $actuals->first(function($item) use ($target, $month) {
-                        return \Carbon\Carbon::parse($item->date)->format('m') == $month && $item->kpi_code == $target->code;
-                    });
+                            return \Carbon\Carbon::parse($item->date)->format('m') == $month && $item->kpi_item == $target->indicator;
+                        });
                 @endphp
                     <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="{{ $i % 2 === 0 ? 'FFF2F2F2' : 'FFFFFFFF' }}" class="border-2 bg-blue-100 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center">
-                    @if ($target->unit === '%')
-                        {{ $actual ? $actual->target . '%' : '' }}
-                    @elseif ($target->unit == 'Rp')
-                    {{ $actual ? substr(number_format($actual->target, 0, '.', ','), 0, 7) : ''}}
-                    @elseif ($target->unit == 'Kg')
-                    {{ $actual ? substr(number_format($actual->target, 0, '.', ','), 0, 7) : ''}}
+                    {{-- @if ($actual)
+                    @if ($actual->target === '%')
+                        {{ $actual->target !== null ? ($actual->target * 100) . '%' : '' }}
+                    @elseif ($actual->target == 'Rp')
+                    {{ $actual->target !== null ? substr(number_format($actual->target, 0, '.', ','), 0, 7) : ''}}
+                    @elseif ($actual->target == 'Kg')
+                    {{ $actual->target !== null ? substr(number_format($actual->target, 1, '.', ','), 0, 7) : ''}}
                     @else
-                        {{ $actual ? $actual->target : '' }} 
+                        {{ $actual->target !== null ? $actual->target : 'N/A' }} 
                     @endif
+                    @else --}}
+                    @if ($target->unit === '%')
+                        {{ $targetUnit !== null ? ($targetUnit * 100) . '%' : 'N/A' }}
+                    @elseif ($target->unit == 'Rp')
+                    {{ $targetUnit !== null ? substr(number_format($targetUnit, 0, '.', ','), 0, 7) : 'N/A'}}
+                    @elseif ($target->unit == 'Kg')
+                    {{ $targetUnit !== null ? substr(number_format($targetUnit, 1, '.', ','), 0, 7) : 'N/A'}}
+                    @else
+                        {{ $targetUnit !== null ? $targetUnit : 'N/A' }} 
+                    @endif
+                    {{-- @endif --}}
+                    
                     </td>
                     @endforeach
                     
                     @php
-                        $totalTarget = $totals[$target->code]['total_target'] ?? 0;
+                        $totalTarget = $sumTarget;
                     @endphp
                 @if ($totalTarget >= 0)
                      <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="{{ $i % 2 === 0 ? 'FFF2F2F2' : 'FFFFFFFF' }}" class="border-2 bg-blue-100 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center">
                         @if ($target->unit === '%')
-                            {{ $totalTarget }}%
+                            {{ PhpOffice\PhpSpreadsheet\Calculation\Statistical\Averages::average(floatval($targetUnit)) * 100 }}%
                         @elseif ($target->unit === 'Rp')
-                        {{ substr(number_format($totalTarget, 0, '.', ','), 0, 7) }}
+                        {{ substr(number_format($totalTarget, 0, '.', ','), 0, 9) }}
                         @elseif ($target->unit === 'Kg')
                         {{ substr(number_format($totalTarget, 0, '.', ','), 0, 7) }}
                         @else
@@ -201,7 +222,7 @@
                      <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="{{ $i % 2 === 0 ? 'FFF2F2F2' : 'FFFFFFFF' }}" class="border-2 bg-blue-100 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center"></td>
                  @endif
                     @php
-                        $totalWeightingAchievement = $totals[$target->code]['total_achievement_weight'] ?? 0;
+                        $totalWeightingAchievement = $totals[$target->indicator]['total_achievement_weight'] ?? 0;
                         $sumTotalWeightingAchievement += $totalWeightingAchievement;
                     @endphp
 
@@ -217,8 +238,10 @@
                     @foreach ($months as $month => $monthName)
                     @php
                         $actual = $actuals->first(function($item) use ($target, $month) {
-                            return \Carbon\Carbon::parse($item->date)->format('m') == $month && $item->kpi_code == $target->code;
+                            return \Carbon\Carbon::parse($item->date)->format('m') == $month && $item->kpi_item == $target->indicator;
                         });
+
+                        //  dump('target: ', $target, 'actual: ', $actual,  $month);
                     @endphp
                     
                     <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="{{ $i % 2 === 0 ? 'FFF2F2F2' : 'FFFFFFFF' }}" class="border-2 bg-gray-50 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center">
@@ -235,14 +258,14 @@
                     @endforeach
 
                     @php
-                         $totalActual = $totals[$target->code]['total_actual'] ?? 0;
+                         $totalActual = $totals[$target->indicator]['total_actual'] ?? 0;
                     @endphp
                     @if ($totalTarget >= 0)
                      <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="{{ $i % 2 === 0 ? 'FFF2F2F2' : 'FFFFFFFF' }}" class="border-2 bg-gray-50 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center">
                         @if ($target->unit === '%')
-                        {{ $totalActual }}%
-                        @elseif ($target->unit === 'Tgl')
-                        {{ number_format($totalActual, 1) }}
+                        {{ number_format($totalActual, 0) }}%
+                        @elseif ($target->unit === 'Tgl' || $target->unit === 'tgl')
+                        {{ number_format($totalActual) }}
                         @elseif ($target->unit === 'Rp')
                         {{ substr(number_format($totalActual, 0, '.', ','), 0, 7) }}
                         @elseif ($target->unit === 'Kg')
@@ -260,13 +283,13 @@
                     @foreach ($months as $month => $monthName)
                     @php
                         $actual = $actuals->first(function($item) use ($target, $month) {
-                            return \Carbon\Carbon::parse($item->date)->format('m') == $month && $item->kpi_code == $target->code;
+                            return \Carbon\Carbon::parse($item->date)->format('m') == $month && $item->kpi_item == $target->indicator;
                         });
                     @endphp
                     <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="{{ $i % 2 === 0 ? 'FFF2F2F2' : 'FFFFFFFF' }}" class="border-2 bg-blue-100 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center">{{ $actual ? $actual->kpi_percentage : '' }}</td>
                     @endforeach
                     @php
-                         $totalPercentage = $totals[$target->code]['percentageCalc'] ?? 0;
+                         $totalPercentage = $totals[$target->indicator]['percentageCalc'] ?? 0;
                     @endphp
                     @if ($totalTarget >= 0)
                      <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="{{ $i % 2 === 0 ? 'FFF2F2F2' : 'FFFFFFFF' }}" class="border-2 bg-blue-100 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center">{{ number_format($totalPercentage) }}%</td>
@@ -278,13 +301,14 @@
                 <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="{{ $i % 2 === 0 ? 'FFF2F2F2' : 'FFFFFFFF' }}" class="relative border-2 bg-gray-50 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center group">
                     Rekaman
                     <div class="absolute left-0 bottom-full mb-2 hidden group-hover:block w-64 p-2 bg-gray-800 text-white text-xs rounded shadow-lg z-10">
+                        <p>Data Pendukung:</p>
                         {{ $target->supporting_document }}
                     </div>
                 </td>
                     @foreach ($months as $month => $monthName)
                     @php
                         $actual = $actuals->first(function($item) use ($target, $month) {
-                            return \Carbon\Carbon::parse($item->date)->format('m') == $month && $item->kpi_code == $target->code;
+                            return \Carbon\Carbon::parse($item->date)->format('m') == $month && $item->kpi_item == $target->indicator;
                         });
                     @endphp
                     <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="{{ $i % 2 === 0 ? 'FFF2F2F2' : 'FFFFFFFF' }}" class="border-2 bg-gray-50 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center hover:underline">
@@ -298,20 +322,21 @@
                             $prevButtonId = 'prevButton-' . $actual->actual_id;
                             $nextButtonId = 'nextButton-' . $actual->actual_id;
                             $pdfObjectId = 'pdfObject-' . $actual->actual_id;
+                            // dd($userID);
                         @endphp
                             <button id="{{ $buttonId }}" class="hover:underline" data-month="{{ $date->format('m') }}" data-actual-id="{{ $actual->actual_id }}">
-                                @if ($actual->status == 'Approved')
-                                <span class="text-green-500">Yes</span>
-                                @elseif ($actual->status == 'Checked 1')
-                                <span class="text-orange-300">Check 1</span>
-                                @elseif ($actual->status == 'Checked 2')
-                                <span class="text-indigo-700">Check 2</span>
-                                @elseif ($actual->status == 'Mng Approve')
-                                <span class="text-blue-500">Review</span>
-                                @elseif ($actual->status == 'Filled')
-                                <span class="text-yellow-500">Check</span>
-                                @elseif ($actual->status == 'Revisi')
+                                @if ($actual->status == 'Revise')
                                 <span class="text-orange-600">Revisi</span>
+                                @elseif ($actual->approved_at != null)
+                                <span class="text-green-500">Yes</span>
+                                @elseif ($actual->mng_approved_at != null)
+                                <span class="text-blue-500">Review</span>
+                                @elseif ($actual->checked_at != null)
+                                <span class="text-indigo-700">Check 2</span>
+                                @elseif ($actual->asst_mng_checked_at != null)
+                                <span class="text-orange-300">Check 1</span>
+                                @elseif ($actual->input_at != null)
+                                <span class="text-yellow-500">Check</span>
                                 @endif
                             </button>
                             {{-- MODAL --}}
@@ -345,7 +370,7 @@
                                     <div id="checkbox-container-{{ $modalId }}" class="p-1 grid grid-cols-4">
                                         <div class="p-0">
                                             <label class="text-[14px]">
-                                                <input type="checkbox" class="status-checkbox" data-actual-id="{{ $actual->actual_id }}" data-status="Checked 1" {{ $actual->asst_mng_checked_at ? 'checked' : '' }} {{ $role == 'Checker 1' || $role == 'Checker WS' || $role == 'Checker Factory' || $role == 'FAD' ? '' : 'disabled' }}>
+                                                <input type="checkbox" class="status-checkbox" data-actual-id="{{ $actual->actual_id }}" data-status="Checked 1" {{ $actual->asst_mng_checked_at ? 'checked' : '' }} {{ $role == 'Checker 1' || $role == 'Checker WS' || $role == 'Checker Factory' || $role == 'FAD' || $email == 'widya.citra@bskp.co.id' ? '' : 'disabled' }}>
                                                 Check 1
                                             </label>             
                                             <div class="flex justify-center gap-x-2 mt-1.5">
@@ -365,7 +390,7 @@
                                                     <span class="text-[9px] text-center">Check 1 At:</span>
                                                     @if ($actual->asst_mng_checked_at)
                                                     <span class="text-[9px] text-center">
-                                                        {{ $actual->asst_mng_checked_at}}
+                                                        {{ \Carbon\Carbon::parse($actual->asst_mng_checked_at)->format('d M Y H:i') }}
                                                     </span>
                                                     @else
                                                     <span class="text-[9px] text-center text-red-500">
@@ -397,7 +422,7 @@
                                                     <span class="text-[9px] text-center">Check 2 At:</span>
                                                     @if ($actual->checked_at)
                                                     <span class="text-[9px] text-center">
-                                                        {{ $actual->checked_at}}
+                                                        {{ \Carbon\Carbon::parse($actual->checked_at)->format('d M Y H:i') }}
                                                     </span>
                                                     @else
                                                     <span class="text-[9px] text-center text-red-500">
@@ -429,7 +454,7 @@
                                                     <span class="text-[9px] text-center">Approved At:</span>
                                                     @if ($actual->mng_approved_at)
                                                     <span class="text-[9px] text-center">
-                                                        {{ $actual->mng_approved_at}}
+                                                        {{ \Carbon\Carbon::parse($actual->mng_approved_at)->format('d M Y H:i')}}
                                                     </span>
                                                     @else
                                                     <span class="text-[9px] text-center text-red-500">
@@ -461,7 +486,7 @@
                                                     <span class="text-[9px] text-center">Final Check At:</span>
                                                     @if ($actual->approved_at)
                                                     <span class="text-[9px] text-center">
-                                                        {{ $actual->approved_at}}
+                                                        {{ \Carbon\Carbon::parse($actual->approved_at)->format('d M Y H:i') }}
                                                     </span>
                                                     @else
                                                     <span class="text-[9px] text-center text-red-500">
@@ -503,6 +528,7 @@
                                                     <input type="hidden" name="kpi_code" id="kpi_code" value="{{ $target->code }}">
                                                     <input type="hidden" name="kpi_item" id="kpi_item" value="{{ $target->indicator }}">
                                                     <input type="hidden" name="department_id" id="department_id" value="{{ $actuals->first()->department_id }}">
+                                                    <input type="hidden" name="actual_id" id="actual_id" value="{{ $actual->actual_id }}">
                                                 </div>
                                             </form>
                                             @endif
@@ -518,7 +544,7 @@
                             <span class="text-red-500">No</span>
                             @endif
                         @else
-                            <span></span>
+                        <span class="text-red-500"></span>
                         @endif
                         {{-- MODAL ENDS --}}
                     </td>
@@ -556,7 +582,8 @@
                             <input type="hidden" name="year" id="year" value="{{ request()->query('year') }}">
                             <input type="hidden" name="selected_targets" id="selected_targets">
                             <input type="hidden" name="target_codes" id="target_codes">
-                            <input type="hidden" name="nik" id="nik" value="{{ $actuals->first()->nik }}">
+                            <input type="hidden" name="nik" id="nik" value="{{ $userCreds->nik }}">
+                            <input type="hidden" name="employee_id" id="employee_id" value="{{ $userID }}">
                             <div class="my-2">
                                 <select name="month" id="month" class="col-start-1 row-start-1 w-60 appearance-none rounded-md py-1.5 pl-3 pr-7 text-base text-gray-500 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
                                     <option value="">Bulan</option>
@@ -722,9 +749,9 @@ function updatePdfViewer(buttonId, actualId) {
  // update status
  document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('.status-checkbox').forEach(function(checkbox) {
-        if (checkbox.checked) {
-            checkbox.disabled = true;
-        }
+        // if (checkbox.checked) {
+        //     checkbox.disabled = true;
+        // }
         checkbox.addEventListener('change', function() {
             const actualId = this.getAttribute('data-actual-id');
             const status = this.getAttribute('data-status');

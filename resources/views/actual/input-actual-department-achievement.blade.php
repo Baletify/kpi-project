@@ -202,8 +202,8 @@
                     <button type="submit" id="submitBtn" class="px-4 py-2 bg-blue-300 text-white rounded-md" disabled >Submit</button>
                     @else 
                     <button type="submit" id="submitBtn" class="px-4 py-2 bg-blue-600 text-white rounded-md">Submit</button>
-                    @endif --}}
-                    {{-- <button type="submit" id="submitBtn" class="px-4 py-2 {{ $dateNow > 12 ? 'bg-blue-300' : 'bg-blue-600' }} text-white rounded-md" {{ $dateNow > 12 ? 'disabled' : '' }}>Submit</button> --}}
+                    @endif
+                    <button type="submit" id="submitBtn" class="px-4 py-2 {{ $dateNow > 12 ? 'bg-blue-300' : 'bg-blue-600' }} text-white rounded-md" {{ $dateNow > 12 ? 'disabled' : '' }}>Submit</button> --}}
                     <button type="submit" id="submitBtn" class="px-4 py-2 bg-blue-600 text-white rounded-md">Submit</button>
                   </div>
                 <div class="absolute inset-y-0 right-0 flex items-center">
@@ -311,7 +311,7 @@
             let actual = parseFloat(actualField.value.replace(/,/g, '').replace(/[^0-9.%]/g, ''));
             
     
-            if (zeroValue === 'yes' && unitValue == 'Freq') {
+            if (zeroValue === 'yes' && (unitValue == 'Freq' || unitValue == 'Freq "0"' || unitValue == 'freq')) {
                 if (actual == 0) {
                     achievementField.value = '100%';
                 } else if (actual == 1) {
@@ -468,6 +468,9 @@
                         achievement = (target / actual) * 100;
                     } else {
                         achievement = (actual / target) * 100;
+                    }
+                    if (achievement >= 150) {
+                        achievement = 150;
                     }
                     achievementField.value = Math.round(achievement) + '%';
                 } else {

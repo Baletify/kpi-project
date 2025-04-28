@@ -22,9 +22,14 @@
                 <form action="{{ url('auth/me') }}" method="POST" class="flex flex-col">
                     @csrf
                     <label for="email" class="font-semibold mb-0.5">Email:</label>
-                    <input class="p-2 rounded-xl border-none mb-2" type="text" name="email" id="email" placeholder="Email" autocomplete="off">
+                    <input class="p-2 rounded-xl border-none mb-2" type="text" name="email" id="email" placeholder="Email" autocomplete="on">
                     <label for="password" class="font-semibold mb-0.5">Password:</label>
-                    <input class="p-2 rounded-xl border-none mb-8" type="password" name="password" id="password" placeholder="Password" autocomplete="off">
+                    <input class="p-2 rounded-xl border-none mb-0" type="password" name="password" id="password" placeholder="Password" autocomplete="on">
+                    <div class="mb-3 mt-1 ml-1">
+                        <a href="{{ route('reset-password') }}">
+                            <p class="text-blue-500">Reset Password</p>
+                        </a>
+                    </div>
                     <button class="bg-blue-700 text-white rounded-xl py-2">Login</button>
                 </form>
             </div>

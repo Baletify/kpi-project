@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Support\Facades\Log;
 use Illuminate\Notifications\Notifiable;
+use App\Notifications\CustomResetPassword;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class Authentication extends Authenticatable
@@ -25,6 +26,7 @@ class Authentication extends Authenticatable
         'input_type',
         'occupation',
         'is_active',
+        'last_password_reset_at',
         'department_id',
     ];
 
@@ -45,7 +47,14 @@ class Authentication extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'last_password_reset_at' => 'datetime',
     ];
+
+    public function sendPasswordResetNotification($token)
+    {
+        // Use your custom notification (CustomResetPassword)
+        $this->notify(new CustomResetPassword($token));
+    }
 
     // /**
     //  * Automatically hash the password when it is set.

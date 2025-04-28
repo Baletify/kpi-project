@@ -26,10 +26,12 @@ class EmployeeController extends Controller
         $email = $user->email;
         $departmentID = $user->department_id;
 
-        $div1Dept = DB::table('departments')->whereIn('name', ['Sub Div A', 'Sub Div B', 'Sub Div C', 'FAD',])->get();
-        $div2Dept = DB::table('departments')->whereIn('name', ['Sub Div D', 'Sub Div E', 'Sub Div F', 'FAD'])->get();
+        $div1Dept = DB::table('departments')->whereIn('name', ['Sub Div A', 'Sub Div B', 'Sub Div C',])->get();
+        $div1DeptManager = DB::table('departments')->whereIn('name', ['Sub Div A', 'Sub Div B', 'Sub Div C', 'Div 1'])->get();
+        $div2Dept = DB::table('departments')->whereIn('name', ['Sub Div D', 'Sub Div E', 'Sub Div F',])->get();
+        $div2DeptManager = DB::table('departments')->whereIn('name', ['Sub Div D', 'Sub Div E', 'Sub Div F', 'Div 2'])->get();
         $fad = DB::table('departments')->whereIn('name', ['Sub Div A', 'Sub Div B', 'Sub Div C', 'Sub Div D', 'Sub Div E', 'Sub Div F', 'FAD', 'FSD', 'Div 1', 'Div 2'])->get();
-        $accDept = $div2Dept = DB::table('departments')->whereIn('name', ['Accounting', 'Finance'])->get();
+        $accDept = DB::table('departments')->whereIn('name', ['Accounting', 'Finance'])->get();
         $ws = DB::table('departments')->where('name', '=', 'Workshop')->get();
         $fsd = DB::table('departments')->where('name', '=', 'FSD')->get();
         $factory = DB::table('departments')->where('name', '=', 'Factory')->get();
@@ -51,8 +53,12 @@ class EmployeeController extends Controller
             $deptList = $ws;
         } else if ($role == 'Checker Factory') {
             $deptList = $factory;
-        } else if ($role == 'FAD' || $email == 'siswantoko@bskp.co.id' || $email == 'tabrani@bskp.co.id') {
+        } else if ($role == 'FAD') {
             $deptList = $fad;
+        } elseif ($email == 'siswantoko@bskp.co.id') {
+            $deptList = $div1DeptManager;
+        } else if ($email == 'tabrani@bskp.co.id') {
+            $deptList = $div2DeptManager;
         } else if ($email == 'hendi@bskp.co.id') {
             $deptList = $accDept;
         } else if ($role == 'Approver' || $role == 'Mng Approver') {
@@ -77,7 +83,7 @@ class EmployeeController extends Controller
             $deptList = [];
         }
 
-        // dd($deptList, $role, $email, $dive);
+        // dd($deptList, $role, $email, $div2Dept);
 
         // if ($email == 'sub.divisi.a@bskp.co.id') {
         //     $deptList = $diva;
@@ -554,11 +560,12 @@ class EmployeeController extends Controller
         $role = $user->role;
         $email = $user->email;
 
-        $div1Dept = DB::table('departments')->whereIn('name', ['Sub Div A', 'Sub Div B', 'Sub Div C', 'FAD',])->get();
-        $div2Dept = DB::table('departments')->whereIn('name', ['Sub Div D', 'Sub Div E', 'Sub Div F', 'FAD'])->get();
+        $div1Dept = DB::table('departments')->whereIn('name', ['Sub Div A', 'Sub Div B', 'Sub Div C'])->get();
+        $div2Dept = DB::table('departments')->whereIn('name', ['Sub Div D', 'Sub Div E', 'Sub Div F'])->get();
         $ws = DB::table('departments')->where('name', '=', 'Workshop')->get();
         $fad = DB::table('departments')->whereIn('name', ['Sub Div A', 'Sub Div B', 'Sub Div C', 'Sub Div D', 'Sub Div E', 'Sub Div F', 'FAD', 'FSD', 'Div 1', 'Div 2'])->get();
-        $accDept = $div2Dept = DB::table('departments')->whereIn('name', ['Accounting', 'Finance'])->get();
+        $divMng = DB::table('departments')->whereIn('name', ['Sub Div A', 'Sub Div B', 'Sub Div C', 'Sub Div D', 'Sub Div E', 'Sub Div F', 'Div 1', 'Div 2'])->get();
+        $accDept = DB::table('departments')->whereIn('name', ['Accounting', 'Finance'])->get();
         $fsd = DB::table('departments')->where('name', '=', 'FSD')->get();
         $factory = DB::table('departments')->where('name', '=', 'Factory')->get();
         $diva = DB::table('departments')->where('name', '=', 'Sub Div A')->get();
@@ -578,8 +585,10 @@ class EmployeeController extends Controller
             $deptList = $ws;
         } else if ($role == 'Checker Factory') {
             $deptList = $factory;
-        } else if ($role == 'FAD' || $email == 'siswantoko@bskp.co.id' || $email == 'tabrani@bskp.co.id') {
+        } else if ($role == 'FAD') {
             $deptList = $fad;
+        } elseif ($email == 'siswantoko@bskp.co.id' || $email == 'tabrani@bskp.co.id') {
+            $deptList = $divMng;
         } else if ($email == 'hendi@bskp.co.id') {
             $deptList = $accDept;
         } else if ($role == 'Approver' || $role == 'Mng Approver') {

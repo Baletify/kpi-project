@@ -72,7 +72,7 @@
                 $targetColumn = 'target_unit_' . $monthNumber;
                 $targetValue = $formatKgValue($target->$targetColumn);                
             @endphp
-            <option value="{{ $monthNumber }}" data-target="{{ $targetValue ?? '' }}" data-unit="{{ $target->unit }}" data-rp="{{ $target->unit == 'Rp' ? 'yes' : 'no' }}" data-kg="{{ $target->unit == 'Kg' ? 'yes' : 'no' }}" data-zero="{{ $target->{$targetColumn} == 0 ? 'yes' : 'no' }}" data-is-null="{{ $target->{$targetColumn} === null ? 'yes' : 'no' }}">
+            <option value="{{ $monthNumber }}" data-target="{{ $targetValue ?? '' }}" data-unit="{{ $target->unit }}" data-rp="{{ $target->unit == 'Rp' || $target->unit == 'Rp/Kg' ? 'yes' : 'no' }}" data-kg="{{ $target->unit == 'Kg' ? 'yes' : 'no' }}" data-zero="{{ $target->{$targetColumn} == 0 ? 'yes' : 'no' }}" data-is-null="{{ $target->{$targetColumn} === null ? 'yes' : 'no' }}">
                 {{ $monthName }}
             </option>
             @endforeach
@@ -106,7 +106,7 @@
                 $targetColumn = 'target_unit_' . ltrim($monthNumber, '0');
                 $targetValue = $formatKgValue($target->$targetColumn); 
             @endphp
-            <option value="{{ $monthNumber }}" data-target="{{ $targetValue ?? '' }}" data-unit="{{ $target->unit }}" data-rp="{{ $target->unit == 'Rp' ? 'yes' : 'no' }}" data-kg="{{ $target->unit == 'Kg' ? 'yes' : 'no' }}" data-zero="{{ $target->{$targetColumn} == 0 ? 'yes' : 'no' }}" data-is-null="{{ $target->{$targetColumn} === null ? 'yes' : 'no' }}">
+            <option value="{{ $monthNumber }}" data-target="{{ $targetValue ?? '' }}" data-unit="{{ $target->unit }}" data-rp="{{ $target->unit == 'Rp' || $target->unit == 'Rp/Kg' ? 'yes' : 'no' }}" data-kg="{{ $target->unit == 'Kg' ? 'yes' : 'no' }}" data-zero="{{ $target->{$targetColumn} == 0 ? 'yes' : 'no' }}" data-is-null="{{ $target->{$targetColumn} === null ? 'yes' : 'no' }}">
                 {{ $monthName }}
             </option>
             @endforeach
@@ -193,8 +193,8 @@
                 <input type="hidden" name="employee_id" id="employee_id" value="{{ $target->employee_id }}">
                 <input type="hidden" name="pv_employee_id" id="pv_employee_id" value="{{ $target->employee_id }}">
                 <input type="hidden" name="year" id="year" value="{{ request()->query('year') }}">
-                <input type="hidden" name="input_by" id="input_by" value="Admin Kebun">
                 <input type="hidden" name="status" id="status" value="Filled">
+                <input type="hidden" name="role" id="role" value="{{ $role }}">
               <div class="absolute inset-y-0 right-0 flex items-center">
               </div>
             </div>
@@ -345,7 +345,7 @@
             let target = parseFloat(targetField.value.replace(/,/g, '').replace(/[^0-9.%]/g, ''));
             let actual = parseFloat(actualField.value.replace(/,/g, '').replace(/[^0-9.%]/g, ''));
             
-            if (zeroValue === 'yes' && unitValue == 'Freq') {
+            if (zeroValue === 'yes' && (unitValue == 'Freq' || unitValue == 'Freq "0"' || unitValue == 'freq')) {
                 if (actual == 0) {
                     achievementField.value = '100%';
                 } else if (actual == 1) {
@@ -502,6 +502,10 @@
                         achievement = (target / actual) * 100;
                     } else {
                         achievement = (actual / target) * 100;
+                    }
+
+                    if (achievement >= 150) {
+                        achievement = 150;
                     }
                     achievementField.value = Math.round(achievement) + '%';
                 } else {
