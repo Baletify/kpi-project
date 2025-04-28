@@ -106,6 +106,8 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/input-actual-department-achievement/store-dept', [ActualController::class, 'storeDept'])->name('actual.storeDept');
         Route::put('/input-actual-department-achievement/batchUpdate', [ActualController::class, 'batchUpdateActual'])->name('actual.batchUpdateActual');
         Route::put('/input-actual-department-achievement/batchUpdateDept', [ActualController::class, 'batchUpdateActualDept'])->name('actual.batchUpdateActualDept');
+        Route::get('/setting-actual-deadline', [ActualController::class, 'editDeadline'])->name('actual.editDeadline');
+        Route::put('/setting-actual-deadline/update', [ActualController::class, 'updateDeadline'])->name('actual.updateDeadline');
     });
 
     Route::prefix('report')->group(function () {

@@ -521,6 +521,8 @@ class ActualController extends Controller
         }
         if ($request->filled('status')) {
             $actual->status = $request->status;
+            $now = now()->format('d');
+            $newDeadline = $now + 3;
 
             if ($request->status == 'Checked 1') {
                 $actual->asst_mng_checked_at = now();
@@ -534,6 +536,9 @@ class ActualController extends Controller
             } elseif ($request->status == 'Approved') {
                 $actual->approved_at = now();
                 $actual->approved_by = $user;
+            } elseif ($request->status == 'Revise') {
+                $actual->deadline = $newDeadline;
+                $actual->save();
             };
         }
 
@@ -552,6 +557,8 @@ class ActualController extends Controller
         }
         if ($request->filled('status')) {
             $actual->status = $request->status;
+            $now = now()->format('d');
+            $newDeadline = $now + 3;
 
             if ($request->status == 'Checked 1') {
                 $actual->asst_mng_checked_at = now();
@@ -565,7 +572,9 @@ class ActualController extends Controller
             } elseif ($request->status == 'Approved') {
                 $actual->approved_at = now();
                 $actual->approved_by = $user;
-            };
+            } elseif ($request->status == 'Revise') {
+                $actual->deadline = $newDeadline;
+            };;
         }
 
         $actual->save();
@@ -806,5 +815,43 @@ class ActualController extends Controller
 
 
         return redirect()->back()->with('success', 'Data Updated Successfully');
+    }
+
+    public function editDeadline(Request $request)
+    {
+        $year = $request->query('year');
+
+        return view('actual.setting-actual-deadline', [
+            'title' => 'Atur Deadline Input',
+            'desc' => 'KPI',
+            'year' => $year,
+        ]);
+    }
+
+    public function updateDeadline(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'deadline' => 'required',
+            'month' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            flash()->error('Please fill all required field');
+            return redirect()->back()
+                ->withErrors($validator)
+                ->withInput();
+        }
+
+
+        $deadline = $request->deadline;
+        $month = $request->month;
+        $year = $request->year;
+
+        DB::table('actuals')->whereMonth('date', '=', $month)
+            ->whereYear('date', '=', $year)
+            ->update(['deadline' => $deadline]);
+
+        flash()->success('Deadline berhasil diperbarui.');
+        return redirect()->back();
     }
 }

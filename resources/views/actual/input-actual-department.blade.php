@@ -44,8 +44,24 @@
         </div>
     </div>
     @if ($role != '' && $role != 'Inputer' && $role != 'Check 1')
-    <form action="{{ route('actual.department') }}" method="GET">
-    <div class="flex justify-end">
+    
+    
+    <div class="flex justify-between">
+        <div class="mt-0">   
+            @if ($role == 'Approver')
+            <div class="relative mt-0 rounded-md mb-1">
+                <button class="p-2 bg-blue-600 my-0 rounded-md">
+                    <a id="set-deadline-link" href="{{ route('actual.editDeadline') }}">
+                        <i class="ri-settings-2-line text-lg text-white"></i>
+                        <span class="text-white">Setting Deadline KPI</span>
+                    </a>
+                </button>
+            </div>
+            @endif
+        </div>
+        
+        <form action="{{ route('actual.department') }}" method="GET">
+        <div class="flex justify-end mb-2">
             <div class="mt-2 mb-1 mx-2">
                 <select name="department" id="department" class="col-start-1 row-start-1 w-full appearance-none rounded-md py-1.5 pl-3 pr-7 text-base text-gray-500 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
                     <option value="">-- Departemen --</option>
@@ -62,6 +78,8 @@
                     Filter
                 </button>
             </div>
+        </div>
+
         </div>
     </form>
     @endif
@@ -108,6 +126,7 @@
         const yearDropdown = document.getElementById('year');
         const semesterDropdown = document.getElementById('semester');
         const inputActualLink = document.getElementById('input-actual-link');
+        const setDeadlinelink = document.getElementById('set-deadline-link');
 
         // Set the dropdown values from localStorage if they exist
         const savedYear = localStorage.getItem('selectedYear');
@@ -138,6 +157,11 @@
             url.searchParams.set('year', year);
             url.searchParams.set('semester', semester);
             inputActualLink.href = url.toString();
+
+            const newUrl = new URL(setDeadlinelink.href);
+            newUrl.searchParams.set('year', year);
+            newUrl.searchParams.set('semester', semester);
+            setDeadlinelink.href = newUrl.toString();
         }
 
         // Save the dropdown values to localStorage on change

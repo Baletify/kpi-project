@@ -25,6 +25,9 @@ class MailController extends Controller
         $departmentID = $request->department_id;
         if ($email == '' || $email == 0) {
             $sendTo =  DB::table('employees')->where('department_id', '=', $departmentID)->where('role', '=', 'Inputer')->select('email')->first();
+            if (!$sendTo || !$sendTo->email) {
+                return back()->withErrors(['email' => 'No valid email address found for the specified department.']);
+            }
         } else {
             $sendTo = $email;
         }
@@ -45,11 +48,15 @@ class MailController extends Controller
             'request' => 'Segera lakukan perbaikan dan upload data yang sesuai (maksimal 3 hari setelah email ini)',
             'closing' => 'Terima kasih atas perhatian dan kerjasamanya.',
         ];
+        $now = now()->format('d');
+        $newDeadline = $now + 3;
+        $newDeadline > 31 ? $newDeadline = 31 : $newDeadline;
 
         // dd($details);
 
         Actual::where('id', $request->actual_id)->update([
             'status' => 'Revise',
+            'deadline' => $newDeadline,
 
         ]);
         ProcessEmail::dispatch($details);
@@ -68,6 +75,9 @@ class MailController extends Controller
             ->where('employees.occupation', '=', 'Asst Mng')
             ->select('employees.email')
             ->first();
+        if (!$sendTo || !$sendTo->email) {
+            return back()->withErrors(['email' => 'No valid email address found for the specified department.']);
+        }
 
 
         $details = [
@@ -83,10 +93,16 @@ class MailController extends Controller
             'request' => 'Segera lakukan perbaikan dan upload data yang sesuai (maksimal 3 hari setelah email ini)',
             'closing' => 'Terima kasih atas perhatian dan kerjasamanya.',
         ];
+        $now = now()->format('d');
+        $newDeadline = $now + 3;
+        $newDeadline > 31 ? $newDeadline = 31 : $newDeadline;
+
+
 
         ProcessEmail::dispatch($details);
         DepartmentActual::where('id', $request->actual_id)->update([
             'status' => 'Revise',
+            'deadline' => $newDeadline,
 
         ]);
 
