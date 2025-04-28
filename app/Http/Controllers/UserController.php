@@ -38,14 +38,14 @@ class UserController extends Controller
 
         // Subquery for employees table from the first database
         $employeesSubquery = DB::connection('mysql')->table('employees')
-            ->select('id', 'name as employee_name');
+            ->select('employees.*');
 
         // Main query for users table from the second database
         $employees = DB::connection('mysql2')->table('users')
             ->leftJoinSub($employeesSubquery, 'employees', function ($join) {
                 $join->on('users.kpi_id', '=', 'employees.id');
             })
-            ->select('users.id as user_id', 'users.name as user_name', 'users.kpi_id', 'employees.employee_name')
+            ->select('employees.*')
             ->where('users.active', 'yes')
             ->where('users.kpi_id', '!=', null)
             ->get();
