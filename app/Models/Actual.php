@@ -29,6 +29,7 @@ class Actual extends Model
         'detail',
         'trend',
         'status',
+        'deadline',
         'input_by',
         'input_at',
         'asst_mng_checked_by',

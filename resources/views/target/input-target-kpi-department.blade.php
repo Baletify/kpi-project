@@ -62,162 +62,174 @@
                 </div>
             </div>
         </div>
+        <div class="">
             <table class="w-full table-auto">
-            <tr>
-                <th style="width: 4%" class="border-2 border-gray-400 text-[13px] tracking-wide font-medium text-white py-1 bg-blue-700">Kode KPI</th>
-                <th class="border-2 border-gray-400 text-[13px] tracking-wide font-medium text-white py-1 bg-blue-700" style="width: 13%">KPI</th>
-                <th style="width: 18%" class="border-2 border-gray-400 text-[13px] tracking-wide font-medium text-white py-1 bg-blue-700">Cara Menghitung</th>
-                <th style="width: 18%" class="border-2 border-gray-400 text-[13px] tracking-wide font-medium text-white py-1 bg-blue-700">Data Pendukung</th>
-                <th style="width: 3%" class="border-2 border-gray-400 text-[13px] tracking-wide font-medium text-white py-1 bg-blue-700">Trend</th>
-                <th style="width: 3%" class="border-2 border-gray-400 text-[13px] tracking-wide font-medium text-white py-1 bg-blue-700">Periode Review</th>
-                <th style="width: 4%" class="border-2 border-gray-400 text-[13px] tracking-wide font-medium text-white py-1 bg-blue-700">Unit</th>
-                <th style="width: 4%" class="border-2 border-gray-400 text-[13px] tracking-wide font-medium text-white py-1 bg-blue-700">Bobot "%"</th>
-                @php
-                $currentSemester = request()->query('semester');
-                $months = [];
-            
-                if ($currentSemester == 1) {
-                    $months = [
-                        '1' => 'Jan', '2' => 'Feb', '3' => 'Mar', '4' => 'Apr', 
-                        '5' => 'May', '6' => 'Jun'
-                    ];
-                } else {
-                    $months = [
-                        '7' => 'Jul', '8' => 'Aug', '9' => 'Sep', '10' => 'Oct', 
-                        '11' => 'Nov', '12' => 'Dec'
-                    ];
-                }
-            @endphp
-            
-            @foreach ($months as $month)
-
-                <th style="width: 5%" class="border-2 border-gray-400 text-[13px] tracking-wide font-medium text-white py-1 bg-blue-700">{{ $month }}</th>
+                <tr>
+                    <th style="width: 4%" class="border-2 border-gray-400 text-[13px] tracking-wide font-medium text-white py-1 bg-blue-700">Kode KPI</th>
+                    <th class="border-2 border-gray-400 text-[13px] tracking-wide font-medium text-white py-1 bg-blue-700" style="width: 13%">KPI</th>
+                    <th style="width: 18%" class="border-2 border-gray-400 text-[13px] tracking-wide font-medium text-white py-1 bg-blue-700">Cara Menghitung</th>
+                    <th style="width: 18%" class="border-2 border-gray-400 text-[13px] tracking-wide font-medium text-white py-1 bg-blue-700">Data Pendukung</th>
+                    <th style="width: 3%" class="border-2 border-gray-400 text-[13px] tracking-wide font-medium text-white py-1 bg-blue-700">Trend</th>
+                    <th style="width: 3%" class="border-2 border-gray-400 text-[13px] tracking-wide font-medium text-white py-1 bg-blue-700">Periode Review</th>
+                    <th style="width: 4%" class="border-2 border-gray-400 text-[13px] tracking-wide font-medium text-white py-1 bg-blue-700">Unit</th>
+                    <th style="width: 4%" class="border-2 border-gray-400 text-[13px] tracking-wide font-medium text-white py-1 bg-blue-700">Bobot "%"</th>
+                    @php
+                    $currentSemester = request()->query('semester');
+                    $months = [];
                 
-            @endforeach
-                <th style="width: 4%" class="border-2 border-gray-400 text-[13px] tracking-wide font-medium text-white py-1 bg-blue-700">Aksi</th>
-            </tr>
-            @php
-                $i = 0;
-            @endphp
-            @forelse ($targets as $target)
-            @php
-            $i++
-            @endphp
-            <tr class="{{ $i % 2 === 0 ? 'bg-white' : 'bg-blue-100'}}">
-                <td class="border-2 border-gray-400 text-[10px] tracking-wide px-2 py-0">{{ $target->code }}</td>
-                <td class="border-2 border-gray-400 text-[10px] tracking-wide px-2 py-0">{{ $target->indicator }}</td>
-                <td class="border-2 border-gray-400 text-[10px] tracking-wide px-2 py-0 text-justify">{{ $target->calculation }}</td>
-                <td class="border-2 border-gray-400 text-[10px] tracking-wide px-2 py-0">
-                    {{ $target->supporting_document }}
-                </td>
-                <td class="border-2 border-gray-400 text-[10px] tracking-wide px-2 py-0">
-                    {{ $target->trend }}
-                </td>
-                <td class="border-2 border-gray-400 text-[10px] tracking-wide px-2 py-0 text-center">{{ $target->period }}</td>
-                <td class="border-2 border-gray-400 text-[10px] tracking-wide px-2 py-0">{{ $target->unit }}</td>
-                <td class="border-2 border-gray-400 text-[10px] tracking-wide px-2 py-0 text-center">{{ $target->weighting }}</td>
-
-                @php
-                $isPercentage = $target->unit === '%';
-                $isRp = $target->unit === 'Rp';
-                $isKg = $target->unit === 'Kg';
-                $targetColumn = 'target_' . $month;
-                // Helper function to format values based on the number of digits before the decimal point
-                $formatKgValue = function ($value) {
-                    // Convert the value to a string
-                    $valueStr = (string) $value;
-
-                    // Find the position of the decimal point
-                    $decimalPos = strpos($valueStr, '.');
-
-                    // If there is no decimal point, return the value as is
-                    if ($decimalPos === false) {
-                        return number_format($value);
+                    if ($currentSemester == 1) {
+                        $months = [
+                            '1' => 'Jan', '2' => 'Feb', '3' => 'Mar', '4' => 'Apr', 
+                            '5' => 'May', '6' => 'Jun'
+                        ];
+                    } else {
+                        $months = [
+                            '7' => 'Jul', '8' => 'Aug', '9' => 'Sep', '10' => 'Oct', 
+                            '11' => 'Nov', '12' => 'Dec'
+                        ];
                     }
-
-                    // Get the number of digits before the decimal point
-                    $digitsBeforeDecimal = $decimalPos;
-
-                    // If there are more than 3 digits before the decimal point, return the value as is
-                    if ($digitsBeforeDecimal > 3) {
-                        return number_format($value);
-                    }
-
-                    // Otherwise, format the value with 1 decimal place
-                    return number_format($value, 1);
-                }
                 @endphp
-
-                @if ($currentSemester == 1)
-                @foreach (range(1, 6) as $month)
-                @php
-                $targetColumn = 'target_' . $month;
-                @endphp
-                <td class="border-2 border-gray-400 text-[11px] tracking-wide px-2 py-0 text-center">
-                    @if ($target->{$targetColumn} !== null)
-                    @php
-                    $floatValue = floatval($target->{$targetColumn});
-                    $formattedValue = $formatKgValue($floatValue);
-                    @endphp
-                    @if ($isPercentage)
-                    @php
-                    $percentageValue = $floatValue * 100;
-                    @endphp
-                        {{ $percentageValue . '%' }}
-                    @elseif ($isRp || $target->unit === 'Rp.')
-                        {{ number_format($floatValue) }}
-                    @elseif ($isKg)
-                    {{ $formattedValue }}
-                    @else
-                        {{ $floatValue }}
-                    @endif
-                @else
-                    <span></span>
-                @endif
-                </td>
+                
+                @foreach ($months as $month)
+    
+                    <th style="width: 5%" class="border-2 border-gray-400 text-[13px] tracking-wide font-medium text-white py-1 bg-blue-700">{{ $month }}</th>
+                    
                 @endforeach
-                @else
-                @foreach (range(7, 12) as $month)
-                @php
-                $targetColumn = 'target_' . $month;
-                @endphp
-                <td class="border-2 border-gray-400 text-[11px] tracking-wide px-2 py-0 text-center">
-                    @if ($target->{$targetColumn} !== null)
-                    @php
-                    $floatValue = floatval($target->{$targetColumn});
-                    $formattedValue = $formatKgValue($floatValue);
-                    @endphp
-                    @if ($isPercentage)
-                    @php
-                    $percentageValue = $floatValue * 100;
-                    @endphp
-                        {{ $percentageValue . '%' }}
-                    @elseif ($isRp || $target->unit === 'Rp.')
-                        {{ number_format($floatValue) }}
-                    @elseif ($isKg)
-                    {{ $formattedValue }}
-                    @else
-                        {{ $floatValue }}
-                    @endif
-                @else
-                    <span></span>
-                @endif
-                </td>
-                @endforeach
-                @endif
-                @if ($role == 'Approver')
-                <td class="border-2 border-gray-400 text-[10px] tracking-wide px-2 py-1 text-center">
-                    <a href="{{ route('target.editDept', ['id' => $target->id]) }}?semester={{ $semesterQuery }}">
-                        <i class="ri-edit-2-line bg-yellow-500 p-1 rounded-sm"></i>
-                    </a>
-                </td>
-                @endif
+                    <th style="width: 4%" class="border-2 border-gray-400 text-[13px] tracking-wide font-medium text-white py-1 bg-blue-700">Aksi</th>
                 </tr>
-            @empty
-            <tr>
-                <td colspan="16" class="border-2 border-gray-400 tracking-wide py-0 px-2 text-center">Data Tidak ditemukan</td>
-            </tr>
-            @endforelse
-        </table>
+                @php
+                    $i = 0;
+                @endphp
+                @forelse ($targets as $target)
+                @php
+                $i++
+                @endphp
+                <tr class="{{ $i % 2 === 0 ? 'bg-white' : 'bg-blue-100'}}">
+                    <td class="border-2 border-gray-400 text-[10px] tracking-wide px-2 py-0">{{ $target->code }}</td>
+                    <td class="border-2 border-gray-400 text-[10px] tracking-wide px-2 py-0">
+                        <div class="flex items-center justify-between">
+                            <div class="">
+                                {{ $target->indicator }}
+                            </div>
+                            @if ($target->is_active == 0)
+                            <i class="ri-close-circle-line text-red-500 text-sm"></i>
+                            @endif
+                        </div>
+                    </td>
+                    <td class="border-2 border-gray-400 text-[10px] tracking-wide px-2 py-0 text-justify">{{ $target->calculation }}</td>
+                    <td class="border-2 border-gray-400 text-[10px] tracking-wide px-2 py-0">
+                        {{ $target->supporting_document }}
+                    </td>
+                    <td class="border-2 border-gray-400 text-[10px] tracking-wide px-2 py-0">
+                        {{ $target->trend }}
+                    </td>
+                    <td class="border-2 border-gray-400 text-[10px] tracking-wide px-2 py-0 text-center">{{ $target->period }}</td>
+                    <td class="border-2 border-gray-400 text-[10px] tracking-wide px-2 py-0">{{ $target->unit }}</td>
+                    <td class="border-2 border-gray-400 text-[10px] tracking-wide px-2 py-0 text-center">{{ $target->weighting }}</td>
+    
+                    @php
+                    $isPercentage = $target->unit === '%';
+                    $isRp = $target->unit === 'Rp';
+                    $isKg = $target->unit === 'Kg';
+                    $targetColumn = 'target_' . $month;
+                    // Helper function to format values based on the number of digits before the decimal point
+                    $formatKgValue = function ($value) {
+                        // Convert the value to a string
+                        $valueStr = (string) $value;
+    
+                        // Find the position of the decimal point
+                        $decimalPos = strpos($valueStr, '.');
+    
+                        // If there is no decimal point, return the value as is
+                        if ($decimalPos === false) {
+                            return number_format($value);
+                        }
+    
+                        // Get the number of digits before the decimal point
+                        $digitsBeforeDecimal = $decimalPos;
+    
+                        // If there are more than 3 digits before the decimal point, return the value as is
+                        if ($digitsBeforeDecimal > 3) {
+                            return number_format($value);
+                        }
+    
+                        // Otherwise, format the value with 1 decimal place
+                        return number_format($value, 1);
+                    }
+                    @endphp
+    
+                    @if ($currentSemester == 1)
+                    @foreach (range(1, 6) as $month)
+                    @php
+                    $targetColumn = 'target_' . $month;
+                    @endphp
+                    <td class="border-2 border-gray-400 text-[11px] tracking-wide px-2 py-0 text-center">
+                        @if ($target->{$targetColumn} !== null)
+                        @php
+                        $floatValue = floatval($target->{$targetColumn});
+                        $formattedValue = $formatKgValue($floatValue);
+                        @endphp
+                        @if ($isPercentage)
+                        @php
+                        $percentageValue = $floatValue * 100;
+                        @endphp
+                            {{ $percentageValue . '%' }}
+                        @elseif ($isRp || $target->unit === 'Rp.')
+                            {{ number_format($floatValue) }}
+                        @elseif ($isKg)
+                        {{ $formattedValue }}
+                        @else
+                            {{ $floatValue }}
+                        @endif
+                    @else
+                        <span></span>
+                    @endif
+                    </td>
+                    @endforeach
+                    @else
+                    @foreach (range(7, 12) as $month)
+                    @php
+                    $targetColumn = 'target_' . $month;
+                    @endphp
+                    <td class="border-2 border-gray-400 text-[11px] tracking-wide px-2 py-0 text-center">
+                        @if ($target->{$targetColumn} !== null)
+                        @php
+                        $floatValue = floatval($target->{$targetColumn});
+                        $formattedValue = $formatKgValue($floatValue);
+                        @endphp
+                        @if ($isPercentage)
+                        @php
+                        $percentageValue = $floatValue * 100;
+                        @endphp
+                            {{ $percentageValue . '%' }}
+                        @elseif ($isRp || $target->unit === 'Rp.')
+                            {{ number_format($floatValue) }}
+                        @elseif ($isKg)
+                        {{ $formattedValue }}
+                        @else
+                            {{ $floatValue }}
+                        @endif
+                    @else
+                        <span></span>
+                    @endif
+                    </td>
+                    @endforeach
+                    @endif
+                    @if ($role == 'Approver')
+                    <td class="border-2 border-gray-400 text-[10px] tracking-wide px-2 py-1 text-center">
+                        <a href="{{ route('target.editDept', ['id' => $target->id]) }}?semester={{ $semesterQuery }}">
+                            <i class="ri-edit-2-line bg-yellow-500 p-1 rounded-sm"></i>
+                        </a>
+                    </td>
+                    @endif
+                    </tr>
+                @empty
+                <tr>
+                    <td colspan="16" class="border-2 border-gray-400 tracking-wide py-0 px-2 text-center">Data Tidak ditemukan</td>
+                </tr>
+                @endforelse
+            </table>
+        </div>
+            
     </div>
 </x-app-layout>

@@ -24,5 +24,6 @@ class DepartmentTarget extends Model
         'department_id',
         'target_unit_id',
         'detail',
+        'is_active',
     ];
 }

@@ -308,6 +308,7 @@
                 $month = request()->query('month');
                 $year = request()->query('year');
                 $totalTgAll = $totalTgUnit + $totalTgUnitDept;
+                // dd($totalTgAll, $totalsTg)
                 // dd($totalTgUnit, $totalTgUnitDept, $totalsTg);
                 // dd($totalsTg, $totalCheck, $totalCheckDept);
                 // dd($totalCheck, $totalCheckDept, $totalTgAll);

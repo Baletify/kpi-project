@@ -27,7 +27,7 @@
               <div class="absolute inset-y-0 right-0 flex items-center">
               </div>
             </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-4 gap-y-0">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-4 gap-y-0">
                 <div class="relative mt-1 rounded-md">
                     <span class="pl-3 font-semibold">Unit</span>  
                     <input type="text" name="unit" id="unit" class="block w-full rounded-md border-0 py-1.5 pl-4 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 mt-1" placeholder="Unit" value="{{ $target->unit }}">
@@ -52,6 +52,16 @@
                   <div class="absolute inset-y-0 right-0 flex items-center">
                   </div>
                 </div>
+                <div class="relative mt-1 rounded-md">
+                  <span class="pl-3 font-semibold">Status</span>  
+                  <select name="is_active" id="is_active" class="col-start-1 row-start-1 w-full appearance-none rounded-md py-1.5 pl-3 pr-7 text-base text-gray-500 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
+                    <option value="{{ $target->is_active }}">{{ $target->is_active == 1 ? 'Aktif' : 'Tidak Aktif' }}</option>
+                    <option value="1">Aktif</option>
+                    <option value="0">Tidak Aktif</option>
+                </select>
+                <div class="absolute inset-y-0 right-0 flex items-center">
+                </div>
+              </div>
             </div>
             <div class="relative mt-1 rounded-md">
                 <span class="pl-3 font-semibold">Cara Menghitung</span>  

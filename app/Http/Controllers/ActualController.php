@@ -33,6 +33,7 @@ class ActualController extends Controller
         $targets = DB::table('targets')
             ->select('id', 'code', 'indicator', 'period', 'employee_id')
             ->where('employee_id', $employeeID)
+            ->where('targets.is_active', 1)
             ->where(DB::raw('YEAR(date)'), '=', $year)
             ->get();
 
@@ -74,6 +75,7 @@ class ActualController extends Controller
         // Ambil data targets
         $targets = DB::table('department_targets')
             ->where('department_targets.department_id', '=', $departmentID)
+            ->where('department_targets.is_active', 1)
             ->where(DB::raw('YEAR(department_targets.date)'), '=', $year)
             ->get();
 
@@ -848,6 +850,10 @@ class ActualController extends Controller
         $year = $request->year;
 
         DB::table('actuals')->whereMonth('date', '=', $month)
+            ->whereYear('date', '=', $year)
+            ->update(['deadline' => $deadline]);
+
+        DB::table('department_actuals')->whereMonth('date', '=', $month)
             ->whereYear('date', '=', $year)
             ->update(['deadline' => $deadline]);
 

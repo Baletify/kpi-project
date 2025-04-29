@@ -237,6 +237,15 @@ class ReportController extends Controller
                 ->leftJoin('target_units', 'targets.target_unit_id', '=', 'target_units.id')
                 ->select('targets.*', 'target_units.*')
                 ->where('employee_id', $id)
+                ->where('targets.is_active', '=', true)
+                ->where(DB::raw('YEAR(targets.date)'), $year)
+                ->get();
+
+            $inactiveTarget = DB::table('targets')
+                ->leftJoin('target_units', 'targets.target_unit_id', '=', 'target_units.id')
+                ->select('targets.*', 'target_units.*')
+                ->where('employee_id', $id)
+                ->where('targets.is_active', '=', false)
                 ->where(DB::raw('YEAR(targets.date)'), $year)
                 ->get();
 
@@ -332,7 +341,7 @@ class ReportController extends Controller
 
             // dd($totals);
 
-            return view('report.employee-report', ['title' => 'Report', 'desc' => 'Employee Report', 'employee' => $employee, 'actuals' => $actuals, 'targets' => $targets, 'totals' => $totals, 'sumWeighting' => $sumWeighting, 'userCreds' => $userCreds, 'idParam' => $id]);
+            return view('report.employee-report', ['title' => 'Report', 'desc' => 'Employee Report', 'employee' => $employee, 'actuals' => $actuals, 'targets' => $targets, 'totals' => $totals, 'sumWeighting' => $sumWeighting, 'userCreds' => $userCreds, 'idParam' => $id, 'inactiveTargets' => $inactiveTarget]);
         } else {
 
             return view('components/404-page-report');
@@ -351,6 +360,15 @@ class ReportController extends Controller
                 ->leftJoin('target_units', 'department_targets.target_unit_id', '=', 'target_units.id')
                 ->select('department_targets.*', 'target_units.*')
                 ->where('department_id', $id)
+                ->where('department_targets.is_active', '=', true)
+                ->where(DB::raw('YEAR(department_targets.date)'), $year)
+                ->get();
+
+            $inactiveTarget = DB::table('department_targets')
+                ->leftJoin('target_units', 'department_targets.target_unit_id', '=', 'target_units.id')
+                ->select('department_targets.*', 'target_units.*')
+                ->where('department_id', $id)
+                ->where('department_targets.is_active', '=', false)
                 ->where(DB::raw('YEAR(department_targets.date)'), $year)
                 ->get();
 
@@ -445,7 +463,7 @@ class ReportController extends Controller
             // dd($totals);
 
 
-            return view('report.department-report', ['title' => 'Report', 'desc' => 'Summary KPI Dept', 'actuals' => $actuals, 'targets' => $targets, 'totals' => $totals, 'sumWeighting' => $sumWeighting, 'departmentCreds' => $departmentCreds, 'idParam' => $id]);
+            return view('report.department-report', ['title' => 'Report', 'desc' => 'Summary KPI Dept', 'actuals' => $actuals, 'targets' => $targets, 'totals' => $totals, 'sumWeighting' => $sumWeighting, 'departmentCreds' => $departmentCreds, 'idParam' => $id, 'inactiveTargets' => $inactiveTarget]);
         } else {
             return view('components/404-page-report');
         }
@@ -476,7 +494,9 @@ class ReportController extends Controller
             $semester1Actuals = DB::table('actuals')
                 ->leftJoin('employees', 'employees.id', '=', 'actuals.employee_id')
                 ->leftJoin('departments', 'departments.id', '=', 'employees.department_id')
+                ->leftJoin('targets', 'targets.employee_id', '=', 'employees.id')
                 ->select('actuals.*', 'employees.*', 'departments.name as department_name', 'departments.id as department_id')
+                ->where('targets.is_active', '=', true)
                 ->where('actuals.semester', '=', '1')
                 ->whereYear('actuals.date', '=', $yearToShow)
                 ->whereIn('departments.id',  $departmentIds)
@@ -486,7 +506,9 @@ class ReportController extends Controller
             $semester2Actuals = DB::table('actuals')
                 ->leftJoin('employees', 'employees.id', '=', 'actuals.employee_id')
                 ->leftJoin('departments', 'departments.id', '=', 'employees.department_id')
+                ->leftJoin('targets', 'targets.employee_id', '=', 'employees.id')
                 ->select('actuals.*', 'employees.*', 'departments.name as department_name', 'departments.id as department_id')
+                ->where('targets.is_active', '=', true)
                 ->where('actuals.semester', '=', '2')
                 ->whereYear('actuals.date', '=', $yearToShow)
                 ->whereIn('departments.id', $departmentIds)
@@ -497,14 +519,18 @@ class ReportController extends Controller
 
 
             $semester1ActualsDept = DB::table('department_actuals')->leftJoin('departments', 'departments.id', '=', 'department_actuals.department_id')
+                ->leftJoin('department_targets', 'department_targets.department_id', '=', 'departments.id')
                 ->select('department_actuals.*', 'departments.name as department_name', 'departments.id as department_id')
+                ->where('department_targets.is_active', '=', true)
                 ->where('department_actuals.semester', '=', '1')
                 ->whereYear('department_actuals.date', '=', $yearToShow)
                 ->whereIn('departments.id', $departmentIds)
                 ->get();
 
             $semester2ActualsDept = DB::table('department_actuals')->leftJoin('departments', 'departments.id', '=', 'department_actuals.department_id')
+                ->leftJoin('department_targets', 'department_targets.department_id', '=', 'departments.id')
                 ->select('department_actuals.*', 'departments.name as department_name', 'departments.id as department_id')
+                ->where('department_targets.is_active', '=', true)
                 ->where('department_actuals.semester', '=', '2')
                 ->whereYear('department_actuals.date', '=', $yearToShow)
                 ->whereIn('departments.id', $departmentIds)
@@ -725,8 +751,10 @@ class ReportController extends Controller
             $semester1Actuals = DB::table('actuals')
                 ->leftJoin('employees', 'employees.id', '=', 'actuals.employee_id')
                 ->leftJoin('departments', 'departments.id', '=', 'employees.department_id')
+                ->leftJoin('targets', 'targets.employee_id', '=', 'employees.id')
                 ->select('actuals.*', 'employees.*', 'departments.name as department_name', 'departments.id as department_id')
                 ->where('actuals.semester', '=', '1')
+                ->where('targets.is_active', '=', true)
                 ->whereYear('actuals.date', '=', $yearToShow)
                 ->whereIn('departments.id',  $departmentIds)
                 ->whereIn('employees.id', $employeeIds)
@@ -735,8 +763,10 @@ class ReportController extends Controller
             $semester2Actuals = DB::table('actuals')
                 ->leftJoin('employees', 'employees.id', '=', 'actuals.employee_id')
                 ->leftJoin('departments', 'departments.id', '=', 'employees.department_id')
+                ->leftJoin('targets', 'targets.employee_id', '=', 'employees.id')
                 ->select('actuals.*', 'employees.*', 'departments.name as department_name', 'departments.id as department_id')
                 ->where('actuals.semester', '=', '2')
+                ->where('actuals.is_active', '=', true)
                 ->whereYear('actuals.date', '=', $yearToShow)
                 ->whereIn('departments.id', $departmentIds)
                 ->whereIn('employees.id', $employeeIds)
@@ -746,14 +776,18 @@ class ReportController extends Controller
 
 
             $semester1ActualsDept = DB::table('department_actuals')->leftJoin('departments', 'departments.id', '=', 'department_actuals.department_id')
+                ->leftJoin('department_targets', 'department_targets.department_id', '=', 'departments.id')
                 ->select('department_actuals.*', 'departments.name as department_name', 'departments.id as department_id')
+                ->where('department_targets.is_active', '=', true)
                 ->where('department_actuals.semester', '=', '1')
                 ->whereYear('department_actuals.date', '=', $yearToShow)
                 ->whereIn('departments.id', $departmentIds)
                 ->get();
 
             $semester2ActualsDept = DB::table('department_actuals')->leftJoin('departments', 'departments.id', '=', 'department_actuals.department_id')
+                ->leftJoin('department_targets', 'department_targets.department_id', '=', 'departments.id')
                 ->select('department_actuals.*', 'departments.name as department_name', 'departments.id as department_id')
+                ->where('department_targets.is_active', '=', true)
                 ->where('department_actuals.semester', '=', '2')
                 ->whereYear('department_actuals.date', '=', $yearToShow)
                 ->whereIn('departments.id', $departmentIds)
@@ -973,8 +1007,10 @@ class ReportController extends Controller
             $semester1Actuals = DB::table('actuals')
                 ->leftJoin('employees', 'employees.id', '=', 'actuals.employee_id')
                 ->leftJoin('departments', 'departments.id', '=', 'employees.department_id')
+                ->leftJoin('targets', 'targets.employee_id', '=', 'employees.id')
                 ->select('actuals.*', 'employees.*', 'departments.name as department_name', 'departments.id as department_id')
                 ->where('actuals.semester', '=', '1')
+                ->where('targets.is_active', '=', true)
                 ->whereYear('actuals.date', '=', $yearToShow)
                 ->whereIn('departments.id',  $departmentIds)
                 ->whereIn('employees.id', $employeeIds)
@@ -983,8 +1019,10 @@ class ReportController extends Controller
             $semester2Actuals = DB::table('actuals')
                 ->leftJoin('employees', 'employees.id', '=', 'actuals.employee_id')
                 ->leftJoin('departments', 'departments.id', '=', 'employees.department_id')
+                ->leftJoin('targets', 'targets.employee_id', '=', 'employees.id')
                 ->select('actuals.*', 'employees.*', 'departments.name as department_name', 'departments.id as department_id')
                 ->where('actuals.semester', '=', '2')
+                ->where('targets.is_active', '=', true)
                 ->whereYear('actuals.date', '=', $yearToShow)
                 ->whereIn('departments.id', $departmentIds)
                 ->whereIn('employees.id', $employeeIds)
@@ -994,14 +1032,18 @@ class ReportController extends Controller
 
 
             $semester1ActualsDept = DB::table('department_actuals')->leftJoin('departments', 'departments.id', '=', 'department_actuals.department_id')
+                ->leftJoin('department_targets', 'department_targets.department_id', '=', 'departments.id')
                 ->select('department_actuals.*', 'departments.name as department_name', 'departments.id as department_id')
+                ->where('department_targets.is_active', '=', true)
                 ->where('department_actuals.semester', '=', '1')
                 ->whereYear('department_actuals.date', '=', $yearToShow)
                 ->whereIn('departments.id', $departmentIds)
                 ->get();
 
             $semester2ActualsDept = DB::table('department_actuals')->leftJoin('departments', 'departments.id', '=', 'department_actuals.department_id')
+                ->leftJoin('department_targets', 'department_targets.department_id', '=', 'departments.id')
                 ->select('department_actuals.*', 'departments.name as department_name', 'departments.id as department_id')
+                ->where('department_targets.is_active', '=', true)
                 ->where('department_actuals.semester', '=', '2')
                 ->whereYear('department_actuals.date', '=', $yearToShow)
                 ->whereIn('departments.id', $departmentIds)
@@ -1223,8 +1265,10 @@ class ReportController extends Controller
             $semester1Actuals = DB::table('actuals')
                 ->leftJoin('employees', 'employees.id', '=', 'actuals.employee_id')
                 ->leftJoin('departments', 'departments.id', '=', 'employees.department_id')
-                ->select('actuals.*', 'employees.*', 'departments.name as department_name', 'departments.id as department_id')
+                ->leftJoin('targets', 'targets.employee_id', '=', 'employees.id')
+                ->select('actuals.*', 'employees.*', 'departments.name as department_name', 'departments.id as department_id', 'targets.is_active')
                 ->where('actuals.semester', '=', '1')
+                ->where('targets.is_active', '=', true)
                 ->whereYear('actuals.date', '=', $yearToShow)
                 ->whereIn('departments.id',  $departmentIds)
                 ->whereIn('employees.id', $employeeIds)
@@ -1233,8 +1277,10 @@ class ReportController extends Controller
             $semester2Actuals = DB::table('actuals')
                 ->leftJoin('employees', 'employees.id', '=', 'actuals.employee_id')
                 ->leftJoin('departments', 'departments.id', '=', 'employees.department_id')
+                ->leftJoin('targets', 'targets.employee_id', '=', 'employees.id')
                 ->select('actuals.*', 'employees.*', 'departments.name as department_name', 'departments.id as department_id')
                 ->where('actuals.semester', '=', '2')
+                ->where('targets.is_active', '=', true)
                 ->whereYear('actuals.date', '=', $yearToShow)
                 ->whereIn('departments.id', $departmentIds)
                 ->whereIn('employees.id', $employeeIds)
@@ -1245,13 +1291,17 @@ class ReportController extends Controller
 
             $semester1ActualsDept = DB::table('department_actuals')->leftJoin('departments', 'departments.id', '=', 'department_actuals.department_id')
                 ->select('department_actuals.*', 'departments.name as department_name', 'departments.id as department_id')
+                ->leftJoin('department_targets', 'department_targets.department_id', '=', 'departments.id')
                 ->where('department_actuals.semester', '=', '1')
+                ->where('department_targets.is_active', '=', true)
                 ->whereYear('department_actuals.date', '=', $yearToShow)
                 ->whereIn('departments.id', $departmentIds)
                 ->get();
 
             $semester2ActualsDept = DB::table('department_actuals')->leftJoin('departments', 'departments.id', '=', 'department_actuals.department_id')
+                ->leftJoin('department_targets', 'department_targets.department_id', '=', 'departments.id')
                 ->select('department_actuals.*', 'departments.name as department_name', 'departments.id as department_id')
+                ->where('department_targets.is_active', '=', true)
                 ->where('department_actuals.semester', '=', '2')
                 ->whereYear('department_actuals.date', '=', $yearToShow)
                 ->whereIn('departments.id', $departmentIds)

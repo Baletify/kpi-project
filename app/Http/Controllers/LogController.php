@@ -296,6 +296,7 @@ class LogController extends Controller
                 ->leftJoin('targets', 'target_units.id', '=', 'targets.target_unit_id')
                 ->leftJoin('employees', 'targets.employee_id', '=', 'employees.id')
                 ->leftJoin('departments', 'employees.department_id', '=', 'departments.id')
+                ->where('targets.is_active', '=', 1)
                 ->whereIn('departments.name', $departmentNames)
                 ->whereYear('targets.date', $year)
                 ->select(
@@ -319,6 +320,7 @@ class LogController extends Controller
             $targetUnitFilledCountAllDept = DB::table('target_units')
                 ->leftJoin('department_targets', 'target_units.id', '=', 'department_targets.target_unit_id')
                 ->leftJoin('departments', 'department_targets.department_id', '=', 'departments.id')
+                ->where('department_targets.is_active', '=', 1)
                 ->whereIn('departments.name', $departmentNames)
                 ->whereYear('department_targets.date', $year)
                 ->select(
@@ -384,6 +386,7 @@ class LogController extends Controller
                     ->leftJoin('employees', 'targets.employee_id', '=', 'employees.id')
                     ->leftJoin('departments', 'employees.department_id', '=', 'departments.id')
                     ->whereIn('departments.name', $departmentNames)
+                    ->where('targets.is_active', '=', 1)
                     ->whereYear('targets.date', $year)
                     ->select(
                         'departments.id as department_id',
@@ -406,6 +409,7 @@ class LogController extends Controller
                 $targetUnitCountAllDept = DB::table('target_units')
                     ->leftJoin('department_targets', 'target_units.id', '=', 'department_targets.target_unit_id')
                     ->leftJoin('departments', 'department_targets.department_id', '=', 'departments.id')
+                    ->where('department_targets.is_active', '=', 1)
                     ->whereIn('departments.name', $departmentNames)
                     ->whereYear('department_targets.date', $year)
                     ->select(
@@ -522,6 +526,7 @@ class LogController extends Controller
                     ->leftJoin('targets', 'target_units.id', '=', 'targets.target_unit_id')
                     ->leftJoin('employees', 'targets.employee_id', '=', 'employees.id')
                     ->leftJoin('departments', 'employees.department_id', '=', 'departments.id')
+                    ->where('targets.is_active', '=', 1)
                     ->where('departments.id', '=', $department)
                     ->whereYear('targets.date', $year)
                     ->select(
@@ -545,6 +550,7 @@ class LogController extends Controller
                 $targetUnitCountAllDept = DB::table('target_units')
                     ->leftJoin('department_targets', 'target_units.id', '=', 'department_targets.target_unit_id')
                     ->leftJoin('departments', 'department_targets.department_id', '=', 'departments.id')
+                    ->where('department_targets.is_active', '=', 1)
                     ->where('departments.id', '=', $department)
                     ->whereYear('department_targets.date', $year)
                     ->select(
@@ -688,6 +694,7 @@ class LogController extends Controller
                 ->leftJoin('targets', 'target_units.id', '=', 'targets.target_unit_id')
                 ->leftJoin('employees', 'targets.employee_id', '=', 'employees.id')
                 ->leftJoin('departments', 'employees.department_id', '=', 'departments.id')
+                ->where('targets.is_active', '=', 1)
                 ->whereIn('departments.name', $departmentNames)
                 ->whereYear('targets.date', $year)
                 ->select(
@@ -711,6 +718,7 @@ class LogController extends Controller
             $targetUnitFilledCountAllDept = DB::table('target_units')
                 ->leftJoin('department_targets', 'target_units.id', '=', 'department_targets.target_unit_id')
                 ->leftJoin('departments', 'department_targets.department_id', '=', 'departments.id')
+                ->where('department_targets.is_active', '=', 1)
                 ->whereIn('departments.name', $departmentNames)
                 ->whereYear('department_targets.date', $year)
                 ->select(
@@ -776,6 +784,7 @@ class LogController extends Controller
                     ->leftJoin('targets', 'target_units.id', '=', 'targets.target_unit_id')
                     ->leftJoin('employees', 'targets.employee_id', '=', 'employees.id')
                     ->leftJoin('departments', 'employees.department_id', '=', 'departments.id')
+                    ->where('targets.is_active', '=', 1)
                     ->whereIn('departments.name', $departmentNames)
                     ->whereYear('targets.date', $year)
                     ->select(
@@ -799,6 +808,7 @@ class LogController extends Controller
                 $targetUnitCountAllDept = DB::table('target_units')
                     ->leftJoin('department_targets', 'target_units.id', '=', 'department_targets.target_unit_id')
                     ->leftJoin('departments', 'department_targets.department_id', '=', 'departments.id')
+                    ->where('department_targets.is_active', '=', 1)
                     ->whereIn('departments.name', $departmentNames)
                     ->whereYear('department_targets.date', $year)
                     ->select(
@@ -918,6 +928,7 @@ class LogController extends Controller
                     ->leftJoin('targets', 'target_units.id', '=', 'targets.target_unit_id')
                     ->leftJoin('employees', 'targets.employee_id', '=', 'employees.id')
                     ->leftJoin('departments', 'employees.department_id', '=', 'departments.id')
+                    ->where('targets.is_active', '=', 1)
                     ->where('departments.id', '=', $department)
                     ->whereYear('targets.date', $year)
                     ->select(
@@ -941,6 +952,7 @@ class LogController extends Controller
                 $targetUnitCountAllDept = DB::table('target_units')
                     ->leftJoin('department_targets', 'target_units.id', '=', 'department_targets.target_unit_id')
                     ->leftJoin('departments', 'department_targets.department_id', '=', 'departments.id')
+                    ->where('department_targets.is_active', '=', 1)
                     ->where('departments.id', '=', $department)
                     ->whereYear('department_targets.date', $year)
                     ->select(
@@ -1112,6 +1124,7 @@ class LogController extends Controller
                 ->leftJoin('targets', 'target_units.id', '=', 'targets.target_unit_id')
                 ->leftJoin('employees', 'targets.employee_id', '=', 'employees.id')
                 ->leftJoin('departments', 'employees.department_id', '=', 'departments.id')
+                ->where('targets.is_active', '=', 1)
                 ->whereIn('departments.name', $departmentNames)
                 ->whereYear('targets.date', $year)
                 ->select(
@@ -1135,6 +1148,7 @@ class LogController extends Controller
             $targetUnitFilledCountAllDept = DB::table('target_units')
                 ->leftJoin('department_targets', 'target_units.id', '=', 'department_targets.target_unit_id')
                 ->leftJoin('departments', 'department_targets.department_id', '=', 'departments.id')
+                ->where('department_targets.is_active', '=', 1)
                 ->whereIn('departments.name', $departmentNames)
                 ->whereYear('department_targets.date', $year)
                 ->select(
@@ -1200,6 +1214,7 @@ class LogController extends Controller
                     ->leftJoin('targets', 'target_units.id', '=', 'targets.target_unit_id')
                     ->leftJoin('employees', 'targets.employee_id', '=', 'employees.id')
                     ->leftJoin('departments', 'employees.department_id', '=', 'departments.id')
+                    ->where('targets.is_active', '=', 1)
                     ->whereIn('departments.name', $departmentNames)
                     ->whereYear('targets.date', $year)
                     ->select(
@@ -1223,6 +1238,7 @@ class LogController extends Controller
                 $targetUnitCountAllDept = DB::table('target_units')
                     ->leftJoin('department_targets', 'target_units.id', '=', 'department_targets.target_unit_id')
                     ->leftJoin('departments', 'department_targets.department_id', '=', 'departments.id')
+                    ->where('department_targets.is_active', '=', 1)
                     ->whereIn('departments.name', $departmentNames)
                     ->whereYear('department_targets.date', $year)
                     ->select(
@@ -1317,6 +1333,7 @@ class LogController extends Controller
                     ->leftJoin('targets', 'target_units.id', '=', 'targets.target_unit_id')
                     ->leftJoin('employees', 'targets.employee_id', '=', 'employees.id')
                     ->leftJoin('departments', 'employees.department_id', '=', 'departments.id')
+                    ->where('targets.is_active', '=', 1)
                     ->where('departments.id', '=', $department)
                     ->whereYear('targets.date', $year)
                     ->select(
@@ -1340,6 +1357,7 @@ class LogController extends Controller
                 $targetUnitCountAllDept = DB::table('target_units')
                     ->leftJoin('department_targets', 'target_units.id', '=', 'department_targets.target_unit_id')
                     ->leftJoin('departments', 'department_targets.department_id', '=', 'departments.id')
+                    ->where('department_targets.is_active', '=', 1)
                     ->where('departments.id', '=', $department)
                     ->whereYear('department_targets.date', $year)
                     ->select(

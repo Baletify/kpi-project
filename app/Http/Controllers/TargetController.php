@@ -252,12 +252,20 @@ class TargetController extends Controller
             $targets = DB::table('targets')->leftJoin('target_units', 'target_units.id', '=', 'targets.target_unit_id')
                 ->select('target_units.*', 'targets.*', DB::raw('YEAR(targets.date) as year'))
                 ->where('employee_id', $employeeID)
+                ->where('targets.is_active', '=', true)
+                ->where(DB::raw('YEAR(targets.date)'), $year)
+                ->get();
+
+            $inactiveTargets = DB::table('targets')->leftJoin('target_units', 'target_units.id', '=', 'targets.target_unit_id')
+                ->select('target_units.*', 'targets.*', DB::raw('YEAR(targets.date) as year'))
+                ->where('employee_id', $employeeID)
+                ->where('targets.is_active', '=', false)
                 ->where(DB::raw('YEAR(targets.date)'), $year)
                 ->get();
 
             // dd($targets);
 
-            return view('target.input-target-kpi', ['title' => 'Input KPI Target', 'desc' => 'Employees', 'employee' => $employee, 'targets' => $targets, 'all' => $allStatus]);
+            return view('target.input-target-kpi', ['title' => 'Input KPI Target', 'desc' => 'Employees', 'employee' => $employee, 'targets' => $targets, 'all' => $allStatus, 'inactiveTargets' => $inactiveTargets]);
         } else {
 
             return view('components/404-page');
@@ -282,12 +290,22 @@ class TargetController extends Controller
                 ->leftJoin('target_units', 'department_targets.target_unit_id', '=', 'target_units.id')
                 ->select('department_targets.id', 'department_targets.department_id', 'department_targets.target_unit_id', 'department_targets.trend', 'departments.name as department', 'department_targets.code', 'department_targets.indicator', 'department_targets.calculation', 'department_targets.supporting_document', 'department_targets.period', 'department_targets.weighting', 'department_targets.unit', 'target_units.target_1', 'target_units.target_2', 'target_units.target_3', 'target_units.target_4', 'target_units.target_5', 'target_units.target_6', 'target_units.target_7', 'target_units.target_8', 'target_units.target_9', 'target_units.target_10', 'target_units.target_11', 'target_units.target_12', 'department_targets.id as department_target_id')
                 ->where('departments.id', '=', $departmentID)
+                ->where('department_targets.is_active', '=', true)
                 ->where(DB::raw('YEAR(department_targets.date)'), $year)
                 ->get();
 
+            $inactiveTargets = DB::table('department_targets')->leftJoin('departments', 'departments.id', '=', 'department_targets.department_id')
+                ->leftJoin('target_units', 'department_targets.target_unit_id', '=', 'target_units.id')
+                ->select('department_targets.id', 'department_targets.department_id', 'department_targets.target_unit_id', 'department_targets.trend', 'departments.name as department', 'department_targets.code', 'department_targets.indicator', 'department_targets.calculation', 'department_targets.supporting_document', 'department_targets.period', 'department_targets.weighting', 'department_targets.unit', 'target_units.target_1', 'target_units.target_2', 'target_units.target_3', 'target_units.target_4', 'target_units.target_5', 'target_units.target_6', 'target_units.target_7', 'target_units.target_8', 'target_units.target_9', 'target_units.target_10', 'target_units.target_11', 'target_units.target_12', 'department_targets.id as department_target_id')
+                ->where('departments.id', '=', $departmentID)
+                ->where('department_targets.is_active', '=', false)
+                ->where(DB::raw('YEAR(department_targets.date)'), $year)
+                ->get();
+
+
             // dd($targetDept);
 
-            return view('target.input-target-kpi-department', ['title' => 'Input KPI Target', 'desc' => 'Department', 'departments' => $dept, 'targets' => $targetDept]);
+            return view('target.input-target-kpi-department', ['title' => 'Input KPI Target', 'desc' => 'Department', 'departments' => $dept, 'targets' => $targetDept, 'inactiveTargets' => $inactiveTargets]);
         } else {
 
             return view('components/404-page');
@@ -431,6 +449,7 @@ class TargetController extends Controller
 
     public function update(Request $request)
     {
+
         $id = $request->target_id;
         $year = $request->year;
         $semester = $request->semester;

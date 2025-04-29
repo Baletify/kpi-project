@@ -23,5 +23,6 @@ class Target extends Model
         'employee_id',
         'target_unit_id',
         'detail',
+        'is_active',
     ];
 }
