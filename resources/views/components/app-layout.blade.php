@@ -11,6 +11,7 @@
     rel="stylesheet"
     href="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
 />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <title>KPI App</title>
 </head>
 <body class="text-gray-800 font-inter flex">

@@ -89,7 +89,10 @@
                 </div>
                 </form>
                 <div class="p-0">
-                    @if ($currentMonth == 1 || $currentMonth == 12 || $role == 'Approver')
+                    @php
+                    $now = Carbon\Carbon::now();
+                    @endphp
+                    @if (($now > $deadline->start_date && $now < $deadline->end_date) || $role == 'Approver')
                  
                     <a href="{{ route('target.showImport', 'semester=' . $semesterQuery . '&employee=' . $employeeQuery . '&year=' . $yearQuery) }}&all={{ $all }}" class="p-1 mx-2 bg-green-600 py-2 items-center rounded-md">
                         <i class="ri-file-excel-2-line text-2xl text-white"></i>

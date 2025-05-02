@@ -102,7 +102,10 @@
                                     <span class="text-white">Lihat Target</span>
                                   </a>
                             </button>
-                            @if ($currentMonth == 1 || $currentMonth == 12 || $role == 'Approver')
+                            @php
+                            $now = Carbon\Carbon::now();
+                            @endphp
+                            @if (($now > $deadline->start_date && $now < $deadline->end_date) || $role == 'Approver')
                             <button class="bg-green-600 px-1.5 py-0 rounded-sm my-1">
                                 <a id="input-target-link-{{ $department->id }}" href="{{ route('target.showImportDept') }}?department={{ $department->id ?? '' }}&year={{ $year }}&semester={{ $currentSemester }}&all={{ $allStatus }}">
                                   <span class="text-white hover:underline">Upload Excel</span>

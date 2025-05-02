@@ -109,7 +109,18 @@
                 
             </div>
         </div>
-
+        <div class="mt-0">   
+            @if ($role == 'Approver')
+            <div class="relative mt-0 rounded-md mb-1">
+                <button class="p-2 bg-blue-600 my-0 rounded-md">
+                    <a id="set-deadline-link" href="{{ route('target.settingTargetDeadline') }}">
+                        <i class="ri-settings-2-line text-lg text-white"></i>
+                        <span class="text-white">Setting Deadline Target KPI</span>
+                    </a>
+                </button>
+            </div>
+            @endif
+        </div>
         <div class="flex justify-center">
         <table class="w-[1500px] table-fixed">
             <tr>
@@ -142,7 +153,10 @@
                               <span class="text-white hover:underline">Lihat Target</span>
                             </a>
                         </button>
-                        @if ($currentMonth == 3 || $currentMonth == 12 || $role == 'Approver')
+                        @php
+                        $now = Carbon\Carbon::now();
+                        @endphp
+                        @if (($now > $deadline->start_date && $now < $deadline->end_date) || $role == 'Approver')
                         <button class="bg-green-600 px-2 rounded-sm my-1">
                             <a id="employee-link-{{ $department->employee_id }}" href="{{ route('target.showImport') }}?employee={{ $department->employee_id }}&all={{ $all }}&department={{ $department->department_id }}">
                                 <span class="text-white hover:underline">Upload Excel</span>

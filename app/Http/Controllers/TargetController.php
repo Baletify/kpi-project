@@ -198,7 +198,9 @@ class TargetController extends Controller
             return view('components/404-page');
         }
 
-        return view('target.input-target-department', ['title' => 'Input Target', 'desc' => 'Input KPI Target & Upload Program', 'departments' => $departments, 'deptList' => $deptList, 'statusList' => $statusList]);
+        $deadline = DB::table('setting_target_deadlines')->first();
+
+        return view('target.input-target-department', ['title' => 'Input Target', 'desc' => 'Input KPI Target & Upload Program', 'departments' => $departments, 'deptList' => $deptList, 'statusList' => $statusList, 'deadline' => $deadline]);
     }
     public function deptList()
     {
@@ -219,8 +221,9 @@ class TargetController extends Controller
         }
 
         // dd($deptList);
+        $deadline = DB::table('setting_target_deadlines')->first();
 
-        return view('target.input-target-department-all', ['title' => 'Input Target', 'desc' => 'List Departemen', 'deptList' => $deptList,]);
+        return view('target.input-target-department-all', ['title' => 'Input Target', 'desc' => 'List Departemen', 'deptList' => $deptList, 'deadline' => $deadline]);
     }
 
     public function showDeptOne(Request $request)
@@ -232,8 +235,9 @@ class TargetController extends Controller
             ->get();
 
         // dd($departments);
+        $deadline = DB::table('setting_target_deadlines')->first();
 
-        return view('target.input-target-department-one', ['title' => 'Input Target KPI', 'desc' => 'Department', 'departments' => $departments]);
+        return view('target.input-target-department-one', ['title' => 'Input Target KPI', 'desc' => 'Department', 'departments' => $departments, 'deadline' => $deadline]);
     }
 
     public function show(Request $request)
@@ -264,8 +268,9 @@ class TargetController extends Controller
                 ->get();
 
             // dd($targets);
+            $deadline = DB::table('setting_target_deadlines')->first();
 
-            return view('target.input-target-kpi', ['title' => 'Input KPI Target', 'desc' => 'Employees', 'employee' => $employee, 'targets' => $targets, 'all' => $allStatus, 'inactiveTargets' => $inactiveTargets]);
+            return view('target.input-target-kpi', ['title' => 'Input KPI Target', 'desc' => 'Employees', 'employee' => $employee, 'targets' => $targets, 'all' => $allStatus, 'inactiveTargets' => $inactiveTargets, 'deadline' => $deadline]);
         } else {
 
             return view('components/404-page');
@@ -304,8 +309,9 @@ class TargetController extends Controller
 
 
             // dd($targetDept);
+            $deadline = DB::table('setting_target_deadlines')->first();
 
-            return view('target.input-target-kpi-department', ['title' => 'Input KPI Target', 'desc' => 'Department', 'departments' => $dept, 'targets' => $targetDept, 'inactiveTargets' => $inactiveTargets]);
+            return view('target.input-target-kpi-department', ['title' => 'Input KPI Target', 'desc' => 'Department', 'departments' => $dept, 'targets' => $targetDept, 'inactiveTargets' => $inactiveTargets, 'deadline' => $deadline]);
         } else {
 
             return view('components/404-page');
@@ -478,5 +484,53 @@ class TargetController extends Controller
         $targetUnit->update(request()->all());
 
         return redirect()->to('/target/input-target-kpi-department?department=' . $departmentID . '&year=' . $year  . '&semester=' . $semester)->with('success', 'Data updated successfully.');
+    }
+
+    public function settingTargetDeadline()
+    {
+        $targetDeadline = DB::table('setting_target_deadlines')->first();
+        if ($targetDeadline) {
+            $startDate = Carbon::parse($targetDeadline->start_date)->format('d-m-Y');
+            $endDate = Carbon::parse($targetDeadline->end_date)->format('d-m-Y');
+        } else {
+            $startDate = null;
+            $endDate = null;
+        }
+        return view('target.setting-target-deadline', [
+            'title' => 'Setting Deadline',
+            'desc' => 'Target',
+            'targetDeadline' => $targetDeadline,
+            'startDate' => $startDate,
+            'endDate' => $endDate,
+        ]);
+    }
+
+    public function updateTargetDeadline(Request $request)
+    {
+        $startDate = $request->input('start_date');
+        $endDate = $request->input('end_date');
+
+        // Validate the input dates
+        $validator = Validator::make($request->all(), [
+            'start_date' => 'required|date',
+            'end_date' => 'required|date|after_or_equal:start_date',
+        ]);
+
+        if ($validator->fails()) {
+            flash()->error('Invalid date format or end date is before start date.');
+            return redirect()->back()
+                ->withErrors($validator)
+                ->withInput();
+        }
+
+        DB::table('setting_target_deadlines')->updateOrInsert(
+            ['id' => 1],
+            [
+                'start_date' => Carbon::parse($startDate)->format('Y-m-d H:i:s'),
+                'end_date' => Carbon::parse($endDate)->format('Y-m-d H:i:s'),
+            ]
+        );
+
+        return redirect()->back()->with('success', 'Target deadline updated successfully.');
     }
 }

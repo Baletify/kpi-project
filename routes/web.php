@@ -78,12 +78,14 @@ Route::middleware(['auth'])->group(function () {
 
         Route::get('/import-target-kpi-employee', [TargetController::class, 'showImport'])->name('target.showImport');
         Route::get('/import-target-kpi-department', [TargetController::class, 'showImportDept'])->name('target.showImportDept');
+        Route::get('/setting-target-deadline', [TargetController::class, 'settingTargetDeadline'])->name('target.settingTargetDeadline');
 
 
         Route::post('/import-target-kpi-employee/store', [TargetController::class, 'import'])->name('target.import');
         Route::post('/import-target-kpi-department/store', [TargetController::class, 'importDept'])->name('target.importDept');
         Route::put('/input-target-kpi/update', [TargetController::class, 'update'])->name('target.update');
         Route::put('/input-target-kpi-department/update', [TargetController::class, 'updateDept'])->name('target.updateDept');
+        Route::put('/input-target-kpi/updateDeadline', [TargetController::class, 'updateTargetDeadline'])->name('target.updateTargetDeadline');
 
         // Route::get('/input-target-kpi/{id}', [TargetController::class, 'show']);
     });

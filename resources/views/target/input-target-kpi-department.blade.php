@@ -53,7 +53,10 @@
                     $year = request()->query('year');
                 @endphp
                 <div class="mt-3">
-                    @if ($role == 'Approver' || $currentMonth == 1 || $currentMonth == 12)
+                    @php
+                    $now = Carbon\Carbon::now();
+                    @endphp
+                    @if (($now > $deadline->start_date && $now < $deadline->end_date) || $role == 'Approver')
                     <a href="{{ route('target.showImportDept', 'semester=' . $currentSemester . '&department=' . $department . '&year=' . $year) }}&all={{ $allStatus }}" class="p-1 mx-2 bg-green-600 py-2 items-center rounded-md">
                         <i class="ri-file-excel-2-line text-2xl text-white"></i>
                         <span class="font-medium text-white">Upload Excel</span>

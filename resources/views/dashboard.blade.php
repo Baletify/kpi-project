@@ -1,6 +1,8 @@
 <x-app-layout :title="$title" :desc="$desc">
     <div class="ml-64 px-2">
         @php
+        $auth = auth()->user();
+        // dd($auth);
             $currentYear = Carbon\Carbon::now()->year;
             $startYear = 2024; 
             $endYear = $currentYear + 2;
