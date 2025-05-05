@@ -45,7 +45,7 @@ class UserController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required',
             'nik' => 'required',
-            'email' => 'required',
+            // 'email' => 'required',
             'department_id' => 'required',
         ]);
 
@@ -89,7 +89,7 @@ class UserController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required',
             'nik' => 'required',
-            'email' => 'required|email|unique:employees,email,' . $id,
+            // 'email' => 'required|email|unique:employees,email,' . $id,
             'department_id' => 'required',
         ]);
 

@@ -293,7 +293,7 @@ class TargetController extends Controller
 
             $targetDept = DB::table('department_targets')->leftJoin('departments', 'departments.id', '=', 'department_targets.department_id')
                 ->leftJoin('target_units', 'department_targets.target_unit_id', '=', 'target_units.id')
-                ->select('department_targets.id', 'department_targets.department_id', 'department_targets.target_unit_id', 'department_targets.trend', 'departments.name as department', 'department_targets.code', 'department_targets.indicator', 'department_targets.calculation', 'department_targets.supporting_document', 'department_targets.period', 'department_targets.weighting', 'department_targets.unit', 'target_units.target_1', 'target_units.target_2', 'target_units.target_3', 'target_units.target_4', 'target_units.target_5', 'target_units.target_6', 'target_units.target_7', 'target_units.target_8', 'target_units.target_9', 'target_units.target_10', 'target_units.target_11', 'target_units.target_12', 'department_targets.id as department_target_id')
+                ->select('department_targets.id', 'department_targets.department_id', 'department_targets.target_unit_id', 'department_targets.trend', 'departments.name as department', 'department_targets.code', 'department_targets.indicator', 'department_targets.calculation', 'department_targets.supporting_document', 'department_targets.period', 'department_targets.weighting', 'department_targets.unit', 'target_units.target_1', 'target_units.target_2', 'target_units.target_3', 'target_units.target_4', 'target_units.target_5', 'target_units.target_6', 'target_units.target_7', 'target_units.target_8', 'target_units.target_9', 'target_units.target_10', 'target_units.target_11', 'target_units.target_12', 'department_targets.id as department_target_id', 'department_targets.is_active')
                 ->where('departments.id', '=', $departmentID)
                 ->where('department_targets.is_active', '=', true)
                 ->where(DB::raw('YEAR(department_targets.date)'), $year)
@@ -532,5 +532,116 @@ class TargetController extends Controller
         );
 
         return redirect()->back()->with('success', 'Target deadline updated successfully.');
+    }
+
+    public function createTarget(Request $request)
+    {
+        $employeeID = $request->query('employee');
+
+        DB::table('employees')->where('id', $employeeID)->first();
+        return view('target.create-target-kpi', [
+            'title' => 'Create Target',
+            'desc' => 'Employee',
+            'employeeID' => $employeeID,
+        ]);
+    }
+    public function createTargetDept(Request $request)
+    {
+        $departmentID = $request->query('department');
+        return view('target.create-target-kpi-department', [
+            'title' => 'Create Target',
+            'desc' => 'Department',
+            'departmentID' => $departmentID,
+        ]);
+    }
+
+    public function storeTargetKpi(Request $request)
+    {
+        // dd($request->all());
+        $employeeID = $request->employee_id;
+        $semester = $request->semester;
+        $year = $request->year;
+        $yearToInsert = Carbon::parse($year)->format('Y-m-d H:i:s');
+
+        TargetUnit::create([
+            'target_1' => $request->target_1,
+            'target_2' => $request->target_2,
+            'target_3' => $request->target_3,
+            'target_4' => $request->target_4,
+            'target_5' => $request->target_5,
+            'target_6' => $request->target_6,
+            'target_7' => $request->target_7,
+            'target_8' => $request->target_8,
+            'target_9' => $request->target_9,
+            'target_10' => $request->target_10,
+            'target_11' => $request->target_11,
+            'target_12' => $request->target_12,
+        ]);
+
+        $targetUnitId = DB::table('target_units')->latest()->first()->id;
+
+        Target::create([
+            'code' => $request->code,
+            'indicator' => $request->indicator,
+            'calculation' => $request->calculation,
+            'period' => $request->period,
+            'unit' => $request->unit,
+            'supporting_document' => $request->supporting_document,
+            'trend' => $request->trend,
+            'weighting' => $request->weighting,
+            'detail' => $request->detail,
+            'employee_id' => $employeeID,
+            'target_unit_id' => $targetUnitId,
+            'date' => $yearToInsert,
+            'semester' => $semester,
+            'is_active' => true,
+        ]);
+
+        return redirect()->to("/target/input-target-kpi?employee=$employeeID&semester=$semester&year=$year")->with('success', 'Target created successfully.');
+    }
+
+    public function storeTargetKpiDept(Request $request)
+    {
+        // dd($request->all());
+        $departmentID = $request->department_id;
+        $semester = $request->semester;
+        $year = $request->year;
+        $yearToInsert = Carbon::parse($year)->format('Y-m-d H:i:s');
+
+        TargetUnit::create([
+            'target_1' => $request->target_1,
+            'target_2' => $request->target_2,
+            'target_3' => $request->target_3,
+            'target_4' => $request->target_4,
+            'target_5' => $request->target_5,
+            'target_6' => $request->target_6,
+            'target_7' => $request->target_7,
+            'target_8' => $request->target_8,
+            'target_9' => $request->target_9,
+            'target_10' => $request->target_10,
+            'target_11' => $request->target_11,
+            'target_12' => $request->target_12,
+        ]);
+
+        $targetUnitId = DB::table('target_units')->latest()->first()->id;
+
+        DepartmentTarget::create([
+            'code' => $request->code,
+            'indicator' => $request->indicator,
+            'calculation' => $request->calculation,
+            'period' => $request->period,
+            'unit' => $request->unit,
+            'supporting_document' => $request->supporting_document,
+            'trend' => $request->trend,
+            'weighting' => $request->weighting,
+            'detail' => $request->detail,
+            'department_id' => $departmentID,
+            'target_unit_id' => $targetUnitId,
+            'date' => $yearToInsert,
+            'semester' => $semester,
+            'is_active' => true,
+        ]);
+
+        return redirect()->to("/target/input-target-kpi-department?department=$departmentID&semester=$semester&year=$year")->with('success', 'Target created successfully.');
     }
 }

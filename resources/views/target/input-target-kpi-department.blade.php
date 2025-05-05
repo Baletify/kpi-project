@@ -62,6 +62,12 @@
                         <span class="font-medium text-white">Upload Excel</span>
                     </a>
                     @endif
+                    @if ($role == 'Approver')
+                    <a href="{{ route('target.createTargetDept') }}?department={{ $departmentQuery }}&semester={{ $semesterQuery }}&year={{ $yearQuery }}" class="p-1 mx-0.5 bg-green-600 py-2 items-center rounded-md">
+                        <i class="ri-add-fill text-xl text-white"></i>
+                        <span class="font-medium text-white">Add Target</span>
+                    </a>
+                    @endif
                 </div>
             </div>
         </div>
