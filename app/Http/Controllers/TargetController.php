@@ -259,6 +259,7 @@ class TargetController extends Controller
                 ->where('targets.is_active', '=', true)
                 ->where(DB::raw('YEAR(targets.date)'), $year)
                 ->get();
+            // dd($targets);
 
             $inactiveTargets = DB::table('targets')->leftJoin('target_units', 'target_units.id', '=', 'targets.target_unit_id')
                 ->select('target_units.*', 'targets.*', DB::raw('YEAR(targets.date) as year'))

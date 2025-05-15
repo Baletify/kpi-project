@@ -322,10 +322,10 @@ class ActualController extends Controller
             'department_id' => $request->department_id,
         ];
 
-        $existingActual = DB::table('actuals')->where($searchConditions)->first();
-        $existingActualApproved = DB::table('actuals')->where($searchConditions)
+        $existingActual = DB::table('department_actuals')->where($searchConditions)->first();
+        $existingActualApproved = DB::table('department_actuals')->where($searchConditions)
             ->whereIn('status', ['Approved'])->first();
-        $revisedActual = DB::table('actuals')->where($searchConditions)
+        $revisedActual = DB::table('department_actuals')->where($searchConditions)
             ->whereIn('status', ['Revise'])->first();
 
         $deadline = $existingActual->deadline ?? 15;
