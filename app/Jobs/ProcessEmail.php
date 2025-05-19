@@ -26,7 +26,8 @@ class ProcessEmail implements ShouldQueue
      */
     public function handle(): void
     {
-        $cc = ['hamzah@bskp.co.id', 'ga@bskp.co.id'];
+        $emailBy = $this->details['email_by'];
+        $cc = ['hamzah@bskp.co.id', 'ga@bskp.co.id', $emailBy];
         Mail::to($this->details['email'])->cc($cc)->send(new PostMail($this->details));
     }
 }

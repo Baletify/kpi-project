@@ -82,14 +82,16 @@
                     <td class="border-2 border-gray-400 text-[12px] tracking-wide px-2 py-0">{{ $target->indicator }}</td>
                     @foreach ($months as $month => $monthName)
                     @php
+                        $targetUnitField = 'target_' . $month;
                         $actual = $actuals->first(function ($item) use ($target, $month) {
                             return \Carbon\Carbon::parse($item->date)->format('m') == $month && $item->kpi_item == $target->indicator;
                         });
                     @endphp
+                    @if ($target->$targetUnitField !== null)
                     @if ($actual)
                     <td class="border-2 border-gray-400 text-[12px] tracking-wide px-2 py-0 text-center">
                         <button id="open-modal-{{ $actual->id }}" data-month="{{ $month }}" data-actual-id="{{ $actual->id }}" data-file="{{ asset('record_files/' . $actual->record_file) }}" class="open-modal">
-                            <i class="ri-eye-fill text-sm p-0.5 bg-blue-600 text-white rounded-sm"></i>
+                            <i class="ri-eye-fill text-sm p-0.5  text-blue-500 rounded-sm"></i>
                         </button>
                     </td>
                     <div class="hidden fixed inset-0 justify-center" id="modal-{{ $actual->id }}">
@@ -111,7 +113,12 @@
                     </div>
                     @else
                     <td class="border-2 border-gray-400 text-[12px] tracking-wide px-2 py-0 text-center">
-                        N/A
+                        
+                    </td>
+                    @endif
+                    @else
+                    <td class="border-2 border-gray-400 text-[12px] tracking-wide px-2 py-0 text-center">
+                        <span class="text-red-500">N/A</span>
                     </td>
                     @endif
                     @endforeach

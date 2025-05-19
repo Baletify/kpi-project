@@ -57,7 +57,6 @@ class MailController extends Controller
         Actual::where('id', $request->actual_id)->update([
             'status' => 'Revise',
             'deadline' => $newDeadline,
-
         ]);
         ProcessEmail::dispatch($details);
 
