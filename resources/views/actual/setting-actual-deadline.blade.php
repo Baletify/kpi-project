@@ -15,7 +15,10 @@
                 <div class="">
                     <span class="mx-20 font-semibold">Tambah Batas Penginputan KPI</span>
                 </div>
-            <div class="flex justify-center mt-1">
+                <div class="flex justify-center">
+                    <p>Pilih Tanggal</p>
+                </div>
+            <div class="flex justify-center">
                 <select name="deadline" id="deadline" class="col-start-1 row-start-1 w-1/2 appearance-none rounded-md py-1.5 pl-3 pr-7 text-base text-gray-500 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
                     <option value="">-- Pilih Deadline --</option>
                    @for ($day = 16; $day <= 31; $day++)
@@ -23,7 +26,10 @@
                    @endfor
                 </select>
             </div>
-            <div class="flex justify-center my-2">
+            <div class="flex justify-center mt-2">
+                    <p>Pilih Bulan Penginputan</p>
+                </div>
+            <div class="flex justify-center mb-2">
                 <select name="month" id="month" class="col-start-1 row-start-1 w-1/2 appearance-none rounded-md py-1.5 pl-3 pr-7 text-base text-gray-500 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
                     <option value="">-- Pilih Bulan --</option>
                     <option value="1">January</option>

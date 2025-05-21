@@ -457,13 +457,14 @@ class ActualController extends Controller
             'employee_id' => $request->employee_id,
         ];
 
+        $actualDeadline = DB::table('setting_actual_deadlines')->first();
         $existingActual = DB::table('actuals')->where($searchConditions)->first();
         $existingActualApproved = DB::table('actuals')->where($searchConditions)
             ->whereIn('status', ['Approved'])->first();
         $revisedActual = DB::table('actuals')->where($searchConditions)
             ->whereIn('status', ['Revise'])->first();
 
-        $deadline = $existingActual->deadline ?? 15;
+        $deadline = $actualDeadline->open_until ?? 15;
 
         if (!$revisedActual) {
             if ($now > $deadline && ($role == '' || $role == 'Inputer' || $role == 'Checker 1')) {
@@ -835,6 +836,7 @@ class ActualController extends Controller
         $validator = Validator::make($request->all(), [
             'deadline' => 'required',
             'month' => 'required',
+            'year' => 'required',
         ]);
 
         if ($validator->fails()) {
@@ -856,6 +858,7 @@ class ActualController extends Controller
         DB::table('department_actuals')->whereMonth('date', '=', $month)
             ->whereYear('date', '=', $year)
             ->update(['deadline' => $deadline]);
+        DB::table('setting_actual_deadlines')->update(['open_until' => $deadline]);
 
         flash()->success('Deadline berhasil diperbarui.');
         return redirect()->back();
