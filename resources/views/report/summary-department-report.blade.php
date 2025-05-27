@@ -67,7 +67,7 @@
                 </form>
             </div>
         </div>
-        @if (request()->query('department'))
+        @if (request()->query('department') && request()->query('status') == '')
         <div class="flex justify-end">
             <button id="exportBtn" class="p-1.5 rounded-md text-white bg-green-500 mb-1">Export</button>
         </div>
@@ -109,7 +109,6 @@
               @foreach ($employees as $index => $employee)
               @php
                   $i++;
-
                 //   dd($employee, $sumGroupSemester1);
                 $employeeId = $employee->employee_id;
                 $departmentId = $employee->department_id;
@@ -184,7 +183,7 @@
               </tr>
               @endforeach
 
-              @if(request()->query('department'))
+              @if(request()->query('department') && request()->query('status') == '')
               @php
               $finalTotalSemester1Weight = $rowCount > 0 ? $totalSemester1WeightSum / $rowCount : 0;
               $finalTotalSemester2Weight = $rowCount > 0 ? $totalSemester2WeightSum / $rowCount : 0;
@@ -206,11 +205,155 @@
         </table>
     </div>
 
-    <div class="mt-5">
+    @if (request()->query('department') && request()->query('status') == '')
+    <div class="flex justify-between mt-2">
+        <div class="mt-2">
+            <span class="text-gray-600 p-1 text-2xl font-bold">
+                KPI Sebelumnya
+            </span>
+        </div>
+        @if (request()->query('department'))
+        <div class="flex justify-end">
+            <button id="exportBtn" class="p-1.5 rounded-md text-white bg-green-500 my-2">Export</button>
+        </div>
+        @endif
+
+    </div>
+
+    <div class="mt-2">
         <table class="w-full">
-            
+            <th data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="FF0066FF" data-f-color="FFFFFFFF" class="border-2 border-gray-400 text-[13px] tracking-wide font-medium text-white py-0.5 px-2 bg-blue-700" rowspan="2" style="width: 3%">No.</th>
+                <th data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="FF0066FF" data-f-color="FFFFFFFF" class="border-2 border-gray-400 text-[13px] tracking-wide font-medium text-white py-0.5 px-2 bg-blue-700" rowspan="2" style="width: 10%">Dept</th>
+                <th data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="FF0066FF" data-f-color="FFFFFFFF" class="border-2 border-gray-400 text-[13px] tracking-wide font-medium text-white py-0.5 px-2 bg-blue-700" rowspan="2" style="width: 6%">NIK</th>
+                <th data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="FF0066FF" data-f-color="FFFFFFFF" class="border-2 border-gray-400 text-[13px] tracking-wide font-medium text-white py-0.5 px-2 bg-blue-700" rowspan="2" style="width: 23%">Nama</th>
+                <th data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="FF0066FF" data-f-color="FFFFFFFF" class="border-2 border-gray-400 text-[13px] tracking-wide font-medium text-white py-0.5 px-2 bg-blue-700" rowspan="2" style="width: 12%">Posisi</th>
+                <th data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="FF0066FF" data-f-color="FFFFFFFF" class="border-2 border-gray-400 text-[13px] tracking-wide font-medium text-white py-0.5 px-2 bg-blue-700" colspan="3">Pencapaian KPI Dept 30%</th>
+                <th data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="FF0066FF" data-f-color="FFFFFFFF" class="border-2 border-gray-400 text-[13px] tracking-wide font-medium text-white py-0.5 px-2 bg-blue-700" colspan="3">Pencapaian KPI Individu 70%</th>
+                <th style="width: 6%" data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="FF0066FF" data-f-color="FFFFFFFF" class="border-2 border-gray-400 text-[13px] tracking-wide font-medium text-white py-0.5 px-2 bg-blue-700" rowspan="2">Total Rata Rata</th>
+              <tr>
+               <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="FF0066FF" data-f-color="FFFFFFFF" class="border-2 border-gray-400 text-[13px] tracking-wide font-medium text-white py-0.5 px-2 bg-blue-700 text-center">Semester 1</td>
+                <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="FF0066FF" data-f-color="FFFFFFFF" class="border-2 border-gray-400 text-[13px] tracking-wide font-medium text-white py-0.5 px-2 bg-blue-700 text-center">Semester 2</td>
+                <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="FF0066FF" data-f-color="FFFFFFFF" class="border-2 border-gray-400 text-[13px] tracking-wide font-medium text-white py-0.5 px-2 bg-blue-700 text-center">Rata Rata</td>
+               <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="FF0066FF" data-f-color="FFFFFFFF" class="border-2 border-gray-400 text-[13px] tracking-wide font-medium text-white py-0.5 px-2 bg-blue-700 text-center">Semester 1</td>
+                <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="FF0066FF" data-f-color="FFFFFFFF" class="border-2 border-gray-400 text-[13px] tracking-wide font-medium text-white py-0.5 px-2 bg-blue-700 text-center">Semester 2</td>
+                <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="FF0066FF" data-f-color="FFFFFFFF" class="border-2 border-gray-400 text-[13px] tracking-wide font-medium text-white py-0.5 px-2 bg-blue-700 text-center">Rata Rata</td>
+              </tr>
+
+               @php
+                $i = 0;
+                  $startIndex = ($employees->currentPage() - 1) * $employees->perPage() + 1;
+                  $totalSemester1Weight = 0;
+                    $totalSemester2Weight = 0;
+                    $totalSemester1WeightSum = 0;
+                    $totalSemester2WeightSum = 0;
+                    $totalSemester1DeptWeight = 0;
+                    $totalSemester2DeptWeight = 0;
+                    $totalWeightSum = 0;
+                    $totalDeptWeightSum = 0;
+                    $totalAverage = 0;
+                    $totalAverageSum = 0;
+                    $rowCount = 0;
+              @endphp
+
+              @foreach ($inactiveTargetEmployees as $index => $employee)
+              @php
+                  $i++;
+
+                  
+                $employeeId = $employee->employee_id;
+                $departmentId = $employee->department_id;
+
+                $sumSemester1 = $sumInactiveGroupSemester1[$employeeId] ?? 0;
+                $sumSemester2 = $sumGroupInactiveSemester2[$employeeId] ?? 0;
+                $totalSumEmployee = $totalSumInactiveSemester[$employeeId] ?? 0;
+                $sumSemester1Dept = $sumGroupInactiveSemester1Dept[$departmentId] ?? 0;
+                $sumSemester2Dept = $sumGroupInactiveSemester2Dept[$departmentId] ?? 0;
+                $totalSumDept = $totalSumInactiveSemesterDept[$departmentId] ?? 0;
+                $totalAllInactive = ($totalSumEmployee ?? 0) + ($totalSumDept ?? 0);
+
+                $totalSemester1Weight = PhpOffice\PhpSpreadsheet\Calculation\Statistical\Averages::average($sumSemester1);
+                $totalSemester2Weight =  PhpOffice\PhpSpreadsheet\Calculation\Statistical\Averages::average($sumSemester2);
+                $totalSemester1DeptWeight =  PhpOffice\PhpSpreadsheet\Calculation\Statistical\Averages::average($sumSemester1Dept);
+                $totalSemester2DeptWeight =  PhpOffice\PhpSpreadsheet\Calculation\Statistical\Averages::average($sumSemester2Dept);
+                $totalWeightSum =  PhpOffice\PhpSpreadsheet\Calculation\Statistical\Averages::average($totalSumEmployee);
+                $totalDeptWeightSum = PhpOffice\PhpSpreadsheet\Calculation\Statistical\Averages::average($totalSumDept);
+                $totalAverage = PhpOffice\PhpSpreadsheet\Calculation\Statistical\Averages::average($totalAll);
+
+                $totalSemester1WeightSum += $totalSemester1Weight;
+                $totalSemester2WeightSum += $totalSemester2Weight;
+                $totalAverageSum += $totalAverage;
+                $rowCount++;
+                  
+              @endphp
+            <tr class="{{ $i % 2 === 0 ? 'bg-white' : 'bg-blue-100' }}">
+                <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="{{ $i % 2 === 0 ? 'FFF2F2F2' : 'FFFFFFFF' }}" class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-gray-600 py-0.5 px-2 text-center">{{ $startIndex + $index }}</td>
+                <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="{{ $i % 2 === 0 ? 'FFF2F2F2' : 'FFFFFFFF' }}" class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-gray-600 py-0.5 px-2">{{ $employee->dept }}</td>
+                <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="{{ $i % 2 === 0 ? 'FFF2F2F2' : 'FFFFFFFF' }}" class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-gray-600 py-0.5 px-2" >{{ $employee->nik }}</td>
+                <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="{{ $i % 2 === 0 ? 'FFF2F2F2' : 'FFFFFFFF' }}" class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-gray-600 py-0.5 px-2">     
+                    {{ $employee->name }}
+                </td>
+                <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="{{ $i % 2 === 0 ? 'FFF2F2F2' : 'FFFFFFFF' }}" class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-gray-600 py-0.5 px-2" >{{ $employee->occupation }}</td>
+                @if ($sumSemester1Dept > 0)
+                <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="{{ $i % 2 === 0 ? 'FFF2F2F2' : 'FFFFFFFF' }}" class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-gray-600 py-0.5 px-2 text-center">{{ number_format($sumSemester1Dept, 1) }}%</td>
+                @else
+                <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="{{ $i % 2 === 0 ? 'FFF2F2F2' : 'FFFFFFFF' }}" class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-gray-600 py-0.5 px-2 text-center"></td>
+                @endif
+
+                @if ($sumSemester2Dept > 0)
+                <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="{{ $i % 2 === 0 ? 'FFF2F2F2' : 'FFFFFFFF' }}" class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-gray-600 py-0.5 px-2 text-center">{{ number_format($sumSemester2Dept, 1) }}%</td>
+                @else
+                <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="{{ $i % 2 === 0 ? 'FFF2F2F2' : 'FFFFFFFF' }}" class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-gray-600 py-0.5 px-2 text-center"></td>
+                @endif
+                
+                @if ($totalSumDept > 0)
+                <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="{{ $i % 2 === 0 ? 'FFF2F2F2' : 'FFFFFFFF' }}" class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-gray-600 py-0.5 px-2 text-center">{{ number_format($totalSumDept, 1) }}%</td>
+                @else
+                <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="{{ $i % 2 === 0 ? 'FFF2F2F2' : 'FFFFFFFF' }}" class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-gray-600 py-0.5 px-2 text-center"></td>
+                @endif
+
+                @if ($sumSemester1 > 0)
+                <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="{{ $i % 2 === 0 ? 'FFF2F2F2' : 'FFFFFFFF' }}" class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-gray-600 py-0.5 px-2 text-center">{{ number_format($sumSemester1, 1) }}%</td>
+                @else
+                <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="{{ $i % 2 === 0 ? 'FFF2F2F2' : 'FFFFFFFF' }}" class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-gray-600 py-0.5 px-2 text-center"></td>
+                @endif
+
+                @if ($sumSemester2 > 0)
+                <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="{{ $i % 2 === 0 ? 'FFF2F2F2' : 'FFFFFFFF' }}" class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-gray-600 py-0.5 px-2 text-center">{{ number_format($sumSemester2, 1) }}%</td>
+                @else
+                <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="{{ $i % 2 === 0 ? 'FFF2F2F2' : 'FFFFFFFF' }}" class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-gray-600 py-0.5 px-2 text-center"></td>
+                @endif
+
+                @if ($totalSumEmployee > 0)
+                <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="{{ $i % 2 === 0 ? 'FFF2F2F2' : 'FFFFFFFF' }}" class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-gray-600 py-0.5 px-2 text-center">{{ number_format($totalSumEmployee, 1) }}%</td>
+                @else
+                <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="{{ $i % 2 === 0 ? 'FFF2F2F2' : 'FFFFFFFF' }}" class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-gray-600 py-0.5 px-2 text-center"></td>
+                @endif
+
+                <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="{{ $i % 2 === 0 ? 'FFF2F2F2' : 'FFFFFFFF' }}" class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-gray-600 py-0.5 px-2 text-center">{{ number_format($totalAll, 1) }}%</td>
+              </tr>
+              @endforeach
+                            @if(request()->query('department'))
+              @php
+              $finalTotalSemester1Weight = $rowCount > 0 ? $totalSemester1WeightSum / $rowCount : 0;
+              $finalTotalSemester2Weight = $rowCount > 0 ? $totalSemester2WeightSum / $rowCount : 0;
+              $finalTotalEmployeeWeight = $finalTotalSemester1Weight + $finalTotalSemester2Weight;
+              $finalTotalAverage = $rowCount > 0 ? $totalAverageSum / $rowCount : 0;
+              @endphp
+              <tr class="bg-gray-200">
+                <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="FFF2F2F2" class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-gray-600 py-0.5 px-2 text-center"></td>
+                <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="FFF2F2F2" class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-gray-600 py-0.5 px-2 text-center" colspan="4">Total</td>
+                <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="FFF2F2F2" class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-gray-600 py-0.5 px-2 text-center">{{ number_format($totalSemester1DeptWeight, 1) }}%</td>
+                <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="FFF2F2F2" class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-gray-600 py-0.5 px-2 text-center">{{ number_format($totalSemester2DeptWeight, 1) }}%</td>
+                <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="FFF2F2F2" class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-gray-600 py-0.5 px-2 text-center">{{ number_format($totalDeptWeightSum, 1) }}%</td>
+                <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="FFF2F2F2" class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-gray-600 py-0.5 px-2 text-center">{{ number_format($finalTotalSemester1Weight, 1) }}%</td>
+                <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="FFF2F2F2" class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-gray-600 py-0.5 px-2 text-center">{{ number_format($finalTotalSemester2Weight, 1) }}%</td>
+                <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="FFF2F2F2" class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-gray-600 py-0.5 px-2 text-center">{{ number_format($finalTotalEmployeeWeight, 1) }}%</td>
+                <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="FFF2F2F2" class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-gray-600 py-0.5 px-2 text-center">{{ number_format($finalTotalAverage, 1) }}%</td>
+            </tr>
+            @endif
         </table>
     </div>
+    @endif
     
     {{-- Pagination --}}
     <div class="shadow-lg shadow-black/15 mb-2 mt-3">

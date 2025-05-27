@@ -175,7 +175,7 @@
                     $targetUnit = $target->$targetUnitField;
                     $sumTarget += $targetUnit;
                     $actual = $actuals->first(function($item) use ($target, $month) {
-                            return \Carbon\Carbon::parse($item->date)->format('m') == $month && $item->kpi_item == $target->indicator;
+                            return \Carbon\Carbon::parse($item->date)->format('m') == $month && $item->kpi_item == $target->indicator && $target->is_active == 1;
                         });
                         // dump($actual);
                 @endphp
@@ -241,8 +241,9 @@
                     @foreach ($months as $month => $monthName)
                     @php
                         $actual = $actuals->first(function($item) use ($target, $month) {
-                            return \Carbon\Carbon::parse($item->date)->format('m') == $month && $item->kpi_item == $target->indicator;
+                            return \Carbon\Carbon::parse($item->date)->format('m') == $month && $item->kpi_item == $target->indicator && $target->is_active == 1;
                         });
+                        
                         // dump($actual);
 
                         //  dump('target: ', $target, 'actual: ', $actual,  $month);

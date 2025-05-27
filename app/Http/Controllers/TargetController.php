@@ -268,7 +268,7 @@ class TargetController extends Controller
                 ->where(DB::raw('YEAR(targets.date)'), $year)
                 ->get();
 
-            // dd($targets);
+            // dd($inactiveTargets);
             $deadline = DB::table('setting_target_deadlines')->first();
 
             return view('target.input-target-kpi', ['title' => 'Input KPI Target', 'desc' => 'Employees', 'employee' => $employee, 'targets' => $targets, 'all' => $allStatus, 'inactiveTargets' => $inactiveTargets, 'deadline' => $deadline]);
