@@ -191,7 +191,7 @@ class ReportController extends Controller
             } elseif ($actual == 1) {
                 $zeroCalc = '75%';
             } elseif ($actual == 2) {
-                $zeroCalc = '50%';
+                $zeroCalc = '35%';
             } else if ($actual == 3) {
                 $zeroCalc = '25%';
             } else if ($actual == 4) {
@@ -440,7 +440,8 @@ class ReportController extends Controller
                 $trendItem = $firstItem->trend;
                 $recordFileItem = $firstItem->record_file;
                 $periodItem = $firstItem->review_period;
-                $percentageCalc = $totalPercentage;
+                $target = $firstItem->target;
+                $percentageCalc = $this->calculation($target, $totalTarget, $totalActual, $trendItem, $recordFileItem, $unitItem, $periodItem, $totalPercentage);
 
 
                 $convertedCalc = floatval(str_replace('%', '', $percentageCalc));
@@ -482,7 +483,7 @@ class ReportController extends Controller
                 ->where('departments.id', '=', $department)
                 ->where('employees.status', '=', $status)
                 ->where('employees.is_active', '=', 1)
-                ->paginate(50)
+                ->paginate(35)
                 ->appends(['year' => $yearToShow, 'department' => $department, 'occupation' => $status]);
             // dd($employees);
 
@@ -801,7 +802,7 @@ class ReportController extends Controller
                 ->where('employees.is_active', '=', 1)
                 ->where('targets.is_active', '=', true)
                 ->groupBy('employees.id')
-                ->paginate(50)
+                ->paginate(35)
                 ->appends(['year' => $yearToShow, 'department' => $department, 'occupation' => $status]);
             $inactiveTargetEmployees = DB::table('employees')
                 ->leftJoin('departments', 'departments.id', '=', 'employees.department_id')
@@ -815,11 +816,11 @@ class ReportController extends Controller
             // dd($employees);
 
             $activeTargets = DB::table('targets')
-                ->select('id', 'employee_id', 'indicator', 'is_active')
+                ->select('id', 'employee_id', 'indicator', 'code', 'is_active')
                 ->where('is_active', true);
 
             $inactiveTargets = DB::table('targets')
-                ->select('id', 'employee_id', 'indicator', 'is_active')
+                ->select('id', 'employee_id', 'indicator', 'code', 'is_active')
                 ->where('is_active', false);
 
             $employeeIds = $employees->pluck('employee_id');
@@ -827,13 +828,13 @@ class ReportController extends Controller
             $employeeInactiveIds = $inactiveTargetEmployees->pluck('employee_id');
             // dd($employeeInactiveIds);
 
-            // Fetch actuals data for the paginated employees
+
             $semester1Actuals = DB::table('actuals')
                 ->leftJoin('employees', 'employees.id', '=', 'actuals.employee_id')
                 ->leftJoin('departments', 'departments.id', '=', 'employees.department_id')
                 ->leftJoinSub($activeTargets, 'targets', function ($join) {
                     $join->on('targets.employee_id', '=', 'actuals.employee_id')
-                        ->on('targets.indicator', '=', 'actuals.kpi_item');
+                        ->on('targets.code', '=', 'actuals.kpi_code');
                 })
                 ->select('targets.is_active as target_is_active', 'actuals.*', 'employees.*', 'departments.name as department_name', 'departments.id as department_id', 'actuals.id as actual_id', 'employees.id as employee_id')
                 ->where('actuals.semester', '=', '1')
@@ -848,7 +849,7 @@ class ReportController extends Controller
                 ->leftJoin('departments', 'departments.id', '=', 'employees.department_id')
                 ->leftJoinSub($activeTargets, 'targets', function ($join) {
                     $join->on('targets.employee_id', '=', 'actuals.employee_id')
-                        ->on('targets.indicator', '=', 'actuals.kpi_item');
+                        ->on('targets.code', '=', 'actuals.kpi_code');
                 })
                 ->select('actuals.*', 'employees.*', 'departments.name as department_name', 'departments.id as department_id')
                 ->where('actuals.semester', '=', '2')
@@ -883,7 +884,7 @@ class ReportController extends Controller
                 ->leftJoin('departments', 'departments.id', '=', 'employees.department_id')
                 ->leftJoinSub($inactiveTargets, 'targets', function ($join) {
                     $join->on('targets.employee_id', '=', 'actuals.employee_id')
-                        ->on('targets.indicator', '=', 'actuals.kpi_item');
+                        ->on('targets.code', '=', 'actuals.kpi_code');
                 })
                 ->select('targets.is_active as target_is_active', 'actuals.*', 'actuals.id as actual_id', 'employees.*', 'employees.id as employee_id', 'departments.name as department_name', 'departments.id as department_id')
                 ->where('actuals.semester', '=', '1')
@@ -900,7 +901,7 @@ class ReportController extends Controller
                 ->leftJoin('departments', 'departments.id', '=', 'employees.department_id')
                 ->leftJoinSub($activeTargets, 'targets', function ($join) {
                     $join->on('targets.employee_id', '=', 'actuals.employee_id')
-                        ->on('targets.indicator', '=', 'actuals.kpi_item');
+                        ->on('targets.code', '=', 'actuals.kpi_code');
                 })
                 ->select('actuals.*', 'employees.*', 'departments.name as department_name', 'departments.id as department_id')
                 ->where('actuals.semester', '=', '2')
@@ -1442,7 +1443,7 @@ class ReportController extends Controller
             $employees = DB::table('employees')->leftJoin('departments', 'departments.id', '=', 'employees.department_id')->select('departments.name as dept', 'employees.name as name', 'employees.nik', 'employees.occupation', 'employees.id as employee_id', 'department_id')
                 ->where('employees.status', '=', $status)
                 ->where('employees.is_active', '=', 1)
-                ->paginate(50)
+                ->paginate(35)
                 ->appends(['year' => $yearToShow, 'department' => $department, 'occupation' => $status]);
             // dd($employees);
 
@@ -1763,7 +1764,7 @@ class ReportController extends Controller
                 ->leftJoin('departments', 'departments.id', '=', 'employees.department_id')
                 ->select('departments.name as dept', 'employees.name as name', 'employees.nik', 'employees.occupation', 'employees.id as employee_id', 'department_id')
                 ->where('employees.is_active', '=', 1)
-                ->paginate(50)
+                ->paginate(35)
                 ->appends(['year' => $yearToShow, 'department' => $department, 'occupation' => $status]);
             // dd($employees);
 

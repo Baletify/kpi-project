@@ -59,6 +59,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::prefix('users')->group(function () {
         Route::get('/list', [UserController::class, 'index'])->name('user.index');
+        Route::get('/users/search', [UserController::class, 'search'])->name('user.search');
         Route::get('/create', [UserController::class, 'create'])->name('user.create');
         Route::post('/store', [UserController::class, 'store'])->name('user.store');
         Route::get('/edit/{id}', [UserController::class, 'edit'])->name('user.edit');
