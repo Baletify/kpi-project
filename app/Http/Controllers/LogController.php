@@ -45,7 +45,6 @@ class LogController extends Controller
             ->leftJoin('targets', 'target_units.id', '=', 'targets.target_unit_id')
             ->leftJoin('employees', 'targets.employee_id', '=', 'employees.id')
             ->leftJoin('departments', 'employees.department_id', '=', 'departments.id')
-
             ->whereYear('targets.date', '=', $year)
             // ->whereNotNull('target_units.id')
             ->select(
