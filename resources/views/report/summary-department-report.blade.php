@@ -296,10 +296,10 @@
                 $totalInactiveDeptWeightSum = PhpOffice\PhpSpreadsheet\Calculation\Statistical\Averages::average($totalInactiveSumDept);
                 $totalInactiveAverage = PhpOffice\PhpSpreadsheet\Calculation\Statistical\Averages::average($totalAllInactive);
 
-                $totalSemester1WeightSum += $totalSemester1Weight;
-                $totalSemester2WeightSum += $totalSemester2Weight;
-                $totalAverageSum += $totalAverage;
-                $rowCount++;
+                $totalInactiveSemester1WeightSum += $totalInactiveSemester1Weight;
+                $totalInactiveSemester2WeightSum += $totalInactiveSemester2Weight;
+                $totalInactiveAverageSum += $totalInactiveAverage;
+                $inactiveRowCount++;
                   
               @endphp
             <tr class="{{ $i % 2 === 0 ? 'bg-white' : 'bg-blue-100' }}">
@@ -359,13 +359,15 @@
               <tr class="bg-gray-200">
                 <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="FFF2F2F2" class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-gray-600 py-0.5 px-2 text-center"></td>
                 <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="FFF2F2F2" class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-gray-600 py-0.5 px-2 text-center" colspan="4">Total</td>
-                <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="FFF2F2F2" class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-gray-600 py-0.5 px-2 text-center">{{ number_format($totalSemester1DeptWeight, 1) }}%</td>
-                <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="FFF2F2F2" class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-gray-600 py-0.5 px-2 text-center">{{ number_format($totalSemester2DeptWeight, 1) }}%</td>
-                <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="FFF2F2F2" class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-gray-600 py-0.5 px-2 text-center">{{ number_format($totalDeptWeightSum, 1) }}%</td>
-                <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="FFF2F2F2" class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-gray-600 py-0.5 px-2 text-center">{{ number_format($finalTotalSemester1Weight, 1) }}%</td>
-                <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="FFF2F2F2" class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-gray-600 py-0.5 px-2 text-center">{{ number_format($finalTotalSemester2Weight, 1) }}%</td>
-                <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="FFF2F2F2" class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-gray-600 py-0.5 px-2 text-center">{{ number_format($finalTotalEmployeeWeight, 1) }}%</td>
-                <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="FFF2F2F2" class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-gray-600 py-0.5 px-2 text-center">{{ number_format($finalTotalAverage, 1) }}%</td>
+                <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="FFF2F2F2" class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-gray-600 py-0.5 px-2 text-center">{{ number_format($totalInactiveSemester1DeptWeight, 1) }}%</td>
+                <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="FFF2F2F2" class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-gray-600 py-0.5 px-2 text-center">{{ number_format($totalInactiveSemester2DeptWeight, 1) }}%</td>
+                <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="FFF2F2F2" class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-gray-600 py-0.5 px-2 text-center">
+                    {{ number_format($totalInactiveDeptWeightSum, 1) }}%
+                </td>
+                <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="FFF2F2F2" class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-gray-600 py-0.5 px-2 text-center">{{ number_format($finalInactiveTotalSemester1Weight, 1) }}%</td>
+                <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="FFF2F2F2" class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-gray-600 py-0.5 px-2 text-center">{{ number_format($finalInactiveTotalSemester2Weight, 1) }}%</td>
+                <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="FFF2F2F2" class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-gray-600 py-0.5 px-2 text-center">{{ number_format($finalInactiveTotalEmployeeWeight, 1) }}%</td>
+                <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="FFF2F2F2" class="border-2 border-gray-400 text-[12px] tracking-wide font-medium text-gray-600 py-0.5 px-2 text-center">{{ number_format($finalInactiveTotalAverage, 1) }}%</td>
             </tr>
             @endif
         </table>
