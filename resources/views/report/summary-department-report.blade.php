@@ -39,10 +39,13 @@
                     </div>
                     <div class="relative mt-1 rounded-md">
                         <div class="mt-2 mb-0">
-                            <select name="department" id="department" class="col-start-1 row-start-1 w-full appearance-none rounded-md py-1.5 pl-3 pr-7 text-base text-gray-500 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
+                            <select name="department[]" multiple id="department" class="col-start-1 row-start-1 w-full appearance-none rounded-md py-1.5 pl-3 pr-7 text-base text-gray-500 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
                                 <option value="">-- Department --</option>
                                 @foreach ($allDept as $dept)
-                                <option value="{{ $dept->id }}">{{ $dept->name }}</option>
+                                <option value="{{ $dept->id }}">
+                                    {{ collect(request()->input('department'))->contains($dept->id) ? 'selected' : '' }}
+                                    {{ $dept->name }}
+                                </option>
                                 @endforeach
                             </select>
                         </div>
@@ -51,10 +54,13 @@
                       </div>
                     <div class="relative mt-1 rounded-md">
                         <div class="mt-2 mb-1">
-                            <select name="status" id="status" class="col-start-1 row-start-1 w-full appearance-none rounded-md py-1.5 pl-3 pr-7 text-base text-gray-500 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
+                            <select name="status[]" multiple id="status" class="col-start-1 row-start-1 w-full appearance-none rounded-md py-1.5 pl-3 pr-7 text-base text-gray-500 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
                                 <option value="">-- Status --</option>
                                 @foreach ($allOccupation as $item)  
-                                <option value="{{ $item->status }}">{{ $item->status }}</option>
+                                <option value="{{ $item->status }}">
+                                    {{ collect(request()->input('status'))->contains($item->status) ? 'selected' : '' }}
+                                    {{ $item->status }}
+                                </option>
                                 @endforeach
                             </select>
                         </div>
@@ -238,7 +244,7 @@
     </div>
 
     <div class="mt-2">
-        <table class="w-full">
+        <table id="exportTable2" class="w-full">
             <th data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="FF0066FF" data-f-color="FFFFFFFF" class="border-2 border-gray-400 text-[13px] tracking-wide font-medium text-white py-0.5 px-2 bg-blue-700" rowspan="2" style="width: 3%">No.</th>
                 <th data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="FF0066FF" data-f-color="FFFFFFFF" class="border-2 border-gray-400 text-[13px] tracking-wide font-medium text-white py-0.5 px-2 bg-blue-700" rowspan="2" style="width: 10%">Dept</th>
                 <th data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="FF0066FF" data-f-color="FFFFFFFF" class="border-2 border-gray-400 text-[13px] tracking-wide font-medium text-white py-0.5 px-2 bg-blue-700" rowspan="2" style="width: 6%">NIK</th>

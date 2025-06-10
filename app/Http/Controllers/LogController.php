@@ -1741,4 +1741,51 @@ class LogController extends Controller
             'departments' => $departments,
         ]);
     }
+
+    public function jobsLog()
+    {
+        $logPath = storage_path('logs/laravel-worker.log');
+        $inputLines = [];
+        $check1Lines = [];
+        $check2Lines = [];
+        $approveLines = [];
+
+        if (file_exists($logPath)) {
+            // Read the log file
+            $logContent = file($logPath, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+
+            // Filter lines related to ReminderInputEmail jobs
+            foreach ($logContent as $line) {
+                if (str_contains($line, 'ReminderInputEmail')) {
+                    $inputLines[] = $line;
+                }
+            }
+            foreach ($logContent as $line) {
+                if (str_contains($line, 'ReminderCheck1Email')) {
+                    $check1Lines[] = $line;
+                }
+            }
+
+            foreach ($logContent as $line) {
+                if (str_contains($line, 'ReminderCheck2Email')) {
+                    $check2Lines[] = $line;
+                }
+            }
+
+            foreach ($logContent as $line) {
+                if (str_contains($line, 'ReminderApproveEmail')) {
+                    $approveLines[] = $line;
+                }
+            }
+        }
+
+        return view('logs.jobs-log', [
+            'title' => 'Jobs Log',
+            'desc' => 'History',
+            'inputLines' => $inputLines,
+            'check1Lines' => $check1Lines,
+            'check2Lines' => $check2Lines,
+            'approveLines' => $approveLines,
+        ]);
+    }
 }

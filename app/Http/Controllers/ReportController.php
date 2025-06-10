@@ -473,6 +473,7 @@ class ReportController extends Controller
     public function summaryDept(Request $request)
     {
         $department = $request->query('department');
+        // dd($department);
         $yearToShow = $request->query('year');
         $status = $request->query('status');
         $allDept = Department::all();
@@ -480,7 +481,7 @@ class ReportController extends Controller
 
         if ($yearToShow && $department && $status) {
             $employees = DB::table('employees')->leftJoin('departments', 'departments.id', '=', 'employees.department_id')->select('departments.name as dept', 'employees.name as name', 'employees.nik', 'employees.occupation', 'employees.id as employee_id', 'department_id')
-                ->where('departments.id', '=', $department)
+                ->whereIn('departments.id', $department)
                 ->where('employees.status', '=', $status)
                 ->where('employees.is_active', '=', 1)
                 ->paginate(35)
@@ -489,7 +490,7 @@ class ReportController extends Controller
 
             $employeeIds = $employees->pluck('employee_id');
             $departmentIds = $employees->pluck('department_id');
-            // dd($employeeIds);
+            // dd($departmentIds);
 
             // Fetch actuals data for the paginated employees
             $semester1Actuals = DB::table('actuals')
@@ -798,7 +799,7 @@ class ReportController extends Controller
                 ->leftJoin('departments', 'departments.id', '=', 'employees.department_id')
                 ->leftJoin('targets', 'targets.employee_id', '=', 'employees.id')
                 ->select('departments.name as dept', 'employees.name as name', 'employees.nik', 'employees.occupation', 'employees.id as employee_id', 'department_id')
-                ->where('departments.id', '=', $department)
+                ->whereIn('departments.id',  $department)
                 ->where('employees.is_active', '=', 1)
                 ->where('targets.is_active', '=', true)
                 ->groupBy('employees.id')
@@ -1441,7 +1442,7 @@ class ReportController extends Controller
             ]);
         } elseif ($yearToShow && $status) {
             $employees = DB::table('employees')->leftJoin('departments', 'departments.id', '=', 'employees.department_id')->select('departments.name as dept', 'employees.name as name', 'employees.nik', 'employees.occupation', 'employees.id as employee_id', 'department_id')
-                ->where('employees.status', '=', $status)
+                ->whereIn('employees.status', $status)
                 ->where('employees.is_active', '=', 1)
                 ->paginate(35)
                 ->appends(['year' => $yearToShow, 'department' => $department, 'occupation' => $status]);

@@ -135,6 +135,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/log-input-individual', [LogController::class, 'individual'])->name('log-input.individual');
         Route::get('/log-input-monitoring-employee', [LogController::class, 'indexMonitoringEmployee'])->name('log-input.monitoringEmployee');
         Route::get('/log-input-monitoring-dept', [LogController::class, 'indexMonitoringDept'])->name('log-input.monitoringDept');
+        Route::get('/jobs-log', [LogController::class, 'jobsLog'])->name('log.jobsLog');
     });
 
     Route::prefix('action-plan')->group(function () {
