@@ -271,8 +271,8 @@
                         {{ number_format($totalActual, 0) }}%
                         @elseif ($target->unit === 'Tgl' || $target->unit === 'tgl')
                         {{ number_format($totalActual) }}
-                        @elseif ($target->unit === 'Rp')
-                        {{ substr(number_format($totalActual, 0, '.', ','), 0, 7) }}
+                        @elseif ($target->unit === 'Rp' || $target->unit === 'Rp/Kg' || $target->unit === 'Kg/Tap')
+                        {{ substr(number_format($totalActual, 0, '.', ','), 0, 9) }}
                         @elseif ($target->unit === 'Kg')
                         {{ substr(number_format($totalActual, 0, '.', ','), 0, 7) }}
                         @else

@@ -205,9 +205,9 @@ class ReportController extends Controller
             return $percentageValue;
         } elseif ($unit == 'Tgl' || $unit == 'tgl') {
             $percentageValue = Averages::average($totalPercentage);
-        } elseif ($trend == 'Negatif') {
+        } elseif ($trend == 'Negatif' || $trend == 'negatif') {
             $percentageValue = ($target != 0 && $actual != 0) ? ($target / $actual) * 100 : 0;
-        } elseif ($trend == 'Positif') {
+        } elseif ($trend == 'Positif'  || $trend == 'positif') {
             $percentageValue = ($target != 0 && $actual != 0) ? ($actual / $target) * 100 : 0;
         } else {
             $percentageValue = 0;
@@ -291,7 +291,7 @@ class ReportController extends Controller
                 $firstItem = $group->first();
                 $unitItem = $firstItem->kpi_unit;
 
-                if ($unitItem == 'Tgl' || $unitItem == 'tgl' || $unitItem == '%') {
+                if ($unitItem == 'Tgl' || $unitItem == 'tgl' || $unitItem == '%' || $unitItem == 'Kg/Tap' || $unitItem == 'Rp/Kg' || $unitItem == 'mm' || $unitItem == 'M3' || $unitItem == 'Hari' || $unitItem == 'Freq "0"' || $unitItem == 'Jam') {
                     $totalTarget = $group->avg(function ($item) {
                         return (float) $item->target;
                     });
@@ -411,7 +411,7 @@ class ReportController extends Controller
                 $unitItem = $firstItem->kpi_unit;
 
                 $zeroCheck = ($firstItem->target == 0) ? 'yes' : 'no';
-                if ($unitItem == 'Tgl' || $unitItem == 'tgl' || $zeroCheck == 'yes') {
+                if ($unitItem == 'Tgl' || $unitItem == 'tgl' || $unitItem == '%' || $unitItem == 'Kg/Tap' || $unitItem == 'Rp/Kg' || $unitItem == 'mm' || $unitItem == 'M3' || $unitItem == 'Hari' || $unitItem == 'Freq "0"' || $unitItem == 'Jam' || $zeroCheck == 'yes') {
                     $totalTarget = $group->avg(function ($item) {
                         return (float) $item->target;
                     });
@@ -551,7 +551,7 @@ class ReportController extends Controller
                     $trendItem = $firstItem->trend;
                     $recordFileItem = $firstItem->record_file;
                     $unitItem = $firstItem->kpi_unit;
-                    if ($unitItem == 'Tgl' || $unitItem == 'tgl' || $unitItem == '%') {
+                    if ($unitItem == 'Tgl' || $unitItem == 'tgl' || $unitItem == '%' || $unitItem == 'Kg/Tap' || $unitItem == 'Rp/Kg' || $unitItem == 'mm' || $unitItem == 'M3' || $unitItem == 'Hari' || $unitItem == 'Freq "0"' || $unitItem == 'Jam') {
                         $totalTarget = $subGroup->avg(function ($item) {
                             return (float) $item->target;
                         });
@@ -602,7 +602,7 @@ class ReportController extends Controller
                     $trendItem = $firstItem->trend;
                     $recordFileItem = $firstItem->record_file;
                     $unitItem = $firstItem->kpi_unit;
-                    if ($unitItem == 'Tgl' || $unitItem == 'tgl' || $unitItem == '%') {
+                    if ($unitItem == 'Tgl' || $unitItem == 'tgl' || $unitItem == '%' || $unitItem == 'Kg/Tap' || $unitItem == 'Rp/Kg' || $unitItem == 'mm' || $unitItem == 'M3' || $unitItem == 'Hari' || $unitItem == 'Freq "0"' || $unitItem == 'Jam') {
                         $totalTarget = $subGroup->avg(function ($item) {
                             return (float) $item->target;
                         });
@@ -652,7 +652,7 @@ class ReportController extends Controller
                     $trendItem = $firstItem->trend;
                     $recordFileItem = $firstItem->record_file;
                     $unitItem = $firstItem->kpi_unit;
-                    if ($unitItem == 'Tgl' || $unitItem == 'tgl' || $unitItem == '%') {
+                    if ($unitItem == 'Tgl' || $unitItem == 'tgl' || $unitItem == '%' || $unitItem == 'Kg/Tap' || $unitItem == 'Rp/Kg' || $unitItem == 'mm' || $unitItem == 'M3' || $unitItem == 'Hari' || $unitItem == 'Freq "0"' || $unitItem == 'Jam') {
                         $totalTarget = $subGroup->avg(function ($item) {
                             return (float) $item->target;
                         });
@@ -702,7 +702,7 @@ class ReportController extends Controller
                     $trendItem = $firstItem->trend;
                     $recordFileItem = $firstItem->record_file;
                     $unitItem = $firstItem->kpi_unit;
-                    if ($unitItem == 'Tgl' || $unitItem == 'tgl' || $unitItem == '%') {
+                    if ($unitItem == 'Tgl' || $unitItem == 'tgl' || $unitItem == '%' || $unitItem == 'Kg/Tap' || $unitItem == 'Rp/Kg' || $unitItem == 'mm' || $unitItem == 'M3' || $unitItem == 'Hari' || $unitItem == 'Freq "0"' || $unitItem == 'Jam') {
                         $totalTarget = $subGroup->avg(function ($item) {
                             return (float) $item->target;
                         });
@@ -950,7 +950,7 @@ class ReportController extends Controller
                     $trendItem = $firstItem->trend;
                     $recordFileItem = $firstItem->record_file;
                     $unitItem = $firstItem->kpi_unit;
-                    if ($unitItem == 'Tgl' || $unitItem == 'tgl' || $unitItem == '%') {
+                    if ($unitItem == 'Tgl' || $unitItem == 'tgl' || $unitItem == '%' || $unitItem == 'Kg/Tap' || $unitItem == 'Rp/Kg' || $unitItem == 'mm' || $unitItem == 'M3' || $unitItem == 'Hari' || $unitItem == 'Freq "0"' || $unitItem == 'Jam') {
                         $totalTarget = $subGroup->avg(function ($item) {
                             return (float) $item->target;
                         });
@@ -1001,7 +1001,7 @@ class ReportController extends Controller
                     $trendItem = $firstItem->trend;
                     $recordFileItem = $firstItem->record_file;
                     $unitItem = $firstItem->kpi_unit;
-                    if ($unitItem == 'Tgl' || $unitItem == 'tgl' || $unitItem == '%') {
+                    if ($unitItem == 'Tgl' || $unitItem == 'tgl' || $unitItem == '%' || $unitItem == 'Kg/Tap' || $unitItem == 'Rp/Kg' || $unitItem == 'mm' || $unitItem == 'M3' || $unitItem == 'Hari' || $unitItem == 'Freq "0"' || $unitItem == 'Jam') {
                         $totalTarget = $subGroup->avg(function ($item) {
                             return (float) $item->target;
                         });
@@ -1051,7 +1051,7 @@ class ReportController extends Controller
                     $trendItem = $firstItem->trend;
                     $recordFileItem = $firstItem->record_file;
                     $unitItem = $firstItem->kpi_unit;
-                    if ($unitItem == 'Tgl' || $unitItem == 'tgl' || $unitItem == '%') {
+                    if ($unitItem == 'Tgl' || $unitItem == 'tgl' || $unitItem == '%' || $unitItem == 'Kg/Tap' || $unitItem == 'Rp/Kg' || $unitItem == 'mm' || $unitItem == 'M3' || $unitItem == 'Hari' || $unitItem == 'Freq "0"' || $unitItem == 'Jam') {
                         $totalTarget = $subGroup->avg(function ($item) {
                             return (float) $item->target;
                         });
@@ -1101,7 +1101,7 @@ class ReportController extends Controller
                     $trendItem = $firstItem->trend;
                     $recordFileItem = $firstItem->record_file;
                     $unitItem = $firstItem->kpi_unit;
-                    if ($unitItem == 'Tgl' || $unitItem == 'tgl' || $unitItem == '%') {
+                    if ($unitItem == 'Tgl' || $unitItem == 'tgl' || $unitItem == '%' || $unitItem == 'Kg/Tap' || $unitItem == 'Rp/Kg' || $unitItem == 'mm' || $unitItem == 'M3' || $unitItem == 'Hari' || $unitItem == 'Freq "0"' || $unitItem == 'Jam') {
                         $totalTarget = $subGroup->avg(function ($item) {
                             return (float) $item->target;
                         });
@@ -1151,7 +1151,7 @@ class ReportController extends Controller
                     $trendItem = $firstItem->trend;
                     $recordFileItem = $firstItem->record_file;
                     $unitItem = $firstItem->kpi_unit;
-                    if ($unitItem == 'Tgl' || $unitItem == 'tgl' || $unitItem == '%') {
+                    if ($unitItem == 'Tgl' || $unitItem == 'tgl' || $unitItem == '%' || $unitItem == 'Kg/Tap' || $unitItem == 'Rp/Kg' || $unitItem == 'mm' || $unitItem == 'M3' || $unitItem == 'Hari' || $unitItem == 'Freq "0"' || $unitItem == 'Jam') {
                         $totalTarget = $subGroup->avg(function ($item) {
                             return (float) $item->target;
                         });
@@ -1203,7 +1203,7 @@ class ReportController extends Controller
                     $trendItem = $firstItem->trend;
                     $recordFileItem = $firstItem->record_file;
                     $unitItem = $firstItem->kpi_unit;
-                    if ($unitItem == 'Tgl' || $unitItem == 'tgl' || $unitItem == '%') {
+                    if ($unitItem == 'Tgl' || $unitItem == 'tgl' || $unitItem == '%' || $unitItem == 'Kg/Tap' || $unitItem == 'Rp/Kg' || $unitItem == 'mm' || $unitItem == 'M3' || $unitItem == 'Hari' || $unitItem == 'Freq "0"' || $unitItem == 'Jam') {
                         $totalTarget = $subGroup->avg(function ($item) {
                             return (float) $item->target;
                         });
@@ -1255,7 +1255,7 @@ class ReportController extends Controller
                     $trendItem = $firstItem->trend;
                     $recordFileItem = $firstItem->record_file;
                     $unitItem = $firstItem->kpi_unit;
-                    if ($unitItem == 'Tgl' || $unitItem == 'tgl' || $unitItem == '%') {
+                    if ($unitItem == 'Tgl' || $unitItem == 'tgl' || $unitItem == '%' || $unitItem == 'Kg/Tap' || $unitItem == 'Rp/Kg' || $unitItem == 'mm' || $unitItem == 'M3' || $unitItem == 'Hari' || $unitItem == 'Freq "0"' || $unitItem == 'Jam') {
                         $totalTarget = $subGroup->avg(function ($item) {
                             return (float) $item->target;
                         });
@@ -1307,7 +1307,7 @@ class ReportController extends Controller
                     $trendItem = $firstItem->trend;
                     $recordFileItem = $firstItem->record_file;
                     $unitItem = $firstItem->kpi_unit;
-                    if ($unitItem == 'Tgl' || $unitItem == 'tgl' || $unitItem == '%') {
+                    if ($unitItem == 'Tgl' || $unitItem == 'tgl' || $unitItem == '%' || $unitItem == 'Kg/Tap' || $unitItem == 'Rp/Kg' || $unitItem == 'mm' || $unitItem == 'M3' || $unitItem == 'Hari' || $unitItem == 'Freq "0"' || $unitItem == 'Jam') {
                         $totalTarget = $subGroup->avg(function ($item) {
                             return (float) $item->target;
                         });
@@ -1512,7 +1512,7 @@ class ReportController extends Controller
                     $trendItem = $firstItem->trend;
                     $recordFileItem = $firstItem->record_file;
                     $unitItem = $firstItem->kpi_unit;
-                    if ($unitItem == 'Tgl' || $unitItem == 'tgl' || $unitItem == '%') {
+                    if ($unitItem == 'Tgl' || $unitItem == 'tgl' || $unitItem == '%' || $unitItem == 'Kg/Tap' || $unitItem == 'Rp/Kg' || $unitItem == 'mm' || $unitItem == 'M3' || $unitItem == 'Hari' || $unitItem == 'Freq "0"' || $unitItem == 'Jam') {
                         $totalTarget = $subGroup->avg(function ($item) {
                             return (float) $item->target;
                         });
@@ -1562,7 +1562,7 @@ class ReportController extends Controller
                     $trendItem = $firstItem->trend;
                     $recordFileItem = $firstItem->record_file;
                     $unitItem = $firstItem->kpi_unit;
-                    if ($unitItem == 'Tgl' || $unitItem == 'tgl' || $unitItem == '%') {
+                    if ($unitItem == 'Tgl' || $unitItem == 'tgl' || $unitItem == '%' || $unitItem == 'Kg/Tap' || $unitItem == 'Rp/Kg' || $unitItem == 'mm' || $unitItem == 'M3' || $unitItem == 'Hari' || $unitItem == 'Freq "0"' || $unitItem == 'Jam') {
                         $totalTarget = $subGroup->avg(function ($item) {
                             return (float) $item->target;
                         });
@@ -1613,7 +1613,7 @@ class ReportController extends Controller
                     $trendItem = $firstItem->trend;
                     $recordFileItem = $firstItem->record_file;
                     $unitItem = $firstItem->kpi_unit;
-                    if ($unitItem == 'Tgl' || $unitItem == 'tgl' || $unitItem == '%') {
+                    if ($unitItem == 'Tgl' || $unitItem == 'tgl' || $unitItem == '%' || $unitItem == 'Kg/Tap' || $unitItem == 'Rp/Kg' || $unitItem == 'mm' || $unitItem == 'M3' || $unitItem == 'Hari' || $unitItem == 'Freq "0"' || $unitItem == 'Jam') {
                         $totalTarget = $subGroup->avg(function ($item) {
                             return (float) $item->target;
                         });
@@ -1665,7 +1665,7 @@ class ReportController extends Controller
                     $unitItem = $firstItem->kpi_unit;
                     $periodItem = $firstItem->review_period;
 
-                    if ($unitItem == 'Tgl' || $unitItem == 'tgl' || $unitItem == '%') {
+                    if ($unitItem == 'Tgl' || $unitItem == 'tgl' || $unitItem == '%' || $unitItem == 'Kg/Tap' || $unitItem == 'Rp/Kg' || $unitItem == 'mm' || $unitItem == 'M3' || $unitItem == 'Hari' || $unitItem == 'Freq "0"' || $unitItem == 'Jam') {
                         $totalTarget = $subGroup->avg(function ($item) {
                             return (float) $item->target;
                         });
@@ -1830,7 +1830,7 @@ class ReportController extends Controller
                     $firstItem = $subGroup->first();
                     $unitItem = $firstItem->kpi_unit;
 
-                    if ($unitItem == 'Tgl' || $unitItem == 'tgl' || $unitItem == '%') {
+                    if ($unitItem == 'Tgl' || $unitItem == 'tgl' || $unitItem == '%' || $unitItem == 'Kg/Tap' || $unitItem == 'Rp/Kg' || $unitItem == 'mm' || $unitItem == 'M3' || $unitItem == 'Hari' || $unitItem == 'Freq "0"' || $unitItem == 'Jam') {
                         $totalTarget = $subGroup->avg(function ($item) {
                             return (float) $item->target;
                         });
@@ -1887,7 +1887,7 @@ class ReportController extends Controller
                     $trendItem = $firstItem->trend;
                     $recordFileItem = $firstItem->record_file;
                     $unitItem = $firstItem->kpi_unit;
-                    if ($unitItem == 'Tgl' || $unitItem == 'tgl' || $unitItem == '%') {
+                    if ($unitItem == 'Tgl' || $unitItem == 'tgl' || $unitItem == '%' || $unitItem == 'Kg/Tap' || $unitItem == 'Rp/Kg' || $unitItem == 'mm' || $unitItem == 'M3' || $unitItem == 'Hari' || $unitItem == 'Freq "0"' || $unitItem == 'Jam') {
                         $totalTarget = $subGroup->avg(function ($item) {
                             return (float) $item->target;
                         });
@@ -1938,7 +1938,7 @@ class ReportController extends Controller
                     $trendItem = $firstItem->trend;
                     $recordFileItem = $firstItem->record_file;
                     $unitItem = $firstItem->kpi_unit;
-                    if ($unitItem == 'Tgl' || $unitItem == 'tgl' || $unitItem == '%') {
+                    if ($unitItem == 'Tgl' || $unitItem == 'tgl' || $unitItem == '%' || $unitItem == 'Kg/Tap' || $unitItem == 'Rp/Kg' || $unitItem == 'mm' || $unitItem == 'M3' || $unitItem == 'Hari' || $unitItem == 'Freq "0"' || $unitItem == 'Jam') {
                         $totalTarget = $subGroup->avg(function ($item) {
                             return (float) $item->target;
                         });
@@ -1989,7 +1989,7 @@ class ReportController extends Controller
                     $trendItem = $firstItem->trend;
                     $recordFileItem = $firstItem->record_file;
                     $unitItem = $firstItem->kpi_unit;
-                    if ($unitItem == 'Tgl' || $unitItem == 'tgl' || $unitItem == '%') {
+                    if ($unitItem == 'Tgl' || $unitItem == 'tgl' || $unitItem == '%' || $unitItem == 'Kg/Tap' || $unitItem == 'Rp/Kg' || $unitItem == 'mm' || $unitItem == 'M3' || $unitItem == 'Hari' || $unitItem == 'Freq "0"' || $unitItem == 'Jam') {
                         $totalTarget = $subGroup->avg(function ($item) {
                             return (float) $item->target;
                         });
