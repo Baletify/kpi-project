@@ -193,9 +193,9 @@
                     @else
                     @if ($target->unit === '%')
                         {{ $targetUnit !== null ? ($targetUnit * 100) . '%' : 'N/A' }}
-                    @elseif ($target->unit == 'Rp')
+                    @elseif ($target->unit == 'Rp' || $target->unit == 'Kg/Tap' || $target->unit == 'Rp/Kg')
                     {{ $targetUnit !== null ? substr(number_format($targetUnit, 0, '.', ','), 0, 7) : 'N/A'}}
-                    @elseif ($target->unit == 'Kg')
+                    @elseif ($target->unit == 'Kg' )
                     {{ $targetUnit !== null ? substr(number_format($targetUnit, 1, '.', ','), 0, 7) : 'N/A'}}
                     @else
                         {{ $targetUnit !== null ? $targetUnit : 'N/A' }} 
@@ -205,19 +205,20 @@
                     </td>
                     @endforeach
                     
-                    @php
-                        $totalTarget = $sumTarget;
-                    @endphp
-                @if ($totalTarget >= 0)
+                @if ($targetUnit >= 0)
                      <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="{{ $i % 2 === 0 ? 'FFF2F2F2' : 'FFFFFFFF' }}" class="border-2 bg-blue-100 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center">
                         @if ($target->unit === '%')
                             {{ PhpOffice\PhpSpreadsheet\Calculation\Statistical\Averages::average(floatval($targetUnit)) * 100 }}%
+                        @elseif ( $target->unit === 'Tgl' || $target->unit === 'tgl' || $target->unit === 'mm' || $target->unit === 'M3' || $target->unit === 'Hari' || $target->unit === 'Freq "0"' || $target->unit === 'Jam')
+                        {{ PhpOffice\PhpSpreadsheet\Calculation\Statistical\Averages::average(floatval($actual ? $actual->target : $targetUnit)) }}
+                        @elseif ( $target->unit === 'Kg/Tap' || $target->unit === 'Rp/Kg')
+                        {{ substr(number_format (PhpOffice\PhpSpreadsheet\Calculation\Statistical\Averages::average($targetUnit), 0, '.', ','), 0, 9) }}
                         @elseif ($target->unit === 'Rp')
-                        {{ substr(number_format($totalTarget, 0, '.', ','), 0, 9) }}
+                        {{ substr(number_format($sumTarget, 0, '.', ','), 0, 9) }}
                         @elseif ($target->unit === 'Kg')
-                        {{ substr(number_format($totalTarget, 0, '.', ','), 0, 7) }}
+                        {{ substr(number_format($sumTarget, 0, '.', ','), 0, 7) }}
                         @else
-                        {{ $totalTarget }}
+                        {{ $sumTarget }}
                         @endif
                      </td>
                  @else
@@ -252,6 +253,8 @@
                     <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="{{ $i % 2 === 0 ? 'FFF2F2F2' : 'FFFFFFFF' }}" class="border-2 bg-gray-50 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center">
                     @if ($target->unit === '%')
                         {{ $actual ? $actual->actual . '%' : '' }}
+                    @elseif ($target->unit === 'Rp' || $target->unit === 'Rp/Kg' || $target->unit === 'Kg/Tap')
+                    {{ $actual ? substr(number_format($actual->actual, 0, '.', ','), 0, 7) : ''}}
                     @elseif ($target->unit == 'Rp')
                     {{ $actual ? substr(number_format($actual->actual, 0, '.', ','), 0, 7) : ''}}
                     @elseif ($target->unit == 'Kg')
@@ -265,7 +268,7 @@
                     @php
                          $totalActual = $totals[$target->indicator]['total_actual'] ?? 0;
                     @endphp
-                    @if ($totalTarget >= 0)
+                    @if ($targetUnit >= 0)
                      <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="{{ $i % 2 === 0 ? 'FFF2F2F2' : 'FFFFFFFF' }}" class="border-2 bg-gray-50 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center">
                         @if ($target->unit === '%')
                         {{ number_format($totalActual, 0) }}%
@@ -296,7 +299,7 @@
                     @php
                          $totalPercentage = $totals[$target->indicator]['percentageCalc'] ?? 0;
                     @endphp
-                    @if ($totalTarget >= 0)
+                    @if ($targetUnit >= 0)
                      <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="{{ $i % 2 === 0 ? 'FFF2F2F2' : 'FFFFFFFF' }}" class="border-2 bg-blue-100 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center">{{ number_format($totalPercentage) }}%</td>
                  @else
                      <td class="border-2 bg-blue-100 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center"></td>
@@ -679,18 +682,18 @@
                     @endforeach
                     
                     @php
-                        $totalTarget = $sumTarget;
+                        $targetUnit = $sumTarget;
                     @endphp
-                @if ($totalTarget >= 0)
+                @if ($targetUnit >= 0)
                      <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="{{ $i % 2 === 0 ? 'FFF2F2F2' : 'FFFFFFFF' }}" class="border-2 bg-blue-100 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center">
                         @if ($target->unit === '%')
                             {{ PhpOffice\PhpSpreadsheet\Calculation\Statistical\Averages::average(floatval($targetUnit)) * 100 }}%
                         @elseif ($target->unit === 'Rp')
-                        {{ substr(number_format($totalTarget, 0, '.', ','), 0, 9) }}
+                        {{ substr(number_format($targetUnit, 0, '.', ','), 0, 9) }}
                         @elseif ($target->unit === 'Kg')
-                        {{ substr(number_format($totalTarget, 0, '.', ','), 0, 7) }}
+                        {{ substr(number_format($targetUnit, 0, '.', ','), 0, 7) }}
                         @else
-                        {{ $totalTarget }}
+                        {{ $targetUnit }}
                         @endif
                      </td>
                  @else
@@ -736,7 +739,7 @@
                     @php
                          $totalActual = $totals[$target->indicator]['total_actual'] ?? 0;
                     @endphp
-                    @if ($totalTarget >= 0)
+                    @if ($targetUnit >= 0)
                      <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="{{ $i % 2 === 0 ? 'FFF2F2F2' : 'FFFFFFFF' }}" class="border-2 bg-gray-50 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center">
                         @if ($target->unit === '%')
                         {{ number_format($totalActual, 0) }}%
@@ -767,7 +770,7 @@
                     @php
                          $totalPercentage = $totals[$target->indicator]['percentageCalc'] ?? 0;
                     @endphp
-                    @if ($totalTarget >= 0)
+                    @if ($targetUnit >= 0)
                      <td data-b-a-s="thin" data-a-h="center" data-a-v="middle" data-a-wrap="true" data-fill-color="{{ $i % 2 === 0 ? 'FFF2F2F2' : 'FFFFFFFF' }}" class="border-2 bg-blue-100 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center">{{ number_format($totalPercentage) }}%</td>
                  @else
                      <td class="border-2 bg-blue-100 border-gray-400 text-[10px] tracking-wide font-medium text-gray-600 py-0 px-0.5 text-center"></td>

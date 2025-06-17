@@ -162,12 +162,13 @@ class ReportController extends Controller
     private function calculation($targetZero, $target, $actual, $trend, $recordFile, $unit, $period, $totalPercentage)
     {
         // dump($target, $actual);
-        $recordFileCheck = ($recordFile !== null) ? 'yes' : 'no';
-        $zeroStatus = ($targetZero === 0 && $recordFileCheck == 'yes') ? 'yes' : 'no';
-        $oneStatus = ($targetZero === 1 && $recordFileCheck == 'yes') ? 'yes' : 'no';
+        $zeroStatus = ($targetZero === "0" || $targetZero == 0) ? 'yes' : 'no';
+        $oneStatus = ($targetZero === "1" || $targetZero == 1) ? 'yes' : 'no';
+
+        // dump($zeroStatus, $targetZero);
 
 
-        if ($oneStatus == 'yes' && ($unit != 'Tgl' || $unit != 'tgl')) {
+        if ($oneStatus == 'yes') {
             if ($actual == 0) {
                 $oneCalc = '0%';
             } elseif ($actual == 1) {
@@ -214,6 +215,7 @@ class ReportController extends Controller
             $oneCalc = 0;
             $zeroCalc = 0;
         }
+
         return $percentageValue;
     }
     public function show($id, Request $request)
@@ -1046,7 +1048,6 @@ class ReportController extends Controller
 
             $semester1DeptGroup = $actualsDeptGroup1->map(function ($group) {
                 return $group->map(function ($subGroup) {
-
                     $firstItem = $subGroup->first();
                     $trendItem = $firstItem->trend;
                     $recordFileItem = $firstItem->record_file;
@@ -1076,6 +1077,8 @@ class ReportController extends Controller
                             return (float) $item->kpi_percentage;
                         });
                     }
+
+
                     $periodItem = $firstItem->review_period;
                     $percentageCalc = $this->calculation($totalTarget, $totalTarget, $totalActual, $trendItem, $recordFileItem, $unitItem, $periodItem, $totalPercentage);
 
@@ -1093,6 +1096,7 @@ class ReportController extends Controller
                     ];
                 });
             });
+            // dd($actualsDeptGroup1);
 
             $semester2DeptGroup = $actualsDeptGroup2->map(function ($group) {
                 return $group->map(function ($subGroup) {
