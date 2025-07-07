@@ -872,7 +872,15 @@ class ActualController extends Controller
 
     public function viewInputReminder()
     {
-        return view('actual.send-input-actual-reminder', ['title' => 'Send Input Reminder', 'desc' => 'Notification']);
+        $employees = DB::table('employees')
+            ->leftJoin('departments', 'departments.id', '=', 'employees.department_id')
+            ->where('email', '!=', null)
+            ->where('email', '!=', '')
+            ->where('email', '!=', "0")
+            ->select('employees.*', 'departments.name as department_name', 'departments.id as department_id')
+            ->paginate(10);
+        // dd($employees);
+        return view('actual.send-input-actual-reminder', ['title' => 'Send Input Reminder', 'desc' => 'Notification', 'employees' => $employees]);
     }
 
     public function sendReminderInput()
