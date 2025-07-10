@@ -159,7 +159,7 @@ class ReportController extends Controller
         }
     }
 
-    private function calculation($targetZero, $target, $actual, $trend, $recordFile, $unit, $period, $totalPercentage)
+    private function calculation($targetZero, $target, $actual, $trend, $unit, $totalPercentage)
     {
         // dump($target, $actual);
         $zeroStatus = ($targetZero === "0" || $targetZero == 0) ? 'yes' : 'no';
@@ -299,11 +299,11 @@ class ReportController extends Controller
                     });
 
                     $totalActual = $group->avg(function ($item) {
-                        return (float) $item->actual;
+                        return $item->is_valid ? (float) $item->actual : 0;
                     });
 
                     $totalPercentage = $group->avg(function ($item) {
-                        return (float) $item->kpi_percentage;
+                        return  $item->is_valid ? (float) $item->kpi_percentage : 0;
                     });
                 } else {
                     $totalTarget = $group->sum(function ($item) {
@@ -311,11 +311,11 @@ class ReportController extends Controller
                     });
 
                     $totalActual = $group->sum(function ($item) {
-                        return (float) $item->actual;
+                        return $item->is_valid ? (float) $item->actual : 0;
                     });
 
                     $totalPercentage = $group->sum(function ($item) {
-                        return (float) $item->kpi_percentage;
+                        return $item->is_valid ? (float) $item->kpi_percentage : 0;
                     });
                 }
 
@@ -324,7 +324,7 @@ class ReportController extends Controller
                 $recordFileItem = $firstItem->record_file;
                 $periodItem = $firstItem->review_period;
                 $target = $firstItem->target;
-                $percentageCalc = $this->calculation($target, $totalTarget, $totalActual, $trendItem, $recordFileItem, $unitItem, $periodItem, $totalPercentage);
+                $percentageCalc = $this->calculation($target, $totalTarget, $totalActual, $trendItem,  $unitItem,  $totalPercentage);
 
                 $convertedCalc = floatval(str_replace('%', '', $percentageCalc));
 
@@ -414,16 +414,12 @@ class ReportController extends Controller
 
                 $zeroCheck = ($firstItem->target == 0) ? 'yes' : 'no';
                 if ($unitItem == 'Tgl' || $unitItem == 'tgl' || $unitItem == '%' || $unitItem == 'Kg/Tap' || $unitItem == 'Rp/Kg' || $unitItem == 'mm' || $unitItem == 'M3' || $unitItem == 'Hari' || $unitItem == 'Freq "0"' || $unitItem == 'Jam' || $zeroCheck == 'yes') {
-                    $totalTarget = $group->avg(function ($item) {
-                        return (float) $item->target;
-                    });
-
                     $totalActual = $group->avg(function ($item) {
-                        return (float) $item->actual;
+                        return $item->is_valid ? (float) $item->actual : 0;
                     });
 
                     $totalPercentage = $group->avg(function ($item) {
-                        return (float) $item->kpi_percentage;
+                        return  $item->is_valid ? (float) $item->kpi_percentage : 0;
                     });
                 } else {
                     $totalTarget = $group->sum(function ($item) {
@@ -431,11 +427,11 @@ class ReportController extends Controller
                     });
 
                     $totalActual = $group->sum(function ($item) {
-                        return (float) $item->actual;
+                        return $item->is_valid ? (float) $item->actual : 0;
                     });
 
                     $totalPercentage = $group->sum(function ($item) {
-                        return (float) $item->kpi_percentage;
+                        return $item->is_valid ? (float) $item->kpi_percentage : 0;
                     });
                 }
 
@@ -443,7 +439,7 @@ class ReportController extends Controller
                 $recordFileItem = $firstItem->record_file;
                 $periodItem = $firstItem->review_period;
                 $target = $firstItem->target;
-                $percentageCalc = $this->calculation($target, $totalTarget, $totalActual, $trendItem, $recordFileItem, $unitItem, $periodItem, $totalPercentage);
+                $percentageCalc = $this->calculation($target, $totalTarget, $totalActual, $trendItem,  $unitItem,  $totalPercentage);
 
 
                 $convertedCalc = floatval(str_replace('%', '', $percentageCalc));
@@ -490,6 +486,10 @@ class ReportController extends Controller
                 ->appends(['year' => $yearToShow, 'department' => $department, 'occupation' => $status]);
             // dd($employees);
 
+            $activeTargets = DB::table('targets')
+                ->select('id', 'employee_id', 'indicator', 'code', 'is_active')
+                ->where('is_active', true);
+
             $employeeIds = $employees->pluck('employee_id');
             $departmentIds = $employees->pluck('department_id');
             // dd($departmentIds);
@@ -498,7 +498,10 @@ class ReportController extends Controller
             $semester1Actuals = DB::table('actuals')
                 ->leftJoin('employees', 'employees.id', '=', 'actuals.employee_id')
                 ->leftJoin('departments', 'departments.id', '=', 'employees.department_id')
-                ->leftJoin('targets', 'targets.employee_id', '=', 'employees.id')
+                ->leftJoinSub($activeTargets, 'targets', function ($join) {
+                    $join->on('targets.employee_id', '=', 'actuals.employee_id')
+                        ->on('targets.code', '=', 'actuals.kpi_code');
+                })
                 ->select('actuals.*', 'employees.*', 'departments.name as department_name', 'departments.id as department_id')
                 ->where('targets.is_active', '=', true)
                 ->where('actuals.semester', '=', '1')
@@ -510,7 +513,10 @@ class ReportController extends Controller
             $semester2Actuals = DB::table('actuals')
                 ->leftJoin('employees', 'employees.id', '=', 'actuals.employee_id')
                 ->leftJoin('departments', 'departments.id', '=', 'employees.department_id')
-                ->leftJoin('targets', 'targets.employee_id', '=', 'employees.id')
+                ->leftJoinSub($activeTargets, 'targets', function ($join) {
+                    $join->on('targets.employee_id', '=', 'actuals.employee_id')
+                        ->on('targets.code', '=', 'actuals.kpi_code');
+                })
                 ->select('actuals.*', 'employees.*', 'departments.name as department_name', 'departments.id as department_id')
                 ->where('targets.is_active', '=', true)
                 ->where('actuals.semester', '=', '2')
@@ -559,11 +565,11 @@ class ReportController extends Controller
                         });
 
                         $totalActual = $subGroup->avg(function ($item) {
-                            return (float) $item->actual;
+                            return $item->is_valid ? (float) $item->actual : 0;
                         });
 
                         $totalPercentage = $subGroup->avg(function ($item) {
-                            return (float) $item->kpi_percentage;
+                            return $item->is_valid ? (float) $item->kpi_percentage : 0;
                         });
                     } else {
                         $totalTarget = $subGroup->sum(function ($item) {
@@ -571,15 +577,15 @@ class ReportController extends Controller
                         });
 
                         $totalActual = $subGroup->sum(function ($item) {
-                            return (float) $item->actual;
+                            return $item->is_valid ? (float) $item->actual : 0;
                         });
 
                         $totalPercentage = $subGroup->sum(function ($item) {
-                            return (float) $item->kpi_percentage;
+                            return $item->is_valid ? (float) $item->kpi_percentage : 0;
                         });
                     }
                     $periodItem = $firstItem->review_period;
-                    $percentageCalc = $this->calculation($totalTarget, $totalTarget, $totalActual, $trendItem, $recordFileItem, $unitItem, $periodItem, $totalPercentage);
+                    $percentageCalc = $this->calculation($totalTarget, $totalTarget, $totalActual, $trendItem,  $unitItem, $totalPercentage);
 
 
                     $convertedCalc = floatval(str_replace('%', '', $percentageCalc));
@@ -610,11 +616,11 @@ class ReportController extends Controller
                         });
 
                         $totalActual = $subGroup->avg(function ($item) {
-                            return (float) $item->actual;
+                            return $item->is_valid ? (float) $item->actual : 0;
                         });
 
                         $totalPercentage = $subGroup->avg(function ($item) {
-                            return (float) $item->kpi_percentage;
+                            return $item->is_valid ? (float) $item->kpi_percentage : 0;
                         });
                     } else {
                         $totalTarget = $subGroup->sum(function ($item) {
@@ -622,15 +628,15 @@ class ReportController extends Controller
                         });
 
                         $totalActual = $subGroup->sum(function ($item) {
-                            return (float) $item->actual;
+                            return $item->is_valid ? (float) $item->actual : 0;
                         });
 
                         $totalPercentage = $subGroup->sum(function ($item) {
-                            return (float) $item->kpi_percentage;
+                            return $item->is_valid ? (float) $item->kpi_percentage : 0;
                         });
                     }
                     $periodItem = $firstItem->review_period;
-                    $percentageCalc = $this->calculation($totalTarget, $totalTarget, $totalActual, $trendItem, $recordFileItem, $unitItem, $periodItem, $totalPercentage);
+                    $percentageCalc = $this->calculation($totalTarget, $totalTarget, $totalActual, $trendItem,  $unitItem, $totalPercentage);
 
                     $convertedCalc = floatval(str_replace('%', '', $percentageCalc));
 
@@ -660,11 +666,11 @@ class ReportController extends Controller
                         });
 
                         $totalActual = $subGroup->avg(function ($item) {
-                            return (float) $item->actual;
+                            return $item->is_valid ? (float) $item->actual : 0;
                         });
 
                         $totalPercentage = $subGroup->avg(function ($item) {
-                            return (float) $item->kpi_percentage;
+                            return $item->is_valid ? (float) $item->kpi_percentage : 0;
                         });
                     } else {
                         $totalTarget = $subGroup->sum(function ($item) {
@@ -672,15 +678,15 @@ class ReportController extends Controller
                         });
 
                         $totalActual = $subGroup->sum(function ($item) {
-                            return (float) $item->actual;
+                            return $item->is_valid ? (float) $item->actual : 0;
                         });
 
                         $totalPercentage = $subGroup->sum(function ($item) {
-                            return (float) $item->kpi_percentage;
+                            return $item->is_valid ? (float) $item->kpi_percentage : 0;
                         });
                     }
                     $periodItem = $firstItem->review_period;
-                    $percentageCalc = $this->calculation($totalTarget, $totalTarget, $totalActual, $trendItem, $recordFileItem, $unitItem, $periodItem, $totalPercentage);
+                    $percentageCalc = $this->calculation($totalTarget, $totalTarget, $totalActual, $trendItem,  $unitItem, $totalPercentage);
 
                     $convertedCalc = floatval(str_replace('%', '', $percentageCalc));
 
@@ -710,11 +716,11 @@ class ReportController extends Controller
                         });
 
                         $totalActual = $subGroup->avg(function ($item) {
-                            return (float) $item->actual;
+                            return $item->is_valid ? (float) $item->actual : 0;
                         });
 
                         $totalPercentage = $subGroup->avg(function ($item) {
-                            return (float) $item->kpi_percentage;
+                            return $item->is_valid ? (float) $item->kpi_percentage : 0;
                         });
                     } else {
                         $totalTarget = $subGroup->sum(function ($item) {
@@ -722,15 +728,15 @@ class ReportController extends Controller
                         });
 
                         $totalActual = $subGroup->sum(function ($item) {
-                            return (float) $item->actual;
+                            return $item->is_valid ? (float) $item->actual : 0;
                         });
 
                         $totalPercentage = $subGroup->sum(function ($item) {
-                            return (float) $item->kpi_percentage;
+                            return $item->is_valid ? (float) $item->kpi_percentage : 0;
                         });
                     }
                     $periodItem = $firstItem->review_period;
-                    $percentageCalc = $this->calculation($totalTarget, $totalTarget, $totalActual, $trendItem, $recordFileItem, $unitItem, $periodItem, $totalPercentage);
+                    $percentageCalc = $this->calculation($totalTarget, $totalTarget, $totalActual, $trendItem, $unitItem, $totalPercentage);
 
                     $convertedCalc = floatval(str_replace('%', '', $percentageCalc));
 
@@ -958,11 +964,11 @@ class ReportController extends Controller
                         });
 
                         $totalActual = $subGroup->avg(function ($item) {
-                            return (float) $item->actual;
+                            return $item->is_valid ? (float) $item->actual : 0;
                         });
 
                         $totalPercentage = $subGroup->avg(function ($item) {
-                            return (float) $item->kpi_percentage;
+                            return $item->is_valid ? (float) $item->kpi_percentage : 0;
                         });
                     } else {
                         $totalTarget = $subGroup->sum(function ($item) {
@@ -970,15 +976,15 @@ class ReportController extends Controller
                         });
 
                         $totalActual = $subGroup->sum(function ($item) {
-                            return (float) $item->actual;
+                            return $item->is_valid ? (float) $item->actual : 0;
                         });
 
                         $totalPercentage = $subGroup->sum(function ($item) {
-                            return (float) $item->kpi_percentage;
+                            return $item->is_valid ? (float) $item->kpi_percentage : 0;
                         });
                     }
                     $periodItem = $firstItem->review_period;
-                    $percentageCalc = $this->calculation($totalTarget, $totalTarget, $totalActual, $trendItem, $recordFileItem, $unitItem, $periodItem, $totalPercentage);
+                    $percentageCalc = $this->calculation($totalTarget, $totalTarget, $totalActual, $trendItem,  $unitItem, $totalPercentage);
 
                     $convertedCalc = floatval(str_replace('%', '', $percentageCalc));
 
@@ -1009,11 +1015,11 @@ class ReportController extends Controller
                         });
 
                         $totalActual = $subGroup->avg(function ($item) {
-                            return (float) $item->actual;
+                            return $item->is_valid ? (float) $item->actual : 0;
                         });
 
                         $totalPercentage = $subGroup->avg(function ($item) {
-                            return (float) $item->kpi_percentage;
+                            return $item->is_valid ? (float) $item->kpi_percentage : 0;
                         });
                     } else {
                         $totalTarget = $subGroup->sum(function ($item) {
@@ -1021,15 +1027,15 @@ class ReportController extends Controller
                         });
 
                         $totalActual = $subGroup->sum(function ($item) {
-                            return (float) $item->actual;
+                            return $item->is_valid ? (float) $item->actual : 0;
                         });
 
                         $totalPercentage = $subGroup->sum(function ($item) {
-                            return (float) $item->kpi_percentage;
+                            return $item->is_valid ? (float) $item->kpi_percentage : 0;
                         });
                     }
                     $periodItem = $firstItem->review_period;
-                    $percentageCalc = $this->calculation($totalTarget, $totalTarget, $totalActual, $trendItem, $recordFileItem, $unitItem, $periodItem, $totalPercentage);
+                    $percentageCalc = $this->calculation($totalTarget, $totalTarget, $totalActual, $trendItem, $unitItem, $totalPercentage);
 
                     $convertedCalc = floatval(str_replace('%', '', $percentageCalc));
 
@@ -1058,11 +1064,11 @@ class ReportController extends Controller
                         });
 
                         $totalActual = $subGroup->avg(function ($item) {
-                            return (float) $item->actual;
+                            return $item->is_valid ? (float) $item->actual : 0;
                         });
 
                         $totalPercentage = $subGroup->avg(function ($item) {
-                            return (float) $item->kpi_percentage;
+                            return $item->is_valid ? (float) $item->kpi_percentage : 0;
                         });
                     } else {
                         $totalTarget = $subGroup->sum(function ($item) {
@@ -1070,17 +1076,17 @@ class ReportController extends Controller
                         });
 
                         $totalActual = $subGroup->sum(function ($item) {
-                            return (float) $item->actual;
+                            return $item->is_valid ? (float) $item->actual : 0;
                         });
 
                         $totalPercentage = $subGroup->sum(function ($item) {
-                            return (float) $item->kpi_percentage;
+                            return $item->is_valid ? (float) $item->kpi_percentage : 0;
                         });
                     }
 
 
                     $periodItem = $firstItem->review_period;
-                    $percentageCalc = $this->calculation($totalTarget, $totalTarget, $totalActual, $trendItem, $recordFileItem, $unitItem, $periodItem, $totalPercentage);
+                    $percentageCalc = $this->calculation($totalTarget, $totalTarget, $totalActual, $trendItem,  $unitItem, $totalPercentage);
 
                     $convertedCalc = floatval(str_replace('%', '', $percentageCalc));
 
@@ -1111,11 +1117,11 @@ class ReportController extends Controller
                         });
 
                         $totalActual = $subGroup->avg(function ($item) {
-                            return (float) $item->actual;
+                            return $item->is_valid ? (float) $item->actual : 0;
                         });
 
                         $totalPercentage = $subGroup->avg(function ($item) {
-                            return (float) $item->kpi_percentage;
+                            return $item->is_valid ? (float) $item->kpi_percentage : 0;
                         });
                     } else {
                         $totalTarget = $subGroup->sum(function ($item) {
@@ -1123,15 +1129,15 @@ class ReportController extends Controller
                         });
 
                         $totalActual = $subGroup->sum(function ($item) {
-                            return (float) $item->actual;
+                            return $item->is_valid ? (float) $item->actual : 0;
                         });
 
                         $totalPercentage = $subGroup->sum(function ($item) {
-                            return (float) $item->kpi_percentage;
+                            return $item->is_valid ? (float) $item->kpi_percentage : 0;
                         });
                     }
                     $periodItem = $firstItem->review_period;
-                    $percentageCalc = $this->calculation($totalTarget, $totalTarget, $totalActual, $trendItem, $recordFileItem, $unitItem, $periodItem, $totalPercentage);
+                    $percentageCalc = $this->calculation($totalTarget, $totalTarget, $totalActual, $trendItem,  $unitItem, $totalPercentage);
 
                     $convertedCalc = floatval(str_replace('%', '', $percentageCalc));
 
@@ -1161,11 +1167,11 @@ class ReportController extends Controller
                         });
 
                         $totalActual = $subGroup->avg(function ($item) {
-                            return (float) $item->actual;
+                            return $item->is_valid ? (float) $item->actual : 0;
                         });
 
                         $totalPercentage = $subGroup->avg(function ($item) {
-                            return (float) $item->kpi_percentage;
+                            return $item->is_valid ? (float) $item->kpi_percentage : 0;
                         });
                     } else {
                         $totalTarget = $subGroup->sum(function ($item) {
@@ -1173,17 +1179,15 @@ class ReportController extends Controller
                         });
 
                         $totalActual = $subGroup->sum(function ($item) {
-                            return (float) $item->actual;
+                            return $item->is_valid ? (float) $item->actual : 0;
                         });
 
                         $totalPercentage = $subGroup->sum(function ($item) {
-                            return (float) $item->kpi_percentage;
+                            return $item->is_valid ? (float) $item->kpi_percentage : 0;
                         });
                     }
                     $periodItem = $firstItem->review_period;
-                    $percentageCalc = $this->calculation($totalTarget, $totalTarget, $totalActual, $trendItem, $recordFileItem, $unitItem, $periodItem, $totalPercentage);
-
-                    $percentageCalc = $this->calculation($totalTarget, $totalTarget, $totalActual, $trendItem, $recordFileItem, $unitItem, $periodItem, $totalPercentage);
+                    $percentageCalc = $this->calculation($totalTarget, $totalTarget, $totalActual, $trendItem,  $unitItem, $totalPercentage);
 
                     $convertedCalc = floatval(str_replace('%', '', $percentageCalc));
 
@@ -1213,11 +1217,11 @@ class ReportController extends Controller
                         });
 
                         $totalActual = $subGroup->avg(function ($item) {
-                            return (float) $item->actual;
+                            return $item->is_valid ? (float) $item->actual : 0;
                         });
 
                         $totalPercentage = $subGroup->avg(function ($item) {
-                            return (float) $item->kpi_percentage;
+                            return $item->is_valid ? (float) $item->kpi_percentage : 0;
                         });
                     } else {
                         $totalTarget = $subGroup->sum(function ($item) {
@@ -1225,17 +1229,17 @@ class ReportController extends Controller
                         });
 
                         $totalActual = $subGroup->sum(function ($item) {
-                            return (float) $item->actual;
+                            return $item->is_valid ? (float) $item->actual : 0;
                         });
 
                         $totalPercentage = $subGroup->sum(function ($item) {
-                            return (float) $item->kpi_percentage;
+                            return $item->is_valid ? (float) $item->kpi_percentage : 0;
                         });
                     }
                     $periodItem = $firstItem->review_period;
-                    $percentageCalc = $this->calculation($totalTarget, $totalTarget, $totalActual, $trendItem, $recordFileItem, $unitItem, $periodItem, $totalPercentage);
+                    $percentageCalc = $this->calculation($totalTarget, $totalTarget, $totalActual, $trendItem, $unitItem, $totalPercentage);
 
-                    $percentageCalc = $this->calculation($totalTarget, $totalTarget, $totalActual, $trendItem, $recordFileItem, $unitItem, $periodItem, $totalPercentage);
+                    $percentageCalc = $this->calculation($totalTarget, $totalTarget, $totalActual, $trendItem,  $unitItem, $totalPercentage);
 
                     $convertedCalc = floatval(str_replace('%', '', $percentageCalc));
 
@@ -1265,11 +1269,11 @@ class ReportController extends Controller
                         });
 
                         $totalActual = $subGroup->avg(function ($item) {
-                            return (float) $item->actual;
+                            return $item->is_valid ? (float) $item->actual : 0;
                         });
 
                         $totalPercentage = $subGroup->avg(function ($item) {
-                            return (float) $item->kpi_percentage;
+                            return $item->is_valid ? (float) $item->kpi_percentage : 0;
                         });
                     } else {
                         $totalTarget = $subGroup->sum(function ($item) {
@@ -1277,17 +1281,15 @@ class ReportController extends Controller
                         });
 
                         $totalActual = $subGroup->sum(function ($item) {
-                            return (float) $item->actual;
+                            return $item->is_valid ? (float) $item->actual : 0;
                         });
 
                         $totalPercentage = $subGroup->sum(function ($item) {
-                            return (float) $item->kpi_percentage;
+                            return $item->is_valid ? (float) $item->kpi_percentage : 0;
                         });
                     }
                     $periodItem = $firstItem->review_period;
-                    $percentageCalc = $this->calculation($totalTarget, $totalTarget, $totalActual, $trendItem, $recordFileItem, $unitItem, $periodItem, $totalPercentage);
-
-                    $percentageCalc = $this->calculation($totalTarget, $totalTarget, $totalActual, $trendItem, $recordFileItem, $unitItem, $periodItem, $totalPercentage);
+                    $percentageCalc = $this->calculation($totalTarget, $totalTarget, $totalActual, $trendItem, $unitItem,  $totalPercentage);
 
                     $convertedCalc = floatval(str_replace('%', '', $percentageCalc));
 
@@ -1317,11 +1319,11 @@ class ReportController extends Controller
                         });
 
                         $totalActual = $subGroup->avg(function ($item) {
-                            return (float) $item->actual;
+                            return $item->is_valid ? (float) $item->actual : 0;
                         });
 
                         $totalPercentage = $subGroup->avg(function ($item) {
-                            return (float) $item->kpi_percentage;
+                            return $item->is_valid ? (float) $item->kpi_percentage : 0;
                         });
                     } else {
                         $totalTarget = $subGroup->sum(function ($item) {
@@ -1329,17 +1331,17 @@ class ReportController extends Controller
                         });
 
                         $totalActual = $subGroup->sum(function ($item) {
-                            return (float) $item->actual;
+                            return $item->is_valid ? (float) $item->actual : 0;
                         });
 
                         $totalPercentage = $subGroup->sum(function ($item) {
-                            return (float) $item->kpi_percentage;
+                            return $item->is_valid ? (float) $item->kpi_percentage : 0;
                         });
                     }
                     $periodItem = $firstItem->review_period;
-                    $percentageCalc = $this->calculation($totalTarget, $totalTarget, $totalActual, $trendItem, $recordFileItem, $unitItem, $periodItem, $totalPercentage);
+                    $percentageCalc = $this->calculation($totalTarget, $totalTarget, $totalActual, $trendItem,  $unitItem, $totalPercentage);
 
-                    $percentageCalc = $this->calculation($totalTarget, $totalTarget, $totalActual, $trendItem, $recordFileItem, $unitItem, $periodItem, $totalPercentage);
+
 
                     $convertedCalc = floatval(str_replace('%', '', $percentageCalc));
 
@@ -1452,6 +1454,10 @@ class ReportController extends Controller
                 ->appends(['year' => $yearToShow, 'department' => $department, 'occupation' => $status]);
             // dd($employees);
 
+            $activeTargets = DB::table('targets')
+                ->select('id', 'employee_id', 'indicator', 'code', 'is_active')
+                ->where('is_active', true);
+
             $employeeIds = $employees->pluck('employee_id');
             $departmentIds = $employees->pluck('department_id');
             // dd($employeeIds);
@@ -1460,7 +1466,10 @@ class ReportController extends Controller
             $semester1Actuals = DB::table('actuals')
                 ->leftJoin('employees', 'employees.id', '=', 'actuals.employee_id')
                 ->leftJoin('departments', 'departments.id', '=', 'employees.department_id')
-                ->leftJoin('targets', 'targets.employee_id', '=', 'employees.id')
+                ->leftJoinSub($activeTargets, 'targets', function ($join) {
+                    $join->on('targets.employee_id', '=', 'actuals.employee_id')
+                        ->on('targets.code', '=', 'actuals.kpi_code');
+                })
                 ->select('actuals.*', 'employees.*', 'departments.name as department_name', 'departments.id as department_id')
                 ->where('actuals.semester', '=', '1')
                 ->where('targets.is_active', '=', true)
@@ -1472,7 +1481,10 @@ class ReportController extends Controller
             $semester2Actuals = DB::table('actuals')
                 ->leftJoin('employees', 'employees.id', '=', 'actuals.employee_id')
                 ->leftJoin('departments', 'departments.id', '=', 'employees.department_id')
-                ->leftJoin('targets', 'targets.employee_id', '=', 'employees.id')
+                ->leftJoinSub($activeTargets, 'targets', function ($join) {
+                    $join->on('targets.employee_id', '=', 'actuals.employee_id')
+                        ->on('targets.code', '=', 'actuals.kpi_code');
+                })
                 ->select('actuals.*', 'employees.*', 'departments.name as department_name', 'departments.id as department_id')
                 ->where('actuals.semester', '=', '2')
                 ->where('targets.is_active', '=', true)
@@ -1522,11 +1534,11 @@ class ReportController extends Controller
                         });
 
                         $totalActual = $subGroup->avg(function ($item) {
-                            return (float) $item->actual;
+                            return $item->is_valid ? (float) $item->actual : 0;
                         });
 
                         $totalPercentage = $subGroup->avg(function ($item) {
-                            return (float) $item->kpi_percentage;
+                            return $item->is_valid ? (float) $item->kpi_percentage : 0;
                         });
                     } else {
                         $totalTarget = $subGroup->sum(function ($item) {
@@ -1534,15 +1546,15 @@ class ReportController extends Controller
                         });
 
                         $totalActual = $subGroup->sum(function ($item) {
-                            return (float) $item->actual;
+                            return $item->is_valid ? (float) $item->actual : 0;
                         });
 
                         $totalPercentage = $subGroup->sum(function ($item) {
-                            return (float) $item->kpi_percentage;
+                            return $item->is_valid ? (float) $item->kpi_percentage : 0;
                         });
                     }
                     $periodItem = $firstItem->review_period;
-                    $percentageCalc = $this->calculation($totalTarget, $totalTarget, $totalActual, $trendItem, $recordFileItem, $unitItem, $periodItem, $totalPercentage);
+                    $percentageCalc = $this->calculation($totalTarget, $totalTarget, $totalActual, $trendItem,  $unitItem, $totalPercentage);
 
                     $convertedCalc = floatval(str_replace('%', '', $percentageCalc));
 
@@ -1572,11 +1584,11 @@ class ReportController extends Controller
                         });
 
                         $totalActual = $subGroup->avg(function ($item) {
-                            return (float) $item->actual;
+                            return $item->is_valid ? (float) $item->actual : 0;
                         });
 
                         $totalPercentage = $subGroup->avg(function ($item) {
-                            return (float) $item->kpi_percentage;
+                            return $item->is_valid ? (float) $item->kpi_percentage : 0;
                         });
                     } else {
                         $totalTarget = $subGroup->sum(function ($item) {
@@ -1584,15 +1596,15 @@ class ReportController extends Controller
                         });
 
                         $totalActual = $subGroup->sum(function ($item) {
-                            return (float) $item->actual;
+                            return $item->is_valid ? (float) $item->actual : 0;
                         });
 
                         $totalPercentage = $subGroup->sum(function ($item) {
-                            return (float) $item->kpi_percentage;
+                            return $item->is_valid ? (float) $item->kpi_percentage : 0;
                         });
                     }
                     $periodItem = $firstItem->review_period;
-                    $percentageCalc = $this->calculation($totalTarget, $totalTarget, $totalActual, $trendItem, $recordFileItem, $unitItem, $periodItem, $totalPercentage);
+                    $percentageCalc = $this->calculation($totalTarget, $totalTarget, $totalActual, $trendItem, $unitItem,  $totalPercentage);
 
                     $convertedCalc = floatval(str_replace('%', '', $percentageCalc));
 
@@ -1623,11 +1635,11 @@ class ReportController extends Controller
                         });
 
                         $totalActual = $subGroup->avg(function ($item) {
-                            return (float) $item->actual;
+                            return $item->is_valid ? (float) $item->actual : 0;
                         });
 
                         $totalPercentage = $subGroup->avg(function ($item) {
-                            return (float) $item->kpi_percentage;
+                            return $item->is_valid ? (float) $item->kpi_percentage : 0;
                         });
                     } else {
                         $totalTarget = $subGroup->sum(function ($item) {
@@ -1635,15 +1647,15 @@ class ReportController extends Controller
                         });
 
                         $totalActual = $subGroup->sum(function ($item) {
-                            return (float) $item->actual;
+                            return $item->is_valid ? (float) $item->actual : 0;
                         });
 
                         $totalPercentage = $subGroup->sum(function ($item) {
-                            return (float) $item->kpi_percentage;
+                            return $item->is_valid ? (float) $item->kpi_percentage : 0;
                         });
                     }
                     $periodItem = $firstItem->review_period;
-                    $percentageCalc = $this->calculation($totalTarget, $totalTarget, $totalActual, $trendItem, $recordFileItem, $unitItem, $periodItem, $totalPercentage);
+                    $percentageCalc = $this->calculation($totalTarget, $totalTarget, $totalActual, $trendItem,  $unitItem,  $totalPercentage);
 
                     $convertedCalc = floatval(str_replace('%', '', $percentageCalc));
 
@@ -1675,11 +1687,11 @@ class ReportController extends Controller
                         });
 
                         $totalActual = $subGroup->avg(function ($item) {
-                            return (float) $item->actual;
+                            return $item->is_valid ? (float) $item->actual : 0;
                         });
 
                         $totalPercentage = $subGroup->avg(function ($item) {
-                            return (float) $item->kpi_percentage;
+                            return $item->is_valid ? (float) $item->kpi_percentage : 0;
                         });
                     } else {
                         $totalTarget = $subGroup->sum(function ($item) {
@@ -1687,15 +1699,15 @@ class ReportController extends Controller
                         });
 
                         $totalActual = $subGroup->sum(function ($item) {
-                            return (float) $item->actual;
+                            return $item->is_valid ? (float) $item->actual : 0;
                         });
 
                         $totalPercentage = $subGroup->sum(function ($item) {
-                            return (float) $item->kpi_percentage;
+                            return $item->is_valid ? (float) $item->kpi_percentage : 0;
                         });
                     }
 
-                    $percentageCalc = $this->calculation($totalTarget, $totalTarget, $totalActual, $trendItem, $recordFileItem, $unitItem, $periodItem, $totalPercentage);
+                    $percentageCalc = $this->calculation($totalTarget, $totalTarget, $totalActual, $trendItem,  $unitItem,  $totalPercentage);
 
                     $convertedCalc = floatval(str_replace('%', '', $percentageCalc));
 
@@ -1773,6 +1785,11 @@ class ReportController extends Controller
                 ->appends(['year' => $yearToShow, 'department' => $department, 'occupation' => $status]);
             // dd($employees);
 
+
+            $activeTargets = DB::table('targets')
+                ->select('id', 'employee_id', 'indicator', 'code', 'is_active')
+                ->where('is_active', true);
+
             // Get the employee IDs for the current page
             $employeeIds = $employees->pluck('employee_id');
             $departmentIds = $employees->pluck('department_id');
@@ -1782,7 +1799,10 @@ class ReportController extends Controller
             $semester1Actuals = DB::table('actuals')
                 ->leftJoin('employees', 'employees.id', '=', 'actuals.employee_id')
                 ->leftJoin('departments', 'departments.id', '=', 'employees.department_id')
-                ->leftJoin('targets', 'targets.employee_id', '=', 'employees.id')
+                ->leftJoinSub($activeTargets, 'targets', function ($join) {
+                    $join->on('targets.employee_id', '=', 'actuals.employee_id')
+                        ->on('targets.code', '=', 'actuals.kpi_code');
+                })
                 ->select('actuals.*', 'employees.*', 'departments.name as department_name', 'departments.id as department_id', 'targets.is_active')
                 ->where('actuals.semester', '=', '1')
                 ->where('targets.is_active', '=', true)
@@ -1794,7 +1814,10 @@ class ReportController extends Controller
             $semester2Actuals = DB::table('actuals')
                 ->leftJoin('employees', 'employees.id', '=', 'actuals.employee_id')
                 ->leftJoin('departments', 'departments.id', '=', 'employees.department_id')
-                ->leftJoin('targets', 'targets.employee_id', '=', 'employees.id')
+                ->leftJoinSub($activeTargets, 'targets', function ($join) {
+                    $join->on('targets.employee_id', '=', 'actuals.employee_id')
+                        ->on('targets.code', '=', 'actuals.kpi_code');
+                })
                 ->select('actuals.*', 'employees.*', 'departments.name as department_name', 'departments.id as department_id')
                 ->where('actuals.semester', '=', '2')
                 ->where('targets.is_active', '=', true)
@@ -1840,11 +1863,11 @@ class ReportController extends Controller
                         });
 
                         $totalActual = $subGroup->avg(function ($item) {
-                            return (float) $item->actual;
+                            return $item->is_valid ? (float) $item->actual : 0;
                         });
 
                         $totalPercentage = $subGroup->avg(function ($item) {
-                            return (float) $item->kpi_percentage;
+                            return $item->is_valid ? (float) $item->kpi_percentage : 0;
                         });
                     } else {
                         $totalTarget = $subGroup->sum(function ($item) {
@@ -1852,11 +1875,11 @@ class ReportController extends Controller
                         });
 
                         $totalActual = $subGroup->sum(function ($item) {
-                            return (float) $item->actual;
+                            return $item->is_valid ? (float) $item->actual : 0;
                         });
 
                         $totalPercentage = $subGroup->sum(function ($item) {
-                            return (float) $item->kpi_percentage;
+                            return $item->is_valid ? (float) $item->kpi_percentage : 0;
                         });
                     }
 
@@ -1866,7 +1889,7 @@ class ReportController extends Controller
                     $recordFileItem = $firstItem->record_file;
                     $unitItem = $firstItem->kpi_unit;
                     $periodItem = $firstItem->review_period;
-                    $percentageCalc = $this->calculation($totalTarget, $totalTarget, $totalActual, $trendItem, $recordFileItem, $unitItem, $periodItem, $totalPercentage);
+                    $percentageCalc = $this->calculation($totalTarget, $totalTarget, $totalActual, $trendItem,  $unitItem, $totalPercentage);
 
                     $convertedCalc = floatval(str_replace('%', '', $percentageCalc));
 
@@ -1897,11 +1920,11 @@ class ReportController extends Controller
                         });
 
                         $totalActual = $subGroup->avg(function ($item) {
-                            return (float) $item->actual;
+                            return $item->is_valid ? (float) $item->actual : 0;
                         });
 
                         $totalPercentage = $subGroup->avg(function ($item) {
-                            return (float) $item->kpi_percentage;
+                            return $item->is_valid ? (float) $item->kpi_percentage : 0;
                         });
                     } else {
                         $totalTarget = $subGroup->sum(function ($item) {
@@ -1909,15 +1932,15 @@ class ReportController extends Controller
                         });
 
                         $totalActual = $subGroup->sum(function ($item) {
-                            return (float) $item->actual;
+                            return $item->is_valid ? (float) $item->actual : 0;
                         });
 
                         $totalPercentage = $subGroup->sum(function ($item) {
-                            return (float) $item->kpi_percentage;
+                            return $item->is_valid ? (float) $item->kpi_percentage : 0;
                         });
                     }
                     $periodItem = $firstItem->review_period;
-                    $percentageCalc = $this->calculation($totalTarget, $totalTarget, $totalActual, $trendItem, $recordFileItem, $unitItem, $periodItem, $totalPercentage);
+                    $percentageCalc = $this->calculation($totalTarget, $totalTarget, $totalActual, $trendItem,  $unitItem,  $totalPercentage);
 
                     $convertedCalc = floatval(str_replace('%', '', $percentageCalc));
 
@@ -1948,11 +1971,11 @@ class ReportController extends Controller
                         });
 
                         $totalActual = $subGroup->avg(function ($item) {
-                            return (float) $item->actual;
+                            return $item->is_valid ? (float) $item->actual : 0;
                         });
 
                         $totalPercentage = $subGroup->avg(function ($item) {
-                            return (float) $item->kpi_percentage;
+                            return $item->is_valid ? (float) $item->kpi_percentage : 0;
                         });
                     } else {
                         $totalTarget = $subGroup->sum(function ($item) {
@@ -1960,15 +1983,15 @@ class ReportController extends Controller
                         });
 
                         $totalActual = $subGroup->sum(function ($item) {
-                            return (float) $item->actual;
+                            return $item->is_valid ? (float) $item->actual : 0;
                         });
 
                         $totalPercentage = $subGroup->sum(function ($item) {
-                            return (float) $item->kpi_percentage;
+                            return $item->is_valid ? (float) $item->kpi_percentage : 0;
                         });
                     }
                     $periodItem = $firstItem->review_period;
-                    $percentageCalc = $this->calculation($totalTarget, $totalTarget, $totalActual, $trendItem, $recordFileItem, $unitItem, $periodItem, $totalPercentage);
+                    $percentageCalc = $this->calculation($totalTarget, $totalTarget, $totalActual, $trendItem,  $unitItem, $totalPercentage);
 
                     $convertedCalc = floatval(str_replace('%', '', $percentageCalc));
 
@@ -1999,11 +2022,11 @@ class ReportController extends Controller
                         });
 
                         $totalActual = $subGroup->avg(function ($item) {
-                            return (float) $item->actual;
+                            return $item->is_valid ? (float) $item->actual : 0;
                         });
 
                         $totalPercentage = $subGroup->avg(function ($item) {
-                            return (float) $item->kpi_percentage;
+                            return $item->is_valid ? (float) $item->kpi_percentage : 0;
                         });
                     } else {
                         $totalTarget = $subGroup->sum(function ($item) {
@@ -2011,15 +2034,15 @@ class ReportController extends Controller
                         });
 
                         $totalActual = $subGroup->sum(function ($item) {
-                            return (float) $item->actual;
+                            return $item->is_valid ? (float) $item->actual : 0;
                         });
 
                         $totalPercentage = $subGroup->sum(function ($item) {
-                            return (float) $item->kpi_percentage;
+                            return $item->is_valid ? (float) $item->kpi_percentage : 0;
                         });
                     }
                     $periodItem = $firstItem->review_period;
-                    $percentageCalc = $this->calculation($totalTarget, $totalTarget, $totalActual, $trendItem, $recordFileItem, $unitItem, $periodItem, $totalPercentage);
+                    $percentageCalc = $this->calculation($totalTarget, $totalTarget, $totalActual, $trendItem,  $unitItem,  $totalPercentage);
 
                     $convertedCalc = floatval(str_replace('%', '', $percentageCalc));
 
@@ -2155,5 +2178,19 @@ class ReportController extends Controller
         // dd($actuals);
 
         return view('report.target-kpi-department-report', ['title' => 'Summary KPI', 'desc' => 'All Department', 'actuals' => $actuals, 'targets' => $targets, 'indicatorList' => $indicatorList]);
+    }
+
+    public function setDataInvalid(Request $request)
+    {
+        $actualId = $request->input('actual_id');
+        $invalidReason = $request->input('invalid_reason');
+
+        // Update the status of the actual record
+        DB::table('actuals')
+            ->where('id', $actualId)
+            ->update(['is_valid' => 0, 'status' => 'Invalid', 'invalid_reason' => $invalidReason]);
+
+        // Return a success response
+        return back()->with('success', 'Data has been set to invalid successfully.');
     }
 }
