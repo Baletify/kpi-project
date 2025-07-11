@@ -29,6 +29,7 @@
                     </td>
                     <td class="border-2 border-gray-400 text-[12px] tracking-wide px-2 py-0 text-center">
                         <form action="{{ route('actual.sendReminderCheck1') }}" method="POST">
+                            @csrf
                             <button type="submit" class="bg-blue-500 p-2  text-white rounded-md my-2">Kirim Reminder Check 1</button>
                         </form>
                     </td>
