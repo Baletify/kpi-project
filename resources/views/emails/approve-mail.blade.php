@@ -26,6 +26,15 @@
     <p>{{ $details['msg'] }}</p>
     <table>
         <tr>
+            <td>Silakan mengakses Aplikasi KPI melalui link berikut</td>
+            <td>:</td>
+            <td>
+                <a href="http://192.168.99.202/bskp-gate/public/">
+                    http://192.168.99.202/bskp-gate/public/
+                </a>
+            </td>
+        </tr>
+        <tr>
             <td>Approved by</td>
             <td>:</td>
             <td>{{ $details['approved_by'] }}</td>

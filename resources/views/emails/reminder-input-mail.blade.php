@@ -28,6 +28,16 @@
     </br>
         <p>{{ $details['msg'] }}</p>
         <p>{{ $details['msg2'] }}</p>
+        <br>
+        <p>
+            Silakan mengakses Aplikasi KPI melalui tautan berikut:
+        </p>
+
+        <p>
+            <a href="http://192.168.99.202/bskp-gate/public/">
+                http://192.168.99.202/bskp-gate/public/
+            </a>
+        </p>
     </div>
     <div class="">
         <p>{{ $details['closing'] }}</p>
